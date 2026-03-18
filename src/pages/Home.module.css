@@ -47,13 +47,13 @@
 
 .heroTitle {
   font-family: var(--font-heading);
-  font-size: clamp(2.2rem, 11vw, 6.5rem);
+  font-size: clamp(1.6rem, 8.5vw, 6.5rem);
   font-weight: 900;
   line-height: 1;
   color: var(--cyan);
   letter-spacing: 0.06em;
   margin-bottom: 0.6rem;
-  word-break: break-word;
+  white-space: nowrap;
 }
 
 .heroSub {
@@ -203,16 +203,4 @@
   padding: 3.5rem 0;
 }
 
-@media (max-width: 480px) {
-  .heroTitle {
-    letter-spacing: 0.02em;
-    font-size: clamp(2rem, 13vw, 3.5rem);
-  }
-  .heroSub {
-    letter-spacing: 0.15em;
-    font-size: 0.75rem;
-  }
-  .heroDesc {
-    font-size: 0.95rem;
-  }
-}
+
