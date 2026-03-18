@@ -35,6 +35,7 @@ export default function Contact() {
   const [form, setForm]     = useState({ name: '', email: '', subject: '', message: '', _trap: '' })
   const [sent, setSent]     = useState(false)
   const [errors, setErrors] = useState({})
+  const [status, setStatus]   = useState('idle') // idle | loading | error
 
   const update = (field) => (e) => {
     setForm(f => ({ ...f, [field]: e.target.value }))
@@ -52,12 +53,28 @@ export default function Contact() {
     return e
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const errs = validate()
-    if (errs === null) { setSent(true); return }  // Honeypot triggered — fake success
+    if (errs === null) { setSent(true); return }  // Honeypot — fake success
     if (Object.keys(errs).length) { setErrors(errs); return }
-    setSent(true)
+
+    setStatus('loading')
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      const data = await res.json()
+      if (data.ok) {
+        setSent(true)
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -100,7 +117,12 @@ export default function Contact() {
                     onChange={update('_trap')}
                   />
                 </div>
-                <Button variant="cyan" type="submit">TRANSMIT →</Button>
+                <Button variant="cyan" type="submit" disabled={status === 'loading'}>{status === 'loading' ? 'SENDING...' : 'TRANSMIT →'}</Button>
+                {status === 'error' && (
+                  <p style={{ color: 'var(--red)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', marginTop: '0.75rem', letterSpacing: '0.08em' }}>
+                    ✕ TRANSMISSION FAILED — try again or email us directly.
+                  </p>
+                )}
               </form>
             )}
           </div>
