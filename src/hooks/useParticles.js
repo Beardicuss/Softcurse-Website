@@ -62,6 +62,10 @@ export function useParticles(active = true) {
       ctx.clearRect(0, 0, width, height)
 
       const LINK_SQ = config.LINK * config.LINK
+      // Detect light theme — use darker line color so connections are visible
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light'
+      const lineColor = isLight ? '#0055AA' : '#00FFFF'
+      const alphaBoost = isLight ? 2.5 : 1   // boost opacity on light bg
 
       // Connections
       for (let i = 0; i < particles.length; i++) {
@@ -73,8 +77,8 @@ export function useParticles(active = true) {
           const dSq = dx * dx + dy * dy
           if (dSq < LINK_SQ) {
             const ratio = 1 - dSq / LINK_SQ
-            ctx.globalAlpha = ratio * config.lineAlpha
-            ctx.strokeStyle = '#00FFFF'
+            ctx.globalAlpha = Math.min(1, ratio * config.lineAlpha * alphaBoost)
+            ctx.strokeStyle = lineColor
             ctx.lineWidth   = config.lineW
             ctx.beginPath()
             ctx.moveTo(pi.x, pi.y)
@@ -93,7 +97,7 @@ export function useParticles(active = true) {
         if (p.y < 0) p.y = height
         if (p.y > height) p.y = 0
 
-        ctx.globalAlpha = p.a
+        ctx.globalAlpha = isLight ? Math.min(1, p.a * 1.8) : p.a
         ctx.fillStyle   = p.col
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
