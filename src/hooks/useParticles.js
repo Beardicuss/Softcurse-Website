@@ -1,15 +1,5 @@
 import { useEffect, useRef } from 'react'
 
-/**
- * Animated neon particle network on a <canvas>.
- * Fixes applied:
- *   - Uses distance² (no Math.sqrt) — ~40% faster inner loop
- *   - Respects prefers-reduced-motion — skips animation entirely if set
- *   - Uses ResizeObserver instead of window resize — more accurate
- *   - Cleans up ResizeObserver on unmount
- *
- * @param {boolean} active
- */
 export function useParticles(active = true) {
   const canvasRef = useRef(null)
   const animRef   = useRef(null)
@@ -17,7 +7,6 @@ export function useParticles(active = true) {
   useEffect(() => {
     if (!active) return
 
-    // Respect user's motion preference
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) return
 
@@ -26,26 +15,28 @@ export function useParticles(active = true) {
     const ctx = canvas.getContext('2d')
 
     const COLORS  = ['#00FFFF', '#FF00FF']
-    const COUNT   = 65
-    const LINK    = 90
-    const LINK_SQ = LINK * LINK   // compare squared distance — avoids Math.sqrt per pair
+    const COUNT   = 80         // more particles
+    const LINK    = 130        // longer connection distance
+    const LINK_SQ = LINK * LINK
 
     let particles = []
 
     const init = () => {
       const { width, height } = canvas
+      if (!width || !height) return  // guard against 0-size canvas
       particles = Array.from({ length: COUNT }, () => ({
         x:   Math.random() * width,
         y:   Math.random() * height,
-        vx:  (Math.random() - 0.5) * 0.38,
-        vy:  (Math.random() - 0.5) * 0.38,
-        r:   Math.random() * 1.4 + 0.4,
+        vx:  (Math.random() - 0.5) * 0.45,
+        vy:  (Math.random() - 0.5) * 0.45,
+        r:   Math.random() * 2 + 1,           // bigger: 1–3px radius
         col: COLORS[Math.floor(Math.random() * COLORS.length)],
-        a:   Math.random() * 0.42 + 0.08,
+        a:   Math.random() * 0.5 + 0.3,       // more opaque: 0.3–0.8
       }))
     }
 
     const setSize = (w, h) => {
+      if (!w || !h) return
       canvas.width  = w
       canvas.height = h
       init()
@@ -53,9 +44,13 @@ export function useParticles(active = true) {
 
     const draw = () => {
       const { width, height } = canvas
+      if (!width || !height) {
+        animRef.current = requestAnimationFrame(draw)
+        return
+      }
       ctx.clearRect(0, 0, width, height)
 
-      // Connections — use squared distance to skip expensive Math.sqrt
+      // Connections
       for (let i = 0; i < particles.length; i++) {
         const pi = particles[i]
         for (let j = i + 1; j < particles.length; j++) {
@@ -65,9 +60,9 @@ export function useParticles(active = true) {
           const dSq = dx * dx + dy * dy
           if (dSq < LINK_SQ) {
             const ratio = 1 - dSq / LINK_SQ
-            ctx.globalAlpha = ratio * 0.06
+            ctx.globalAlpha = ratio * 0.35   // much more visible connections
             ctx.strokeStyle = '#00FFFF'
-            ctx.lineWidth   = 0.5
+            ctx.lineWidth   = 0.8
             ctx.beginPath()
             ctx.moveTo(pi.x, pi.y)
             ctx.lineTo(pj.x, pj.y)
@@ -96,7 +91,7 @@ export function useParticles(active = true) {
       animRef.current = requestAnimationFrame(draw)
     }
 
-    // ResizeObserver fires immediately on observe — that's the init call
+    // ResizeObserver — fires immediately on observe
     const ro = new ResizeObserver(entries => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect
@@ -104,7 +99,15 @@ export function useParticles(active = true) {
       }
     })
     ro.observe(canvas)
-    // Do NOT call setSize() again here — ResizeObserver already fired it
+
+    // Fallback: if ResizeObserver fired with 0 dims (canvas not painted yet),
+    // retry after a frame using actual offsetWidth/Height
+    requestAnimationFrame(() => {
+      if (!canvas.width || !canvas.height) {
+        setSize(canvas.offsetWidth, canvas.offsetHeight)
+      }
+    })
+
     draw()
 
     return () => {
