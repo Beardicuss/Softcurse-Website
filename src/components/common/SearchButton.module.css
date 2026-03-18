@@ -68,3 +68,10 @@
   .btn, .icon { animation: none !important; }
   .btn { filter: drop-shadow(0 0 5px rgba(0,255,255,0.4)); opacity: 0.85; }
 }
+
+@media (max-width: 480px) {
+  .btn {
+    width: 36px;
+    height: 36px;
+  }
+}

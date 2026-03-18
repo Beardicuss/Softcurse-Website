@@ -325,3 +325,26 @@
   .trackLine, .thumbInner, .thumbScan, .thumbParticle, .ring { animation: none; }
   .thumb, .track, .thumbCore, .thumbInner { transition: none; }
 }
+
+@media (max-width: 480px) {
+  .wrap {
+    width: 58px;
+    height: 26px;
+  }
+  .thumb {
+    width: 20px;
+    height: 20px;
+    left: 3px;
+    top: 3px;
+  }
+  .input:checked + .track .thumb {
+    left: calc(100% - 23px);
+  }
+  .rings {
+    width: 20px;
+    height: 20px;
+  }
+  .input:checked + .track .rings {
+    left: calc(100% - 23px);
+  }
+}

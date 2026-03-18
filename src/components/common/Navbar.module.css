@@ -220,6 +220,11 @@
 @media (max-width: 1100px) {
   .burger { display: flex; }
 
+  /* Keep search + toggle visible, reduce gap */
+  .iconGroup {
+    gap: 0.35rem;
+  }
+
   .links {
     display: none;
     position: fixed;
