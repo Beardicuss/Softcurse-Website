@@ -14,24 +14,37 @@ export function useParticles(active = true) {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
 
-    const COLORS  = ['#00FFFF', '#FF00FF']
-    const COUNT   = 80         // more particles
-    const LINK    = 130        // longer connection distance
-    const LINK_SQ = LINK * LINK
-
+    const COLORS = ['#00FFFF', '#FF00FF']
     let particles = []
+    let config = {}
+
+    // ── Responsive config based on canvas width ──
+    const getConfig = (w) => {
+      if (w < 600) {
+        // Mobile — fewer, smaller, shorter links
+        return { COUNT: 35, LINK: 80, minR: 0.8, maxR: 1.6, minA: 0.25, maxA: 0.55, lineW: 0.5, lineAlpha: 0.2 }
+      } else if (w < 1024) {
+        // Tablet
+        return { COUNT: 55, LINK: 100, minR: 1.0, maxR: 2.0, minA: 0.28, maxA: 0.60, lineW: 0.6, lineAlpha: 0.25 }
+      } else {
+        // Desktop
+        return { COUNT: 80, LINK: 130, minR: 1.0, maxR: 3.0, minA: 0.3,  maxA: 0.8,  lineW: 0.8, lineAlpha: 0.35 }
+      }
+    }
 
     const init = () => {
       const { width, height } = canvas
-      if (!width || !height) return  // guard against 0-size canvas
+      if (!width || !height) return
+      config = getConfig(width)
+      const { COUNT, minR, maxR, minA, maxA } = config
       particles = Array.from({ length: COUNT }, () => ({
         x:   Math.random() * width,
         y:   Math.random() * height,
         vx:  (Math.random() - 0.5) * 0.45,
         vy:  (Math.random() - 0.5) * 0.45,
-        r:   Math.random() * 2 + 1,           // bigger: 1–3px radius
+        r:   Math.random() * (maxR - minR) + minR,
         col: COLORS[Math.floor(Math.random() * COLORS.length)],
-        a:   Math.random() * 0.5 + 0.3,       // more opaque: 0.3–0.8
+        a:   Math.random() * (maxA - minA) + minA,
       }))
     }
 
@@ -44,11 +57,11 @@ export function useParticles(active = true) {
 
     const draw = () => {
       const { width, height } = canvas
-      if (!width || !height) {
-        animRef.current = requestAnimationFrame(draw)
-        return
-      }
+      if (!width || !height) { animRef.current = requestAnimationFrame(draw); return }
+
       ctx.clearRect(0, 0, width, height)
+
+      const LINK_SQ = config.LINK * config.LINK
 
       // Connections
       for (let i = 0; i < particles.length; i++) {
@@ -60,9 +73,9 @@ export function useParticles(active = true) {
           const dSq = dx * dx + dy * dy
           if (dSq < LINK_SQ) {
             const ratio = 1 - dSq / LINK_SQ
-            ctx.globalAlpha = ratio * 0.35   // much more visible connections
+            ctx.globalAlpha = ratio * config.lineAlpha
             ctx.strokeStyle = '#00FFFF'
-            ctx.lineWidth   = 0.8
+            ctx.lineWidth   = config.lineW
             ctx.beginPath()
             ctx.moveTo(pi.x, pi.y)
             ctx.lineTo(pj.x, pj.y)
@@ -91,7 +104,6 @@ export function useParticles(active = true) {
       animRef.current = requestAnimationFrame(draw)
     }
 
-    // ResizeObserver — fires immediately on observe
     const ro = new ResizeObserver(entries => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect
@@ -100,8 +112,6 @@ export function useParticles(active = true) {
     })
     ro.observe(canvas)
 
-    // Fallback: if ResizeObserver fired with 0 dims (canvas not painted yet),
-    // retry after a frame using actual offsetWidth/Height
     requestAnimationFrame(() => {
       if (!canvas.width || !canvas.height) {
         setSize(canvas.offsetWidth, canvas.offsetHeight)
