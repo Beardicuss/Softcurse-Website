@@ -1,0 +1,65 @@
+/* ============================================================
+   SOFTCURSE ANIMATIONS
+   ============================================================ */
+
+@keyframes flicker {
+  0%, 94%, 100% { opacity: 1; }
+  95%            { opacity: 0.72; }
+  97%            { opacity: 1; }
+  99%            { opacity: 0.84; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { text-shadow: 0 0 10px var(--cyan), 0 0 22px var(--cyan); }
+  50%       { text-shadow: 0 0 28px var(--cyan), 0 0 55px var(--cyan), 0 0 90px rgba(0,255,255,0.4); }
+}
+
+@keyframes scanline {
+  0%   { top: -4px; }
+  100% { top: 100%; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes borderShiftCyan {
+  0%, 100% { border-color: rgba(0, 255, 255, 0.15); }
+  50%       { border-color: rgba(0, 255, 255, 0.30); }
+}
+
+@keyframes borderShiftMagenta {
+  0%, 100% { border-color: rgba(255, 0, 255, 0.15); }
+  50%       { border-color: rgba(255, 0, 255, 0.30); }
+}
+
+@keyframes particleDrift {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(3px, -5px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Utility animation classes */
+.anim-fade-up   { animation: fadeUp 0.7s ease both; }
+.anim-fade-in   { animation: fadeIn 0.5s ease both; }
+.anim-flicker   { animation: flicker 9s infinite; }
+.anim-glow      { animation: glowPulse 4s ease-in-out infinite; }
+
+/* ── Respect prefers-reduced-motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade-up,
+  .anim-fade-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .anim-flicker { animation: none !important; }
+  .anim-glow    { animation: none !important; text-shadow: 0 0 10px var(--cyan); }
+  .scanline     { animation: none !important; display: none; }
+}

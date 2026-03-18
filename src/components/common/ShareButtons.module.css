@@ -1,0 +1,55 @@
+.wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--muted);
+  letter-spacing: 0.2em;
+  opacity: 0.5;
+  margin-right: 0.25rem;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--panel);
+  border: 1px solid rgba(0,255,255,0.15);
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.btn:hover {
+  color: var(--cyan);
+  border-color: var(--cyan);
+  background: rgba(0,255,255,0.06);
+  box-shadow: 0 0 8px rgba(0,255,255,0.15);
+}
+
+.copied {
+  color: var(--green) !important;
+  border-color: var(--green) !important;
+  background: rgba(57,255,20,0.08) !important;
+}
+
+.copiedLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--green);
+  letter-spacing: 0.14em;
+  animation: fadeIn 0.15s ease both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-4px); }
+  to   { opacity: 1; transform: translateX(0); }
+}

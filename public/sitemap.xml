@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://softcurse.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://softcurse.com/lab</loc><priority>0.9</priority></url>
+  <url><loc>https://softcurse.com/lab/devnotes</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse.com/lab/medialab</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse.com/lab/archvis</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse.com/lab/livescriptor</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse.com/lab/blackwatch</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse.com/lab/spectral</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse.com/lab/inkmind</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse.com/lab/ytdl</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse.com/lab/vault</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse.com/studio</loc><priority>0.9</priority></url>
+  <url><loc>https://softcurse.com/studio/chronicles</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse.com/studio/isle</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse.com/studio/ww3</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse.com/about</loc><priority>0.6</priority></url>
+  <url><loc>https://softcurse.com/contact</loc><priority>0.6</priority></url>
+  <url><loc>https://softcurse.com/blog</loc><priority>0.8</priority></url>
+  <url><loc>https://softcurse.com/roadmap</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse.com/press</loc><priority>0.5</priority></url>
+</urlset>

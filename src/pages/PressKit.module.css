@@ -1,0 +1,78 @@
+.downloadBar {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+  gap: 1rem; padding: 1.4rem 1.8rem; border: 1px solid rgba(0,255,255,0.18);
+  background: rgba(0,255,255,0.03); margin-bottom: 3rem;
+}
+.downloadLabel { font-family: var(--font-mono); font-size: 0.65rem; color: var(--cyan); letter-spacing: 0.2em; margin-bottom: 0.3rem; }
+.downloadText p { font-size: 0.88rem; color: var(--muted); }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+.left, .right { display: flex; flex-direction: column; gap: 2.5rem; }
+
+.section {}
+.sectionTitle {
+  font-family: var(--font-heading); font-size: 0.7rem; color: var(--cyan);
+  letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem;
+  padding-bottom: 0.5rem; border-bottom: 1px solid rgba(0,255,255,0.1);
+}
+
+.copyBlock { background: var(--panel); border: 1px solid rgba(0,255,255,0.1); padding: 1.1rem; position: relative; }
+.copyText { font-size: 0.88rem; color: var(--muted); line-height: 1.8; margin-bottom: 0.75rem; }
+.copyBtn {
+  font-family: var(--font-mono); font-size: 0.6rem; color: var(--cyan); letter-spacing: 0.1em;
+  background: transparent; border: 1px solid rgba(0,255,255,0.2); padding: 0.25rem 0.6rem;
+  cursor: pointer; transition: all 0.18s;
+}
+.copyBtn:hover { background: rgba(0,255,255,0.08); border-color: var(--cyan); }
+
+.facts { display: grid; gap: 0; }
+.fact { display: flex; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.factKey { font-family: var(--font-mono); font-size: 0.68rem; color: var(--cyan); opacity: 0.6; letter-spacing: 0.08em; min-width: 90px; }
+.factVal { font-family: var(--font-mono); font-size: 0.72rem; color: var(--txt); }
+
+.logoGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.logoCard { padding: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; border: 1px solid rgba(255,255,255,0.06); }
+.logoPreview { width: 72px; height: 72px; object-fit: contain; }
+.logoLabel { font-family: var(--font-mono); font-size: 0.58rem; color: var(--muted); letter-spacing: 0.15em; }
+.logoFormats { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.fmtBtn {
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em;
+  padding: 0.28rem 0.7rem; border: 1px solid rgba(0,255,255,0.18); color: var(--muted);
+  background: transparent; cursor: pointer; transition: all 0.18s;
+}
+.fmtBtn:hover { color: var(--cyan); border-color: var(--cyan); }
+
+.colorGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.colorChip { display: flex; gap: 0.7rem; align-items: center; padding: 0.5rem; background: var(--panel); border: 1px solid rgba(255,255,255,0.04); }
+.colorSwatch { width: 36px; height: 36px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.08); }
+.colorInfo { display: flex; flex-direction: column; gap: 0.1rem; }
+.colorName { font-family: var(--font-heading); font-size: 0.6rem; color: var(--txt); letter-spacing: 0.04em; }
+.colorHex  { font-family: var(--font-mono); font-size: 0.62rem; color: var(--cyan); }
+.colorRole { font-family: var(--font-mono); font-size: 0.55rem; color: var(--muted); opacity: 0.5; letter-spacing: 0.1em; }
+
+.pressContact { margin-bottom: 1.2rem; }
+.pressLine { display: flex; gap: 1rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--txt); padding: 0.45rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.pressKey { color: var(--cyan); opacity: 0.6; min-width: 80px; font-size: 0.65rem; letter-spacing: 0.1em; }
+
+.productsSection { border-top: 1px solid rgba(0,255,255,0.08); padding-top: 2.5rem; }
+.productsGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+.productsCat { font-family: var(--font-heading); font-size: 0.62rem; color: var(--cyan); letter-spacing: 0.2em; opacity: 0.55; margin-bottom: 0.8rem; }
+.productRow { display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.productIcon { font-size: 1rem; width: 22px; text-align: center; }
+.productName { font-family: var(--font-mono); font-size: 0.72rem; color: var(--txt); flex: 1; }
+.productTag { font-family: var(--font-mono); font-size: 0.58rem; color: var(--cyan); border: 1px solid rgba(0,255,255,0.22); padding: 0.12rem 0.35rem; letter-spacing: 0.06em; }
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; gap: 2rem; }
+  .productsGrid { grid-template-columns: 1fr; }
+}
+
+.copyBtnDone {
+  color: var(--green) !important;
+  border-color: var(--green) !important;
+  background: rgba(57,255,20,0.06) !important;
+}
+
+.logoInvert {
+  filter: invert(1) hue-rotate(180deg);
+}

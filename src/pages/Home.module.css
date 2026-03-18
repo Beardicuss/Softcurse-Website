@@ -1,0 +1,203 @@
+.page { display: flex; flex-direction: column; }
+
+/* ── Hero ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: var(--nav-h);
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.scanline {
+  position: absolute;
+  left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(transparent, rgba(0,255,255,0.07), transparent);
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.heroInner {
+  text-align: center;
+  z-index: 2;
+  padding: 2rem;
+  position: relative;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--green);
+  letter-spacing: 0.35em;
+  margin-bottom: 1.5rem;
+  opacity: 0.85;
+}
+
+.heroTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(3.5rem, 9vw, 6.5rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--cyan);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.6rem;
+}
+
+.heroSub {
+  font-family: var(--font-heading);
+  font-size: clamp(0.85rem, 2vw, 1.1rem);
+  color: var(--muted);
+  letter-spacing: 0.38em;
+  margin-bottom: 1.8rem;
+}
+
+.heroDesc {
+  font-size: 1.12rem;
+  color: var(--muted);
+  max-width: 560px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.8;
+}
+
+.heroCta {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.scrollCue {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  opacity: 0.3;
+}
+
+.scrollLine {
+  display: block;
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(to bottom, var(--cyan), transparent);
+  animation: fadeUp 2s ease infinite alternate;
+}
+
+.scrollLabel {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: var(--cyan);
+  letter-spacing: 0.3em;
+}
+
+/* ── Stats ── */
+.stats {
+  display: flex;
+  gap: 2.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 2.5rem 2rem;
+  border-top: 1px solid rgba(0,255,255,0.08);
+  border-bottom: 1px solid rgba(0,255,255,0.08);
+  background: rgba(28,30,38,0.45);
+}
+
+.stat { text-align: center; }
+
+.statN {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: var(--cyan);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.statL {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ── Sections ── */
+.section { padding: 6rem 0 5rem; }
+
+.sectionCta {
+  text-align: center;
+  margin-top: 2.5rem;
+  margin-bottom: 0;
+}
+
+/* ── CTA Banner ── */
+.ctaBanner {
+  background: var(--panel);
+  border-top: 1px solid rgba(0,255,255,0.08);
+  border-bottom: 1px solid rgba(0,255,255,0.08);
+  padding: 4rem 2rem;
+  text-align: center;
+  margin-top: 0;
+}
+
+.ctaBannerInner { max-width: 640px; margin: 0 auto; }
+
+.ctaTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 2.5vw, 1.55rem);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: var(--txt);
+  margin-bottom: 1rem;
+}
+
+.ctaDesc {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.ctaBtns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .stats { gap: 1.5rem; }
+  .section { padding: 3.5rem 0; }
+}
+
+.studioSection { padding-bottom: 2rem; }
+
+.newsletterWrapper {
+  /* Full-width block with its own bg + clear vertical breathing room */
+  background: var(--panel);
+  border-top: 1px solid rgba(0, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.08);
+  padding: 5rem 2rem;
+  /* Push away from the Studio section cards above */
+  margin-top: 4rem;
+}
+
+.dividerWrap {
+  padding: 3.5rem 0;
+}

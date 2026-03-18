@@ -1,0 +1,72 @@
+/* ============================================================
+   SOFTCURSE DESIGN TOKENS
+   Central source of truth for all CSS variables
+   ============================================================ */
+
+:root {
+  /* ── Colors ── */
+  --bg:           #0B0C10;
+  --panel:        #1C1E26;
+  --panel-light:  #23263A;
+
+  --cyan:         #00FFFF;
+  --cyan-dim:     rgba(0, 255, 255, 0.12);
+  --cyan-glow:    rgba(0, 255, 255, 0.35);
+
+  --magenta:      #FF00FF;
+  --magenta-dim:  rgba(255, 0, 255, 0.12);
+  --magenta-glow: rgba(255, 0, 255, 0.35);
+
+  --blue:         #007BFF;
+  --blue-dim:     rgba(0, 123, 255, 0.12);
+
+  --green:        #39FF14;
+  --green-dim:    rgba(57, 255, 20, 0.08);
+
+  --red:          #FF3B3B;
+
+  /* ── Text ── */
+  --txt:          #E5E5E5;
+  --muted:        #AAAAAA;
+  --faint:        #666680;
+  --grid-line:    0, 255, 255;  /* cyan — for grid-bg rgba() */
+
+  /* ── Typography ── */
+  --font-heading: 'Orbitron', sans-serif;
+  --font-mono:    'Share Tech Mono', monospace;
+  --font-body:    'Rajdhani', sans-serif;
+
+  /* ── Spacing ── */
+  --nav-h:        68px;
+  --radius:       0px;   /* Softcurse uses sharp corners */
+  --radius-sm:    2px;
+
+  /* ── Transitions ── */
+  --ease:         0.25s ease;
+  --ease-fast:    0.15s ease;
+}
+
+/* ── Light Theme Override ── */
+[data-theme="light"] {
+  --bg:           #D8DCE8;
+  --panel:        #C8CCDC;
+  --panel-light:  #BCC1D4;
+
+  --cyan:         #0060B0;
+  --cyan-dim:     rgba(0, 96, 176, 0.14);
+  --cyan-glow:    rgba(0, 96, 176, 0.4);
+
+  --magenta:      #A8005A;
+  --magenta-dim:  rgba(168, 0, 90, 0.12);
+  --magenta-glow: rgba(168, 0, 90, 0.35);
+
+  --blue:         #0044AA;
+  --green:        #156E00;
+  --green-dim:    rgba(21, 110, 0, 0.1);
+  --red:          #B01818;
+
+  --txt:          #0A0B14;
+  --muted:        #3A3C55;
+  --faint:        #6068880;
+  --grid-line:    0, 60, 160;   /* deep blue — visible on grey bg */
+}

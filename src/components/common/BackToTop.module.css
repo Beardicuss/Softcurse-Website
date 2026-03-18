@@ -1,0 +1,36 @@
+.btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 40px;
+  height: 40px;
+  background: var(--panel);
+  border: 1px solid rgba(0,255,255,0.25);
+  color: var(--cyan);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s, box-shadow 0.2s;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.btn:hover {
+  background: rgba(0,255,255,0.08);
+  border-color: var(--cyan);
+  box-shadow: 0 0 14px rgba(0,255,255,0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: opacity 0.1s; }
+}

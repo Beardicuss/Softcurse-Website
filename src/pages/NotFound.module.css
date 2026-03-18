@@ -1,0 +1,129 @@
+@keyframes glitch {
+  0%         { clip-path: inset(0 0 95% 0); transform: translate(-4px, 0); }
+  10%        { clip-path: inset(30% 0 50% 0); transform: translate(4px, 0); }
+  20%        { clip-path: inset(60% 0 20% 0); transform: translate(-2px, 0); }
+  30%        { clip-path: inset(80% 0 5% 0);  transform: translate(3px, 0); }
+  40%, 100%  { clip-path: inset(0 0 100% 0); transform: translate(0, 0); opacity: 0; }
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.inner {
+  text-align: center;
+  position: relative;
+  max-width: 560px;
+}
+
+.code {
+  font-family: var(--font-heading);
+  font-size: clamp(5rem, 18vw, 10rem);
+  font-weight: 900;
+  color: var(--cyan);
+  line-height: 1;
+  opacity: 0.08;
+  margin-bottom: -1rem;
+  letter-spacing: 0.1em;
+  user-select: none;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--red);
+  letter-spacing: 0.3em;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 900;
+  color: var(--txt);
+  letter-spacing: 0.06em;
+  margin-bottom: 1.2rem;
+}
+
+.desc {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btnCyan {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 0.55rem 1.4rem;
+  background: var(--cyan);
+  color: var(--bg);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.25s;
+}
+.btnCyan:hover {
+  box-shadow: 0 0 20px var(--cyan), 0 0 40px var(--cyan-glow);
+  transform: scale(1.04);
+  color: var(--bg);
+}
+
+.btnOutline {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 0.55rem 1.4rem;
+  background: transparent;
+  color: var(--cyan);
+  border: 1px solid var(--cyan);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.25s;
+}
+.btnOutline:hover {
+  background: var(--cyan-dim);
+  color: var(--cyan);
+}
+
+/* Glitch overlay */
+.glitch {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-heading);
+  font-size: clamp(5rem, 18vw, 10rem);
+  font-weight: 900;
+  color: var(--magenta);
+  opacity: 0;
+  pointer-events: none;
+  letter-spacing: 0.1em;
+  user-select: none;
+  animation: glitch 6s ease-in-out infinite 3s;
+}

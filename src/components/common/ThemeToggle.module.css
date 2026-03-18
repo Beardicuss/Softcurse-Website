@@ -1,0 +1,327 @@
+/* ================================================================
+   SOFTCURSE HOLOGRAPHIC THEME TOGGLE
+   OFF = dark mode  (cyan palette)
+   ON  = light mode (green/amber palette)
+   ================================================================ */
+
+.wrap {
+  position: relative;
+  width: 72px;
+  height: 30px;
+  flex-shrink: 0;
+  perspective: 600px;
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ── Track ── */
+.track {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 20, 40, 0.55);
+  border-radius: 15px;
+  cursor: pointer;
+  border: 1px solid rgba(0, 255, 255, 0.35);
+  box-shadow:
+    0 0 10px rgba(0, 255, 255, 0.15),
+    inset 0 0 8px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+  transition: all 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.track::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px; right: 2px;
+  height: 6px;
+  background: linear-gradient(90deg, rgba(0,255,255,0.25) 0%, rgba(0,150,255,0.08) 100%);
+  border-radius: 17px 17px 0 0;
+  opacity: 0.7;
+  filter: blur(1px);
+}
+
+/* ── Track scan lines ── */
+.trackLines {
+  position: absolute;
+  top: 50%; left: 0;
+  width: 100%; height: 1px;
+  transform: translateY(-50%);
+  overflow: hidden;
+}
+
+.trackLine {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(0,255,255,0.25) 0px, rgba(0,255,255,0.25) 4px,
+    transparent 4px, transparent 12px
+  );
+  animation: trackScroll 2.5s linear infinite;
+}
+
+@keyframes trackScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(16px); }
+}
+
+/* ── Thumb ── */
+.thumb {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  left: 3px;
+  top: 3px;
+  background: radial-gradient(circle, rgba(5,30,70,0.95) 0%, rgba(0,15,40,0.9) 100%);
+  border-radius: 50%;
+  border: 1px solid rgba(0, 255, 255, 0.65);
+  box-shadow:
+    0 2px 10px rgba(0,0,0,0.5),
+    inset 0 0 10px rgba(0,255,255,0.45);
+  transition: all 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: 2;
+  overflow: hidden;
+}
+
+.thumbCore {
+  position: absolute;
+  width: 18px; height: 18px;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  background: radial-gradient(circle, rgba(0,255,255,0.55) 0%, rgba(0,80,160,0.15) 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 14px rgba(0,255,255,0.45);
+  transition: all 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.thumbInner {
+  position: absolute;
+  width: 10px; height: 10px;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  background: radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(100,220,255,0.5) 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(100,220,255,0.7);
+  opacity: 0.75;
+  animation: innerPulse 2s ease-in-out infinite alternate;
+  transition: all 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes innerPulse {
+  from { opacity: 0.55; transform: translate(-50%,-50%) scale(0.88); }
+  to   { opacity: 0.85; transform: translate(-50%,-50%) scale(1.1); }
+}
+
+.thumbScan {
+  position: absolute;
+  width: 100%; height: 4px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%, rgba(0,255,255,0.45) 20%,
+    rgba(255,255,255,0.8) 50%,
+    rgba(0,255,255,0.45) 80%, transparent 100%
+  );
+  left: 0;
+  filter: blur(0.5px);
+  animation: scanLine 2s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes scanLine {
+  0%   { top: -4px; opacity: 0; }
+  15%  { opacity: 0.7; }
+  85%  { opacity: 0.7; }
+  100% { top: 24px; opacity: 0; }
+}
+
+/* ── Thumb particles ── */
+.thumbParticles { position: absolute; inset: 0; overflow: hidden; }
+
+.thumbParticle {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: rgba(100,220,255,0.85);
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(100,220,255,0.85);
+  animation: particleFloat 2.8s ease-out infinite;
+  opacity: 0;
+}
+.thumbParticle:nth-child(1) { top: 70%; left: 25%; animation-delay: 0.1s; }
+.thumbParticle:nth-child(2) { top: 55%; left: 65%; animation-delay: 0.7s; }
+.thumbParticle:nth-child(3) { top: 45%; left: 40%; animation-delay: 1.3s; }
+.thumbParticle:nth-child(4) { top: 75%; left: 55%; animation-delay: 1.9s; }
+
+@keyframes particleFloat {
+  0%   { transform: translateY(0) scale(1); opacity: 0; }
+  20%  { opacity: 0.85; }
+  100% { transform: translateY(-22px) scale(0); opacity: 0; }
+}
+
+/* ── Labels & dots ── */
+.data { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+.dataText {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: opacity 0.45s ease;
+  line-height: 1;
+}
+.dataOff { right: 7px;  color: rgba(0,255,255,0.8);  opacity: 1; }
+.dataOn  { left: 7px;   color: rgba(0,180,255,0.9);   opacity: 0; }
+
+.dot {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  top: 50%; transform: translateY(-50%);
+  animation: dotBlink 2s ease-in-out infinite alternate;
+  transition: all 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.dotOff { right: 26px; background: radial-gradient(circle, rgba(0,200,255,0.9) 0%, rgba(0,100,220,0.4) 100%); box-shadow: 0 0 7px rgba(0,200,255,0.5); opacity: 1; }
+.dotOn  { left: 26px;  background: radial-gradient(circle, rgba(0,123,255,0.9) 0%, rgba(0,80,200,0.4) 100%);  box-shadow: 0 0 7px rgba(0,123,255,0.5);  opacity: 0; }
+
+@keyframes dotBlink {
+  from { opacity: 0.55; transform: translateY(-50%) scale(0.88); }
+  to   { opacity: 1;    transform: translateY(-50%) scale(1.12); }
+}
+
+/* ── Energy rings (visible when ON) ── */
+.rings {
+  position: absolute;
+  width: 24px; height: 24px;
+  left: 3px; top: 3px;
+  pointer-events: none;
+  z-index: 1;
+  transition: left 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.ring:nth-child(1) { width: 22px; height: 22px; border-top-color: rgba(0,255,255,0.5); border-right-color: rgba(0,255,255,0.25); animation: spinRing 2.8s linear infinite; }
+.ring:nth-child(2) { width: 16px; height: 16px; border-bottom-color: rgba(0,255,255,0.5); border-left-color: rgba(0,255,255,0.25); animation: spinRing 1.8s linear infinite reverse; }
+.ring:nth-child(3) { width: 12px; height: 12px; border-left-color: rgba(0,255,255,0.5); animation: spinRing 1.2s linear infinite; }
+
+@keyframes spinRing {
+  from { transform: translate(-50%,-50%) rotate(0deg); }
+  to   { transform: translate(-50%,-50%) rotate(360deg); }
+}
+
+.reflection {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 45%);
+  border-radius: 15px;
+  pointer-events: none;
+}
+
+.holoGlow {
+  position: absolute; inset: 0;
+  border-radius: 15px;
+  background: radial-gradient(ellipse at center, rgba(0,255,255,0.18) 0%, transparent 70%);
+  filter: blur(6px);
+  opacity: 0.55;
+  transition: all 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: 0;
+}
+
+/* ================================================================
+   CHECKED (light mode) STATE — green palette
+   ================================================================ */
+.input:checked + .track {
+  background: rgba(0, 15, 40, 0.55);
+  border-color: rgba(0, 123, 255, 0.4);
+  box-shadow:
+    0 0 10px rgba(0,123,255,0.18),
+    inset 0 0 8px rgba(0,0,0,0.7);
+}
+
+.input:checked + .track::after {
+  background: linear-gradient(90deg, rgba(0,123,255,0.25) 0%, rgba(0,180,80,0.08) 100%);
+}
+
+.input:checked + .track .trackLine {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(0,123,255,0.25) 0px, rgba(0,123,255,0.25) 4px,
+    transparent 4px, transparent 12px
+  );
+  animation-direction: reverse;
+}
+
+.input:checked + .track .thumb {
+  left: calc(100% - 27px);
+  background: radial-gradient(circle, rgba(5,25,65,0.95) 0%, rgba(0,15,50,0.9) 100%);
+  border-color: rgba(0,123,255,0.7);
+  box-shadow:
+    0 2px 10px rgba(0,0,0,0.5),
+    inset 0 0 10px rgba(0,123,255,0.45);
+}
+
+.input:checked + .track .thumbCore {
+  background: radial-gradient(circle, rgba(0,123,255,0.55) 0%, rgba(0,60,160,0.15) 100%);
+  box-shadow: 0 0 14px rgba(0,123,255,0.45);
+}
+
+.input:checked + .track .thumbInner {
+  background: radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(100,180,255,0.5) 100%);
+  box-shadow: 0 0 8px rgba(100,180,255,0.7);
+}
+
+.input:checked + .track .thumbScan {
+  background: linear-gradient(
+    90deg,
+    transparent 0%, rgba(0,123,255,0.45) 20%,
+    rgba(255,255,255,0.8) 50%,
+    rgba(0,123,255,0.45) 80%, transparent 100%
+  );
+}
+
+.input:checked + .track .thumbParticle {
+  background: rgba(100,180,255,0.85);
+  box-shadow: 0 0 4px rgba(100,180,255,0.85);
+}
+
+.input:checked + .track .dataOff { opacity: 0; }
+.input:checked + .track .dataOn  { opacity: 1; }
+.input:checked + .track .dotOff  { opacity: 0; }
+.input:checked + .track .dotOn   { opacity: 1; }
+
+.input:checked + .track .rings { left: calc(100% - 27px); }
+.input:checked + .track .ring  { opacity: 1; }
+
+.input:checked + .track .ring:nth-child(1) { border-top-color: rgba(0,123,255,0.55); border-right-color: rgba(0,123,255,0.25); }
+.input:checked + .track .ring:nth-child(2) { border-bottom-color: rgba(0,123,255,0.55); border-left-color: rgba(0,123,255,0.25); }
+.input:checked + .track .ring:nth-child(3) { border-left-color: rgba(0,123,255,0.55); }
+
+.input:checked + .track .holoGlow {
+  background: radial-gradient(ellipse at center, rgba(0,123,255,0.18) 0%, transparent 70%);
+}
+
+/* hover brightens glow */
+.input:hover + .track {
+  box-shadow: 0 0 16px rgba(0,255,255,0.25), inset 0 0 8px rgba(0,0,0,0.7);
+}
+.input:checked:hover + .track {
+  box-shadow: 0 0 16px rgba(0,123,255,0.25), inset 0 0 8px rgba(0,0,0,0.7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trackLine, .thumbInner, .thumbScan, .thumbParticle, .ring { animation: none; }
+  .thumb, .track, .thumbCore, .thumbInner { transition: none; }
+}

@@ -1,0 +1,14 @@
+.outer { min-height: 0; }
+
+.wrap {
+  animation: pageFadeIn 0.32s ease both;
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrap { animation: none; opacity: 1; transform: none; }
+}

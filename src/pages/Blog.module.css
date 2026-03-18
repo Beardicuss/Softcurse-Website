@@ -1,0 +1,148 @@
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+}
+
+.filter {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid rgba(0,255,255,0.18);
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-transform: uppercase;
+}
+
+.filter:hover {
+  color: var(--cyan);
+  border-color: rgba(0,255,255,0.4);
+}
+
+.filterActive {
+  color: var(--bg);
+  background: var(--cyan);
+  border-color: var(--cyan);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid rgba(0,255,255,0.1);
+  padding: 1.6rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.26s;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 20px rgba(0,255,255,0.1);
+  transform: translateY(-2px);
+}
+
+.card:hover::before { opacity: 1; }
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.cat {
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  color: var(--cyan);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: rgba(0,255,255,0.06);
+  padding: 0.18rem 0.5rem;
+  border: 1px solid rgba(0,255,255,0.2);
+}
+
+.read {
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  color: var(--muted);
+  opacity: 0.5;
+  letter-spacing: 0.06em;
+}
+
+.date {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--green);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.6rem;
+  opacity: 0.75;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 0.96rem;
+  color: var(--txt);
+  margin-bottom: 0.75rem;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+}
+
+.excerpt {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.7;
+  flex: 1;
+  margin-bottom: 1.2rem;
+}
+
+.cta {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--cyan);
+  letter-spacing: 0.12em;
+  align-self: flex-start;
+  transition: letter-spacing 0.2s;
+}
+
+.card:hover .cta { letter-spacing: 0.2em; }
+
+/* Empty state */
+.empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+}
+
+.emptyIcon {
+  display: block;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--cyan);
+  opacity: 0.3;
+}

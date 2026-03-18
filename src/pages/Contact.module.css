@@ -1,0 +1,143 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 4rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.colHead {
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  color: var(--cyan);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(0,255,255,0.12);
+}
+
+/* ── Form ── */
+.field { margin-bottom: 1.4rem; }
+
+.label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--cyan);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-bottom: 0.45rem;
+}
+
+.input {
+  width: 100%;
+  background: var(--panel);
+  border: 1px solid rgba(0,255,255,0.16);
+  color: var(--txt);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.75rem 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 10px rgba(0,255,255,0.1);
+}
+
+.inputError { border-color: var(--red) !important; }
+
+.textarea { resize: vertical; min-height: 120px; }
+
+.error {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--red);
+  letter-spacing: 0.1em;
+  margin-top: 0.3rem;
+}
+
+.sent {
+  padding: 2rem 1.8rem;
+  border: 1px solid var(--green);
+  background: rgba(57,255,20,0.04);
+  font-family: var(--font-mono);
+  line-height: 1.7;
+}
+
+.sentIcon {
+  display: block;
+  font-size: 1.6rem;
+  color: var(--green);
+  margin-bottom: 0.75rem;
+}
+
+.sent strong {
+  display: block;
+  color: var(--green);
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.4rem;
+}
+
+.sent p {
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+/* ── Connect ── */
+.connectList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+
+.connectItem {}
+
+.connectLabel {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--cyan);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: 0.2rem;
+}
+
+.connectValue {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--txt);
+}
+
+.collab {
+  padding: 1.4rem 1.6rem;
+  border: 1px solid rgba(255,0,255,0.18);
+  background: rgba(255,0,255,0.03);
+}
+
+.collabTitle {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  color: var(--magenta);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+}
+
+.collabBody {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.75;
+  margin-bottom: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; gap: 3rem; }
+}

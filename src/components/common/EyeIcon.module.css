@@ -1,0 +1,19 @@
+.icon {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Rotating arc inside the eye */
+.spinArc {
+  animation: arcSpin 3s linear infinite;
+  transform-origin: 30px 30px;
+}
+
+@keyframes arcSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinArc { animation: none; }
+}

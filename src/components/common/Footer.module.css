@@ -1,0 +1,115 @@
+.footer {
+  background: var(--panel);
+  border-top: 1px solid rgba(0, 255, 255, 0.08);
+  padding: 3rem 2rem 1.5rem;
+  margin-top: auto;
+}
+
+.inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 0.8fr;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 900;
+  color: var(--cyan);
+  letter-spacing: 0.14em;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tagline {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: var(--muted);
+  line-height: 1.8;
+  letter-spacing: 0.03em;
+}
+
+.colTitle {
+  font-family: var(--font-heading);
+  font-size: 0.66rem;
+  color: var(--cyan);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+  opacity: 0.55;
+}
+
+.colLinks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+}
+
+.colLink {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.18s;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.colLink:hover { color: var(--cyan); }
+
+.bottom {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 255, 255, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.copy {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--muted);
+  opacity: 0.4;
+  letter-spacing: 0.04em;
+}
+
+.build {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--cyan);
+  opacity: 0.25;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 1.8rem;
+  }
+}
+
+.footerLogo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(0,255,255,0.4));
+}
