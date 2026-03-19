@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Button from '../components/common/Button'
+import { useSEO } from '../hooks/useSEO'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { getApps } from '../data/apps'
 import { getGames } from '../data/games'
@@ -30,6 +31,7 @@ function CopyButton({ text }) {
 }
 
 export default function PressKit() {
+  useSEO({ title: 'Press Kit', description: 'Softcurse press kit — brand assets, boilerplate, and press contact information.', url: '/press' })
   usePageTitle('Press Kit')
 
   return (

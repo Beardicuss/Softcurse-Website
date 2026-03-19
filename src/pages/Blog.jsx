@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useSEO } from '../hooks/useSEO'
 import { POSTS } from '../data/blog'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { useScrollReveal } from '../hooks/useScrollReveal'
@@ -8,6 +9,7 @@ import styles from './Blog.module.css'
 const CATEGORIES = ['ALL', ...new Set(POSTS.map(p => p.category))]
 
 export default function Blog() {
+  useSEO({ title: 'Blog', description: 'Development dispatches, design decisions, and engineering insights from the Softcurse universe.', url: '/blog' })
   usePageTitle('Blog')
   const [active, setActive] = useState('ALL')
   const [gridRef, gridVis] = useScrollReveal()

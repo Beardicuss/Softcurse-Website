@@ -1,5 +1,6 @@
 import { useParticles } from '../hooks/useParticles'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { useSEO } from '../hooks/useSEO'
 import StatNumber from '../components/common/StatNumber'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { getApps } from '../data/apps'
@@ -16,6 +17,7 @@ export default function Home() {
   const apps  = getApps().slice(0, 6)
   const games = getGames()
 
+  useSEO({ title: 'Home', description: 'A small, slightly sinister digital universe. Building tools that pierce the noise — and worlds that bend reality.', url: '/' })
   const [statsRef,   statsVis]   = useScrollReveal()
   const [labRef,     labVis]     = useScrollReveal()
   const [studioRef,  studioVis]  = useScrollReveal()

@@ -1,10 +1,12 @@
 import { getApps } from '../../data/apps'
 import AppCard from '../../components/common/AppCard'
+import { useSEO } from '../../hooks/useSEO'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import styles from './Lab.module.css'
 
 export default function Lab() {
+  useSEO({ title: 'The Lab', description: '9 tools built to solve specific problems without compromise. No bloat. No dark patterns. Just precise software.', url: '/lab' })
   usePageTitle('The Lab')
   const [r1,v1] = useScrollReveal()
   const [r2,v2] = useScrollReveal()

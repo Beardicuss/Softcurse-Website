@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Button from '../components/common/Button'
+import { useSEO } from '../hooks/useSEO'
 import { usePageTitle } from '../hooks/usePageTitle'
 import styles from './Contact.module.css'
 
@@ -31,6 +32,7 @@ function Field({ name, label, type = 'text', textarea, value, onChange, error })
 }
 
 export default function Contact() {
+  useSEO({ title: 'Contact', description: 'Reach out to Softcurse — collaboration, licensing, or just to say hello.', url: '/contact' })
   usePageTitle('Contact')
   const [form, setForm]     = useState({ name: '', email: '', subject: '', message: '', _trap: '' })
   const [sent, setSent]     = useState(false)

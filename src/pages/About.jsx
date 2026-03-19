@@ -1,5 +1,6 @@
 import { usePageTitle } from '../hooks/usePageTitle'
 import styles from './About.module.css'
+import { useSEO } from '../hooks/useSEO'
 
 const VALUES = [
   { icon: '⚡', title: 'BUILT SHARP', body: `Every product has a clear purpose. No scope creep. No feature theater. Sharp tools for real problems — nothing more than what's needed, nothing less.` },
@@ -11,6 +12,7 @@ const VALUES = [
 ]
 
 export default function About() {
+  useSEO({ title: 'About', description: 'The story behind Softcurse — a small, slightly sinister digital universe built by one developer with a problem-solving obsession.', url: '/about' })
   usePageTitle('About')
   return (
     <div>

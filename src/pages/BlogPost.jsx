@@ -4,6 +4,7 @@ import Button from '../components/common/Button'
 import ShareButtons from '../components/common/ShareButtons'
 import Newsletter from '../components/common/Newsletter'
 import { usePageTitle } from '../hooks/usePageTitle'
+import { useSEO } from '../hooks/useSEO'
 import styles from './BlogPost.module.css'
 
 export default function BlogPost() {
@@ -11,6 +12,7 @@ export default function BlogPost() {
   const post = getPost(id)
   if (!post) return <Navigate to="/blog" replace />
   usePageTitle(post.title)
+  useSEO({ title: post.title, description: post.excerpt, url: `/blog/${post.id}` })
 
   // Render minimal markdown: ## headings and paragraphs
   const renderContent = (raw) => {

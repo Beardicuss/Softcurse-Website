@@ -33,7 +33,7 @@ export default function GameCard({ game }) {
     >
       {game.image && (
         <div className={styles.poster}>
-          <img src={game.image} alt={game.name} className={styles.posterImg} />
+          <img src={game.image} alt={game.name} className={styles.posterImg} loading="lazy" decoding="async" />
         </div>
       )}
       <div className={styles.top}>

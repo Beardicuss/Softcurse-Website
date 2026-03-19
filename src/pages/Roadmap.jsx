@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { ROADMAP, STATUS_META } from '../data/roadmap'
+import { useSEO } from '../hooks/useSEO'
 import { usePageTitle } from '../hooks/usePageTitle'
 import styles from './Roadmap.module.css'
 
 const FILTERS = ['ALL', 'LAB', 'STUDIO']
 
 export default function Roadmap() {
+  useSEO({ title: 'Roadmap', description: 'The public Softcurse roadmap — upcoming tools, games, and systems in the pipeline.', url: '/roadmap' })
   usePageTitle('Roadmap')
   const [filter, setFilter] = useState('ALL')
 
