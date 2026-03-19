@@ -1,4 +1,5 @@
-import { useState, BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar         from './components/common/Navbar'
 import Footer         from './components/common/Footer'
 import ScrollToTop    from './components/common/ScrollToTop'
@@ -42,26 +43,29 @@ export default function App() {
   const [booted, setBooted] = useState(false)
 
   return (
-    <BrowserRouter>
-      <ThemeProvider />
-      <ScrollToTop />
-      <Layout>
-        <Routes>
-          <Route path="/"           element={<Home />} />
-          <Route path="/lab"        element={<Lab />} />
-          <Route path="/lab/:id"    element={<AppDetail />} />
-          <Route path="/studio"     element={<Studio />} />
-          <Route path="/studio/:id" element={<GameDetail />} />
-          <Route path="/about"      element={<About />} />
-          <Route path="/contact"    element={<Contact />} />
-          <Route path="/blog"       element={<Blog />} />
-          <Route path="/blog/:id"   element={<BlogPost />} />
-          <Route path="/roadmap"    element={<Roadmap />} />
-          <Route path="/press"      element={<PressKit />} />
-          <Route path="*"           element={<NotFound />} />
-        </Routes>
-      </Layout>
-    </BrowserRouter>
+    <>
+      {!booted && <BootScreen onComplete={() => setBooted(true)} />}
+      <BrowserRouter>
+        <CustomCursor />
+        <ThemeProvider />
+        <ScrollToTop />
+        <Layout>
+          <Routes>
+            <Route path="/"           element={<Home />} />
+            <Route path="/lab"        element={<Lab />} />
+            <Route path="/lab/:id"    element={<AppDetail />} />
+            <Route path="/studio"     element={<Studio />} />
+            <Route path="/studio/:id" element={<GameDetail />} />
+            <Route path="/about"      element={<About />} />
+            <Route path="/contact"    element={<Contact />} />
+            <Route path="/blog"       element={<Blog />} />
+            <Route path="/blog/:id"   element={<BlogPost />} />
+            <Route path="/roadmap"    element={<Roadmap />} />
+            <Route path="/press"      element={<PressKit />} />
+            <Route path="*"           element={<NotFound />} />
+          </Routes>
+        </Layout>
+      </BrowserRouter>
     </>
   )
 }
