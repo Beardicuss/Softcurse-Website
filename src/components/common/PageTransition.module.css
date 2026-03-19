@@ -1,14 +1,47 @@
-.outer { min-height: 0; }
-
 .wrap {
-  animation: pageFadeIn 0.32s ease both;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.38s ease, transform 0.38s ease;
 }
 
-@keyframes pageFadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+.wipe {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.in {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: pageIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Scanline flash overlay */
+.wipe-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9990;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,255,255,0.03) 0px,
+    rgba(0,255,255,0.03) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  animation: scanFlash 0.12s ease forwards;
+}
+
+@keyframes scanFlash {
+  0%   { opacity: 0; }
+  30%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .wrap { animation: none; opacity: 1; transform: none; }
+  .wrap, .wipe, .in { transition: none; animation: none; opacity: 1; transform: none; }
 }

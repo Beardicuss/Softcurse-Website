@@ -10,56 +10,91 @@ export default function Footer() {
 
   return (
     <footer className={styles.footer}>
+
+      {/* Hex grid top border */}
+      <div className={styles.topBorder} />
+
       <div className={styles.inner}>
 
-        {/* Brand */}
+        {/* Brand column */}
         <div className={styles.brand}>
-          <div className={styles.logo}>
-            <img src="/logo.png" alt="Softcurse" className={styles.footerLogo} />
-            SOFTCURSE
-          </div>
+          <Link to="/" className={styles.logo}>
+            <img src="/logo.png" alt="" className={styles.logoImg} />
+            <span>SOFTCURSE</span>
+          </Link>
           <p className={styles.tagline}>
-            A small, slightly sinister digital universe. Tools. Games. Systems.
+            A small, slightly sinister digital universe.<br />
+            Tools that pierce the noise.<br />
+            Worlds that bend reality.
           </p>
+
+          {/* Status indicator */}
+          <div className={styles.statusRow}>
+            <span className={styles.statusDot} />
+            <span className={styles.statusText}>ALL SYSTEMS OPERATIONAL</span>
+          </div>
+
+          {/* Socials */}
+          <div className={styles.socials}>
+            {[
+              { label: 'GitHub',   href: 'https://github.com/Beardicuss' },
+              { label: 'Twitter',  href: '#' },
+              { label: 'Discord',  href: '#' },
+            ].map(({ label, href }) => (
+              <a key={label} href={href} className={styles.social}
+                 target="_blank" rel="noopener noreferrer">
+                {label}
+              </a>
+            ))}
+          </div>
         </div>
 
-        {/* Lab links */}
+        {/* Lab */}
         <div>
-          <div className={styles.colTitle}>Lab</div>
-          <ul className={styles.colLinks}>
+          <div className={styles.colHead}>
+            <span className={styles.colAccent}>◈</span> LAB
+          </div>
+          <ul className={styles.colList}>
+            <li><Link to="/lab" className={styles.colLink}>All Tools</Link></li>
             {apps.map(a => (
               <li key={a.id}>
-                <Link to={`/lab/${a.id}`} className={styles.colLink}>{a.name}</Link>
+                <Link to={`/lab/${a.id}`} className={styles.colLink}>
+                  {a.name}
+                </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Studio links */}
+        {/* Studio */}
         <div>
-          <div className={styles.colTitle}>Studio</div>
-          <ul className={styles.colLinks}>
+          <div className={`${styles.colHead} ${styles.colHeadMagenta}`}>
+            <span className={styles.colAccentMagenta}>◈</span> STUDIO
+          </div>
+          <ul className={styles.colList}>
+            <li><Link to="/studio" className={styles.colLink}>All Games</Link></li>
             {games.map(g => (
               <li key={g.id}>
-                <Link to={`/studio/${g.id}`} className={styles.colLink}>{g.name}</Link>
+                <Link to={`/studio/${g.id}`} className={styles.colLink}>
+                  {g.name}
+                </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Navigation */}
+        {/* Navigate */}
         <div>
-          <div className={styles.colTitle}>Navigate</div>
-          <ul className={styles.colLinks}>
+          <div className={styles.colHead}>
+            <span className={styles.colAccent}>◈</span> NAVIGATE
+          </div>
+          <ul className={styles.colList}>
             {[
-              ['/', 'Home'],
-              ['/lab', 'Lab'],
-              ['/studio', 'Studio'],
-              ['/about', 'About'],
+              ['/about',   'About'],
               ['/contact', 'Contact'],
-              ['/blog', 'Blog'],
+              ['/blog',    'Blog'],
               ['/roadmap', 'Roadmap'],
-              ['/press', 'Press Kit'],
+              ['/press',   'Press Kit'],
             ].map(([to, label]) => (
               <li key={to}>
                 <Link to={to} className={styles.colLink}>{label}</Link>
@@ -67,15 +102,23 @@ export default function Footer() {
             ))}
           </ul>
         </div>
+
       </div>
 
       {/* Bottom bar */}
       <div className={styles.bottom}>
-        <span className={styles.copy}>
-          © {year} SOFTCURSE. ALL RIGHTS RESERVED. NO CURSE WAIVED.
-        </span>
-        <span className={styles.build}>BUILD: SC-{year}.ALPHA</span>
+        <div className={styles.bottomLeft}>
+          <span className={styles.buildTag}>BUILD // SC-{year}.PROD</span>
+          <span className={styles.sep}>·</span>
+          <span className={styles.buildTag}>NODE: EARTH-01</span>
+          <span className={styles.sep}>·</span>
+          <span className={styles.buildTag}>UPTIME: ∞</span>
+        </div>
+        <div className={styles.copy}>
+          © {year} SOFTCURSE — NO CURSE WAIVED.
+        </div>
       </div>
+
     </footer>
   )
 }

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useState, BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar         from './components/common/Navbar'
 import Footer         from './components/common/Footer'
 import ScrollToTop    from './components/common/ScrollToTop'
@@ -6,6 +6,7 @@ import PageTransition from './components/common/PageTransition'
 import ErrorBoundary  from './components/common/ErrorBoundary'
 import BackToTop      from './components/common/BackToTop'
 import CustomCursor   from './components/common/CustomCursor'
+import BootScreen     from './components/common/BootScreen'
 import ThemeProvider  from './components/common/ThemeProvider'
 
 import Home       from './pages/Home'
@@ -38,6 +39,8 @@ function Layout({ children }) {
 }
 
 export default function App() {
+  const [booted, setBooted] = useState(false)
+
   return (
     <BrowserRouter>
       <ThemeProvider />
@@ -59,5 +62,6 @@ export default function App() {
         </Routes>
       </Layout>
     </BrowserRouter>
+    </>
   )
 }

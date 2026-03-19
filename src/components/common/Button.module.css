@@ -1,4 +1,5 @@
 .btn {
+  /* scan-line sweep prepared — the ::after does the work */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -72,4 +73,30 @@
 .ghost:hover {
   color: var(--txt);
   border-color: rgba(255,255,255,0.25);
+}
+
+/* Scan-line sweep on hover */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.08) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0s;
+  pointer-events: none;
+}
+.btn:hover::after {
+  left: 140%;
+  transition: left 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
