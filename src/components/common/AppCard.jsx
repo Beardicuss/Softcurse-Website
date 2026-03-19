@@ -8,6 +8,11 @@ import styles from './AppCard.module.css'
 export default function AppCard({ app }) {
   return (
     <Link to={`/lab/${app.id}`} className={styles.card}>
+      {app.image && (
+        <div className={styles.poster}>
+          <img src={app.image} alt={app.name} className={styles.posterImg} />
+        </div>
+      )}
       <div className={styles.top}>
         <span className={styles.icon}>{app.icon}</span>
         <Badge status={app.status} />

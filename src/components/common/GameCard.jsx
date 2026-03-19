@@ -8,6 +8,11 @@ import styles from './GameCard.module.css'
 export default function GameCard({ game }) {
   return (
     <Link to={`/studio/${game.id}`} className={styles.card}>
+      {game.image && (
+        <div className={styles.poster}>
+          <img src={game.image} alt={game.name} className={styles.posterImg} />
+        </div>
+      )}
       <div className={styles.top}>
         <span className={styles.icon}>{game.icon}</span>
         <Badge status={game.status} />
