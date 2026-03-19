@@ -1,4 +1,5 @@
 import { useParticles } from '../hooks/useParticles'
+import { useScrollReveal } from '../hooks/useScrollReveal'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { getApps } from '../data/apps'
 import { getGames } from '../data/games'
@@ -13,6 +14,11 @@ export default function Home() {
   const canvasRef = useParticles(true)
   const apps  = getApps().slice(0, 6)
   const games = getGames()
+
+  const [statsRef,   statsVis]   = useScrollReveal()
+  const [labRef,     labVis]     = useScrollReveal()
+  const [studioRef,  studioVis]  = useScrollReveal()
+  const [ctaRef,     ctaVis]     = useScrollReveal()
 
   return (
     <div className={styles.page}>
@@ -44,7 +50,7 @@ export default function Home() {
       </section>
 
       {/* ── Stats ── */}
-      <div className={styles.stats}>
+      <div ref={statsRef} className={`${styles.stats} reveal-group ${statsVis ? "visible" : ""}`}>
         {[
           ['9',  'Lab Tools'],
           ['3',  'Games in Dev'],
@@ -59,7 +65,7 @@ export default function Home() {
       </div>
 
       {/* ── Lab Preview ── */}
-      <section className={`${styles.section} container`}>
+      <section ref={labRef} className={`${styles.section} container reveal ${labVis ? "visible" : ""}`}>
         <div className="sec-header">
           <div className="sec-header__label">// MODULE 01</div>
           <h2 className="sec-header__title">
@@ -83,7 +89,7 @@ export default function Home() {
       </div>
 
       {/* ── Studio Preview ── */}
-      <section className={`${styles.section} ${styles.studioSection} container`}>
+      <section ref={studioRef} className={`${styles.section} ${styles.studioSection} container reveal ${studioVis ? "visible" : ""}`}>
         <div className="sec-header">
           <div className="sec-header__label sec-header__label--magenta">// MODULE 02</div>
           <h2 className="sec-header__title">
@@ -110,7 +116,7 @@ export default function Home() {
       </div>
 
       {/* ── CTA Banner ── */}
-      <div className={styles.ctaBanner}>
+      <div ref={ctaRef} className={`${styles.ctaBanner} reveal ${ctaVis ? "visible" : ""}`}>
         <div className={styles.ctaBannerInner}>
           <h2 className={styles.ctaTitle}>BUILT IN THE DARK. SHIPPED WITH PURPOSE.</h2>
           <p className={styles.ctaDesc}>

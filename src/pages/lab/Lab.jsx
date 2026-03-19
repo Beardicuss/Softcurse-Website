@@ -1,10 +1,14 @@
 import { getApps } from '../../data/apps'
 import AppCard from '../../components/common/AppCard'
 import { usePageTitle } from '../../hooks/usePageTitle'
+import { useScrollReveal } from '../../hooks/useScrollReveal'
 import styles from './Lab.module.css'
 
 export default function Lab() {
   usePageTitle('The Lab')
+  const [r1,v1] = useScrollReveal()
+  const [r2,v2] = useScrollReveal()
+  const [r3,v3] = useScrollReveal()
   const active  = getApps('active')
   const inDev   = getApps('dev')
   const planned = getApps('planned')
@@ -24,7 +28,7 @@ export default function Lab() {
       <div className="container section">
 
         {active.length > 0 && (
-          <div className={styles.group}>
+          <div ref={r1} className={`${styles.group} reveal ${v1 ? 'visible' : ''}`}>
             <div className={styles.groupHeader}>
               <span className={styles.groupDot} style={{ background: 'var(--green)' }} />
               <span className={styles.groupLabel}>LIVE — Ready to use</span>
@@ -36,7 +40,7 @@ export default function Lab() {
         )}
 
         {inDev.length > 0 && (
-          <div className={styles.group}>
+          <div ref={r2} className={`${styles.group} reveal ${v2 ? 'visible' : ''}`}>
             <div className={styles.groupHeader}>
               <span className={styles.groupDot} style={{ background: 'var(--magenta)' }} />
               <span className={styles.groupLabel}>IN DEVELOPMENT — Coming soon</span>
@@ -48,7 +52,7 @@ export default function Lab() {
         )}
 
         {planned.length > 0 && (
-          <div className={styles.group}>
+          <div ref={r3} className={`${styles.group} reveal ${v3 ? 'visible' : ''}`}>
             <div className={styles.groupHeader}>
               <span className={styles.groupDot} style={{ background: 'var(--muted)' }} />
               <span className={styles.groupLabel}>PLANNED — In the pipeline</span>

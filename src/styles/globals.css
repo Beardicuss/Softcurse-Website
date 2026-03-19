@@ -273,3 +273,49 @@ button:focus-visible {
 [data-theme="light"] .page-header__title {
   text-shadow: 0 0 40px rgba(0, 96, 176, 0.4);
 }
+
+/* ================================================================
+   SCROLL REVEAL — elements start hidden, revealed by JS class
+   ================================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children inside a revealed group */
+.reveal-group > * {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-group.visible > *:nth-child(1) { transition-delay: 0s;    }
+.reveal-group.visible > *:nth-child(2) { transition-delay: 0.08s; }
+.reveal-group.visible > *:nth-child(3) { transition-delay: 0.16s; }
+.reveal-group.visible > *:nth-child(4) { transition-delay: 0.24s; }
+.reveal-group.visible > *:nth-child(5) { transition-delay: 0.32s; }
+.reveal-group.visible > *:nth-child(6) { transition-delay: 0.40s; }
+.reveal-group.visible > *:nth-child(7) { transition-delay: 0.48s; }
+.reveal-group.visible > *:nth-child(8) { transition-delay: 0.56s; }
+.reveal-group.visible > *:nth-child(9) { transition-delay: 0.64s; }
+
+.reveal-group.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-group > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

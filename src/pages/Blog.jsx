@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { POSTS } from '../data/blog'
 import { usePageTitle } from '../hooks/usePageTitle'
+import { useScrollReveal } from '../hooks/useScrollReveal'
 import styles from './Blog.module.css'
 
 const CATEGORIES = ['ALL', ...new Set(POSTS.map(p => p.category))]
@@ -9,6 +10,7 @@ const CATEGORIES = ['ALL', ...new Set(POSTS.map(p => p.category))]
 export default function Blog() {
   usePageTitle('Blog')
   const [active, setActive] = useState('ALL')
+  const [gridRef, gridVis] = useScrollReveal()
 
   const filtered = active === 'ALL'
     ? POSTS
@@ -43,7 +45,7 @@ export default function Blog() {
         </div>
 
         {/* Posts grid */}
-        <div className={styles.grid}>
+        <div ref={gridRef} className={`${styles.grid} reveal-group ${gridVis ? 'visible' : ''}`}>
           {filtered.map(post => (
             <Link key={post.id} to={`/blog/${post.id}`} className={styles.card}>
               <div className={styles.cardTop}>
