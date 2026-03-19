@@ -38,7 +38,7 @@ export const APPS = {
     name: 'Softcurse Media Lab AI',
     icon: '🤖',
     tag: 'AI TOOL',
-    status: 'active',
+    status: 'dev',
     shortDesc: 'Hardware-accelerated AI image editor — watermark removal, inpainting, upscaling, and generative fill.',
     desc: `Media Lab AI is a hardware-accelerated Windows application for advanced image manipulation
     and AI-powered media processing. Remove watermarks and objects with LaMa inpainting, strip
@@ -67,7 +67,7 @@ export const APPS = {
     name: 'Softcurse Architecture Visualizer',
     icon: '🏗️',
     tag: 'DEV TOOL',
-    status: 'active',
+    status: 'dev',
     shortDesc: 'Dependency graph visualizer for 13 languages — AST-based analysis, D3.js interactive graphs, 85% accuracy.',
     desc: `The Architecture Visualizer analyzes and maps the dependency graph of any codebase
     with 85% average parsing accuracy across 13 programming languages. Deep AST-based analyzers
@@ -96,7 +96,7 @@ export const APPS = {
     name: 'LiveScriptor',
     icon: '✍️',
     tag: 'DEV TOOL',
-    status: 'active',
+    status: 'dev',
     shortDesc: 'High-performance HTML/CSS/JS live editor with real-time preview, Monaco IntelliSense, and multi-workspace support.',
     desc: `LiveScriptor is a native Windows live editor built for rapid front-end prototyping.
     Write HTML, CSS, and JavaScript in a Monaco-powered editor and watch your output render
@@ -125,7 +125,7 @@ export const APPS = {
     name: 'Softcurse Blackwatch',
     icon: '🔒',
     tag: 'SECURITY',
-    status: 'active',
+    status: 'dev',
     shortDesc: 'Anti-cheat and system monitoring suite — real-time threat scoring, process purge, and network visibility.',
     desc: `Blackwatch is a high-performance Windows security and anti-cheat monitoring solution
     with a cyberpunk-industrial UI. It scans every 5 seconds across Enumeration, Analysis, and
@@ -154,7 +154,7 @@ export const APPS = {
     name: 'Softcurse Spectral',
     icon: '👁️',
     tag: 'UTILITY',
-    status: 'active',
+    status: 'dev',
     shortDesc: 'Wi-Fi and network optimization suite — real-time monitoring, channel analysis, one-click optimization, and router integration.',
     desc: `Spectral is a premium Wi-Fi and network optimization suite for Windows and macOS.
     Monitor live RSSI, throughput, and latency. Deep-scan 2.4 GHz, 5 GHz, and 6 GHz bands
@@ -183,7 +183,7 @@ export const APPS = {
     name: 'Softcurse InkMind',
     icon: '🧠',
     tag: 'AI / WRITING',
-    status: 'active',
+    status: 'dev',
     shortDesc: 'AI-powered creative writing environment — chapter generation, context memory, world-building, and native TTS.',
     desc: `InkMind is a full-featured creative writing environment with deep AI integration.
     Generate 1000+ word chapters using Full Context — characters, world bible, key events, and
@@ -213,7 +213,7 @@ export const APPS = {
     name: 'Softcurse YT Downloader',
     icon: '⬇️',
     tag: 'UTILITY',
-    status: 'active',
+    status: 'dev',
     shortDesc: 'YouTube to MP3/MP4 downloader with playlist support, quality selection, and cyberpunk UI.',
     desc: `A clean, fast YouTube downloader with a cyberpunk neon UI. Download audio at
     128–320 kbps MP3 or video at up to 1080p MP4 — your choice, your quality. Paste any
