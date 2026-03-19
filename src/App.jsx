@@ -5,6 +5,7 @@ import ScrollToTop    from './components/common/ScrollToTop'
 import PageTransition from './components/common/PageTransition'
 import ErrorBoundary  from './components/common/ErrorBoundary'
 import BackToTop      from './components/common/BackToTop'
+import CustomCursor   from './components/common/CustomCursor'
 import ThemeProvider  from './components/common/ThemeProvider'
 
 import Home       from './pages/Home'

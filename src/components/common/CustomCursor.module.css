@@ -1,0 +1,70 @@
+/* Dot — snaps to cursor instantly */
+.dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 6px; height: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 0 6px var(--cyan), 0 0 12px rgba(0,255,255,0.4);
+  transition: width 0.15s, height 0.15s, margin 0.15s;
+  will-change: transform;
+}
+
+.dot.pressed {
+  width: 10px; height: 10px;
+  margin: -5px 0 0 -5px;
+  background: #fff;
+}
+
+/* Ring — lerps behind cursor */
+.ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 28px; height: 28px;
+  margin: -14px 0 0 -14px;
+  border: 1px solid rgba(0,255,255,0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transition: width 0.22s cubic-bezier(0.22,1,0.36,1),
+              height 0.22s cubic-bezier(0.22,1,0.36,1),
+              margin 0.22s cubic-bezier(0.22,1,0.36,1),
+              border-color 0.22s;
+  will-change: transform;
+}
+
+/* Crosshair tick marks */
+.ring::before,
+.ring::after {
+  content: '';
+  position: absolute;
+  background: rgba(0,255,255,0.5);
+}
+.ring::before {
+  width: 1px; height: 5px;
+  top: -6px; left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 33px 0 rgba(0,255,255,0.5);
+}
+.ring::after {
+  height: 1px; width: 5px;
+  left: -6px; top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 33px 0 0 rgba(0,255,255,0.5);
+}
+
+/* Hover over interactive elements — ring expands */
+.ring.large {
+  width: 44px; height: 44px;
+  margin: -22px 0 0 -22px;
+  border-color: var(--cyan);
+  box-shadow: 0 0 12px rgba(0,255,255,0.2);
+}
+
+/* Hide on touch */
+@media (pointer: coarse) {
+  .dot, .ring { display: none; }
+}

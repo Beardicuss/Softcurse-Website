@@ -319,3 +319,36 @@ button:focus-visible {
     transition: none !important;
   }
 }
+
+/* ================================================================
+   GRAIN TEXTURE — subtle noise overlay on hero / dark sections
+   ================================================================ */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.028;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: overlay;
+}
+
+/* ================================================================
+   SECTION IDENTITY — alternate dark/deeper backgrounds
+   ================================================================ */
+.section--dark {
+  background: rgba(0, 0, 0, 0.35);
+  border-top: 1px solid rgba(0,255,255,0.06);
+  border-bottom: 1px solid rgba(0,255,255,0.06);
+}
+
+.section--studio {
+  background: rgba(28, 10, 28, 0.4);
+  border-top: 1px solid rgba(255,0,255,0.07);
+  border-bottom: 1px solid rgba(255,0,255,0.07);
+}

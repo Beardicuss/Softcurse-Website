@@ -1,5 +1,6 @@
 import { useParticles } from '../hooks/useParticles'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import StatNumber from '../components/common/StatNumber'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { getApps } from '../data/apps'
 import { getGames } from '../data/games'
@@ -24,12 +25,12 @@ export default function Home() {
     <div className={styles.page}>
 
       {/* ── Hero ── */}
-      <section className={`${styles.hero} grid-bg`}>
+      <section className={`${styles.hero} grid-bg grain`}>
         <div className="scanline" />
         <canvas ref={canvasRef} className={styles.canvas} />
 
         <div className={`${styles.heroInner} anim-fade-up`}>
-          <div className={styles.eyebrow}>// DIGITAL UNIVERSE INITIALIZED</div>
+          <div className={`${styles.eyebrow} ${styles.typewriter}`}>// DIGITAL UNIVERSE INITIALIZED</div>
           <h1 className={`${styles.heroTitle} anim-glow`}>SOFTCURSE</h1>
           <div className={styles.heroSub}>LABS · STUDIO · SYSTEMS</div>
           <p className={styles.heroDesc}>
@@ -58,7 +59,7 @@ export default function Home() {
           ['1',  'Universe'],
         ].map(([n, l]) => (
           <div key={l} className={styles.stat}>
-            <span className={styles.statN}>{n}</span>
+            <StatNumber value={n} run={statsVis} className={styles.statN} />
             <span className={styles.statL}>{l}</span>
           </div>
         ))}
@@ -89,7 +90,7 @@ export default function Home() {
       </div>
 
       {/* ── Studio Preview ── */}
-      <section ref={studioRef} className={`${styles.section} ${styles.studioSection} container reveal ${studioVis ? "visible" : ""}`}>
+      <section ref={studioRef} className={`${styles.section} ${styles.studioSection} container reveal section--studio ${studioVis ? "visible" : ""}`}>
         <div className="sec-header">
           <div className="sec-header__label sec-header__label--magenta">// MODULE 02</div>
           <h2 className="sec-header__title">
