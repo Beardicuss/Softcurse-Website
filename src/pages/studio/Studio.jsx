@@ -6,7 +6,7 @@ import { usePageTitle } from '../../hooks/usePageTitle'
 import styles from './Studio.module.css'
 
 export default function Studio() {
-  useSEO({ title: 'Studio', description: 'Softcurse Studio — games that don't forgive. Stories that stay with you. Built from the ground up with intent.', url: '/studio' })
+  useSEO({ title: 'Studio', description: 'Softcurse Studio — worlds that never forgive. Stories that linger. Built from the ground up with intent.', url: '/studio' })
   usePageTitle('The Studio')
   const games = getGames()
 
