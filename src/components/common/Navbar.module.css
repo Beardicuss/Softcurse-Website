@@ -19,7 +19,7 @@
 
 /* ── Desktop: 3-column grid — logo | nav | icons ── */
 .inner {
-  max-width: 1440px;
+  max-width: min(92vw, 1600px);
   margin: 0 auto;
   padding: 0 1.75rem;
   height: 100%;

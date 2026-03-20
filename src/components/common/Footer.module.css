@@ -20,7 +20,7 @@
 }
 
 .inner {
-  max-width: 1440px;
+  max-width: min(92vw, 1600px);
   margin: 0 auto;
   padding: 4rem 2rem 3rem;
   display: grid;
@@ -167,7 +167,7 @@
 
 /* Bottom bar */
 .bottom {
-  max-width: 1440px;
+  max-width: min(92vw, 1600px);
   margin: 0 auto;
   padding: 1.2rem 2rem;
   border-top: 1px solid rgba(0,255,255,0.06);
