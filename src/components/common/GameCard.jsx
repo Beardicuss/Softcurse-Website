@@ -4,45 +4,82 @@ import Badge from './Badge'
 import styles from './GameCard.module.css'
 
 export default function GameCard({ game }) {
-  const cardRef = useRef(null)
+  const wrapRef = useRef(null)
 
   const handleMouseMove = (e) => {
-    const card = cardRef.current
-    if (!card) return
-    const { left, top, width, height } = card.getBoundingClientRect()
-    const x = (e.clientX - left) / width  - 0.5
-    const y = (e.clientY - top)  / height - 0.5
-    card.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 8}deg) translateY(-6px) scale(1.02)`
-    card.style.boxShadow = `${-x * 16}px ${-y * 12}px 32px rgba(255,0,255,0.15), 0 0 24px rgba(255,0,255,0.1)`
+    const wrap = wrapRef.current
+    if (!wrap) return
+    const { left, top, width } = wrap.getBoundingClientRect()
+    const x = (e.clientX - left) / width - 0.5
+    // Gentle lateral tilt only (the rotateX is CSS-driven on hover)
+    wrap.style.setProperty('--tilt-x', `${x * 6}deg`)
   }
 
   const handleMouseLeave = () => {
-    const card = cardRef.current
-    if (!card) return
-    card.style.transform = ''
-    card.style.boxShadow = ''
+    const wrap = wrapRef.current
+    if (wrap) wrap.style.setProperty('--tilt-x', '0deg')
   }
 
   return (
-    <Link
-      to={`/studio/${game.id}`}
-      className={styles.card}
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      {game.image && (
-        <div className={styles.poster}>
-          <img src={game.image} alt={game.name} className={styles.posterImg} loading="lazy" decoding="async" />
+    <div className={styles.scene}>
+      <Link
+        to={`/studio/${game.id}`}
+        className={styles.wrapper}
+        ref={wrapRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        aria-label={game.name}
+      >
+        {/* ── Card face ── */}
+        <div className={styles.card}>
+          {game.image
+            ? <img src={game.image} alt={game.name} className={styles.coverImg} loading="lazy" decoding="async" />
+            : <div className={styles.coverPlaceholder}><span>{game.icon}</span></div>
+          }
+          <div className={styles.overlay} />
+
+          {/* Corner decorations */}
+          <span className={`${styles.corner} ${styles.tl}`} />
+          <span className={`${styles.corner} ${styles.tr}`} />
+          <span className={`${styles.corner} ${styles.bl}`} />
+          <span className={`${styles.corner} ${styles.br}`} />
+
+          {/* Badges top-left */}
+          <div className={styles.badges}>
+            <Badge status={game.status} />
+            <span className={styles.tag}>{game.tag}</span>
+          </div>
+
+          {/* Resting text — fades on hover */}
+          <div className={styles.textRest}>
+            <div className={styles.restLine} />
+            <div className={styles.restTitle}>{game.name}</div>
+            <div className={styles.restSub}>{game.genre} · {game.platforms?.[0]}</div>
+          </div>
         </div>
-      )}
-      <div className={styles.top}>
-        <span className={styles.icon}>{game.icon}</span>
-        <Badge status={game.status} />
-      </div>
-      <h3 className={styles.title}>{game.name}</h3>
-      <p className={styles.desc}>{game.shortDesc}</p>
-      <span className={styles.tag}>{game.tag}</span>
-    </Link>
+
+        {/* ── Character hologram ── */}
+        {game.character && (
+          <>
+            <div className={styles.charGlow} />
+            <img
+              src={game.character}
+              alt=""
+              className={styles.character}
+              loading="lazy"
+              decoding="async"
+              aria-hidden="true"
+            />
+          </>
+        )}
+
+        {/* ── Hover title ── */}
+        <div className={styles.textHover}>
+          <div className={styles.hoverName}>{game.name}</div>
+          <div className={styles.hoverLine} />
+        </div>
+
+      </Link>
+    </div>
   )
 }

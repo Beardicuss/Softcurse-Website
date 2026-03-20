@@ -1,110 +1,255 @@
-@keyframes borderShiftMagenta {
-  0%, 100% { border-color: rgba(255, 0, 255, 0.15); }
-  50%       { border-color: rgba(255, 0, 255, 0.30); }
+/* ── Scene — provides perspective ── */
+.scene {
+  perspective: 900px;
+  perspective-origin: 50% 80%;
+  padding-top: 160px;
+  padding-bottom: 60px;
 }
 
-.card {
-  display: flex;
-  flex-direction: column;
-  background: rgba(28, 14, 28, 0.55);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  border: 1px solid rgba(255, 0, 255, 0.16);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    inset 0 0 0 1px rgba(255, 0, 255, 0.04);
-  padding: 1.4rem;
-  cursor: pointer;
-  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease, border-color 0.28s ease;
-  will-change: transform;
-  transform-style: preserve-3d;
+/* ── Wrapper — the 3D tilting element ── */
+.wrapper {
   position: relative;
-  overflow: hidden;
+  display: block;
+  width: 100%;
+  height: 500px;
+  transform-style: preserve-3d;
+  transform: rotateX(0deg) rotateY(var(--tilt-x, 0deg));
+  transition: transform 0.65s cubic-bezier(0.23, 1, 0.32, 1);
   text-decoration: none;
-  color: inherit;
-  animation: borderShiftMagenta 7s infinite;
+  cursor: pointer;
 }
 
-.card::before {
-  content: '';
+.wrapper:hover {
+  transform: rotateX(28deg) rotateY(var(--tilt-x, 0deg));
+}
+
+/* ── Card face ── */
+.card {
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--magenta), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.card:hover {
-  border-color: rgba(255, 0, 255, 0.5);
-  background: rgba(28, 14, 28, 0.72);
+  inset: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(20, 8, 24, 0.9);
+  border: 1px solid rgba(255,0,255,0.18);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 0 0 1px rgba(255, 0, 255, 0.08),
-    0 0 28px rgba(255, 0, 255, 0.12);
+    0 12px 40px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  transition: box-shadow 0.65s ease, border-color 0.3s;
 }
 
-.card:hover::before { opacity: 1; }
+.wrapper:hover .card {
+  box-shadow:
+    0 60px 120px rgba(0,0,0,0.95),
+    0 0 0 1px rgba(255,0,255,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  border-color: rgba(255,0,255,0.45);
+}
 
-.top {
+.coverImg {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: brightness(0.6) saturate(1.1);
+  transition: filter 0.5s ease;
+}
+
+.wrapper:hover .coverImg {
+  filter: brightness(0.45) saturate(1.2);
+}
+
+.coverPlaceholder {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0d0010 0%, #1a0028 50%, #0d0010 100%);
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.9rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  opacity: 0.2;
 }
 
-.icon {
-  font-size: 1.7rem;
-  line-height: 1;
+.overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(5,0,10,0.95) 0%, rgba(5,0,10,0.3) 40%, transparent 65%),
+    linear-gradient(to bottom, rgba(5,0,10,0.3) 0%, transparent 25%);
+  pointer-events: none;
 }
 
-.title {
-  font-family: var(--font-heading);
-  font-size: 0.86rem;
-  font-weight: 700;
-  color: var(--blue);
-  letter-spacing: 0.05em;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
+/* ── Corner decorations ── */
+.corner {
+  position: absolute;
+  width: 14px; height: 14px;
+  z-index: 3;
+  opacity: 0.35;
+  transition: opacity 0.4s;
+  pointer-events: none;
 }
 
-.desc {
-  font-size: 0.93rem;
-  color: var(--muted);
-  line-height: 1.65;
-  flex: 1;
-  margin-bottom: 1rem;
+.wrapper:hover .corner { opacity: 1; }
+
+.tl { top: 8px;    left: 8px;   border-top: 1px solid rgba(255,80,255,0.7);  border-left: 1px solid rgba(255,80,255,0.7); }
+.tr { top: 8px;    right: 8px;  border-top: 1px solid rgba(255,80,255,0.7);  border-right: 1px solid rgba(255,80,255,0.7); }
+.bl { bottom: 8px; left: 8px;   border-bottom: 1px solid rgba(255,80,255,0.7); border-left: 1px solid rgba(255,80,255,0.7); }
+.br { bottom: 8px; right: 8px;  border-bottom: 1px solid rgba(255,80,255,0.7); border-right: 1px solid rgba(255,80,255,0.7); }
+
+/* ── Badges top area ── */
+.badges {
+  position: absolute;
+  top: 14px; left: 14px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .tag {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  padding: 0.18rem 0.5rem;
-  border: 1px solid rgba(255, 0, 255, 0.25);
-  color: var(--magenta);
-  letter-spacing: 0.08em;
-  align-self: flex-start;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  color: rgba(255,80,255,0.7);
+  background: rgba(255,0,255,0.06);
+  border: 1px solid rgba(255,0,255,0.18);
+  padding: 0.15rem 0.45rem;
 }
 
-.poster {
-  width: calc(100% + 2.8rem);
-  margin: -1.4rem -1.4rem 1rem -1.4rem;
-  height: 140px;
-  overflow: hidden;
-  border-bottom: 1px solid rgba(255,0,255,0.12);
+/* ── Resting text ── */
+.textRest {
+  position: absolute;
+  bottom: 18px;
+  left: 0; right: 0;
+  z-index: 4;
+  text-align: center;
+  padding: 0 16px;
+  pointer-events: none;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.posterImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  transition: transform 0.4s ease;
-  filter: brightness(0.9);
+.wrapper:hover .textRest {
+  opacity: 0;
+  transform: translateY(6px);
 }
 
-.card:hover .posterImg {
-  transform: scale(1.04);
-  filter: brightness(1.05);
+.restLine {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,80,255,0.45), transparent);
+  margin: 0 12px 7px;
+}
+
+.restTitle {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: rgba(255,160,255,0.9);
+  letter-spacing: 0.06em;
+  line-height: 1.45;
+  text-shadow: 0 0 14px rgba(255,80,255,0.6), 0 1px 3px rgba(0,0,0,0.9);
+}
+
+.restSub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.58rem;
+  color: rgba(255,80,255,0.45);
+  letter-spacing: 0.16em;
+  margin-top: 0.3rem;
+}
+
+/* ── Character hologram ── */
+.charGlow {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 120px; height: 20px;
+  background: radial-gradient(ellipse, rgba(200,60,255,0.55) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(8px);
+  pointer-events: none;
+  transform-style: preserve-3d;
+  opacity: 0;
+  transform: translateX(-50%) translateZ(1px);
+  transition:
+    opacity 0.5s ease 0.1s,
+    transform 0.65s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.wrapper:hover .charGlow {
+  opacity: 1;
+  transform: translateX(-50%) translateZ(160px) translateY(4px) rotateX(-28deg);
+}
+
+.character {
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  width: 300px;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  transform: translateX(-50%) translateZ(1px) translateY(15px);
+  opacity: 0;
+  transition:
+    transform 0.65s cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 0.3s ease;
+}
+
+.wrapper:hover .character {
+  transform: translateX(-50%) translateZ(200px) translateY(0px) rotateX(-28deg);
+  opacity: 1;
+  filter:
+    drop-shadow(0 0 18px rgba(200,60,255,0.55))
+    drop-shadow(0 8px 16px rgba(0,0,0,1))
+    drop-shadow(0 40px 30px rgba(0,0,0,0.85));
+}
+
+/* ── Hover name text ── */
+.textHover {
+  position: absolute;
+  bottom: -48px;
+  left: 50%;
+  width: 280px;
+  text-align: center;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  transform: translateX(-50%) translateZ(1px) translateY(10px);
+  opacity: 0;
+  transition:
+    transform 0.65s cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 0.35s ease 0.15s;
+}
+
+.wrapper:hover .textHover {
+  transform: translateX(-50%) translateZ(180px) translateY(0px) rotateX(-28deg);
+  opacity: 1;
+}
+
+.hoverName {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: rgba(255,160,255,0.95);
+  letter-spacing: 0.14em;
+  text-shadow:
+    0 0 20px rgba(255,80,255,0.8),
+    0 0 40px rgba(200,0,255,0.4),
+    0 2px 4px rgba(0,0,0,1);
+}
+
+.hoverLine {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,80,255,0.55), transparent);
+  margin: 6px 20px 0;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .wrapper, .character, .charGlow, .textHover, .textRest {
+    transition: none;
+  }
+  .wrapper:hover {
+    transform: none;
+  }
 }
