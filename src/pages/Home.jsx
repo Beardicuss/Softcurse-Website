@@ -79,7 +79,7 @@ export default function Home() {
             to solve — nothing more, nothing less.
           </p>
         </div>
-        <div className="card-grid">
+        <div className={`card-grid ${styles.labGrid}`}>
           {apps.map(a => <AppCard key={a.id} app={a} />)}
         </div>
         <div className={styles.sectionCta}>
@@ -103,7 +103,7 @@ export default function Home() {
             the ground up with intent.
           </p>
         </div>
-        <div className="card-grid">
+        <div className={`card-grid ${styles.studioGrid}`}>
           {games.map(g => <GameCard key={g.id} game={g} />)}
         </div>
         <div className={styles.sectionCta}>

@@ -254,3 +254,22 @@
 @media (prefers-reduced-motion: reduce) {
   .typewriter { animation: none; width: auto; }
 }
+
+/* ── Studio section — force 3 columns ── */
+.studioGrid {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+@media (max-width: 900px) {
+  .studioGrid { grid-template-columns: 1fr !important; }
+}
+
+/* ── Lab section — force 3 columns, auto on mobile ── */
+.labGrid {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+@media (max-width: 900px) {
+  .labGrid  { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
+  .studioGrid { grid-template-columns: 1fr !important; }
+}

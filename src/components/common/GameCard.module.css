@@ -2,8 +2,8 @@
 .scene {
   perspective: 900px;
   perspective-origin: 50% 80%;
-  padding-top: 140px;
-  padding-bottom: 50px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 /* ── Wrapper — the 3D tilting element ── */
