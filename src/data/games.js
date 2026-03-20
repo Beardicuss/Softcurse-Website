@@ -8,6 +8,7 @@ export const GAMES = {
     id: 'chronicles',
     image: '/posters/games/chronicles.png',
     character: '/posters/games/chronicles-char.png',
+    charSize: { w: 300, h: 450 },
     characterName: 'The Auditor',  // transparent PNG, ~300px tall  // 800×450px WebP or PNG, place in public/posters/games/
     name: 'Chronicles of a Fallen World',
     icon: '🌑',
@@ -51,6 +52,7 @@ export const GAMES = {
     id: 'isle',
     image: '/posters/games/isle.png',
     character: '/posters/games/isle-char.png',
+    charSize: { w: 300, h: 450 },
     characterName: 'The Stranger',  // transparent PNG, ~300px tall  // 800×450px WebP or PNG, place in public/posters/games/
     name: 'Isle of Quiet Men',
     icon: '🏝️',
@@ -89,7 +91,8 @@ export const GAMES = {
     id: 'ww3',
     image: '/posters/games/ww3.png',
     character: '/posters/games/ww3-char.png',
-    characterName: 'The Commander',  // transparent PNG, ~300px tall  // 800×450px WebP or PNG, place in public/posters/games/
+    charSize: { w: 300, h: 300 },
+  // transparent PNG, ~300px tall  // 800×450px WebP or PNG, place in public/posters/games/
     name: 'World War III: Global Collapse',
     icon: '🌍',
     tag: 'STRATEGY / SIMULATION',

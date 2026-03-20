@@ -66,6 +66,7 @@ export default function GameCard({ game }) {
               src={game.character}
               alt=""
               className={styles.character}
+              style={game.charSize ? { width: game.charSize.w, height: game.charSize.h } : {}}
               loading="lazy"
               decoding="async"
               aria-hidden="true"
@@ -74,10 +75,12 @@ export default function GameCard({ game }) {
         )}
 
         {/* ── Hover title ── */}
-        <div className={styles.textHover}>
-          <div className={styles.hoverName}>{game.characterName || game.name}</div>
-          <div className={styles.hoverLine} />
-        </div>
+        {game.characterName && (
+          <div className={styles.textHover}>
+            <div className={styles.hoverName}>{game.characterName}</div>
+            <div className={styles.hoverLine} />
+          </div>
+        )}
 
       </Link>
     </div>
