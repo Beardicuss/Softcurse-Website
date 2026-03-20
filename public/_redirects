@@ -1,1 +1,2 @@
-/*    /index.html   200
+# SPA routing handled natively by Cloudflare Pages
+# No redirect rules needed — Cloudflare serves index.html for all 404s automatically

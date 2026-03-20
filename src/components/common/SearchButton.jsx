@@ -13,7 +13,7 @@ export default function SearchButton({ onClick }) {
       aria-label="Search (Ctrl+K)"
       title="Search (Ctrl+K)"
     >
-      <EyeIcon size={34} className={styles.icon} />
+      <EyeIcon size={38} className={styles.icon} />
     </button>
   )
 }

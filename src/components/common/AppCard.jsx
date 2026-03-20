@@ -33,7 +33,7 @@ export default function AppCard({ app }) {
     >
       {app.image && (
         <div className={styles.poster}>
-          <img src={app.image} alt={app.name} className={styles.posterImg} loading="lazy" decoding="async" />
+          <img src={app.image} alt="" className={styles.posterImg} loading="lazy" decoding="async" />
         </div>
       )}
       <div className={styles.top}>

@@ -261,12 +261,7 @@ button:focus-visible {
 }
 .skip-link:focus { top: 0; }
 
-/* ── Light theme nav needs darker glass so text stays legible ── */
-[data-theme="light"] .nav,
-[data-theme="light"] .scrolled {
-  background: rgba(180, 185, 210, 0.72) !important;
-  border-bottom-color: rgba(0, 60, 160, 0.2) !important;
-}
+
 
 /* Light theme hero title — use --cyan which is now a deep blue */
 [data-theme="light"] .heroTitle,

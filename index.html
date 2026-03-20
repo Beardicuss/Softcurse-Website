@@ -35,11 +35,7 @@
 
     <title>Softcurse</title>
     <!-- Anti-FOUC: read stored theme before first paint -->
-    <script>
-      (function(){try{var t=localStorage.getItem('sc-theme')||
-      (window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
-      document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
-    </script>
+    <script>document.documentElement.setAttribute("data-theme","dark")</script>
   </head>
   <body>
     <div id="root"></div>

@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
 import { getApps } from '../../data/apps'
 import { getGames } from '../../data/games'
-import ThemeToggle from './ThemeToggle'
 import SearchButton from './SearchButton'
 import SearchBar from './SearchBar'
 import styles from './Navbar.module.css'
@@ -131,7 +130,6 @@ export default function Navbar() {
           <span className={styles.desktopOnly}>
             <SearchButton onClick={() => setSearchOpen(true)} />
           </span>
-          <ThemeToggle />
         </div>
 
       </div>
