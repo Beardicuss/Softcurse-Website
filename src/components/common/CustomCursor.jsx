@@ -18,7 +18,8 @@ export default function CustomCursor() {
     if (!dot || !ring) return
 
     let mx = -100, my = -100
-    let rx = -100, ry = -100
+    let dx = -100, dy = -100   // dot lerp
+    let rx = -100, ry = -100   // ring lerp
     let raf
 
     document.body.style.cursor = 'none'
@@ -26,11 +27,12 @@ export default function CustomCursor() {
     const onMove = (e) => { mx = e.clientX; my = e.clientY }
 
     const tick = () => {
-      // Dot snaps instantly
-      dot.style.transform  = `translate(${mx}px, ${my}px)`
-      // Ring lerps smoothly
-      rx += (mx - rx) * 0.14
-      ry += (my - ry) * 0.14
+      // Both lerp at the same speed — dot slightly faster so they feel unified
+      dx += (mx - dx) * 0.55
+      dy += (my - dy) * 0.55
+      rx += (mx - rx) * 0.45
+      ry += (my - ry) * 0.45
+      dot.style.transform  = `translate(${dx}px, ${dy}px)`
       ring.style.transform = `translate(${rx}px, ${ry}px)`
       raf = requestAnimationFrame(tick)
     }

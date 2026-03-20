@@ -75,7 +75,7 @@ export default function GameCard({ game }) {
 
         {/* ── Hover title ── */}
         <div className={styles.textHover}>
-          <div className={styles.hoverName}>{game.name}</div>
+          <div className={styles.hoverName}>{game.characterName || game.name}</div>
           <div className={styles.hoverLine} />
         </div>
 
