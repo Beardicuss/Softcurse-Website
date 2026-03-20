@@ -33,7 +33,7 @@ export default function GameCard({ game }) {
         {/* ── Card face ── */}
         <div className={styles.card}>
           {game.image
-            ? <img src={game.image} alt={game.name} className={styles.coverImg} loading="lazy" decoding="async" />
+            ? <img src={game.image} alt="" className={styles.coverImg} loading="lazy" decoding="async" />
             : <div className={styles.coverPlaceholder}><span>{game.icon}</span></div>
           }
           <div className={styles.overlay} />
