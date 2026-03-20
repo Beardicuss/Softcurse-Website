@@ -269,8 +269,6 @@
 }
 
 
-  .labGrid    { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
-}
 
 /* ── Studio grid: exactly 2 x 800px cards ── */
 .studioGrid {
@@ -291,5 +289,3 @@
 
 @media (max-width: 900px) {
   .studioGrid { grid-template-columns: 1fr !important; }
-  .labGrid    { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
-}
