@@ -255,22 +255,11 @@
   .typewriter { animation: none; width: auto; }
 }
 
-/* ── Studio section — force 3 columns ── */
-
-
-/* ── Lab section — force 3 columns, auto on mobile ── */
+/* ── Grid overrides for home page modules ── */
 .labGrid {
   grid-template-columns: repeat(3, 1fr) !important;
 }
 
-@media (max-width: 900px) {
-  .labGrid  { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
-  .studioGrid { grid-template-columns: 1fr !important; }
-}
-
-
-
-/* ── Studio grid: exactly 2 x 800px cards ── */
 .studioGrid {
   display: grid !important;
   grid-template-columns: repeat(2, 800px) !important;
@@ -278,14 +267,11 @@
   gap: 1.25rem;
 }
 
-/* ── Lab grid: 3 cols desktop ── */
-.labGrid {
-  grid-template-columns: repeat(3, 1fr) !important;
-}
-
 @media (max-width: 1700px) {
   .studioGrid { grid-template-columns: repeat(2, 1fr) !important; }
 }
 
 @media (max-width: 900px) {
+  .labGrid    { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
   .studioGrid { grid-template-columns: 1fr !important; }
+}
