@@ -256,13 +256,7 @@
 }
 
 /* ── Studio section — force 3 columns ── */
-.studioGrid {
-  grid-template-columns: repeat(2, 1fr) !important;
-}
 
-@media (max-width: 900px) {
-  .studioGrid { grid-template-columns: 1fr !important; }
-}
 
 /* ── Lab section — force 3 columns, auto on mobile ── */
 .labGrid {
@@ -272,4 +266,20 @@
 @media (max-width: 900px) {
   .labGrid  { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
   .studioGrid { grid-template-columns: 1fr !important; }
+}
+
+/* ── Studio grid: 2 cols desktop, 1 col mobile ── */
+.studioGrid {
+  grid-template-columns: repeat(2, 1fr) !important;
+  grid-auto-rows: 500px;
+}
+
+/* ── Lab grid: 3 cols desktop ── */
+.labGrid {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+@media (max-width: 900px) {
+  .studioGrid { grid-template-columns: 1fr !important; grid-auto-rows: auto; }
+  .labGrid    { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
 }
