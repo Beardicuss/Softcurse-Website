@@ -66,9 +66,9 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ── Layout helpers ── */
 .container {
-  max-width: 1320px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 2.5rem;
 }
 
 .container--narrow {
@@ -215,7 +215,7 @@ h1, h2, h3, h4, h5, h6 {
 /* ── Card grid ── */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.25rem;
 }
 
