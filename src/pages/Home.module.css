@@ -268,10 +268,16 @@
   .studioGrid { grid-template-columns: 1fr !important; }
 }
 
-/* ── Studio grid: 2 cols desktop, 1 col mobile ── */
+
+  .labGrid    { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
+}
+
+/* ── Studio grid: exactly 2 x 800px cards ── */
 .studioGrid {
-  grid-template-columns: repeat(2, 1fr) !important;
-  grid-auto-rows: 500px;
+  display: grid !important;
+  grid-template-columns: repeat(2, 800px) !important;
+  justify-content: center;
+  gap: 1.25rem;
 }
 
 /* ── Lab grid: 3 cols desktop ── */
@@ -279,7 +285,11 @@
   grid-template-columns: repeat(3, 1fr) !important;
 }
 
+@media (max-width: 1700px) {
+  .studioGrid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
 @media (max-width: 900px) {
-  .studioGrid { grid-template-columns: 1fr !important; grid-auto-rows: auto; }
+  .studioGrid { grid-template-columns: 1fr !important; }
   .labGrid    { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
 }

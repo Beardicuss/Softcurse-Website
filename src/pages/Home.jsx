@@ -92,7 +92,8 @@ export default function Home() {
       </div>
 
       {/* ── Studio Preview ── */}
-      <section ref={studioRef} className={`${styles.section} ${styles.studioSection} container reveal section--studio ${studioVis ? "visible" : ""}`}>
+      <section ref={studioRef} className={`${styles.section} ${styles.studioSection} reveal section--studio ${studioVis ? "visible" : ""}`}>
+        <div className="container">
         <div className="sec-header">
           <div className="sec-header__label sec-header__label--magenta">// MODULE 02</div>
           <h2 className="sec-header__title">
@@ -102,6 +103,7 @@ export default function Home() {
             Worlds that don't forgive. Stories that stay with you. Games built from
             the ground up with intent.
           </p>
+        </div>
         </div>
         <div className={`card-grid ${styles.studioGrid}`}>
           {games.map(g => <GameCard key={g.id} game={g} />)}
