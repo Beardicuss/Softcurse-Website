@@ -257,7 +257,7 @@
 
 /* ── Studio section — force 3 columns ── */
 .studioGrid {
-  grid-template-columns: repeat(3, 1fr) !important;
+  grid-template-columns: repeat(2, 1fr) !important;
 }
 
 @media (max-width: 900px) {
