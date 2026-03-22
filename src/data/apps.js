@@ -63,7 +63,7 @@ export const APPS = {
 
   archvis: {
     id: 'archvis',
-    image: '/posters/apps/archvis.png',  // 800×450px WebP or PNG, place in public/posters/apps/
+    image: '/posters/apps/arch.png',  // 800×450px WebP or PNG, place in public/posters/apps/
     name: 'Softcurse Architecture Visualizer',
     icon: '🏗️',
     tag: 'DEV TOOL',
