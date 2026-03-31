@@ -55,7 +55,7 @@ export default function ChronicleDetail() {
         {/* ── Chapter list ── */}
         <section className={`${styles.section} reveal ${chVis ? 'visible' : ''}`} ref={chRef}>
           <div className={styles.sectionLabel}>// CHAPTERS</div>
-          <h2 className={styles.sectionTitle}>The Ledger</h2>
+          <h2 className={styles.sectionTitle}>{book.series}: {book.name}</h2>
           <div className={styles.chapterList}>
             {book.chapters.map(ch => (
               <Link
