@@ -1,0 +1,26 @@
+.page { padding-bottom: 6rem; }
+
+.headerInner { max-width: min(92vw, 720px); }
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-weight: 900;
+  color: var(--txt);
+  letter-spacing: 0.06em;
+  line-height: 1;
+  margin-bottom: 1.2rem;
+}
+
+.accent { color: var(--cyan); }
+
+.desc {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.85;
+  max-width: 600px;
+  opacity: 0.85;
+}
+
+.gridSection { padding: 3rem 0 4rem; }

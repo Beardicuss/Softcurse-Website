@@ -84,6 +84,7 @@ export default function Navbar() {
             <div className={`${styles.menu} ${openDropdown === 'lab' ? styles.menuOpen : ''}`} role="menu">
               <div className={styles.menuHead}>Tools &amp; Apps</div>
               <Link to="/lab" className={styles.menuItem} role="menuitem">Lab Home</Link>
+              <Link to="/experiments" className={styles.menuItem} role="menuitem">Experiments</Link>
               {apps.map(a => (
                 <Link key={a.id} to={`/lab/${a.id}`} className={styles.menuItem} role="menuitem">{a.name}</Link>
               ))}
@@ -102,6 +103,7 @@ export default function Navbar() {
             <div className={`${styles.menu} ${openDropdown === 'studio' ? styles.menuOpen : ''}`} role="menu">
               <div className={styles.menuHead}>Games</div>
               <Link to="/studio" className={styles.menuItem} role="menuitem">Studio Home</Link>
+              <Link to="/chronicles" className={styles.menuItem} role="menuitem">Chronicles</Link>
               {games.map(g => (
                 <Link key={g.id} to={`/studio/${g.id}`} className={styles.menuItem} role="menuitem">{g.name}</Link>
               ))}

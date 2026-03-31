@@ -55,7 +55,8 @@ export default function Footer() {
             <span className={styles.colAccent}>◈</span> LAB
           </div>
           <ul className={styles.colList}>
-            <li><Link to="/lab" className={styles.colLink}>All Tools</Link></li>
+            <li><Link to="/lab" className={styles.colLink}>All Tools</Link>
+            <li><Link to="/experiments" className={styles.colLink}>Experiments</Link></li></li>
             {apps.map(a => (
               <li key={a.id}>
                 <Link to={`/lab/${a.id}`} className={styles.colLink}>
@@ -72,7 +73,8 @@ export default function Footer() {
             <span className={styles.colAccentMagenta}>◈</span> STUDIO
           </div>
           <ul className={styles.colList}>
-            <li><Link to="/studio" className={styles.colLink}>All Games</Link></li>
+            <li><Link to="/studio" className={styles.colLink}>All Games</Link>
+            <li><Link to="/chronicles" className={styles.colLink}>Chronicles</Link></li></li>
             {games.map(g => (
               <li key={g.id}>
                 <Link to={`/studio/${g.id}`} className={styles.colLink}>

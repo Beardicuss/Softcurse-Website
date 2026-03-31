@@ -13,14 +13,16 @@ import Home       from './pages/Home'
 import Lab        from './pages/lab/Lab'
 import AppDetail  from './pages/lab/AppDetail'
 import Studio     from './pages/studio/Studio'
-import GameDetail from './pages/studio/GameDetail'
+import GameDetail   from './pages/studio/GameDetail'
+import Chronicles   from './pages/studio/Chronicles'
 import About      from './pages/About'
 import Contact    from './pages/Contact'
 import Blog       from './pages/Blog'
 import BlogPost   from './pages/BlogPost'
 import Roadmap    from './pages/Roadmap'
 import PressKit   from './pages/PressKit'
-import NotFound   from './pages/NotFound'
+import Experiments from './pages/lab/Experiments'
+import NotFound    from './pages/NotFound'
 
 import './styles/globals.css'
 
@@ -51,9 +53,11 @@ export default function App() {
           <Routes>
             <Route path="/"           element={<Home />} />
             <Route path="/lab"        element={<Lab />} />
-            <Route path="/lab/:id"    element={<AppDetail />} />
+            <Route path="/lab/:id"       element={<AppDetail />} />
+            <Route path="/experiments"    element={<Experiments />} />
             <Route path="/studio"     element={<Studio />} />
-            <Route path="/studio/:id" element={<GameDetail />} />
+            <Route path="/studio/:id"    element={<GameDetail />} />
+            <Route path="/chronicles"    element={<Chronicles />} />
             <Route path="/about"      element={<About />} />
             <Route path="/contact"    element={<Contact />} />
             <Route path="/blog"       element={<Blog />} />
