@@ -1,10 +1,9 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import Badge from './Badge'
+import Badge from '../../components/common/Badge'
 import styles from '../../components/common/GameCard.module.css'
 
 export default function ChronicleCard({ book }) {
-  const game = { ...book, platforms: book.platforms || ['Chronicles'] }
   const wrapRef = useRef(null)
 
   const handleMouseMove = (e) => {
@@ -12,7 +11,6 @@ export default function ChronicleCard({ book }) {
     if (!wrap) return
     const { left, top, width } = wrap.getBoundingClientRect()
     const x = (e.clientX - left) / width - 0.5
-    // Gentle lateral tilt only (the rotateX is CSS-driven on hover)
     wrap.style.setProperty('--tilt-x', `${x * 6}deg`)
   }
 
@@ -24,50 +22,45 @@ export default function ChronicleCard({ book }) {
   return (
     <div className={styles.scene}>
       <Link
-        to={`/chronicles/${game.id}`}
+        to={`/chronicles/${book.id}`}
         className={styles.wrapper}
         ref={wrapRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        aria-label={game.name}
+        aria-label={book.name}
       >
-        {/* ── Card face ── */}
         <div className={styles.card}>
-          {game.image
-            ? <img src={game.image} alt="" className={styles.coverImg} loading="lazy" decoding="async" />
-            : <div className={styles.coverPlaceholder}><span>{game.icon}</span></div>
+          {book.image
+            ? <img src={book.image} alt="" className={styles.coverImg} loading="lazy" decoding="async" />
+            : <div className={styles.coverPlaceholder}><span>{book.icon || '◈'}</span></div>
           }
           <div className={styles.overlay} />
 
-          {/* Corner decorations */}
           <span className={`${styles.corner} ${styles.tl}`} />
           <span className={`${styles.corner} ${styles.tr}`} />
           <span className={`${styles.corner} ${styles.bl}`} />
           <span className={`${styles.corner} ${styles.br}`} />
 
-          {/* Badges top-left */}
           <div className={styles.badges}>
-            <Badge status={game.status} />
-            <span className={styles.tag}>{game.tag}</span>
+            <Badge status={book.status} />
+            <span className={styles.tag}>{book.tag}</span>
           </div>
 
-          {/* Resting text — fades on hover */}
           <div className={styles.textRest}>
             <div className={styles.restLine} />
-            <div className={styles.restTitle}>{game.name}</div>
-            <div className={styles.restSub}>{game.genre} · {game.platforms?.[0]}</div>
+            <div className={styles.restTitle}>{book.name}</div>
+            <div className={styles.restSub}>{book.series} · {book.book}</div>
           </div>
         </div>
 
-        {/* ── Character hologram ── */}
-        {game.character && (
+        {book.character && (
           <>
             <div className={styles.charGlow} />
             <img
-              src={game.character}
+              src={book.character}
               alt=""
               className={styles.character}
-              style={game.charSize ? { width: game.charSize.w, height: game.charSize.h } : {}}
+              style={book.charSize ? { width: book.charSize.w, height: book.charSize.h } : {}}
               loading="lazy"
               decoding="async"
               aria-hidden="true"
@@ -75,14 +68,12 @@ export default function ChronicleCard({ book }) {
           </>
         )}
 
-        {/* ── Hover title ── */}
-        {game.characterName && (
+        {book.characterName && (
           <div className={styles.textHover}>
-            <div className={styles.hoverName}>{game.characterName}</div>
+            <div className={styles.hoverName}>{book.characterName}</div>
             <div className={styles.hoverLine} />
           </div>
         )}
-
       </Link>
     </div>
   )
