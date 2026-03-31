@@ -23,7 +23,8 @@ import Blog       from './pages/Blog'
 import BlogPost   from './pages/BlogPost'
 import Roadmap    from './pages/Roadmap'
 import PressKit   from './pages/PressKit'
-import Experiments from './pages/lab/Experiments'
+import Experiments       from './pages/lab/Experiments'
+import ExperimentDetail  from './pages/lab/ExperimentDetail'
 import NotFound    from './pages/NotFound'
 
 import './styles/globals.css'
@@ -56,7 +57,8 @@ export default function App() {
             <Route path="/"           element={<Home />} />
             <Route path="/lab"        element={<Lab />} />
             <Route path="/lab/:id"       element={<AppDetail />} />
-            <Route path="/experiments"    element={<Experiments />} />
+            <Route path="/experiments"         element={<Experiments />} />
+            <Route path="/experiments/:id"    element={<ExperimentDetail />} />
             <Route path="/studio"     element={<Studio />} />
             <Route path="/studio/:id"    element={<GameDetail />} />
             <Route path="/chronicles"                element={<Chronicles />} />

@@ -84,6 +84,7 @@ export default function Home() {
         </div>
         <div className={styles.sectionCta}>
           <Button variant="outline" href="/lab">VIEW ALL TOOLS →</Button>
+          <Button variant="ghost" href="/experiments">VISIT EXPERIMENTS →</Button>
         </div>
       </section>
 
@@ -110,6 +111,7 @@ export default function Home() {
         </div>
         <div className={styles.sectionCta}>
           <Button variant="outlineMagenta" href="/studio">VIEW ALL GAMES →</Button>
+          <Button variant="ghost" href="/chronicles">VISIT CHRONICLES →</Button>
         </div>
       </section>
 

@@ -3,7 +3,7 @@ import { getExperiments } from '../../data/experiments'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { useSEO } from '../../hooks/useSEO'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
-import AppCard from '../../components/common/AppCard'
+import ExperimentCard from './ExperimentCard'
 import styles from './Experiments.module.css'
 
 export default function Experiments() {
@@ -53,7 +53,7 @@ export default function Experiments() {
             ref={gridRef}
             className={`card-grid reveal ${gridVis ? 'visible' : ''}`}
           >
-            {experiments.map(e => <AppCard key={e.id} app={e} />)}
+            {experiments.map(e => <ExperimentCard key={e.id} app={e} />)}
           </div>
         ) : (
           <div className={styles.empty}>

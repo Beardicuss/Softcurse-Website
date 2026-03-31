@@ -48,6 +48,27 @@ export const CHRONICLES = {
         pov: 'The Auditor',
         status: 'published',
       },
+      {
+        num: 2,
+        title: 'Chapter II',
+        file: '/chronicles/black-ledger/chapter-02.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
+      {
+        num: 3,
+        title: 'Chapter III',
+        file: '/chronicles/black-ledger/chapter-03.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
+      {
+        num: 4,
+        title: 'Chapter IV',
+        file: '/chronicles/black-ledger/chapter-04.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
     ],
   },
 }
