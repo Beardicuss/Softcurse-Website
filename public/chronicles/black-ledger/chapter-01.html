@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chronicles of the Fallen World — Black Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&family=Cormorant:ital,wght@0,400;0,600;1,400&family=PT+Serif:ital,wght@0,400;1,400&family=PT+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#060609; --bg2:#0a0a10; --bg3:#0e0e18; --panel:#0b0b14;
+  --border:#1a1a2a; --border2:#232335;
+  --text:#b8b0a0; --text-dim:#5a5248; --text-muted:#312c28;
+  --pov-p:#6b0000; --pov-s:#9b1111; --pov-glow:rgba(107,0,0,0.14);
+  --pov-t:#dcc0c0; --pov-d:rgba(155,17,17,0.38);
+  --ff-display:'Cinzel','Palatino Linotype',serif;
+  --ff-body:'Crimson Text','Georgia',serif;
+  --ff-mono:'Share Tech Mono','Courier New',monospace;
+}
+body.lang-ru {
+  --ff-display:'Cormorant','Palatino Linotype',serif;
+  --ff-body:'PT Serif','Georgia',serif;
+  --ff-mono:'PT Mono','Courier New',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--ff-body);min-height:100vh;overflow-x:hidden;transition:background 1s;position:relative;}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:998;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.7) 100%);}
+
+/* LAYOUT */
+#app{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 28px 120px;}
+
+/* LANG SWITCHER */
+#lang-bar{position:fixed;top:16px;right:20px;z-index:200;display:flex;}
+.lang-btn{font-family:var(--ff-mono);font-size:11px;letter-spacing:.25em;padding:7px 15px;background:var(--bg2);border:1px solid var(--border2);color:var(--text-muted);cursor:pointer;transition:all .25s;text-transform:uppercase;}
+.lang-btn:first-child{border-right:none;}
+.lang-btn.active{color:var(--pov-s);border-color:var(--pov-p);background:var(--bg3);}
+.lang-btn:hover:not(.active){color:var(--text-dim);}
+
+/* HEADER */
+#site-header{padding:56px 0 36px;text-align:center;}
+.header-ornament{font-family:var(--ff-mono);font-size:12px;letter-spacing:.4em;color:var(--pov-s);text-transform:uppercase;margin-bottom:14px;opacity:.7;transition:color .8s;}
+.header-title{font-family:var(--ff-display);font-size:clamp(22px,4vw,32px);font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--text);margin-bottom:6px;line-height:1.3;}
+.header-subtitle{font-family:var(--ff-mono);font-size:14px;letter-spacing:.3em;color:var(--pov-p);text-transform:uppercase;transition:color .8s;}
+.header-rule{height:1px;background:linear-gradient(90deg,transparent,var(--border2) 20%,var(--pov-p) 50%,var(--border2) 80%,transparent);margin:28px 0;transition:background .8s;}
+
+/* CHAPTER STRIP */
+#chapter-strip{display:flex;justify-content:space-between;align-items:center;padding:9px 0;margin-bottom:40px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.chapter-strip-item{font-family:var(--ff-mono);font-size:12px;letter-spacing:.22em;color:var(--text-dim);text-transform:uppercase;}
+.chapter-strip-divider{font-family:var(--ff-mono);font-size:11px;color:var(--text-muted);}
+
+/* SCENE HEADER */
+.scene-header{margin-bottom:28px;}
+.scene-meta-row{display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap;}
+.scene-badge{font-family:var(--ff-mono);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--pov-s);border:1px solid var(--pov-p);padding:3px 10px;transition:color .6s,border-color .6s;}
+.scene-loc{font-family:var(--ff-mono);font-size:11px;color:var(--text-dim);letter-spacing:.14em;text-transform:uppercase;}
+.scene-time{font-family:var(--ff-mono);font-size:11px;color:var(--text-muted);letter-spacing:.1em;margin-left:auto;}
+.scene-title{font-family:var(--ff-display);font-size:clamp(36px,7vw,58px);font-weight:400;letter-spacing:.04em;color:var(--text);line-height:1.05;margin-bottom:8px;}
+.scene-subtitle{font-family:var(--ff-body);font-style:italic;font-size:18px;color:var(--text-dim);letter-spacing:.04em;}
+.scene-flags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+.scene-flag{font-family:var(--ff-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--border);color:var(--text-muted);}
+.scene-flag.pivotal{border-color:#2e1010;color:#6a2020;}
+.scene-flag.expand_later{border-color:#102e10;color:#206a20;}
+.scene-flag.foreshadowing{border-color:#10102e;color:#20206a;}
+.scene-flag.resolution{border-color:#2e2010;color:#6a5020;}
+.scene-flag.first_contact{border-color:#1e1e30;color:#40406a;}
+
+/* POV SELECTOR */
+#pov-selector{display:flex;align-items:center;gap:2px;margin-bottom:24px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);flex-wrap:wrap;}
+.pov-selector-label{font-family:var(--ff-mono);font-size:11px;letter-spacing:.28em;color:var(--text-muted);text-transform:uppercase;padding-right:12px;border-right:1px solid var(--border2);margin-right:8px;white-space:nowrap;}
+.pov-btn{font-family:var(--ff-mono);font-size:13px;letter-spacing:.18em;text-transform:uppercase;padding:9px 20px;background:transparent;border:1px solid transparent;color:var(--text-dim);cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.pov-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:transparent;transition:background .3s;}
+.pov-btn:hover{color:var(--text);border-color:var(--border2);}
+.pov-btn.active{color:var(--pov-t);border-color:var(--pov-p);background:var(--pov-glow);}
+.pov-btn.active::after{background:var(--pov-s);}
+
+/* NARRATIVE PANEL */
+#narrative-panel{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--pov-p);padding:34px 40px;transition:border-left-color .7s;position:relative;overflow:hidden;}
+#narrative-panel::before{content:'';position:absolute;inset:0;background:var(--pov-glow);pointer-events:none;transition:background .7s;}
+.pov-ident{display:flex;align-items:baseline;gap:12px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border2);flex-wrap:wrap;position:relative;z-index:1;}
+.pov-name{font-family:var(--ff-mono);font-size:14px;letter-spacing:.3em;text-transform:uppercase;color:var(--pov-s);transition:color .7s;}
+.pov-role{font-family:var(--ff-body);font-style:italic;font-size:16px;color:var(--text-dim);}
+.dist-meter{display:flex;align-items:center;gap:9px;margin-left:auto;}
+.dist-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:.2em;color:var(--text-muted);text-transform:uppercase;}
+.dist-bars{display:flex;gap:3px;}
+.dist-bar{width:4px;height:15px;background:var(--border2);transition:background .4s;}
+.dist-bar.on{background:var(--pov-p);}
+.dist-bar.hi{background:#7a1010;}
+.dist-bar.ex{background:#bb0000;animation:barpulse 1.8s infinite;}
+@keyframes barpulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* NARRATIVE TEXT */
+#narrative-text{font-size:20px;line-height:1.9;color:var(--pov-t);transition:color .7s,opacity .3s;position:relative;z-index:1;}
+#narrative-text p{margin-bottom:1.3em;}
+#narrative-text p:last-child{margin-bottom:0;}
+.d3,.d4,.d5{animation:flicker-soft 14s infinite;}
+.d6,.d7{animation:flicker-mid 7s infinite;}
+.d8,.d9{animation:flicker-hard 4s infinite,glitch-mid 16s infinite;}
+.d10{animation:flicker-hard 2s infinite,glitch-hard 8s infinite;filter:blur(.4px);}
+@keyframes flicker-soft{0%,94%,100%{opacity:1;}96%{opacity:.88;}}
+@keyframes flicker-mid{0%,88%,100%{opacity:1;}90%{opacity:.75;}92%{opacity:.9;}93%{opacity:.68;}94%{opacity:1;}}
+@keyframes flicker-hard{0%,80%,100%{opacity:1;}82%{opacity:.6;}83%{opacity:.9;}84%{opacity:.55;}85%{opacity:.85;}86%{opacity:.7;}87%{opacity:1;}}
+@keyframes glitch-mid{0%,92%,100%{transform:none;filter:none;}93%{transform:translate(-3px,0);filter:drop-shadow(3px 0 rgba(255,0,0,.3));}94%{transform:translate(3px,0);filter:drop-shadow(-3px 0 rgba(0,100,255,.2));}95%{transform:translate(-1px,1px);}96%{transform:none;}}
+@keyframes glitch-hard{0%,88%,100%{transform:none;filter:none;}89%{transform:translate(-4px,0) skewX(-1deg);filter:drop-shadow(4px 0 rgba(255,0,0,.4)) saturate(2);}90%{transform:translate(4px,-1px) skewX(1deg);filter:drop-shadow(-4px 0 rgba(0,150,255,.3));}91%{transform:translate(-2px,2px);filter:brightness(.7);}92%{transform:translate(1px,-1px);}93%{transform:none;filter:none;}}
+
+/* WHISPER */
+#whisper-panel{background:var(--bg2);border:1px solid var(--border);border-top:none;border-left:3px solid var(--pov-p);padding:15px 40px 17px;margin-bottom:12px;opacity:0;transform:translateY(-2px);transition:opacity 1.6s,transform 1.2s,border-left-color .7s;pointer-events:none;}
+#whisper-panel.vis{opacity:1;transform:none;pointer-events:auto;}
+.whisper-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:.45em;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;}
+.whisper-body{font-family:var(--ff-body);font-style:italic;font-size:18px;color:var(--pov-d);letter-spacing:.04em;line-height:1.65;transition:color .7s;}
+
+/* INTEL */
+#intel-panel{background:var(--bg3);border:1px solid var(--border);margin-bottom:32px;}
+.intel-toggle{width:100%;padding:12px 18px;background:transparent;border:none;color:var(--text-dim);font-family:var(--ff-mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:9px;transition:color .3s;text-align:left;}
+.intel-toggle:hover{color:var(--text);}
+.intel-arrow{transition:transform .3s;display:inline-block;font-size:9px;}
+.intel-toggle.open .intel-arrow{transform:rotate(90deg);}
+.intel-body{display:none;padding:18px 20px 22px;border-top:1px solid var(--border);}
+.intel-body.open{display:block;}
+.intel-section{margin-bottom:20px;}
+.intel-section:last-child{margin-bottom:0;}
+.intel-section-head{font-family:var(--ff-mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;margin-bottom:10px;}
+.intel-section.knows .intel-section-head{color:#3a5a3a;}
+.intel-section.misunderstands .intel-section-head{color:#5a5a20;}
+.intel-section.hides .intel-section-head{color:#5a2020;}
+.intel-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.intel-list li{font-family:var(--ff-mono);font-size:13px;line-height:1.65;padding-left:20px;position:relative;}
+.intel-list li::before{content:'—';position:absolute;left:0;color:var(--text-muted);}
+.intel-section.knows .intel-list li{color:#5a8a5a;}
+.intel-section.misunderstands .intel-list li{color:#8a8a3a;}
+.intel-section.hides .intel-list li{color:#8a4040;}
+
+/* NAV */
+#scene-nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-top:1px solid var(--border);}
+.nav-btn{font-family:var(--ff-mono);font-size:13px;letter-spacing:.22em;text-transform:uppercase;padding:11px 24px;background:transparent;border:1px solid var(--border2);color:var(--text-dim);cursor:pointer;transition:all .3s;}
+.nav-btn:hover:not(:disabled){border-color:var(--pov-p);color:var(--text);}
+.nav-btn:disabled{opacity:.18;cursor:not-allowed;}
+#scene-map{display:flex;gap:10px;align-items:center;}
+.scene-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);cursor:pointer;transition:all .3s;border:1px solid transparent;position:relative;}
+.scene-dot::after{content:attr(data-title);position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-family:var(--ff-mono);font-size:9px;letter-spacing:.1em;white-space:nowrap;color:var(--text-dim);background:var(--bg2);border:1px solid var(--border);padding:3px 8px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.scene-dot:hover::after{opacity:1;}
+.scene-dot.active{background:var(--pov-s);border-color:var(--pov-p);transform:scale(1.25);}
+.scene-dot:hover:not(.active){border-color:var(--text-dim);}
+
+/* LEDGER */
+#ledger-section{margin-top:48px;display:none;}
+#ledger-section.open{display:block;animation:ledger-in .6s ease;}
+@keyframes ledger-in{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:none;}}
+.ledger-header{padding:12px 20px;background:#080004;border:1px solid #1a0008;border-bottom:none;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.ledger-title{font-family:var(--ff-mono);font-size:12px;letter-spacing:.32em;color:#6a0010;text-transform:uppercase;}
+.ledger-warning{font-family:var(--ff-mono);font-size:10px;letter-spacing:.15em;color:#380008;}
+.ledger-body{background:#060003;border:1px solid #1a0008;padding:22px;}
+.ledger-entry{display:flex;gap:16px;margin-bottom:14px;align-items:flex-start;}
+.ledger-entry:last-child{margin-bottom:0;}
+.ledger-id{font-family:var(--ff-mono);font-size:11px;color:#380010;min-width:66px;flex-shrink:0;padding-top:2px;letter-spacing:.1em;}
+.ledger-text{font-family:var(--ff-mono);font-size:13px;color:#6a2030;line-height:1.75;letter-spacing:.02em;}
+
+/* LEDGER TRIGGER */
+#ledger-trigger{position:fixed;bottom:24px;right:24px;z-index:100;background:#06000a;border:1px solid #1a001a;color:#2a0028;font-family:var(--ff-mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;padding:9px 18px;cursor:pointer;transition:all .5s;}
+#ledger-trigger:hover{color:#8a0080;border-color:#4a003a;box-shadow:0 0 22px rgba(140,0,110,.18);background:#0c0010;}
+#ledger-trigger.active{color:#aa00aa;border-color:#660066;box-shadow:0 0 30px rgba(170,0,170,.25);}
+
+/* TRANSITIONS */
+.fade-out{opacity:0 !important;transition:opacity .25s ease !important;}
+.fade-in{animation:fade-in-up .45s ease;}
+@keyframes fade-in-up{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);}
+
+@media(max-width:640px){
+  #app{padding:0 16px 100px;}
+  #narrative-panel{padding:24px 18px;}
+  #whisper-panel{padding:12px 18px 14px;}
+  .pov-ident{flex-wrap:wrap;}
+  .dist-meter{margin-left:0;margin-top:8px;}
+  .scene-time{margin-left:0;}
+  #lang-bar{top:10px;right:10px;}
+  .header-title{font-size:18px;}
+  #narrative-text{font-size:18px;}
+}
+</style>
+</head>
+<body>
+
+<div id="lang-bar">
+  <button class="lang-btn active" data-lang="en">EN</button>
+  <button class="lang-btn"        data-lang="ru">RU</button>
+</div>
+
+<div id="app">
+  <header id="site-header">
+    <div class="header-ornament"  id="arc-label"></div>
+    <h1 class="header-title"      id="header-title"></h1>
+    <div class="header-subtitle"  id="header-subtitle"></div>
+    <div class="header-rule"></div>
+  </header>
+
+  <div id="chapter-strip">
+    <span class="chapter-strip-item" id="strip-chapter"></span>
+    <span class="chapter-strip-divider">◆</span>
+    <span class="chapter-strip-item" id="strip-chapter-title"></span>
+    <span class="chapter-strip-divider">◆</span>
+    <span class="chapter-strip-item" id="strip-location"></span>
+  </div>
+
+  <section id="scene-container">
+    <div class="scene-header">
+      <div class="scene-meta-row">
+        <span class="scene-badge" id="scene-badge"></span>
+        <span class="scene-loc"   id="scene-loc"></span>
+        <span class="scene-time"  id="scene-time"></span>
+      </div>
+      <h2 class="scene-title"     id="scene-title"></h2>
+      <div class="scene-subtitle"  id="scene-subtitle"></div>
+      <div class="scene-flags"     id="scene-flags"></div>
+    </div>
+
+    <div id="pov-selector">
+      <span class="pov-selector-label" id="pov-label"></span>
+    </div>
+
+    <div id="narrative-wrap">
+      <div id="narrative-panel">
+        <div class="pov-ident">
+          <span class="pov-name" id="pov-name"></span>
+          <span class="pov-role" id="pov-role"></span>
+          <div class="dist-meter">
+            <span class="dist-label" id="dist-label"></span>
+            <div class="dist-bars"   id="dist-bars"></div>
+          </div>
+        </div>
+        <div id="narrative-text"></div>
+      </div>
+      <div id="whisper-panel">
+        <div class="whisper-label" id="whisper-label"></div>
+        <div class="whisper-body"  id="whisper-body"></div>
+      </div>
+    </div>
+
+    <div id="intel-panel">
+      <button class="intel-toggle" id="intel-toggle">
+        <span class="intel-arrow">▶</span>
+        <span id="intel-toggle-label"></span>
+      </button>
+      <div class="intel-body" id="intel-body"></div>
+    </div>
+
+    <div id="ledger-section">
+      <div class="ledger-header">
+        <span class="ledger-title"   id="ledger-title"></span>
+        <span class="ledger-warning" id="ledger-warning"></span>
+      </div>
+      <div class="ledger-body" id="ledger-body"></div>
+    </div>
+
+    <nav id="scene-nav">
+      <button class="nav-btn" id="prev-btn"></button>
+      <div id="scene-map"></div>
+      <button class="nav-btn" id="next-btn"></button>
+    </nav>
+  </section>
+</div>
+
+<button id="ledger-trigger"></button>
+
+<script>
+/* ═══ UI STRINGS ═══ */
+const UI={
+  en:{arcLabel:"ARC I — INTRODUCTION",headerTitle:"Chronicles of the Fallen World: Book IV",headerSubtitle:"AUDITOR: BLACK LEDGER",stripChapter:"Chapter 1",stripTitle:"The Price of Dawn",stripLocation:"City-State of Aspherat",povLabel:"Perspective",distLabel:"Distortion",whisperLabel:"◆ Subtext",intelLabel:"Intelligence Report — Click to Expand",knows:"Knows",misunderstands:"Misunderstands",hides:"Hides",prevBtn:"← Prev",nextBtn:"Next →",ledgerTitle:"True Event Timeline — Classified",ledgerWarning:"Diverges from all POV accounts",ledgerOpen:"✕ Close Ledger",ledgerClosed:"◆ Black Ledger",scene:"Scene"},
+  ru:{arcLabel:"АРК I — ВСТУПЛЕНИЕ",headerTitle:"Хроники Павшего Мира: Книга IV",headerSubtitle:"АУДИТОР: ЧЁРНЫЙ ГРОССБУХ",stripChapter:"Глава 1",stripTitle:"Цена Восхода",stripLocation:"Город-Государство Асферат",povLabel:"Перспектива",distLabel:"Искажение",whisperLabel:"◆ Подтекст",intelLabel:"Разведывательный Отчёт — Нажмите для раскрытия",knows:"Знает",misunderstands:"Заблуждается",hides:"Скрывает",prevBtn:"← Назад",nextBtn:"Далее →",ledgerTitle:"Истинная Хронология — Засекречено",ledgerWarning:"Расходится со всеми нарративами",ledgerOpen:"✕ Закрыть Гроссбух",ledgerClosed:"◆ Чёрный Гроссбух",scene:"Сцена"}
+};
+
+/* ═══ POV ROSTER ═══ */
+const POVS={
+  dante:{name:"DANTE",title:{en:"The Auditor",ru:"Аудитор"},primary:"#6b0000",secondary:"#9b2222",glow:"rgba(107,0,0,0.16)",textColor:"#dcc0c0",dimColor:"rgba(155,34,34,0.45)"},
+  galahad:{name:"GALAHAD",title:{en:"The Fallen Chosen",ru:"Падший Избранный"},primary:"#7a6200",secondary:"#c8a200",glow:"rgba(122,98,0,0.16)",textColor:"#faf0d0",dimColor:"rgba(200,162,0,0.42)"},
+  olmeric:{name:"OLMERIC",title:{en:"Master of the Grain Guild",ru:"Магистр Гильдии Зерна"},primary:"#2a5020",secondary:"#4a8a38",glow:"rgba(42,80,32,0.16)",textColor:"#d0e8c8",dimColor:"rgba(74,138,56,0.42)"},
+  crowd:{name:"CROWD",title:{en:"Aspherat's People",ru:"Народ Асферата"},primary:"#4a3020",secondary:"#8a6040",glow:"rgba(74,48,32,0.16)",textColor:"#d8c8b0",dimColor:"rgba(138,96,64,0.42)"}
+};
+
+/* ═══ TRUE TIMELINE ═══ */
+const TIMELINE=[
+  {id:"TET-01",en:"The Shadow Lord's reign maintained a fragile political ecology. His tribute to the Iron Tooth orcs kept trade routes and water infrastructure operational. This was not benevolence — it was extortion. But it worked.",ru:"Правление Владыки Теней поддерживало хрупкую политическую экологию. Его дань оркам клана Железного Зуба обеспечивала функционирование торговых путей и водной инфраструктуры. Это было не благодеяние — это было вымогательство. Но оно работало."},
+  {id:"TET-02",en:"Galahad destroyed the Shadow Lord in genuine good faith. The liberation was real. The suffering of the previous regime was real. He was not wrong about the evil he destroyed.",ru:"Галахад уничтожил Владыку Теней в искренней доброй воле. Освобождение было реальным. Страдания предыдущего режима были реальными. Он не ошибался в зле, которое уничтожил."},
+  {id:"TET-03",en:"Galahad's first decree broke the orc tribute pact without understanding the economic cascade it would trigger. He was incompetent in governance, not malicious.",ru:"Первый указ Галахада разорвал оркский пакт без понимания экономического каскада. Он был некомпетентен в управлении, а не злонамерен."},
+  {id:"TET-04",en:"Dante's agents poisoned the wells of the poor quarter with corpse toxin before Olmeric signed the contract. Evidence was planted implicating clerics bearing Galahad's seal.",ru:"Агенты Данте отравили колодцы бедного квартала трупным ядом до того, как Олмерик поставил подпись. Улики были подброшены, указывая на клириков с печатью Галахада."},
+  {id:"TET-05",en:"The woman who accused Galahad in the square was paid five gold. Her son died of Dante's poison, not the Paladin's blessed water. She did not know this. Her grief was entirely real.",ru:"Женщина, обвинившая Галахада на площади, получила пять золотых. Её сын умер от яда Гильдии, а не от воды паладина. Она этого не знала. Её горе было совершенно реальным."},
+  {id:"TET-06",en:"Three lepers were recruited from the Lowlands leprosarium under a false promise of miraculous healing. They were placed deliberately in the crowd. They believed they were receiving mercy.",ru:"Трёх прокажённых завербовали из лепрозория Нижних Земель под ложным обещанием чудесного исцеления. Их намеренно разместили в толпе. Они думали, что получают милосердие."},
+  {id:"TET-07",en:"Galahad's push was a reflex — an aristocrat's conditioned revulsion at the diseased. The death was accidental. He knew this. It broke something in him that the sword's silence had not.",ru:"Толчок Галахада был рефлексом — обусловленное отвращение аристократа к больным. Смерть была случайной. Он это знал. Это сломало в нём что-то, чего молчание меча не сломало."},
+  {id:"TET-08",en:"Galahad's sword (Dawning Ray) is genuinely an Aegis of Consent artifact — its power drawn from collective belief in the wielder's sanctity. Dante told the truth about this mechanism. It was the only truth he volunteered.",ru:"Меч Галахада (Рассветный Луч) — подлинный артефакт «Щит Согласия». Его сила черпается из коллективной веры в святость носителя. Данте сказал правду об этом механизме. Это была единственная правда, которую он предложил добровольно."},
+  {id:"TET-09",en:"Dante entered the palace through the east service passage using pre-acquired architectural maps. He observed the interior for ninety seconds before Galahad noticed him. All guards had fled as predicted.",ru:"Данте вошёл во дворец через восточный служебный проход с заранее полученными картами. Он наблюдал за интерьером девяносто секунд прежде, чем Галахад его заметил. Вся стража бежала, как было предсказано."},
+  {id:"TET-10",en:"Galahad left voluntarily under coercion. He was not fully broken. His faith diminished but survived, reorienting toward doubt rather than extinction.",ru:"Галахад покинул город добровольно под принуждением. Он не был окончательно сломлен. Его вера уменьшилась, но выжила, переориентировавшись на сомнение."},
+  {id:"TET-11",en:"The Iron Tooth deal: 10% tribute increase, resumed escort guarantees. The severed heads of Galahad's ambassadors returned as a ritual 'goodwill gesture.' Olmeric was informed of the tribute cost. He was not informed about the heads.",ru:"Сделка с Железным Зубом: увеличение дани на 10%, возобновлённые гарантии эскорта. Головы послов Галахада возвращены как ритуальный «жест доброй воли». Олмерик был уведомлён о стоимости. О головах — нет."},
+  {id:"TET-12",en:"Three new destabilizing threats are active and known to Dante: a dragon awakening in the north, a necromancer army in the west, an imperial prophet in the capital. Dante is already in preliminary contact regarding the first. Olmeric has no knowledge of any of them. The city's 'peace' has a shelf life.",ru:"Три новые угрозы активны и известны Данте: дракон на севере, армия некромантов на западе, имперский пророк в столице. По первой уже ведутся предварительные переговоры. Олмерик ни о чём не знает. «Мир» в городе имеет срок годности."}
+];
+
+/* ═══ SCENES ═══ */
+const SCENES=[
+  {id:"s1",
+   title:{en:"The Contract",ru:"Контракт"},
+   subtitle:{en:"Where faith meets the ledger.",ru:"Где вера встречает гроссбух."},
+   location:{en:"Olmeric's Study, Aspherat",ru:"Кабинет Олмерика, Асферат"},
+   timing:{en:"Day 3 of Liberation",ru:"День 3 Освобождения"},
+   flags:["pivotal","first_contact"],
+   povData:{
+     dante:{distortion:1,
+       text:{en:`The contract was a formality. The man across the table had already decided before I entered the room — his calculations simply required a witness to give them weight.\n\nI laid out the situation in the language he understood: inventory projections, loss timelines, cascade failure models. The hero has rendered the eastern trade routes inoperable. The mountain clans will begin retaliatory action within seventy-two hours. I said nothing that was not already in his own ledgers — ledgers he had clearly not consulted since Liberation day.\n\nHe called Galahad 'The Chosen.' He asked about invulnerability as though it were a technical specification requiring a workaround.\n\nI told him what he needed to hear: that invulnerability is a myth maintained by collective perception. He signed.\n\nThe transaction is clean. The rest is logistics.`,
+              ru:`Контракт был формальностью. Человек напротив уже принял решение до того, как я переступил порог — его расчёты просто требовали свидетеля, чтобы обрести вес.\n\nЯ изложил ситуацию на языке, который он понимал: проекции запасов, сроки потерь, модели каскадного коллапса. Герой вывел восточные торговые пути из строя. Горные кланы начнут карательные действия в течение семидесяти двух часов. Я не сказал ничего, чего не было бы в его собственных гроссбухах — гроссбухах, которые он, судя по всему, не открывал с Дня Освобождения.\n\nОн назвал Галахада «Избранным». Он спросил о неуязвимости — как о технической характеристике, требующей обходного решения.\n\nЯ сказал ему то, что ему нужно было услышать: неуязвимость — это миф, поддерживаемый коллективным восприятием. Он подписал.\n\nСделка чистая. Остальное — логистика.`},
+       knows:{en:["Galahad's power source is belief-dependent — verified from restricted archives","His agents have already been poisoning wells for three hours","Olmeric's precise financial exposure, to the coin","All deployed assets and their current positions in the city"],ru:["Сила Галахада зависит от веры — подтверждено из засекреченных архивов","Его агенты уже три часа отравляют колодцы","Точные финансовые потери Олмерика — до монеты","Все развёрнутые активы и их текущие позиции в городе"]},
+       misunderstands:{en:["Nothing material — operates exclusively on verified intelligence"],ru:["Ничего существенного — оперирует исключительно верифицированной разведкой"]},
+       hides:{en:["The desacralization operation is already in motion before the ink dries","This is not his first contract against a 'chosen one'"],ru:["Операция десакрализации уже запущена до того, как высохли чернила","Это не первый его контракт против «избранного»"]},
+       whisper:{en:"The contract was already written before Olmeric picked up the pen.",ru:"Контракт был написан ещё до того, как Олмерик взял перо."}},
+     olmeric:{distortion:5,
+       text:{en:`The eastern elevators were already ash before I sent for him. I tell myself that. I need it to be true — that the decision was made by events, not by me.\n\nHe arrived without announcement, without the particular smell that men who do dangerous work carry. As if the city had simply deposited him in my study. I offered wine. He didn't touch it. He watched my hands when I poured.\n\nHe spoke about Galahad the way a physician speaks about structural damage: location, spread, required intervention. No anger. No admiration. Only the flat language of outcome.\n\nHis eyes were the darkest I have encountered. Not cruel — simply absent of anything I recognize as human wanting.\n\nI asked about the invulnerability. He paused. In that pause I thought I saw something behind the stillness — something that had been patient for a very long time.\n\nI signed. God forgive me. But there are children in the eastern quarter, and they will eat by next week, and that is worth more than whatever I am paying tonight.`,
+              ru:`Восточные элеваторы уже догорали, когда я за ним послал. Я говорю себе это. Мне нужно, чтобы это было правдой — что решение приняли события, а не я.\n\nОн явился без объявления, без того особого запаха, который носят люди, делающие опасную работу. Словно город просто отложил его в моём кабинете. Я предложил вино. Он не прикоснулся. Он наблюдал за моими руками, когда я наливал.\n\nОн говорил о Галахаде так, как врач говорит о структурных повреждениях: локализация, распространение, необходимое вмешательство. Никакого гнева. Никакого восхищения. Только плоский язык результата.\n\nЕго глаза были темнейшими, что я встречал. Не жестокими — просто лишёнными всего, что я распознаю как человеческое желание.\n\nЯ спросил о неуязвимости. Он сделал паузу. В этой паузе мне показалось, что за неподвижностью есть что-то — что-то, долго ждавшее своего часа.\n\nЯ подписал. Бог простит меня. Но в восточном квартале есть дети, и к следующей неделе они будут есть, и это стоит больше, чем всё, за что я плачу этой ночью.`},
+       knows:{en:["The orcs burned the eastern elevators within hours of Galahad's decree","Dante has a reputation — in certain circles — for impossible structural corrections"],ru:["Орки сожгли восточные элеваторы в течение часов после указа Галахада","У Данте есть репутация — в определённых кругах — невозможных структурных исправлений"]},
+       misunderstands:{en:["Believes he is making a free choice under duress, not executing a pre-scripted scene","Does not know the poisoning began before his signature","Thinks Dante is a specialized mercenary, not an institution with clients above him"],ru:["Считает, что делает свободный выбор под давлением, а не исполняет заранее написанную сцену","Не знает, что отравление началось до его подписи","Думает, что Данте — наёмник, а не институт с клиентами выше него"]},
+       hides:{en:["He has already begun moving personal grain reserves to private storage","The relief he feels — something close to gratitude — at having been given a solution he doesn't have to understand"],ru:["Он уже начал переводить личные запасы зерна в частные склады","Облегчение — почти благодарность — от того, что получил решение, которое не надо понимать"]},
+       whisper:{en:"He told himself it was about the children. It was about the grain.",ru:"Он говорил себе, что это ради детей. Это было ради зерна."}}
+   }},
+
+  {id:"s2",
+   title:{en:"Anatomy of Light",ru:"Анатомия Света"},
+   subtitle:{en:"The hero's stage. The auditor's board.",ru:"Сцена героя. Доска аудитора."},
+   location:{en:"Central Square & Palace Balcony, Aspherat",ru:"Центральная Площадь и Балкон Дворца, Асферат"},
+   timing:{en:"Day 3 of Liberation, Dusk",ru:"День 3 Освобождения, Сумерки"},
+   flags:["pivotal","expand_later"],
+   povData:{
+     dante:{distortion:1,
+       text:{en:`I observed from the bell tower. Three hundred meters. Adequate sightline across the full square.\n\nThe assets functioned within expected parameters. Well contamination generated the primary emotional trigger. A grieving mother is a more efficient destabilization vector than a trained agitator — her affect cannot be faked, and the crowd reads affect, not argument. The woman's performance exceeded contract specification. She had access to genuine grief; I had simply redirected its cause.\n\nThe lepers' approach triggered the reflex response exactly as modeled from Galahad's documented conditioning. Note for file: the revulsion was involuntary, pre-rational. He did not choose to push the man. His body chose for him. This is useful — it means the mechanism is reproducible.\n\nThe fatality was incidental. It serves the narrative.\n\nPhase 1: Desacralization complete at 18:34. The crowd has seen the god flinch. The gap between symbol and flesh is now visible to an unaided eye.\n\nClosing the notebook. Proceeding to Phase 2.`,
+              ru:`Я наблюдал с колокольни. Триста метров. Достаточный угол обзора на всю площадь.\n\nАктивы функционировали в пределах ожидаемых параметров. Заражение колодцев создало первичный эмоциональный триггер. Скорбящая мать — более эффективный вектор дестабилизации, чем обученный агитатор: её аффект невозможно подделать, а толпа читает аффект, а не аргумент. Женщина превзошла контрактные спецификации. У неё было подлинное горе; я лишь перенаправил его причину.\n\nПриближение прокажённых вызвало рефлекторный ответ точно в соответствии с моделью, построенной на задокументированном воспитании Галахада. Заметка в досье: отвращение было непроизвольным, дорефлекторным. Он не выбирал — его тело выбрало за него. Это полезно: механизм воспроизводим.\n\nСмерть была случайной. Она работает на нарратив.\n\nФаза 1: Десакрализация завершена в 18:34. Толпа видела, как бог дрогнул. Разрыв между символом и плотью теперь виден невооружённым глазом.\n\nЗакрываю блокнот. Перехожу к Фазе 2.`},
+       knows:{en:["Every asset placement and current status","The exact psychological mechanism of the Aegis of Consent artifact","The pushed leper's death was accidental — and serves his purpose regardless","His location remains unknown to every party in the scene"],ru:["Размещение каждого актива и текущий статус","Точный психологический механизм артефакта «Щит Согласия»","Смерть прокажённого была случайной — и работает на его цели независимо","Его местоположение остаётся неизвестным каждой из сторон"]},
+       misunderstands:{en:["Dismisses as irrelevant: the long-term psychological weight this event will carry for Galahad"],ru:["Считает несущественным: долгосрочный психологический вес этого события для Галахада"]},
+       hides:{en:["One of the three 'lepers' is a guild informant providing live situational data","He has already written the Phase 2 palace entry protocol"],ru:["Один из трёх «прокажённых» — информатор Гильдии, обеспечивающий данные в реальном времени","Протокол входа во дворец для Фазы 2 уже написан"]},
+       whisper:{en:"He closed the notebook before the man stopped moving.",ru:"Он закрыл блокнот прежде, чем человек перестал двигаться."}},
+     galahad:{distortion:7,
+       text:{en:`Three days of voices below me. Three days of their gratitude rising from the stones like warmth.\n\nI stood at the balcony and felt what I have always felt when the work is finished and the city breathes again — the warmth in the sword's hilt, the resonance behind my sternum that has been there since the Ordination. This is what the Divine prepared me for. Not the battle; the battle was only the precondition. This: being the fixed point. The axis. The one who does not move while everything else finds its place.\n\nThe squire mentioned complaints. Water. Looting. A petition. I assumed the ordinary friction of a healing city.\n\nI went to the square.\n\nThe stone hit my pauldron. I remember the sound more than the impact — small, hollow, almost apologetic. Then the woman's face. Gray as ash, held open by grief that had no floor. I started to answer her, and then\n\nthey were at my legs.\n\nThe sick men. Their hands.\n\nSomething in me —\n\nI shoved one. I heard the crack. The square went silent in that particular way silence falls when something has already ended — and I understood that I had committed the only sin that cannot be forgiven by people: I had let them see that I was afraid.`,
+              ru:`Три дня голосов подо мной. Три дня их благодарности, поднимающейся из камня, как тепло.\n\nЯ стоял на балконе и чувствовал то, что всегда чувствую, когда работа окончена и город снова дышит — тепло рукояти меча, резонанс за грудиной, который живёт во мне с Рукоположения. Для этого Всеблагая Матерь готовила меня. Не для битвы — битва была только предусловием. Для этого: быть неподвижной точкой. Осью. Тем, кто не движется, пока всё остальное находит своё место.\n\nОруженосец упомянул жалобы. Вода. Мародёры. Петиция. Я предположил обычное трение исцеляющегося города.\n\nЯ вышел на площадь.\n\nКамень ударил в наплечник. Я запомнил звук больше, чем удар — маленький, глухой, почти виноватый. Потом лицо женщины. Серое, как зола, раскрытое горем, у которого не было дна. Я начал отвечать ей, и тогда\n\nони оказались у моих ног.\n\nБольные люди. Их руки.\n\nЧто-то во мне —\n\nЯ оттолкнул одного. Я слышал хруст. Площадь замолчала тем особым молчанием, которое падает, когда что-то уже закончилось — и я понял, что совершил единственный грех, непростительный для людей: позволил им увидеть, что я боюсь.`},
+       knows:{en:["The liberation was real — he genuinely destroyed the Shadow Lord","The sword's power feels inseparable from his own faith","The crowd adored him three days ago"],ru:["Освобождение было реальным — он действительно уничтожил Владыку Теней","Сила меча ощущается неотделимой от его собственной веры","Три дня назад толпа обожала его"]},
+       misunderstands:{en:["Does not know the wells were poisoned by Dante's agents","Believes the crowd's turn represents organic grief and doubt","Does not know the lepers were placed deliberately","Believes his faith is the source of the sword's power, not its mirror"],ru:["Не знает, что колодцы отравили агенты Данте","Считает, что поворот толпы — органическое горе и сомнение","Не знает, что прокажённых разместили намеренно","Считает свою веру источником силы меча, а не её зеркалом"]},
+       hides:{en:["The revulsion he felt at the lepers' touch — and the shame at having felt it","A moment of doubt before descending: he almost did not go"],ru:["Отвращение, которое он почувствовал к прикосновению прокажённых — и стыд от того, что почувствовал это","Момент сомнения перед спуском: он почти не вышел"]},
+       whisper:{en:"The light he felt in his chest was never his own. But his belief in it was entirely real.",ru:"Свет, который он чувствовал в груди, никогда не был его собственным. Но его вера в него была совершенно реальной."}},
+     crowd:{distortion:9,
+       text:{en:`The water has been wrong since the morning after he arrived.\n\nMy mother said it first. Then the neighbor. We didn't speak it — you don't say that when a god is walking the cobblestones. You keep your head down and you are grateful, because you have always been told to be grateful, and because the alternative is to think about what happens to those who aren't.\n\nBut then Maret's boy died. And she came to the square with the whole truth of it held in her body the way only mothers carry truth — no performance, no distance — and\n\nsuddenly all of us knew what we had been not-knowing.\n\nWhen he raised his shining hand to bless us, it felt like every other hand that has been raised above this city.\n\nThe sick men reached for him. They looked like us. They always look like us — the ones who get used.\n\nHe pushed one. We heard it.\n\nA man truly holy does not hear the crack of bone with silence.\n\nHe retreated behind his shield. We looked at the blood on the stones. Someone said what everyone was already thinking.\n\nWe have seen this face before. It wore different armor. It said different words. The aftermath was the same.`,
+              ru:`Вода была не той с утра после того, как он появился.\n\nМать сказала первой. Потом соседка. Мы не говорили об этом вслух — не говоришь такого, когда бог ходит по мостовой. Опускаешь голову и благодаришь, потому что всегда говорили быть благодарным, и потому что альтернатива — думать о том, что случается с теми, кто не благодарит.\n\nНо потом умер сын Марет. И она вышла на площадь со всей правдой этого в своём теле — так, как только матери несут правду: без игры, без дистанции — и\n\nвнезапно все мы узнали то, о чём старались не знать.\n\nКогда он поднял сияющую руку, чтобы благословить нас, это ощущалось как каждая другая рука, поднятая над этим городом.\n\nБольные потянулись к нему. Они выглядели как мы. Они всегда выглядят как мы — те, кого используют.\n\nОн оттолкнул одного. Мы слышали.\n\nПо-настоящему святой человек не слышит хруст кости в тишине.\n\nОн отступил за щит. Мы смотрели на кровь на камнях. Кто-то сказал то, о чём все уже думали.\n\nМы видели это лицо раньше. На нём были другие доспехи. Оно говорило другие слова. Итог был тем же.`},
+       knows:{en:["The water smells and tastes wrong — correctly sensed, wrongly attributed to Galahad","Galahad pushed the man, and the man died","The aqueducts are threatened"],ru:["Вода пахнет и имеет неправильный вкус — правильно почувствовано, неверно приписано Галахаду","Галахад оттолкнул человека, и тот умер","Акведукам угрожают"]},
+       misunderstands:{en:["Attributes the water contamination to Galahad or his clerics","Does not know the lepers were placed deliberately","The grieving woman's accusation seemed genuine — because it was genuine grief, misdirected"],ru:["Приписывает загрязнение воды Галахаду или его клирикам","Не знает, что прокажённых разместили намеренно","Обвинение женщины казалось совершенно искренним — потому что горе было искренним, просто перенаправленным"]},
+       hides:{en:["Many in the crowd wanted a reason to distrust — the relief of having been given one","Several voices maintaining the crowd's anger are Dante's paid agents","A minority still believes in Galahad but cannot speak against the current"],ru:["Многие в толпе хотели повода не доверять — облегчение от того, что повод дан","Несколько голосов, поддерживающих гнев — платные агенты Данте","Меньшинство всё ещё верит в Галахада, но не может говорить против течения"]},
+       whisper:{en:"They didn't need to be lied to. They only needed permission to distrust what they already feared.",ru:"Их не надо было обманывать. Им нужно было только разрешение не доверять тому, чего они уже боялись."}}
+   }},
+
+  {id:"s3",
+   title:{en:"The Labyrinth",ru:"Лабиринт"},
+   subtitle:{en:"No monster. No exit. Only the mirror.",ru:"Нет чудовища. Нет выхода. Только зеркало."},
+   location:{en:"Throne Room, Former Shadow Lord's Palace",ru:"Тронный Зал, Дворец Бывшего Владыки Теней"},
+   timing:{en:"Night of the Uprising",ru:"Ночь Восстания"},
+   flags:["pivotal"],
+   povData:{
+     dante:{distortion:1,
+       text:{en:`Entry through the east passage at 23:11, as mapped. Guards had fled — consistent with prediction. The companion mages were occupied at the outer gates. All variables within tolerance.\n\nGalahad was praying. Posture indicated genuine psychological destabilization: knees on stone, sword drawn but passive, head bowed. He had reached the stage where faith stops answering and begins to interrogate itself.\n\nI announced myself. He drew and struck on instinct. The strike was technically exceptional — real speed, textbook extension, the kind of training that takes decades. The blade extinguished at approximately 98% power depletion on contact. Confirmed: city-scale rejection yields near-total Aegis of Consent incapacitation. The mechanism holds at scale.\n\nI explained the artifact dependency. Precision matters — ignorant compliance degrades over time. Informed compliance holds.\n\nOption A: exile to the Southern Islands. Anonymity. Vineyards. Survival. A life.\nOption B: the mob. Six streets away. Currently organized.\n\nHe chose Option A.\n\nElapsed time from entry to verbal compliance: fourteen minutes.\n\nContract fulfilled.`,
+              ru:`Вход через восточный проход в 23:11, как намечено по картам. Стража бежала — в соответствии с прогнозом. Маги-компаньоны были заняты у внешних ворот. Все переменные в допуске.\n\nГалахад молился. Поза указывала на подлинную психологическую дестабилизацию: колени на камне, меч обнажён, но пассивен, голова опущена. Он достиг стадии, когда вера перестаёт отвечать и начинает допрашивать саму себя.\n\nЯ объявил о себе. Он выхватил клинок и атаковал инстинктивно. Удар был технически превосходен — реальная скорость, образцовое выпрямление, такая выучка, которая занимает десятилетия. Клинок угас примерно при 98% расходования мощности при контакте. Подтверждено: городское неприятие даёт почти полную инкапаситацию «Щита Согласия». Механизм работает на масштабе.\n\nЯ объяснил зависимость артефакта. Точность имеет значение — невежественное подчинение деградирует со временем. Осознанное подчинение держится.\n\nВариант А: изгнание на Южные Острова. Анонимность. Виноградники. Выживание. Жизнь.\nВариант Б: толпа. В шести улицах. Сейчас организована.\n\nОн выбрал Вариант А.\n\nВремя от входа до словесного подчинения: четырнадцать минут.\n\nКонтракт выполнен.`},
+       knows:{en:["Exact palace layout and guard departure patterns","The Aegis of Consent mechanism — verified from archives","The ship departure schedule, route, the island","Pre-entry assessment: 94% compliance probability"],ru:["Точная планировка дворца и предсказанное бегство стражи","Механизм «Щита Согласия» — подтверждён архивами","Расписание корабля, маршрут, остров","Предварительная оценка: вероятность подчинения 94%"]},
+       misunderstands:{en:["Considers irrelevant: whether Galahad's original quest had genuine moral worth"],ru:["Считает несущественным: была ли у Галахада подлинная моральная ценность"]},
+       hides:{en:["He has conducted this exact operation before — not in Aspherat","There is a chain of clients above Olmeric whose identities are not disclosed","He observed Galahad praying for ninety seconds before announcing himself"],ru:["Он проводил именно эту операцию раньше — не в Асферате","Есть цепочка клиентов выше Олмерика, чьи личности не раскрываются никому","Он наблюдал за молитвой Галахада девяносто секунд, прежде чем объявить о себе"]},
+       whisper:{en:"He had written the exit contract before entering the room.",ru:"Договор об уходе был написан прежде, чем он вошёл в комнату."}},
+     galahad:{distortion:8,
+       text:{en:`The fire had gone out before he arrived. Not the torches.\n\nMy fire.\n\nThe thing behind my ribs that has burned since the Matriarch laid her hands on my temples and said: you are the instrument of the Morning Star. I have carried it through a hundred battles. Through the deaths of people I loved.\n\nI had never considered that it could simply — go quiet.\n\nHe stepped into the light of my sword and I struck. I have parted granite with that blade. I have split enchantments that took centuries to build. The magic at my command has no ceiling I have ever found.\n\nThe sword stopped.\n\nHe said: it was never yours.\n\nHe said it the way a man reads from a ledger — no satisfaction, no malice, only notation. And that was what broke something in me that the sword's silence had not broken, because a lie I could have fought. A man gloating I could have rejected.\n\nBut a fact delivered by a man with nothing to gain from your humiliation —\n\nthat, you have to reckon with.\n\nI tried to call fire. Sparks. I tried to summon lightning. Nothing.\n\nHe gave me an envelope. A ship. Islands where they grow grapes.\n\nHe told me what would happen if I refused. He described it without investment, the way you describe weather — and emotionless truth is the only kind that reaches all the way down.\n\nI said I would go. I heard myself say it. I didn't recognize my own voice.`,
+              ru:`Огонь угас до того, как он появился. Не факелы.\n\nМой огонь.\n\nТо, что за рёбрами, что горело со дня, когда Матерь положила руки на мои виски и сказала: ты — орудие Утренней Звезды. Я нёс его сквозь сотню битв. Сквозь смерть людей, которых любил.\n\nЯ никогда не думал, что оно может просто — замолчать.\n\nОн шагнул в свет моего меча, и я ударил. Я рассекал этим клинком гранит. Я разрубал чары, на строительство которых ушли века. Сила, которой я командую, не имеет потолка, который я когда-либо находил.\n\nМеч остановился.\n\nОн сказал: это никогда не было твоим.\n\nОн сказал это так, как читают из гроссбуха — без удовлетворения, без злобы, только констатация. И именно это сломало во мне то, что молчание меча не сломало, потому что ложь я мог бы оспорить. Человека, торжествующего над тобой, я мог бы отвергнуть.\n\nНо факт, изложенный человеком, которому нечего выигрывать от твоего унижения —\n\nс этим надо считаться.\n\nЯ пытался вызвать огонь. Искры. Пытался призвать молнию. Ничего.\n\nОн дал мне конверт. Корабль. Острова, где выращивают виноград.\n\nОн сказал мне, что произойдёт, если я откажусь. Он описал это без вложений, как описывают погоду — а бесстрастная правда единственная, что достигает самого дна.\n\nЯ сказал, что уеду. Я слышал, как говорю это. Я не узнал своего голоса.`},
+       knows:{en:["The sword no longer responds","The city has turned against him completely","What Dante described will happen if he refuses — he believes it"],ru:["Меч больше не отвечает","Город полностью отвернулся от него","То, что описал Данте, произойдёт, если откажется — он верит в это"]},
+       misunderstands:{en:["Believes Dante possesses some dark power over faith itself","Does not understand the full mechanism of his own dismantling","Does not know about the planted lepers, the paid woman, the poisoned wells"],ru:["Считает, что Данте обладает тёмной властью над верой","Не понимает полного механизма своего демонтажа","Не знает о подставных прокажённых, подкупленной женщине, отравленных колодцах"]},
+       hides:{en:["A part of him recognizes Dante told the truth about the sword — and that recognition is what finally breaks him","He considered striking again, a second before compliance"],ru:["Часть его признаёт, что Данте сказал правду о мече — и именно это признание его окончательно ломает","За мгновение до согласия он думал ударить снова — и решил против"]},
+       whisper:{en:"The worst part was that the man wasn't lying.",ru:"Хуже всего было то, что этот человек не лгал."}}
+   }},
+
+  {id:"s4",
+   title:{en:"Balance",ru:"Баланс"},
+   subtitle:{en:"The port. The ledger. The horizon.",ru:"Порт. Гроссбух. Горизонт."},
+   location:{en:"Harbor of Aspherat",ru:"Гавань Асферата"},
+   timing:{en:"Dawn, Day 5 of Liberation",ru:"Рассвет, День 5 Освобождения"},
+   flags:["resolution","foreshadowing"],
+   povData:{
+     dante:{distortion:2,
+       text:{en:`The ship cleared the harbor mouth at 0600. Subject confirmed aboard: gray cloak, no insignia, no weapon. Declassified.\n\nOlmeric arrived at 0612. Better color in his face — the specific relief of a man whose appetite has returned. He asked if 'it was done' with the intonation of someone who does not require detail and is grateful for it.\n\nI confirmed. I outlined the Iron Tooth renegotiation: ten percent tribute increase, resumed escort guarantees, the heads of Galahad's ambassadors returned as a ritual acknowledgment of restored relations. Standard reintegration cost for a disrupted protection arrangement.\n\nHe asked if I pitied the hero.\n\nI paused — not from sentiment, but from precision. The question is structurally imprecise. Pity implies a judgment about what someone deserves. Galahad did not deserve his outcome the way a criminal deserves punishment. He was a structural incompatibility. You do not pity a bridge built for a different river.\n\nHell, I told him, reserves a special circle for those who mean well without the arithmetic. He didn't understand. He wasn't meant to.\n\nI have three open assessments already in motion. North. West. The capital.`,
+              ru:`Корабль вышел из гавани в 06:00. Субъект подтверждён на борту: серый плащ, без знаков различия, без оружия. Рассекречен.\n\nОлмерик прибыл в 06:12. Лучше выглядит — то специфическое облегчение человека, у которого вернулся аппетит. Он спросил, «всё ли сделано», с интонацией того, кто не требует подробностей и благодарен за это.\n\nЯ подтвердил. Изложил условия переговоров с Железным Зубом: десятипроцентное увеличение дани, возобновлённые гарантии эскорта, головы послов Галахада возвращены как ритуальное признание восстановленных отношений. Стандартная стоимость реинтеграции для нарушенного соглашения о защите.\n\nОн спросил, жаль ли мне героя.\n\nЯ сделал паузу — не от сентиментальности, а из-за точности. Вопрос структурно некорректен. Жалость предполагает суждение о том, что кто-то заслуживает. Галахад не заслуживал своего исхода так, как преступник заслуживает наказания. Он был структурной несовместимостью. Мост, построенный для другой реки.\n\nВ аду, сказал я ему, есть отдельный круг для тех, кто хочет как лучше, не умея считать. Он не понял. Он и не должен был.\n\nУ меня уже три открытых оценки в работе. Север. Запад. Столица.`},
+       knows:{en:["Complete picture of all events, all transactions","Iron Tooth deal terms in full","Three active emerging threats: northern dragon, western necromancers, imperial prophet","Already in preliminary contact regarding the northern situation"],ru:["Полная картина всех событий, всех транзакций","Условия сделки с Железным Зубом во всей полноте","Три активные угрозы: северный дракон, западные некроманты, имперский пророк","Уже ведёт предварительные переговоры по северной ситуации"]},
+       misunderstands:{en:["Nothing — by design and sustained practice"],ru:["Ничего — намеренно и систематически"]},
+       hides:{en:["The identity of the client chain above Olmeric","He is already in pre-contract discussions for the next operation","The full implication of 'three open assessments' for regional stability"],ru:["Личность цепочки клиентов выше Олмерика","Уже ведёт предконтрактные переговоры по следующей операции","Полные последствия «трёх открытых оценок» для региональной стабильности"]},
+       whisper:{en:"The harbor smelled of fish and futures. Both expire quickly.",ru:"Гавань пахла рыбой и будущим. Оба быстро портятся."}},
+     olmeric:{distortion:4,
+       text:{en:`He was already at the dock when I arrived. I will never understand how he moves through a city.\n\nThe ship was a shape on the gray water. I looked for the knight and found a figure in a plain cloak at the rail. Small at that distance. Ordinary. I realized I had never seen him look ordinary before — always armored, always luminous, always the center of whatever room he entered.\n\nDante said: the orcs are settled, the routes are open, we pay a premium but we keep our heads. He said it the way you read a receipt aloud — no interpretation required or offered.\n\nI asked about pity. I don't know why. Maybe I needed to find something human in him, to make what I paid for feel less like what it was.\n\nHe said something about hell and arithmetic and walked away into the morning crowd without looking back.\n\nI stood on the dock alone, watching the harbor fill with its usual noise — fish, rope, men who smell like honest work — and I thought: we are saved. And I thought: God help us all.\n\nAnd then I thought about breakfast.\n\nAnd I went home.`,
+              ru:`Он уже был на причале, когда я пришёл. Я никогда не пойму, как он движется по городу.\n\nКорабль был силуэтом на серой воде. Я искал рыцаря и нашёл фигуру в простом плаще у борта. Маленькую на таком расстоянии. Обычную. Я понял, что никогда прежде не видел его обычным — всегда в доспехах, всегда в сиянии, всегда в центре любой комнаты, где он оказывался.\n\nДанте сказал: орки улажены, маршруты открыты, платим надбавку, но сохраняем головы. Сказал это так, как зачитывают квитанцию вслух — интерпретация не требуется и не предлагается.\n\nЯ спросил о жалости. Не знаю почему. Может, мне нужно было найти в нём что-то человеческое, чтобы то, за что я заплатил, казалось меньшим, чем было.\n\nОн сказал что-то про ад и арифметику и ушёл в утреннюю толпу, не оглянувшись.\n\nЯ стоял на причале один, наблюдая, как гавань наполняется привычным шумом — рыба, канаты, люди, пахнущие честным трудом — и думал: мы спасены. И думал: Боже, храни нас всех.\n\nА потом подумал о завтраке.\n\nИ пошёл домой.`},
+       knows:{en:["Galahad is gone — confirmed","The orc deal terms — the tribute cost, not the ambassador detail","The contract is closed and paid"],ru:["Галахад ушёл — подтверждено","Условия оркской сделки — стоимость, без подробностей о послах","Контракт закрыт и оплачен"]},
+       misunderstands:{en:["Believes the crisis is fully resolved — unaware of the three approaching threats","Believes he made the hard decision; in practice Dante made every decision","Believes the resulting peace has a meaningful foundation"],ru:["Считает, что кризис полностью урегулирован — не подозревает о трёх надвигающихся угрозах","Считает, что принял трудное решение; на практике Данте принял каждое решение","Считает, что полученный мир имеет значимую основу"]},
+       hides:{en:["His private relief at not needing to know how it was accomplished","He has mentally drafted the story: 'the hero chose to depart of his own accord'","He will never speak of this contract to anyone — not from guilt, but from comfort"],ru:["Личное облегчение от того, что не нужно знать, как это было сделано","Он уже мысленно написал историю: «герой решил уйти по собственной воле»","Он никогда не расскажет об этом контракте никому — не от вины, а от комфорта"]},
+       whisper:{en:"He went home to breakfast. He had earned it. That was the most terrible thing about him.",ru:"Он пошёл домой к завтраку. Он его заслужил. Это было в нём самым ужасным."}}
+   }}
+];
+
+/* ═══ STATE ═══ */
+const S={sceneIdx:0,povId:null,lang:'en',intelOpen:false,ledgerOpen:false,whisperTmr:null};
+const ui=k=>UI[S.lang][k];
+const pick=o=>(o&&typeof o==='object'&&'en'in o)?o[S.lang]:o;
+
+/* ═══ THEME ═══ */
+function applyTheme(pid){
+  const p=POVS[pid];if(!p)return;
+  const r=document.documentElement;
+  r.style.setProperty('--pov-p',p.primary);
+  r.style.setProperty('--pov-s',p.secondary);
+  r.style.setProperty('--pov-glow',p.glow);
+  r.style.setProperty('--pov-t',p.textColor);
+  r.style.setProperty('--pov-d',p.dimColor);
+}
+
+function renderDistBars(lvl){
+  const el=document.getElementById('dist-bars');el.innerHTML='';
+  for(let i=1;i<=10;i++){const b=document.createElement('div');b.className='dist-bar';if(i<=lvl){if(lvl>=9)b.classList.add('ex');else if(lvl>=6)b.classList.add('hi');else b.classList.add('on');}el.appendChild(b);}
+}
+
+function fmt(t){return t.split('\n\n').filter(p=>p.trim()).map(p=>`<p>${p.replace(/\n/g,'<br>')}</p>`).join('');}
+
+function showWhisper(text,delay){
+  clearTimeout(S.whisperTmr);
+  const pan=document.getElementById('whisper-panel'),bod=document.getElementById('whisper-body');
+  pan.classList.remove('vis');bod.textContent=text||'';
+  if(text)S.whisperTmr=setTimeout(()=>pan.classList.add('vis'),delay);
+}
+
+function renderIntel(pd){
+  const c=document.getElementById('intel-body');
+  const secs=[{key:'knows',cls:'knows'},{key:'misunderstands',cls:'misunderstands'},{key:'hides',cls:'hides'}];
+  c.innerHTML=secs.map(s=>{const items=pick(pd[s.key])||[];if(!items.length)return '';
+    return `<div class="intel-section ${s.cls}"><div class="intel-section-head">${ui(s.key)}</div><ul class="intel-list">${items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;}).join('');
+}
+
+function renderSceneMap(idx){
+  const map=document.getElementById('scene-map');map.innerHTML='';
+  SCENES.forEach((sc,i)=>{const d=document.createElement('div');d.className='scene-dot'+(i===idx?' active':'');d.setAttribute('data-title',pick(sc.title));d.addEventListener('click',()=>{if(i!==S.sceneIdx){renderScene(i,null,true);scrollTop();}});map.appendChild(d);});
+}
+
+function renderLedger(){
+  document.getElementById('ledger-body').innerHTML=TIMELINE.map(e=>`<div class="ledger-entry"><span class="ledger-id">${e.id}</span><span class="ledger-text">${e[S.lang]}</span></div>`).join('');
+}
+
+function updateStaticUI(){
+  document.getElementById('arc-label').textContent=ui('arcLabel');
+  document.getElementById('header-title').textContent=ui('headerTitle');
+  document.getElementById('header-subtitle').textContent=ui('headerSubtitle');
+  document.getElementById('strip-chapter').textContent=ui('stripChapter');
+  document.getElementById('strip-chapter-title').textContent=ui('stripTitle');
+  document.getElementById('strip-location').textContent=ui('stripLocation');
+  document.getElementById('pov-label').textContent=ui('povLabel');
+  document.getElementById('dist-label').textContent=ui('distLabel');
+  document.getElementById('whisper-label').textContent=ui('whisperLabel');
+  document.getElementById('intel-toggle-label').textContent=ui('intelLabel');
+  document.getElementById('ledger-title').textContent=ui('ledgerTitle');
+  document.getElementById('ledger-warning').textContent=ui('ledgerWarning');
+  document.getElementById('prev-btn').textContent=ui('prevBtn');
+  document.getElementById('next-btn').textContent=ui('nextBtn');
+  document.getElementById('ledger-trigger').textContent=S.ledgerOpen?ui('ledgerOpen'):ui('ledgerClosed');
+  document.body.classList.toggle('lang-ru',S.lang==='ru');
+  document.documentElement.lang=S.lang;
+}
+
+function renderScene(idx,povId,animate){
+  const scene=SCENES[idx];if(!scene)return;
+  const avail=Object.keys(scene.povData);
+  if(!povId||!avail.includes(povId))povId=avail[0];
+  S.sceneIdx=idx;S.povId=povId;
+  const pMeta=POVS[povId],pScene=scene.povData[povId];
+  applyTheme(povId);updateStaticUI();
+
+  document.getElementById('scene-badge').textContent=ui('scene')+' '+String(idx+1).padStart(2,'0');
+  document.getElementById('scene-loc').textContent=pick(scene.location);
+  document.getElementById('scene-time').textContent=pick(scene.timing);
+  document.getElementById('scene-title').textContent=pick(scene.title);
+  document.getElementById('scene-subtitle').textContent=pick(scene.subtitle);
+  document.getElementById('scene-flags').innerHTML=scene.flags.map(f=>`<span class="scene-flag ${f}">${f.replace(/_/g,' ')}</span>`).join('');
+
+  const sel=document.getElementById('pov-selector');
+  sel.querySelectorAll('.pov-btn').forEach(b=>b.remove());
+  avail.forEach(pid=>{const btn=document.createElement('button');btn.className='pov-btn'+(pid===povId?' active':'');btn.textContent=POVS[pid].name;btn.setAttribute('data-pov',pid);btn.addEventListener('click',()=>{if(pid!==S.povId)switchPov(pid);});sel.appendChild(btn);});
+
+  document.getElementById('pov-name').textContent=pMeta.name;
+  document.getElementById('pov-role').textContent='— '+pick(pMeta.title);
+  renderDistBars(pScene.distortion);
+
+  const textEl=document.getElementById('narrative-text');
+  const write=()=>{textEl.innerHTML=fmt(pick(pScene.text));textEl.className='d'+pScene.distortion;textEl.classList.add('fade-in');setTimeout(()=>textEl.classList.remove('fade-in'),500);};
+  if(animate){textEl.classList.add('fade-out');setTimeout(write,260);}else write();
+
+  showWhisper(pick(pScene.whisper),animate?2000:500);
+  renderIntel(pScene);
+  document.getElementById('prev-btn').disabled=idx===0;
+  document.getElementById('next-btn').disabled=idx===SCENES.length-1;
+  if(S.ledgerOpen)renderLedger();
+  renderSceneMap(idx);
+}
+
+function switchPov(povId){
+  const pScene=SCENES[S.sceneIdx].povData[povId],pMeta=POVS[povId];
+  S.povId=povId;applyTheme(povId);
+  document.querySelectorAll('.pov-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-pov')===povId));
+  document.getElementById('pov-name').textContent=pMeta.name;
+  document.getElementById('pov-role').textContent='— '+pick(pMeta.title);
+  renderDistBars(pScene.distortion);
+  const textEl=document.getElementById('narrative-text');
+  textEl.classList.add('fade-out');
+  setTimeout(()=>{textEl.innerHTML=fmt(pick(pScene.text));textEl.className='d'+pScene.distortion;textEl.classList.add('fade-in');setTimeout(()=>textEl.classList.remove('fade-in'),500);},260);
+  showWhisper(pick(pScene.whisper),2000);
+  renderIntel(pScene);
+}
+
+/* LANG TOGGLE */
+document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>{
+  const l=btn.getAttribute('data-lang');if(l===S.lang)return;
+  S.lang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===l));
+  renderScene(S.sceneIdx,S.povId,true);
+}));
+
+function scrollTop(){window.scrollTo({top:0,behavior:'smooth'});}
+
+document.getElementById('prev-btn').addEventListener('click',()=>{if(S.sceneIdx>0){renderScene(S.sceneIdx-1,null,true);scrollTop();}});
+document.getElementById('next-btn').addEventListener('click',()=>{if(S.sceneIdx<SCENES.length-1){renderScene(S.sceneIdx+1,null,true);scrollTop();}});
+document.getElementById('intel-toggle').addEventListener('click',()=>{S.intelOpen=!S.intelOpen;document.getElementById('intel-body').classList.toggle('open',S.intelOpen);document.getElementById('intel-toggle').classList.toggle('open',S.intelOpen);});
+document.getElementById('ledger-trigger').addEventListener('click',()=>{
+  S.ledgerOpen=!S.ledgerOpen;
+  const sec=document.getElementById('ledger-section'),btn=document.getElementById('ledger-trigger');
+  sec.classList.toggle('open',S.ledgerOpen);btn.classList.toggle('active',S.ledgerOpen);
+  btn.textContent=S.ledgerOpen?ui('ledgerOpen'):ui('ledgerClosed');
+  if(S.ledgerOpen){renderLedger();setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),100);}
+});
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){if(S.sceneIdx<SCENES.length-1){renderScene(S.sceneIdx+1,null,true);scrollTop();}}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){if(S.sceneIdx>0){renderScene(S.sceneIdx-1,null,true);scrollTop();}}
+  if(e.key==='Tab'&&!e.shiftKey){e.preventDefault();const avail=Object.keys(SCENES[S.sceneIdx].povData);switchPov(avail[(avail.indexOf(S.povId)+1)%avail.length]);}
+});
+
+renderScene(0,'dante',false);
+</script>
+</body>
+</html>

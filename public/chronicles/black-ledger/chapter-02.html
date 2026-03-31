@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chronicles — Black Ledger: Chapter 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&family=Cormorant:ital,wght@0,400;0,600;1,400&family=PT+Serif:ital,wght@0,400;1,400&family=PT+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#060609;--bg2:#0a0a10;--bg3:#0e0e18;--panel:#0b0b14;
+  --border:#1a1a2a;--border2:#232335;
+  --text:#b8b0a0;--text-dim:#5a5248;--text-muted:#312c28;
+  --pov-p:#6b0000;--pov-s:#9b1111;--pov-glow:rgba(107,0,0,0.14);
+  --pov-t:#dcc0c0;--pov-d:rgba(155,17,17,0.38);
+  --ff-display:'Cinzel','Palatino Linotype',serif;
+  --ff-body:'Crimson Text','Georgia',serif;
+  --ff-mono:'Share Tech Mono','Courier New',monospace;
+}
+body.lang-ru{
+  --ff-display:'Cormorant','Palatino Linotype',serif;
+  --ff-body:'PT Serif','Georgia',serif;
+  --ff-mono:'PT Mono','Courier New',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--ff-body);min-height:100vh;overflow-x:hidden;transition:background 1s;position:relative;}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:998;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.7) 100%);}
+#app{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 28px 120px;}
+
+/* LANG */
+#lang-bar{position:fixed;top:16px;right:20px;z-index:200;display:flex;}
+.lang-btn{font-family:var(--ff-mono);font-size:11px;letter-spacing:.25em;padding:7px 15px;background:var(--bg2);border:1px solid var(--border2);color:var(--text-muted);cursor:pointer;transition:all .25s;text-transform:uppercase;}
+.lang-btn:first-child{border-right:none;}
+.lang-btn.active{color:var(--pov-s);border-color:var(--pov-p);background:var(--bg3);}
+.lang-btn:hover:not(.active){color:var(--text-dim);}
+
+/* HEADER */
+#site-header{padding:56px 0 36px;text-align:center;}
+.header-ornament{font-family:var(--ff-mono);font-size:12px;letter-spacing:.4em;color:var(--pov-s);text-transform:uppercase;margin-bottom:14px;opacity:.7;transition:color .8s;}
+.header-title{font-family:var(--ff-display);font-size:clamp(22px,4vw,32px);font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--text);margin-bottom:6px;line-height:1.3;}
+.header-subtitle{font-family:var(--ff-mono);font-size:14px;letter-spacing:.3em;color:var(--pov-p);text-transform:uppercase;transition:color .8s;}
+.header-rule{height:1px;background:linear-gradient(90deg,transparent,var(--border2) 20%,var(--pov-p) 50%,var(--border2) 80%,transparent);margin:28px 0;transition:background .8s;}
+
+/* STRIP */
+#chapter-strip{display:flex;justify-content:space-between;align-items:center;padding:9px 0;margin-bottom:40px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.chapter-strip-item{font-family:var(--ff-mono);font-size:12px;letter-spacing:.22em;color:var(--text-dim);text-transform:uppercase;}
+.chapter-strip-divider{font-family:var(--ff-mono);font-size:11px;color:var(--text-muted);}
+
+/* SCENE HEADER */
+.scene-header{margin-bottom:28px;}
+.scene-meta-row{display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap;}
+.scene-badge{font-family:var(--ff-mono);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--pov-s);border:1px solid var(--pov-p);padding:3px 10px;transition:color .6s,border-color .6s;}
+.scene-loc{font-family:var(--ff-mono);font-size:11px;color:var(--text-dim);letter-spacing:.14em;text-transform:uppercase;}
+.scene-time{font-family:var(--ff-mono);font-size:11px;color:var(--text-muted);letter-spacing:.1em;margin-left:auto;}
+.scene-title{font-family:var(--ff-display);font-size:clamp(36px,7vw,58px);font-weight:400;letter-spacing:.04em;color:var(--text);line-height:1.05;margin-bottom:8px;}
+.scene-subtitle{font-family:var(--ff-body);font-style:italic;font-size:18px;color:var(--text-dim);letter-spacing:.04em;}
+.scene-flags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+.scene-flag{font-family:var(--ff-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--border);color:var(--text-muted);}
+.scene-flag.pivotal{border-color:#2e1010;color:#6a2020;}
+.scene-flag.expand_later{border-color:#102e10;color:#206a20;}
+.scene-flag.foreshadowing{border-color:#10102e;color:#20206a;}
+.scene-flag.resolution{border-color:#2e2010;color:#6a5020;}
+.scene-flag.introduction{border-color:#1e1e30;color:#40406a;}
+.scene-flag.horror{border-color:#2e1020;color:#6a2040;}
+
+/* POV */
+#pov-selector{display:flex;align-items:center;gap:2px;margin-bottom:24px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);flex-wrap:wrap;}
+.pov-selector-label{font-family:var(--ff-mono);font-size:11px;letter-spacing:.28em;color:var(--text-muted);text-transform:uppercase;padding-right:12px;border-right:1px solid var(--border2);margin-right:8px;white-space:nowrap;}
+.pov-btn{font-family:var(--ff-mono);font-size:13px;letter-spacing:.18em;text-transform:uppercase;padding:9px 20px;background:transparent;border:1px solid transparent;color:var(--text-dim);cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.pov-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:transparent;transition:background .3s;}
+.pov-btn:hover{color:var(--text);border-color:var(--border2);}
+.pov-btn.active{color:var(--pov-t);border-color:var(--pov-p);background:var(--pov-glow);}
+.pov-btn.active::after{background:var(--pov-s);}
+
+/* NARRATIVE */
+#narrative-panel{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--pov-p);padding:34px 40px;transition:border-left-color .7s;position:relative;overflow:hidden;}
+#narrative-panel::before{content:'';position:absolute;inset:0;background:var(--pov-glow);pointer-events:none;transition:background .7s;}
+.pov-ident{display:flex;align-items:baseline;gap:12px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border2);flex-wrap:wrap;position:relative;z-index:1;}
+.pov-name{font-family:var(--ff-mono);font-size:14px;letter-spacing:.3em;text-transform:uppercase;color:var(--pov-s);transition:color .7s;}
+.pov-role{font-family:var(--ff-body);font-style:italic;font-size:16px;color:var(--text-dim);}
+.dist-meter{display:flex;align-items:center;gap:9px;margin-left:auto;}
+.dist-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:.2em;color:var(--text-muted);text-transform:uppercase;}
+.dist-bars{display:flex;gap:3px;}
+.dist-bar{width:4px;height:15px;background:var(--border2);transition:background .4s;}
+.dist-bar.on{background:var(--pov-p);}
+.dist-bar.hi{background:#7a1010;}
+.dist-bar.ex{background:#bb0000;animation:barpulse 1.8s infinite;}
+@keyframes barpulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+#narrative-text{font-size:20px;line-height:1.9;color:var(--pov-t);transition:color .7s,opacity .3s;position:relative;z-index:1;}
+#narrative-text p{margin-bottom:1.3em;}
+#narrative-text p:last-child{margin-bottom:0;}
+.d3,.d4,.d5{animation:flicker-soft 14s infinite;}
+.d6,.d7{animation:flicker-mid 7s infinite;}
+.d8,.d9{animation:flicker-hard 4s infinite,glitch-mid 16s infinite;}
+.d10{animation:flicker-hard 2s infinite,glitch-hard 8s infinite;filter:blur(.4px);}
+@keyframes flicker-soft{0%,94%,100%{opacity:1;}96%{opacity:.88;}}
+@keyframes flicker-mid{0%,88%,100%{opacity:1;}90%{opacity:.75;}92%{opacity:.9;}93%{opacity:.68;}94%{opacity:1;}}
+@keyframes flicker-hard{0%,80%,100%{opacity:1;}82%{opacity:.6;}83%{opacity:.9;}84%{opacity:.55;}85%{opacity:.85;}86%{opacity:.7;}87%{opacity:1;}}
+@keyframes glitch-mid{0%,92%,100%{transform:none;filter:none;}93%{transform:translate(-3px,0);filter:drop-shadow(3px 0 rgba(255,0,0,.3));}94%{transform:translate(3px,0);filter:drop-shadow(-3px 0 rgba(0,100,255,.2));}95%{transform:translate(-1px,1px);}96%{transform:none;}}
+@keyframes glitch-hard{0%,88%,100%{transform:none;filter:none;}89%{transform:translate(-4px,0) skewX(-1deg);filter:drop-shadow(4px 0 rgba(255,0,0,.4)) saturate(2);}90%{transform:translate(4px,-1px) skewX(1deg);filter:drop-shadow(-4px 0 rgba(0,150,255,.3));}91%{transform:translate(-2px,2px);filter:brightness(.7);}92%{transform:translate(1px,-1px);}93%{transform:none;filter:none;}}
+
+/* WHISPER */
+#whisper-panel{background:var(--bg2);border:1px solid var(--border);border-top:none;border-left:3px solid var(--pov-p);padding:15px 40px 17px;margin-bottom:12px;opacity:0;transform:translateY(-2px);transition:opacity 1.6s,transform 1.2s,border-left-color .7s;pointer-events:none;}
+#whisper-panel.vis{opacity:1;transform:none;pointer-events:auto;}
+.whisper-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:.45em;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;}
+.whisper-body{font-family:var(--ff-body);font-style:italic;font-size:18px;color:var(--pov-d);letter-spacing:.04em;line-height:1.65;transition:color .7s;}
+
+/* INTEL */
+#intel-panel{background:var(--bg3);border:1px solid var(--border);margin-bottom:32px;}
+.intel-toggle{width:100%;padding:12px 18px;background:transparent;border:none;color:var(--text-dim);font-family:var(--ff-mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:9px;transition:color .3s;text-align:left;}
+.intel-toggle:hover{color:var(--text);}
+.intel-arrow{transition:transform .3s;display:inline-block;font-size:9px;}
+.intel-toggle.open .intel-arrow{transform:rotate(90deg);}
+.intel-body{display:none;padding:18px 20px 22px;border-top:1px solid var(--border);}
+.intel-body.open{display:block;}
+.intel-section{margin-bottom:20px;}
+.intel-section:last-child{margin-bottom:0;}
+.intel-section-head{font-family:var(--ff-mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;margin-bottom:10px;}
+.intel-section.knows .intel-section-head{color:#3a5a3a;}
+.intel-section.misunderstands .intel-section-head{color:#5a5a20;}
+.intel-section.hides .intel-section-head{color:#5a2020;}
+.intel-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.intel-list li{font-family:var(--ff-mono);font-size:13px;line-height:1.65;padding-left:20px;position:relative;}
+.intel-list li::before{content:'—';position:absolute;left:0;color:var(--text-muted);}
+.intel-section.knows .intel-list li{color:#5a8a5a;}
+.intel-section.misunderstands .intel-list li{color:#8a8a3a;}
+.intel-section.hides .intel-list li{color:#8a4040;}
+
+/* NAV */
+#scene-nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-top:1px solid var(--border);}
+.nav-btn{font-family:var(--ff-mono);font-size:13px;letter-spacing:.22em;text-transform:uppercase;padding:11px 24px;background:transparent;border:1px solid var(--border2);color:var(--text-dim);cursor:pointer;transition:all .3s;}
+.nav-btn:hover:not(:disabled){border-color:var(--pov-p);color:var(--text);}
+.nav-btn:disabled{opacity:.18;cursor:not-allowed;}
+#scene-map{display:flex;gap:10px;align-items:center;}
+.scene-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);cursor:pointer;transition:all .3s;border:1px solid transparent;position:relative;}
+.scene-dot::after{content:attr(data-title);position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-family:var(--ff-mono);font-size:9px;letter-spacing:.1em;white-space:nowrap;color:var(--text-dim);background:var(--bg2);border:1px solid var(--border);padding:3px 8px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.scene-dot:hover::after{opacity:1;}
+.scene-dot.active{background:var(--pov-s);border-color:var(--pov-p);transform:scale(1.25);}
+.scene-dot:hover:not(.active){border-color:var(--text-dim);}
+
+/* LEDGER */
+#ledger-section{margin-top:48px;display:none;}
+#ledger-section.open{display:block;animation:ledger-in .6s ease;}
+@keyframes ledger-in{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:none;}}
+.ledger-header{padding:12px 20px;background:#080004;border:1px solid #1a0008;border-bottom:none;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.ledger-title{font-family:var(--ff-mono);font-size:12px;letter-spacing:.32em;color:#6a0010;text-transform:uppercase;}
+.ledger-warning{font-family:var(--ff-mono);font-size:10px;letter-spacing:.15em;color:#380008;}
+.ledger-body{background:#060003;border:1px solid #1a0008;padding:22px;}
+.ledger-entry{display:flex;gap:16px;margin-bottom:14px;align-items:flex-start;}
+.ledger-entry:last-child{margin-bottom:0;}
+.ledger-id{font-family:var(--ff-mono);font-size:11px;color:#380010;min-width:66px;flex-shrink:0;padding-top:2px;letter-spacing:.1em;}
+.ledger-text{font-family:var(--ff-mono);font-size:13px;color:#6a2030;line-height:1.75;letter-spacing:.02em;}
+
+#ledger-trigger{position:fixed;bottom:24px;right:24px;z-index:100;background:#06000a;border:1px solid #1a001a;color:#2a0028;font-family:var(--ff-mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;padding:9px 18px;cursor:pointer;transition:all .5s;}
+#ledger-trigger:hover{color:#8a0080;border-color:#4a003a;box-shadow:0 0 22px rgba(140,0,110,.18);background:#0c0010;}
+#ledger-trigger.active{color:#aa00aa;border-color:#660066;box-shadow:0 0 30px rgba(170,0,170,.25);}
+
+.fade-out{opacity:0 !important;transition:opacity .25s ease !important;}
+.fade-in{animation:fade-in-up .45s ease;}
+@keyframes fade-in-up{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);}
+
+@media(max-width:640px){
+  #app{padding:0 16px 100px;}
+  #narrative-panel{padding:24px 18px;}
+  #whisper-panel{padding:12px 18px 14px;}
+  .pov-ident{flex-wrap:wrap;}
+  .dist-meter{margin-left:0;margin-top:8px;}
+  .scene-time{margin-left:0;}
+  #lang-bar{top:10px;right:10px;}
+  #narrative-text{font-size:18px;}
+}
+</style>
+</head>
+<body>
+
+<div id="lang-bar">
+  <button class="lang-btn active" data-lang="en">EN</button>
+  <button class="lang-btn"        data-lang="ru">RU</button>
+</div>
+
+<div id="app">
+  <header id="site-header">
+    <div class="header-ornament"  id="arc-label"></div>
+    <h1 class="header-title"      id="header-title"></h1>
+    <div class="header-subtitle"  id="header-subtitle"></div>
+    <div class="header-rule"></div>
+  </header>
+  <div id="chapter-strip">
+    <span class="chapter-strip-item" id="strip-chapter"></span>
+    <span class="chapter-strip-divider">◆</span>
+    <span class="chapter-strip-item" id="strip-chapter-title"></span>
+    <span class="chapter-strip-divider">◆</span>
+    <span class="chapter-strip-item" id="strip-location"></span>
+  </div>
+  <section id="scene-container">
+    <div class="scene-header">
+      <div class="scene-meta-row">
+        <span class="scene-badge" id="scene-badge"></span>
+        <span class="scene-loc"   id="scene-loc"></span>
+        <span class="scene-time"  id="scene-time"></span>
+      </div>
+      <h2 class="scene-title"    id="scene-title"></h2>
+      <div class="scene-subtitle" id="scene-subtitle"></div>
+      <div class="scene-flags"    id="scene-flags"></div>
+    </div>
+    <div id="pov-selector">
+      <span class="pov-selector-label" id="pov-label"></span>
+    </div>
+    <div id="narrative-wrap">
+      <div id="narrative-panel">
+        <div class="pov-ident">
+          <span class="pov-name" id="pov-name"></span>
+          <span class="pov-role" id="pov-role"></span>
+          <div class="dist-meter">
+            <span class="dist-label" id="dist-label"></span>
+            <div class="dist-bars"   id="dist-bars"></div>
+          </div>
+        </div>
+        <div id="narrative-text"></div>
+      </div>
+      <div id="whisper-panel">
+        <div class="whisper-label" id="whisper-label"></div>
+        <div class="whisper-body"  id="whisper-body"></div>
+      </div>
+    </div>
+    <div id="intel-panel">
+      <button class="intel-toggle" id="intel-toggle">
+        <span class="intel-arrow">▶</span>
+        <span id="intel-toggle-label"></span>
+      </button>
+      <div class="intel-body" id="intel-body"></div>
+    </div>
+    <div id="ledger-section">
+      <div class="ledger-header">
+        <span class="ledger-title"   id="ledger-title"></span>
+        <span class="ledger-warning" id="ledger-warning"></span>
+      </div>
+      <div class="ledger-body" id="ledger-body"></div>
+    </div>
+    <nav id="scene-nav">
+      <button class="nav-btn" id="prev-btn"></button>
+      <div id="scene-map"></div>
+      <button class="nav-btn" id="next-btn"></button>
+    </nav>
+  </section>
+</div>
+<button id="ledger-trigger"></button>
+
+<script>
+/* ═══ UI STRINGS ═══ */
+const UI={
+  en:{arcLabel:"ARC I — INTRODUCTION",headerTitle:"Chronicles of the Fallen World: Book IV",headerSubtitle:"AUDITOR: BLACK LEDGER",stripChapter:"Chapter 2",stripTitle:"The Gardener of Dead Flowers",stripLocation:"The Archive / The Green Frontier",povLabel:"Perspective",distLabel:"Distortion",whisperLabel:"◆ Subtext",intelLabel:"Intelligence Report — Click to Expand",knows:"Knows",misunderstands:"Misunderstands",hides:"Hides",prevBtn:"← Prev",nextBtn:"Next →",ledgerTitle:"True Event Timeline — Classified",ledgerWarning:"Diverges from all POV accounts",ledgerOpen:"✕ Close Ledger",ledgerClosed:"◆ Black Ledger",scene:"Scene"},
+  ru:{arcLabel:"АРК I — ВСТУПЛЕНИЕ",headerTitle:"Хроники Павшего Мира: Книга IV",headerSubtitle:"АУДИТОР: ЧЁРНЫЙ ГРОССБУХ",stripChapter:"Глава 2",stripTitle:"Садовник Мёртвых Цветов",stripLocation:"Архив / Зелёный Предел",povLabel:"Перспектива",distLabel:"Искажение",whisperLabel:"◆ Подтекст",intelLabel:"Разведывательный Отчёт — Нажмите для раскрытия",knows:"Знает",misunderstands:"Заблуждается",hides:"Скрывает",prevBtn:"← Назад",nextBtn:"Далее →",ledgerTitle:"Истинная Хронология — Засекречено",ledgerWarning:"Расходится со всеми нарративами",ledgerOpen:"✕ Закрыть Гроссбух",ledgerClosed:"◆ Чёрный Гроссбух",scene:"Сцена"}
+};
+
+/* ═══ POVS ═══ */
+const POVS={
+  dante:{name:"DANTE",title:{en:"The Auditor",ru:"Аудитор"},primary:"#6b0000",secondary:"#9b2222",glow:"rgba(107,0,0,0.16)",textColor:"#dcc0c0",dimColor:"rgba(155,34,34,0.45)"},
+  veris:{name:"VERIS",title:{en:"Senior Chronicler, The Archive",ru:"Старший Летописец Архива"},primary:"#1a2a4a",secondary:"#3a5a8a",glow:"rgba(26,42,74,0.2)",textColor:"#c0cce0",dimColor:"rgba(58,90,138,0.45)"},
+  elara:{name:"ELARA",title:{en:"The Living Goddess / The Druidess",ru:"Живая Богиня / Друидка"},primary:"#1a4a1a",secondary:"#3a8a3a",glow:"rgba(26,74,26,0.2)",textColor:"#c8e8c0",dimColor:"rgba(58,138,58,0.45)"},
+  crowd:{name:"VILLAGERS",title:{en:"The Transformed People",ru:"Преображённые"},primary:"#3a2a10",secondary:"#7a5a28",glow:"rgba(58,42,16,0.2)",textColor:"#d8c8a0",dimColor:"rgba(122,90,40,0.45)"}
+};
+
+/* ═══ TRUE TIMELINE ═══ */
+const TIMELINE=[
+  {id:"TET-13",en:"The Silence Ash was not discovered in response to this mission. Dante had it catalogued for eleven years against this exact scenario class. He knew about the Seed of Changes before Veris entered the room.",ru:"Пепел Безмолвия не был обнаружен в ответ на эту миссию. Данте каталогизировал его одиннадцать лет назад именно для подобного класса сценариев. Он знал о Семени Изменений до того, как Верис вошёл в комнату."},
+  {id:"TET-14",en:"The Alchemist Consortium's motivation is not purely humanitarian. They fear economic displacement: a Seed-architecture region produces food and materials outside the trade network entirely, threatening the Consortium's supply monopolies.",ru:"Мотивация Консорциума Алхимиков не чисто гуманитарная. Они боятся экономического вытеснения: регион архитектуры Семени производит пищу и материалы полностью вне торговой сети, угрожая монополиям Консорциума на поставки."},
+  {id:"TET-15",en:"Elara found the artifact genuinely and without outside assistance. She is a real druidess of the Circle of Life with documented ability. The artifact amplified her existing power, it did not manufacture it. Her intentions were unambiguously benevolent.",ru:"Элара нашла артефакт подлинно и без посторонней помощи. Она настоящая друидка Круга Жизни с задокументированными способностями. Артефакт усилил её существующую силу, а не создал её. Её намерения были недвусмысленно благими."},
+  {id:"TET-16",en:"The peasant transformation was already irreversible before Dante arrived. The Ash stopped further Seed propagation but could not undo existing biological integration. Dante knew this from the timeline data in Veris's briefing. The people in the Grove were going to die regardless of his decision.",ru:"Трансформация крестьян уже была необратимой до прибытия Данте. Пепел остановил дальнейшее распространение Семени, но не мог отменить существующую биологическую интеграцию. Данте знал это из данных хронологии в брифинге Вериса. Люди в Роще должны были умереть независимо от его решения."},
+  {id:"TET-17",en:"The mob killing of Elara was an engineered outcome. By dispersing the Ash in front of the crowd rather than in private, Dante guaranteed that the crowd's horror would be directed at her. The contract said 'stop the ritual.' It did not say 'kill the practitioner.' He accomplished both with one action.",ru:"Убийство Элары толпой было сконструированным исходом. Рассеяв Пепел перед толпой, а не в частной обстановке, Данте гарантировал, что ужас толпы будет направлен на неё. Контракт говорил «остановить ритуал». Не говорил «убить практикующую». Он достиг обоих результатов одним действием."},
+  {id:"TET-18",en:"The infants born without bones were real. Dante did not fabricate or exaggerate this detail. It is one of two moments in the chapter where his account and objective reality are in complete alignment. The other is his mustache.",ru:"Младенцы, рождённые без костей, были реальными. Данте не фабриковал и не преувеличивал эту деталь. Это один из двух моментов в главе, где его версия и объективная реальность полностью совпадают. Второй — его ус."},
+  {id:"TET-19",en:"Elara's death at the mob's hands released a dispersal pulse from the artifact. The Green Frontier will not die quietly. Dante's 'sixty percent mortality, quiet regional extinction' prediction is optimistic by an unknown margin. The Consortium's researchers, who will arrive before the passage is sealed, will likely accelerate the problem.",ru:"Гибель Элары от рук толпы вызвала импульс рассеивания из артефакта. Зелёный Предел не умрёт тихо. Прогноз Данте о «шестидесяти процентах смертности, тихом региональном угасании» оптимистичен с неизвестным запасом. Исследователи Консорциума, которые прибудут до запечатывания прохода, вероятно, ускорят проблему."},
+  {id:"TET-20",en:"Elara was nineteen years old. The chronicle records in the Archive will not list her name. She will be entered as: 'Seed of Changes — primary vector, neutralized. Green Frontier file, closed.'",ru:"Элара была девятнадцати лет. Летописные записи Архива не будут содержать её имени. Она будет внесена как: «Семя Изменений — первичный вектор, нейтрализован. Дело Зелёного Предела, закрыто»."}
+];
+
+/* ═══ SCENES ═══ */
+const SCENES=[
+
+/* ─── SCENE 1: THE ARCHIVE ─── */
+{id:"s1",
+ title:{en:"The Archive",ru:"Архив"},
+ subtitle:{en:"A machine receives its next assignment.",ru:"Машина получает следующее задание."},
+ location:{en:"The Archive, Former Astrologers' Tower, Capital",ru:"Архив, Башня Звездочётов, Столица"},
+ timing:{en:"Morning, Several Weeks After Chapter One",ru:"Утро, Несколько Недель После Первой Главы"},
+ flags:["introduction"],
+ povData:{
+   dante:{distortion:1,
+     text:{
+       en:`The briefing was efficient. Veris delivered the file in eleven minutes, which is acceptable for a Crimson-level threat. I reviewed the artifact classification while he spoke: Seed of Changes, pre-Sundering epoch, creator-caste technology. The mechanism is elegant in the way that a pathogen is elegant — optimized for propagation, indifferent to the survival of the host.\n\nThe girl found it in the catacombs. That is unfortunate. In trained hands, the Seed could theoretically regenerate dead ecosystems. In her hands, it is a rewrite command with no syntax limit and no exit condition.\n\nThe Alchemist Consortium's concern is self-interested but structurally correct. A region converted entirely to Seed-architecture is not a region — it is a single organism with distributed cognition. Trade routes, taxation, labor markets, political leverage: all of it dissolves. The Consortium loses supply monopolies. The surrounding kingdoms lose a buffer zone. The Dead Lands gain a new neighbor that has no concept of borders.\n\nI selected the Silence Ash from archive storage. I have had it catalogued for eleven years against a scenario of this type. The cost is the Grove — everything in contact with the Seed for more than seventy-two hours cannot be fully reversed. The peasants are already beyond restoration. I noted this in the operation file before departure. It is relevant to liability, not to the decision.\n\nWe depart at dawn.`,
+       ru:`Брифинг прошёл эффективно. Верис изложил досье за одиннадцать минут — приемлемо для угрозы уровня «Багряный». Я просматривал классификацию артефакта, пока он говорил: Семя Изменений, эпоха до Раскола, технология касты творцов. Механизм элегантен так, как бывает элегантен патоген — оптимизирован под распространение, равнодушен к выживанию носителя.\n\nДевушка нашла его в катакомбах. Это неудачно. В обученных руках Семя теоретически могло бы регенерировать мёртвые экосистемы. В её руках это команда перезаписи без ограничения синтаксиса и без условия выхода.\n\nОзабоченность Консорциума Алхимиков корыстна, но структурно верна. Регион, полностью переведённый на архитектуру Семени, — это не регион, а единый организм с распределённым сознанием. Торговые пути, налогообложение, рынки труда, политические рычаги: всё растворяется. Консорциум теряет монополии на поставки. Соседние королевства теряют буферную зону. Мёртвые Земли получают нового соседа без концепции границ.\n\nЯ извлёк Пепел Безмолвия из архивного хранилища. Он каталогизирован у меня одиннадцать лет — именно для подобного класса сценариев. Цена — Роща: всё, что находилось в контакте с Семенем более семидесяти двух часов, не поддаётся полному восстановлению. Крестьяне уже за пределами реставрации. Я внёс это в операционный файл до отъезда. Это релевантно для ответственности, а не для решения.\n\nВыезжаем на рассвете.`
+     },
+     knows:{en:["The Seed of Changes has been in his classification catalogue for eleven years","The peasant transformation was already biologically irreversible before briefing — confirmed from the timeline data","Elara's age, origin village, Circle affiliation, and the exact hour she made first contact with the artifact","The Silence Ash will stop propagation but cannot restore the already-transformed"],ru:["Семя Изменений находилось в его классификационном каталоге одиннадцать лет","Трансформация крестьян была биологически необратимой до брифинга — подтверждено по данным хронологии","Возраст Элары, деревня, принадлежность к Кругу и точный час первого контакта с артефактом","Пепел Безмолвия остановит распространение, но не восстановит уже трансформированных"]},
+     misunderstands:{en:["Nothing material — he frames the doomed peasants as 'a liability question' to prevent the framing from becoming a decision question"],ru:["Ничего существенного — он обозначает обречённых крестьян как «вопрос ответственности», чтобы не дать формулировке стать вопросом решения"]},
+     hides:{en:["He chose to deploy the Ash publicly, in front of the crowd — the mob outcome was not an accident of circumstance","His operation file already contains a post-mortem entry for Elara, written before departure","He has run a structurally identical operation before. Different girl. Different artifact. Same file structure."],ru:["Он выбрал публичное рассеивание Пепла, перед толпой — исход с толпой не был случайностью обстоятельств","Его операционный файл уже содержит посмертную запись по Эларе, написанную до отъезда","Он проводил структурно идентичную операцию раньше. Другая девушка. Другой артефакт. Та же структура файла."]},
+     whisper:{en:"The operation file had her name in the past tense before he left the Archive.",ru:"Операционный файл содержал её имя в прошедшем времени до того, как он покинул Архив."}
+   },
+   veris:{distortion:4,
+     text:{
+       en:`He did not react to "Crimson." He never does. I have delivered eleven Crimson briefings to eleven Masters in my forty years as Chronicler. Three of them wept. Two asked for time. One resigned his commission and entered a monastery. Dante looked at the orb for thirty-four seconds, asked two clarifying questions about the artifact's documented failure modes, and then selected his countermeasure from a mental catalogue I did not know existed.\n\nHe already knew about the Seed of Changes. I am certain of it now. The Ash was not a discovery — it was a prepared answer. He has been waiting for something like this girl to appear.\n\nI watch him dress. I watch him shave. I watch him the way one watches a machine that has never malfunctioned — not with admiration, but with the low, constant vigilance of a man who has seen what happens when such machines are operated in proximity to human beings.\n\nHe did not ask about the girl's age. He did not ask whether she had family. He asked about the Seed's propagation radius and the time elapsed since first contact with the civilian population.\n\nThe answer to the second question is what ended the briefing. I saw him note something in the operation file. He did not show it to me.\n\nI did not ask.`,
+       ru:`Он не отреагировал на «Багряный». Никогда не реагирует. За сорок лет летописца я передал одиннадцать Багряных брифингов одиннадцати Мастерам. Трое заплакали. Двое попросили время. Один сложил полномочия и ушёл в монастырь. Данте смотрел на шар тридцать четыре секунды, задал два уточняющих вопроса о задокументированных режимах отказа артефакта, а затем выбрал контрмеру из ментального каталога, о существовании которого я не подозревал.\n\nОн уже знал о Семени Изменений. Теперь я в этом уверен. Пепел не был находкой — он был подготовленным ответом. Он ждал появления чего-то вроде этой девушки.\n\nЯ наблюдаю, как он одевается. Как бреется. Я наблюдаю за ним так, как наблюдают за машиной, которая никогда не ломается — не с восхищением, а с тихой, непрерывной бдительностью человека, который видел, что происходит, когда такие машины работают в непосредственной близости от людей.\n\nОн не спросил о возрасте девушки. Не спросил, есть ли у неё семья. Он спросил о радиусе распространения Семени и о времени, прошедшем с момента первого контакта с гражданским населением.\n\nОтвет на второй вопрос завершил брифинг. Я видел, как он что-то занёс в операционный файл. Он не показал мне.\n\nЯ не спросил.`
+     },
+     knows:{en:["The Seed's classification and propagation data","That Dante's response was faster than any previous Crimson-level briefing he has witnessed","The Archive has files on every major artifact ever recovered — Dante has read them all"],ru:["Классификацию Семени и данные о распространении","Что ответ Данте был быстрее любого предыдущего Багрянного брифинга, которому он был свидетелем","В Архиве есть файлы на каждый крупный артефакт — Данте прочитал их все"]},
+     misunderstands:{en:["Believes the public dispersal method was tactically necessary rather than a deliberate mob-engineering choice","Has catalogued Dante's 'efficiency' for forty years without naming what he is looking at"],ru:["Считает, что метод публичного рассеивания был тактически необходим, а не намеренным конструированием толпы","Каталогизировал «эффективность» Данте сорок лет, не называя то, на что смотрит"]},
+     hides:{en:["He looked up Elara's village in the archive records after Dante left. He read her intake file from the Circle of Life. He knows her name, her teacher's name, her mother's name.","He will not record any of this in the chronicle."],ru:["Он разыскал деревню Элары в архивных записях после ухода Данте. Прочитал её вступительный файл из Круга Жизни. Знает её имя, имя её учителя, имя её матери.","Он ничего из этого не запишет в летопись."]},
+     whisper:{en:"He has watched eleven Masters over forty years. He has written all their decisions in the chronicle. He has never added a footnote.",ru:"Он наблюдал одиннадцать Мастеров за сорок лет. Он записал все их решения в летопись. Он никогда не добавлял сноску."}
+   }
+ }
+},
+
+/* ─── SCENE 2: THE GROVE ─── */
+{id:"s2",
+ title:{en:"The Grove",ru:"Роща"},
+ subtitle:{en:"Three kinds of truth standing in the same field.",ru:"Три вида правды, стоящие в одном поле."},
+ location:{en:"The Transformed Grove, Green Frontier",ru:"Преображённая Роща, Зелёный Предел"},
+ timing:{en:"Three Days After Briefing, Late Afternoon",ru:"Три Дня После Брифинга, Вечер"},
+ flags:["pivotal","expand_later"],
+ povData:{
+   dante:{distortion:1,
+     text:{
+       en:`The earring confirmed active illusion fields at approximately six kilometers from the Grove's edge. I noted the fauna displacement: birds present but behaviorally synchronized, which indicates collective nervous-system override rather than training. The vegetation's surface moisture was elevated — a secondary indicator of Seed-architecture metabolic activity. The transformation was further progressed than Veris's data suggested.\n\nI walked through the crowd without deflection. Concealment invites pursuit. Presence, properly deployed, reads as authority.\n\nShe recognized me. This is consistent with the Seed's distributed intelligence — it processes external threats and communicates them to the primary node. The girl's knowledge of my name was not supernatural. It was information logistics.\n\nThe guard confrontation was pro forma. I displayed empty hands, identified myself as carrying truth rather than weapons. This is not deception — I was accurate. Truth, deployed correctly, is the most destructive weapon in any arsenal.\n\nShe is beautiful in the specific way that dangerous organisms tend toward beauty: high contrast, clear signals, evolved to attract attention before the mechanism activates. I noted this clinically. It is not irrelevant — the aesthetic dimension of the Seed's host-selection protocol is worth documenting.\n\nShe called me Master of Shadows. The transformed population had been briefed on external threats. This confirms the Seed is running active defense protocols through her vocalizations.\n\nI did not open the box yet. I waited for the crowd to fully attend.`,
+       ru:`Серьга подтвердила активные поля иллюзий приблизительно в шести километрах от края Рощи. Я отметил вытеснение фауны: птицы присутствуют, но поведенчески синхронизированы — признак коллективного замещения нервной системы, а не дрессировки. Влажность поверхности растительности была повышена — вторичный индикатор метаболической активности архитектуры Семени. Трансформация продвинулась дальше, чем предполагали данные Вериса.\n\nЯ прошёл сквозь толпу без уклонений. Сокрытие провоцирует преследование. Присутствие, правильно развёрнутое, читается как авторитет.\n\nОна узнала меня. Это согласуется с распределённым интеллектом Семени — оно обрабатывает внешние угрозы и передаёт информацию главному узлу. Знание девушкой моего имени не было сверхъестественным. Это была логистика информации.\n\nПротивостояние со стражей было pro forma. Я показал пустые ладони, обозначив себя носителем правды, а не оружия. Это не обман — я был точен. Правда, применённая правильно, — самое разрушительное оружие в любом арсенале.\n\nОна прекрасна тем особым образом, к которому склонны опасные организмы: высокий контраст, чёткие сигналы, эволюционировавшая способность привлекать внимание до активации механизма. Я отметил это клинически. Не без значения — эстетическое измерение протокола хост-отбора Семени заслуживает документирования.\n\nОна назвала меня Мастером Теней. Трансформированное население было информировано о внешних угрозах. Это подтверждает, что Семя запускает активные протоколы защиты через её вокализации.\n\nШкатулку я ещё не открывал. Я ждал, пока толпа полностью сосредоточит внимание.`
+     },
+     knows:{en:["The earring detects illusion — the Grove's entire sensory environment is artificial","The crowd's transformed state is already past the point of reversal","He is waiting for maximum crowd attention before opening the Ash box — the mob outcome requires witnesses"],ru:["Серьга определяет иллюзию — всё сенсорное окружение Рощи искусственно","Трансформированное состояние толпы уже за точкой возврата","Он ждёт максимального внимания толпы перед открытием шкатулки — исход с толпой требует свидетелей"]},
+     misunderstands:{en:["Frames Elara's knowledge of his name as artifact intelligence-processing. It was partly this — and partly that his reputation has spread to every Circle of Life outpost in the region."],ru:["Объясняет знание Элары его имени как обработку разведданных артефактом. Это отчасти так — и отчасти его репутация распространилась во все аванпосты Круга Жизни в регионе."]},
+     hides:{en:["He felt the earring vibrate for the first time in years at the edge of the Grove — not just detecting illusion, but reacting to something older underneath the Seed's architecture","He paused for four seconds at the sight of the infants rooted to the ground. This pause is not in the operation file."],ru:["Серьга завибрировала у него впервые за годы на краю Рощи — не просто обнаруживая иллюзию, но реагируя на что-то древнее под архитектурой Семени","Он остановился на четыре секунды при виде младенцев, вросших в землю. Эта пауза не в операционном файле."]},
+     whisper:{en:"He waited until the whole crowd was watching before he opened the box.",ru:"Он ждал, пока вся толпа смотрит, прежде чем открыть шкатулку."}
+   },
+   elara:{distortion:9,
+     text:{
+       en:`The Mother's voice is everywhere. In the roots. In the breathing of the earth beneath my feet — that is not breathing, it is speaking, it has always been speaking, I was simply too small before to hear it.\n\nThree weeks since I found the Heart in the deep catacombs where the old ones stored the things they could not bear to use or destroy. I held it and it held me and it asked — not in words, in warmth — if I was willing to be the channel. I said yes. I have always said yes to the green places.\n\nThe people came sick and left walking. The earth came poisoned and left flowering. I stood at the center of it and understood for the first time that I was not Elara the druidess's apprentice, age nineteen, from the village of Mosswater. I was a function. A door the Mother opens when the world is too wounded to wait.\n\nThen he came.\n\nI knew him before the Seed told me. Some things the bones know before the mind is consulted. He was darkness shaped into good posture. He walked through the transformed ones without looking at them — the way a tax collector walks through a market: noting, calculating, already past the human moment before it has ended.\n\nHe said: they are not people anymore.\n\nHe said it quietly and I heard it go into the earth, and the earth did not correct him, and for one heartbeat I felt the first cold thing I had felt in three weeks.\n\nI raised my staff. The Mother's power answered immediately. It always answers. It will always answer.\n\nHe does not understand what he is standing in front of.`,
+       ru:`Голос Матери повсюду. В корнях. В дыхании земли под моими ногами — которая не дышит, она говорит, она всегда говорила, просто прежде я была слишком мала, чтобы слышать.\n\nТри недели с тех пор, как я нашла Сердце в глубоких катакомбах, где древние хранили то, что не могли использовать или уничтожить. Я держала его, и оно держало меня, и спрашивало — не словами, теплом — готова ли я быть каналом. Я сказала да. Я всегда говорила да зелёным местам.\n\nЛюди приходили больными и уходили ходячими. Земля приходила отравленной и уходила цветущей. Я стояла в центре этого и впервые поняла, что я не Элара, ученица друидки, девятнадцати лет, из деревни Моховые Воды. Я была функцией. Дверью, которую Мать открывает, когда мир слишком ранен, чтобы ждать.\n\nПотом пришёл он.\n\nЯ знала его до того, как сказало Семя. Некоторые вещи кости знают прежде, чем разум получает запрос. Он был тьмой, принявшей форму хорошей осанки. Он шёл сквозь преображённых, не глядя на них — так сборщик налогов идёт через рынок: отмечает, считает, уже миновал человеческий момент до того, как тот закончился.\n\nОн сказал: они больше не люди.\n\nОн сказал это тихо, и я слышала, как это уходит в землю, и земля не поправила его, и на одно мгновение я почувствовала первую холодную вещь за три недели.\n\nЯ подняла посох. Сила Матери ответила немедленно. Она всегда отвечала. Она всегда будет отвечать.\n\nОн не понимает, перед чем стоит.`
+     },
+     knows:{en:["The Mother's voice — or what she believes is the Mother's voice — is real to her entire sensory apparatus","Dante by name and by guild reputation","The transformed feel no pain. They feel only fullness. She has interpreted this as healing."],ru:["Голос Матери — или то, что она считает голосом Матери — реален для всего её сенсорного аппарата","Данте по имени и репутации Гильдии","Преображённые не чувствуют боли. Они чувствуют только полноту. Она интерпретировала это как исцеление."]},
+     misunderstands:{en:["Believes the artifact chose her because of her worthiness, not because she was the nearest compatible host when it reactivated","The warmth she interprets as the Mother's love is the artifact's primary propagation signal — it suppresses critical cognition in the host","The 'healing' she witnessed was transformation disguised as relief from existing symptoms"],ru:["Считает, что артефакт выбрал её за достоинство, а не потому, что она была ближайшим совместимым носителем при реактивации","Тепло, которое она интерпретирует как любовь Матери, — основной сигнал распространения артефакта, подавляющий критическое мышление носителя","«Исцеление», которому она была свидетелем, было трансформацией, замаскированной под избавление от симптомов"]},
+     hides:{en:["She planted something in the 'not-knowing place' on the third day, when she first saw the children's hands changing. She knows. She chose not to know.","She has not slept in three weeks. She has not eaten. The artifact sustains her."],ru:["Она посадила что-то в «месте незнания» на третий день, когда впервые увидела, как меняются руки детей. Она знает. Она выбрала не знать.","Она не спала три недели. Не ела. Артефакт поддерживает её."]},
+     whisper:{en:"On the third day she saw a child's fingers becoming roots. She prayed harder and told herself it was a miracle.",ru:"На третий день она увидела, как пальцы ребёнка становятся корнями. Она молилась усерднее и говорила себе, что это чудо."}
+   },
+   crowd:{distortion:10,
+     text:{
+       en:`fullness fullness fullness\n\nbefore we were hungry now we are not\n\nthe apple in my hand has a heartbeat that matches my own and this is not strange this has always been true we simply forgot\n\nthe dark man walks among us and the roots pull toward him with curiosity but he is smooth — nothing grows on him nothing holds — and we feel through the ground that he is asking questions the ground does not like\n\nMother-Elara knows. Mother-Elara is the warm place. when we were cold we came here. when we were sick we came here. the pain left. the skin changed. we thought: this is what healing feels like\n\nwe thought: if we look at our children we will see them healthy\n\nwe thought\n\nwe thought\n\n(the apple in my hand\n\n(my hand is\n\nthe apple in my hand has a heartbeat and the heartbeat is not mine it was never mine I borrowed it I was given it I\n\nate\n\nsomething the dark man said is in the air now and the Mother-warmth flickers and I look at what I am holding and what I am holding is`,
+       ru:`полнота полнота полнота\n\nраньше мы были голодными теперь нет\n\nяблоко в моей руке бьётся в ритм с моим сердцем и это не странно это всегда было правдой мы просто забыли\n\nтёмный человек идёт среди нас и корни тянутся к нему с любопытством но он гладкий — ничто на нём не растёт ничто не держится — и мы чувствуем через землю что он задаёт вопросы которые земле не нравятся\n\nМать-Элара знает. Мать-Элара — тёплое место. когда нам было холодно мы приходили сюда. когда нам было больно мы приходили сюда. боль ушла. кожа изменилась. мы думали: вот как выглядит исцеление\n\nмы думали: если посмотрим на детей — увидим их здоровыми\n\nмы думали\n\nмы думали\n\n(яблоко в моей руке\n\n(моя рука\n\nяблоко в моей руке бьётся и биение не моё оно никогда не было моим я одолжил его мне дали его я\n\nсъел\n\nчто-то из того что сказал тёмный человек теперь висит в воздухе и тепло-Матери мерцает и я смотрю на то что держу в руке и то что я держу это`
+     },
+     knows:{en:["The warmth is real to them — it is the most real thing they have ever felt","The dark man is wrong about the Mother — or they need him to be"],ru:["Тепло для них реально — это самая реальная вещь, которую они когда-либо чувствовали","Тёмный человек ошибается о Матери — или им нужно, чтобы он ошибался"]},
+     misunderstands:{en:["The heartbeat in the fruit is not metaphor — it is a literal secondary cardiac structure growing inside the fruit, feeding off the same field that is rewriting their bodies","The children's sounds they interpret as happiness are pain signals the Seed reroutes through its network"],ru:["Биение в плоде не метафора — это буквально вторичная сердечная структура, растущая внутри плода, питающаяся от того же поля, которое переписывает их тела","Звуки детей, которые они интерпретируют как счастье — это болевые сигналы, которые Семя перенаправляет через свою сеть"]},
+     hides:{en:["Several have noticed the children. They have not named what they noticed. Naming it would make it real.","The man with the branch-arm cries at night when the Seed's signal weakens. He has not told anyone."],ru:["Несколько человек заметили детей. Они не назвали то, что заметили. Называние сделало бы это реальным.","Мужчина с рукой-веткой плачет ночью, когда сигнал Семени ослабевает. Он никому не сказал."]},
+     whisper:{en:"They didn't want the warmth. They wanted the hunger to stop. The warmth came with it and they didn't ask what it cost.",ru:"Они не хотели тепла. Они хотели, чтобы голод прекратился. Тепло пришло вместе с этим, и они не спросили, чего это стоит."}
+   }
+ }
+},
+
+/* ─── SCENE 3: THE UNRAVELING ─── */
+{id:"s3",
+ title:{en:"The Unraveling",ru:"Распутывание"},
+ subtitle:{en:"What the ash reveals cannot be un-seen.",ru:"То, что обнажает пепел, невозможно развидеть."},
+ location:{en:"The Grove — After the Ash Falls",ru:"Роща — После Рассеивания Пепла"},
+ timing:{en:"Continuous with Scene 2, Dusk",ru:"Непрерывно со Сценой 2, Закат"},
+ flags:["pivotal","horror"],
+ povData:{
+   dante:{distortion:2,
+     text:{
+       en:`The Ash performed as documented. Contact time from dispersal to measurable field suppression: approximately forty seconds. The Seed's illusion architecture collapsed in layers — first the emotional overlay, then the somatic augmentation signals, finally the artifact's direct perceptual feed to the transformed population.\n\nShe reached for me. Not with power — the Seed was already starved of the ambient faith-field it had been using as a secondary power source. She reached with her hands. The ordinary hands of a nineteen-year-old who has been standing in the center of something she cannot now see clearly.\n\nI told her the contract parameters. I told her I had fulfilled them. This is accurate and complete.\n\nShe asked me to fix it.\n\nI have been asked this before. The wording varies. The posture is always the same: the sudden contraction from divine to human, the eyes recalibrating from gold to the ordinary color of confusion and fear, the hands reaching for the nearest stable thing. I am not a stable thing. I am the last variable.\n\nThe crowd's reorientation toward Elara as causative agent was predictable and served operational containment. An angry population requires a target, and the correct target in this situation is the primary enabler rather than the external auditor. I did not engineer this outcome.\n\nI did not prevent it either.\n\nI adjusted my mustache in the carriage mirror on the return journey. The left side had taken three degrees of drift in the Grove's humidity. The region will lose perhaps sixty percent of the affected population over the next several months. I have recommended the Consortium seal the catacomb and collapse the entry passages.\n\nThey will send researchers first.\n\nThis is also predictable.`,
+       ru:`Пепел сработал в соответствии с документацией. Время от рассеивания до измеримого подавления поля: приблизительно сорок секунд. Иллюзорная архитектура Семени разрушалась слоями — сначала эмоциональный оверлей, затем сигналы соматической аугментации, наконец прямой перцептивный канал артефакта к трансформированному населению.\n\nОна потянулась ко мне. Не силой — Семя уже было лишено пространственного поля веры, которое использовало как вторичный источник питания. Она потянулась руками. Обычными руками девятнадцатилетней, которая стояла в центре чего-то, что теперь не может видеть ясно.\n\nЯ изложил ей параметры контракта. Сказал, что выполнил их. Это точно и полно.\n\nОна попросила меня всё исправить.\n\nМне это говорили раньше. Формулировки варьируются. Поза всегда одна: внезапное сжатие от божественного к человеческому, глаза, перенастраивающиеся с золотого на обычный цвет растерянности и страха, руки, тянущиеся к ближайшей устойчивой вещи. Я не устойчивая вещь. Я последняя переменная.\n\nПереориентация толпы на Элару как причинного агента была предсказуемой и послужила оперативному сдерживанию. Разгневанному населению нужна цель, и правильная цель в этой ситуации — главный инициатор, а не внешний аудитор. Я не конструировал этот исход.\n\nЯ его также не предотвращал.\n\nЯ поправил ус в зеркале кареты на обратном пути. Левая сторона за влажность Рощи сдвинулась на три градуса. Регион потеряет, возможно, шестьдесят процентов поражённого населения в течение следующих нескольких месяцев. Я рекомендовал Консорциуму запечатать катакомбы и обрушить входные проходы.\n\nОни сначала пошлют исследователей.\n\nЭто тоже предсказуемо.`
+     },
+     knows:{en:["The mob outcome was engineered by his choice of where and when to open the Ash","Sixty percent mortality estimate — conservative, and he knows it","The Consortium will not seal the catacombs. They will research the artifact. This will make things worse."],ru:["Исход с толпой был сконструирован его выбором места и времени открытия Пепла","Оценка смертности в шестьдесят процентов — консервативная, и он это знает","Консорциум не запечатает катакомбы. Они будут изучать артефакт. Это ухудшит ситуацию."]},
+     misunderstands:{en:["Nothing — which is the problem. He understands everything that happened here and judges none of it."],ru:["Ничего — в этом и проблема. Он понимает всё, что здесь произошло, и не осуждает ничего из этого."]},
+     hides:{en:["He paused four seconds at the sight of the rooted infants. This will not appear in any file.","His 'I did not engineer this outcome / I did not prevent it either' phrasing is a distinction he knows to be false — absence of prevention after designing the conditions is engineering.","He knows the girl's name. He knows her mother's name. He will not write them down."],ru:["Он остановился на четыре секунды при виде вросших в землю младенцев. Это не появится ни в каком файле.","Его формулировка «я не конструировал этот исход / я его также не предотвращал» — разграничение, которое он сам знает ложным: отсутствие предотвращения после проектирования условий и есть конструирование.","Он знает имя девушки. Знает имя её матери. Он не запишет их."]},
+     whisper:{en:"The world was saved. Again. He fixed his mustache. Again.",ru:"Мир был спасён. Снова. Он поправил ус. Снова."}
+   },
+   elara:{distortion:8,
+     text:{
+       en:`The warmth left all at once.\n\nOne moment I was the door, the channel, the function — and then a gray dust fell and something inside my chest that had been singing for three weeks made a sound like a wire snapping under tension, and then there was nothing where the Mother's voice had been.\n\nI am standing in a field.\n\nI am standing in a field and the people around me are —\n\nI knew. I knew and I did not know. There is a place in the mind that is made for not-knowing because the truth would stop the heart. I planted something in that place on the third day, when I first saw what was happening to the children's hands. I tended it carefully. I watered it with prayer and the warmth from the artifact and it grew into something I could live inside.\n\nHe took the not-knowing away with a pinch of gray powder.\n\nThey are reaching for me. The blacksmith whose arm is a branch. The woman whose daughter has rooted to the ground and cannot be moved. The old man whose teeth fell out and were replaced overnight with seeds that sprouted in his gums.\n\nI did this. The artifact did this and I held the artifact and I said yes.\n\nHe is already walking away.\n\nI called him Master. I used the word that means: this person can fix what I cannot. And he turned around just long enough to tell me that the contract parameters had been fulfilled and that I was not a parameter.\n\nI understand now what is about to happen.\n\nThe first person reaches me just as he reaches the tree line.`,
+       ru:`Тепло ушло всё сразу.\n\nОдно мгновение я была дверью, каналом, функцией — а потом упал серый пепел, и что-то внутри моей груди, что пело три недели, издало звук, как лопнувшая под натяжением струна, и там, где был голос Матери, стало пусто.\n\nЯ стою в поле.\n\nЯ стою в поле, и люди вокруг меня —\n\nЯ знала. Я знала и не знала. В разуме есть место, созданное для незнания, потому что правда остановила бы сердце. Я посадила что-то в этом месте на третий день, когда впервые увидела, что происходит с руками детей. Я тщательно ухаживала за этим. Я поливала это молитвой и теплом артефакта, и оно выросло во что-то, внутри чего можно было жить.\n\nОн убрал незнание щепоткой серого порошка.\n\nОни тянутся ко мне. Кузнец, чья рука стала веткой. Женщина, чья дочь вросла в землю и не может сдвинуться. Старик, у которого выпали зубы и за ночь выросли новые — семена, проросшие в дёснах.\n\nЯ это сделала. Артефакт сделал это, и я держала артефакт, и я сказала да.\n\nОн уже уходит.\n\nЯ назвала его Мастером. Я использовала слово, означающее: этот человек может исправить то, чего не могу я. И он обернулся ровно настолько, чтобы сказать мне, что параметры контракта выполнены и что я не параметр.\n\nТеперь я понимаю, что сейчас произойдёт.\n\nПервый человек достигает меня в тот момент, когда он достигает кромки леса.`
+     },
+     knows:{en:["She knew on the third day. She chose the not-knowing place over the knowledge.","What is about to happen to her","That she said yes. That she would say yes again if the world were still hungry."],ru:["Она знала на третий день. Она выбрала место незнания вместо знания.","Что сейчас с ней произойдёт","Что она сказала да. Что она снова скажет да, если мир всё ещё будет голодным."]},
+     misunderstands:{en:["Still believes, in the final moment, that what she felt was the Mother's voice — not the artifact's propagation signal. She may be right. The two may be the same thing. Dante's file does not answer this question."],ru:["В последний момент всё ещё верит, что то, что она чувствовала, было голосом Матери — не сигналом распространения артефакта. Она может быть права. Эти два явления могут быть одним и тем же. Файл Данте не отвечает на этот вопрос."]},
+     hides:{en:["Nothing. In this final scene Elara hides nothing. She is the only character in the chapter of whom this is true."],ru:["Ничего. В этой финальной сцене Элара ничего не скрывает. Она единственный персонаж в главе, о котором это верно."]},
+     whisper:{en:"She said yes to the warmth because the world was cold. She was nineteen. She will always have been nineteen.",ru:"Она сказала да теплу, потому что мир был холодным. Ей было девятнадцать. Ей навсегда будет девятнадцать."}
+   }
+ }
+}
+
+];
+
+/* ═══ STATE ═══ */
+const S={sceneIdx:0,povId:null,lang:'en',intelOpen:false,ledgerOpen:false,whisperTmr:null};
+const ui=k=>UI[S.lang][k];
+const pick=o=>(o&&typeof o==='object'&&'en'in o)?o[S.lang]:o;
+
+function applyTheme(pid){
+  const p=POVS[pid];if(!p)return;
+  const r=document.documentElement;
+  r.style.setProperty('--pov-p',p.primary);r.style.setProperty('--pov-s',p.secondary);
+  r.style.setProperty('--pov-glow',p.glow);r.style.setProperty('--pov-t',p.textColor);
+  r.style.setProperty('--pov-d',p.dimColor);
+}
+
+function renderDistBars(lvl){
+  const el=document.getElementById('dist-bars');el.innerHTML='';
+  for(let i=1;i<=10;i++){const b=document.createElement('div');b.className='dist-bar';
+    if(i<=lvl){if(lvl>=9)b.classList.add('ex');else if(lvl>=6)b.classList.add('hi');else b.classList.add('on');}
+    el.appendChild(b);}
+}
+
+function fmt(t){return t.split('\n\n').filter(p=>p.trim()).map(p=>`<p>${p.replace(/\n/g,'<br>')}</p>`).join('');}
+
+function showWhisper(text,delay){
+  clearTimeout(S.whisperTmr);
+  const pan=document.getElementById('whisper-panel'),bod=document.getElementById('whisper-body');
+  pan.classList.remove('vis');bod.textContent=text||'';
+  if(text)S.whisperTmr=setTimeout(()=>pan.classList.add('vis'),delay);
+}
+
+function renderIntel(pd){
+  const c=document.getElementById('intel-body');
+  const secs=[{key:'knows',cls:'knows'},{key:'misunderstands',cls:'misunderstands'},{key:'hides',cls:'hides'}];
+  c.innerHTML=secs.map(s=>{const items=pick(pd[s.key])||[];if(!items.length)return '';
+    return `<div class="intel-section ${s.cls}"><div class="intel-section-head">${ui(s.key)}</div><ul class="intel-list">${items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;}).join('');
+}
+
+function renderSceneMap(idx){
+  const map=document.getElementById('scene-map');map.innerHTML='';
+  SCENES.forEach((sc,i)=>{const d=document.createElement('div');d.className='scene-dot'+(i===idx?' active':'');
+    d.setAttribute('data-title',pick(sc.title));
+    d.addEventListener('click',()=>{if(i!==S.sceneIdx){renderScene(i,null,true);scrollTop();}});
+    map.appendChild(d);});
+}
+
+function renderLedger(){
+  document.getElementById('ledger-body').innerHTML=TIMELINE.map(e=>
+    `<div class="ledger-entry"><span class="ledger-id">${e.id}</span><span class="ledger-text">${e[S.lang]}</span></div>`).join('');
+}
+
+function updateStaticUI(){
+  document.getElementById('arc-label').textContent=ui('arcLabel');
+  document.getElementById('header-title').textContent=ui('headerTitle');
+  document.getElementById('header-subtitle').textContent=ui('headerSubtitle');
+  document.getElementById('strip-chapter').textContent=ui('stripChapter');
+  document.getElementById('strip-chapter-title').textContent=ui('stripTitle');
+  document.getElementById('strip-location').textContent=ui('stripLocation');
+  document.getElementById('pov-label').textContent=ui('povLabel');
+  document.getElementById('dist-label').textContent=ui('distLabel');
+  document.getElementById('whisper-label').textContent=ui('whisperLabel');
+  document.getElementById('intel-toggle-label').textContent=ui('intelLabel');
+  document.getElementById('ledger-title').textContent=ui('ledgerTitle');
+  document.getElementById('ledger-warning').textContent=ui('ledgerWarning');
+  document.getElementById('prev-btn').textContent=ui('prevBtn');
+  document.getElementById('next-btn').textContent=ui('nextBtn');
+  document.getElementById('ledger-trigger').textContent=S.ledgerOpen?ui('ledgerOpen'):ui('ledgerClosed');
+  document.body.classList.toggle('lang-ru',S.lang==='ru');
+  document.documentElement.lang=S.lang;
+}
+
+function renderScene(idx,povId,animate){
+  const scene=SCENES[idx];if(!scene)return;
+  const avail=Object.keys(scene.povData);
+  if(!povId||!avail.includes(povId))povId=avail[0];
+  S.sceneIdx=idx;S.povId=povId;
+  const pMeta=POVS[povId],pScene=scene.povData[povId];
+  applyTheme(povId);updateStaticUI();
+
+  document.getElementById('scene-badge').textContent=ui('scene')+' '+String(idx+1).padStart(2,'0');
+  document.getElementById('scene-loc').textContent=pick(scene.location);
+  document.getElementById('scene-time').textContent=pick(scene.timing);
+  document.getElementById('scene-title').textContent=pick(scene.title);
+  document.getElementById('scene-subtitle').textContent=pick(scene.subtitle);
+  document.getElementById('scene-flags').innerHTML=scene.flags.map(f=>`<span class="scene-flag ${f}">${f.replace(/_/g,' ')}</span>`).join('');
+
+  const sel=document.getElementById('pov-selector');
+  sel.querySelectorAll('.pov-btn').forEach(b=>b.remove());
+  avail.forEach(pid=>{const btn=document.createElement('button');btn.className='pov-btn'+(pid===povId?' active':'');
+    btn.textContent=POVS[pid].name;btn.setAttribute('data-pov',pid);
+    btn.addEventListener('click',()=>{if(pid!==S.povId)switchPov(pid);});sel.appendChild(btn);});
+
+  document.getElementById('pov-name').textContent=pMeta.name;
+  document.getElementById('pov-role').textContent='— '+pick(pMeta.title);
+  renderDistBars(pScene.distortion);
+
+  const textEl=document.getElementById('narrative-text');
+  const write=()=>{textEl.innerHTML=fmt(pick(pScene.text));textEl.className='d'+pScene.distortion;
+    textEl.classList.add('fade-in');setTimeout(()=>textEl.classList.remove('fade-in'),500);};
+  if(animate){textEl.classList.add('fade-out');setTimeout(write,260);}else write();
+
+  showWhisper(pick(pScene.whisper),animate?2000:500);
+  renderIntel(pScene);
+  document.getElementById('prev-btn').disabled=idx===0;
+  document.getElementById('next-btn').disabled=idx===SCENES.length-1;
+  if(S.ledgerOpen)renderLedger();
+  renderSceneMap(idx);
+}
+
+function switchPov(povId){
+  const pScene=SCENES[S.sceneIdx].povData[povId],pMeta=POVS[povId];
+  S.povId=povId;applyTheme(povId);
+  document.querySelectorAll('.pov-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-pov')===povId));
+  document.getElementById('pov-name').textContent=pMeta.name;
+  document.getElementById('pov-role').textContent='— '+pick(pMeta.title);
+  renderDistBars(pScene.distortion);
+  const textEl=document.getElementById('narrative-text');
+  textEl.classList.add('fade-out');
+  setTimeout(()=>{textEl.innerHTML=fmt(pick(pScene.text));textEl.className='d'+pScene.distortion;
+    textEl.classList.add('fade-in');setTimeout(()=>textEl.classList.remove('fade-in'),500);},260);
+  showWhisper(pick(pScene.whisper),2000);
+  renderIntel(pScene);
+}
+
+document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>{
+  const l=btn.getAttribute('data-lang');if(l===S.lang)return;
+  S.lang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===l));
+  renderScene(S.sceneIdx,S.povId,true);
+}));
+
+function scrollTop(){window.scrollTo({top:0,behavior:'smooth'});}
+document.getElementById('prev-btn').addEventListener('click',()=>{if(S.sceneIdx>0){renderScene(S.sceneIdx-1,null,true);scrollTop();}});
+document.getElementById('next-btn').addEventListener('click',()=>{if(S.sceneIdx<SCENES.length-1){renderScene(S.sceneIdx+1,null,true);scrollTop();}});
+document.getElementById('intel-toggle').addEventListener('click',()=>{S.intelOpen=!S.intelOpen;document.getElementById('intel-body').classList.toggle('open',S.intelOpen);document.getElementById('intel-toggle').classList.toggle('open',S.intelOpen);});
+document.getElementById('ledger-trigger').addEventListener('click',()=>{
+  S.ledgerOpen=!S.ledgerOpen;
+  const sec=document.getElementById('ledger-section'),btn=document.getElementById('ledger-trigger');
+  sec.classList.toggle('open',S.ledgerOpen);btn.classList.toggle('active',S.ledgerOpen);
+  btn.textContent=S.ledgerOpen?ui('ledgerOpen'):ui('ledgerClosed');
+  if(S.ledgerOpen){renderLedger();setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),100);}
+});
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){if(S.sceneIdx<SCENES.length-1){renderScene(S.sceneIdx+1,null,true);scrollTop();}}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){if(S.sceneIdx>0){renderScene(S.sceneIdx-1,null,true);scrollTop();}}
+  if(e.key==='Tab'&&!e.shiftKey){e.preventDefault();const avail=Object.keys(SCENES[S.sceneIdx].povData);switchPov(avail[(avail.indexOf(S.povId)+1)%avail.length]);}
+});
+
+renderScene(0,'dante',false);
+</script>
+</body>
+</html>

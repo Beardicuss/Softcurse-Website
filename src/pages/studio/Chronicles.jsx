@@ -3,7 +3,7 @@ import { getChronicles } from '../../data/chronicles'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { useSEO } from '../../hooks/useSEO'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
-import GameCard from '../../components/common/GameCard'
+import ChronicleCard from './ChronicleCard'
 import styles from './Chronicles.module.css'
 
 export default function Chronicles() {
@@ -76,7 +76,7 @@ export default function Chronicles() {
             className={`reveal ${gridVis ? 'visible' : ''}`}
             style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 800px)', justifyContent: 'center', gap: '1.25rem' }}
           >
-            {books.map(b => <GameCard key={b.id} game={b} />)}
+            {books.map(b => <ChronicleCard key={b.id} book={b} />)}
           </div>
         ) : (
           <div className={styles.empty}>

@@ -14,7 +14,9 @@ import Lab        from './pages/lab/Lab'
 import AppDetail  from './pages/lab/AppDetail'
 import Studio     from './pages/studio/Studio'
 import GameDetail   from './pages/studio/GameDetail'
-import Chronicles   from './pages/studio/Chronicles'
+import Chronicles        from './pages/studio/Chronicles'
+import ChronicleDetail   from './pages/studio/ChronicleDetail'
+import ChapterViewer     from './pages/studio/ChapterViewer'
 import About      from './pages/About'
 import Contact    from './pages/Contact'
 import Blog       from './pages/Blog'
@@ -57,7 +59,9 @@ export default function App() {
             <Route path="/experiments"    element={<Experiments />} />
             <Route path="/studio"     element={<Studio />} />
             <Route path="/studio/:id"    element={<GameDetail />} />
-            <Route path="/chronicles"    element={<Chronicles />} />
+            <Route path="/chronicles"                element={<Chronicles />} />
+            <Route path="/chronicles/:id"            element={<ChronicleDetail />} />
+            <Route path="/chronicles/:id/chapter/:num" element={<ChapterViewer />} />
             <Route path="/about"      element={<About />} />
             <Route path="/contact"    element={<Contact />} />
             <Route path="/blog"       element={<Blog />} />
