@@ -84,6 +84,13 @@ export const CHRONICLES = {
         pov: 'Unknown',
         status: 'published',
       },
+      {
+        num: 7,
+        title: 'Velvet, Poison & Bets on Zero',
+        file: '/chronicles/black-ledger/chapter-07.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
     ],
   },
 }
