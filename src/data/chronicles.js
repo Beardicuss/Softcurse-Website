@@ -72,14 +72,14 @@ export const CHRONICLES = {
       },
       {
         num: 5,
-        title: 'Chapter V',
+        title: 'Liturgy of Steel',
         file: '/chronicles/black-ledger/chapter-05.html',
         pov: 'Unknown',
         status: 'published',
       },
       {
         num: 6,
-        title: 'Chapter VI',
+        title: 'Debit, Credit & Void-Blossom Tea',
         file: '/chronicles/black-ledger/chapter-06.html',
         pov: 'Unknown',
         status: 'published',
