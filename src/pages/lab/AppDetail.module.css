@@ -1,4 +1,4 @@
-.page { padding-bottom: 6rem; padding-top: var(--nav-h); }
+.page { padding-bottom: 6rem; }
 
 /* ── Hero banner ── */
 .hero {
@@ -7,7 +7,7 @@
   min-height: 420px;
   max-height: 600px;
   overflow: hidden;
-  margin-bottom: 0;
+  margin-top: var(--nav-h);
 }
 
 .heroImg {

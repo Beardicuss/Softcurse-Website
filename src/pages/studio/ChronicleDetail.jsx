@@ -68,7 +68,6 @@ export default function ChronicleDetail() {
                 </div>
                 <div className={styles.chBody}>
                   <div className={styles.chTitle}>{ch.title}</div>
-                  <div className={styles.chPov}>POV: {ch.pov}</div>
                 </div>
                 <div className={styles.chStatus}>
                   {ch.status === 'published'

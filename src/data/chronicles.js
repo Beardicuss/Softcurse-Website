@@ -29,10 +29,11 @@ export const CHRONICLES = {
     releaseDate: 'TBA',
     version: null,
     shortDesc: 'A debt is never truly paid. The Auditor has come to collect what was promised — and the city of Ash will remember the price.',
-    desc: `Book IV of Chronicles of a Fallen World. The Auditor arrives in the City of Ash to settle
-    an ancient debt written in blood and silence. A multi-POV narrative told from the perspectives
-    of those who owe, those who collect, and those who simply survive the ledger's closing.
-    Each chapter is a lens. Each POV shifts the truth.`,
+    desc: `Set 1,000 years after the events of Books I–III, The Black Ledger opens in an Ash City
+    that has rebuilt itself on the bones of the old world — and on the debts it never repaid.
+    The Auditor arrives not as a conqueror, but as a collector. What follows is a reckoning
+    told through the eyes of those who owe, those who survived, and those who built the new
+    order on the silence of the fallen. This is not a war story. It is an accounting.`,
     features: [
       'Multi-POV narrative — same events from different eyes',
       'Interactive chapter visualization',
@@ -71,14 +72,14 @@ export const CHRONICLES = {
       },
       {
         num: 5,
-        title: 'Liturgy of Steel',
+        title: 'Chapter V',
         file: '/chronicles/black-ledger/chapter-05.html',
         pov: 'Unknown',
         status: 'published',
       },
       {
         num: 6,
-        title: 'Debit, Credit & Void-Blossom Tea',
+        title: 'Chapter VI',
         file: '/chronicles/black-ledger/chapter-06.html',
         pov: 'Unknown',
         status: 'published',
