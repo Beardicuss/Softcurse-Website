@@ -14,9 +14,9 @@
 export const CHRONICLES = {
   'black-ledger': {
     id: 'black-ledger',
-    series: 'Chronicles of a Fallen World',
+    series: 'Chronicles of the Fallen World',
     book: 'Book IV',
-    name: 'Auditor: Black Ledger',
+    name: 'The Black Ledger',
     image: '/posters/chronicles/black-ledger.png',
     character: '/posters/chronicles/black-ledger-char.png',
     characterName: 'The Auditor',

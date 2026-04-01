@@ -68,13 +68,14 @@
 
 .heroTitle {
   font-family: var(--font-heading);
-  font-size: clamp(1.8rem, 5vw, 3.5rem);
+  font-size: clamp(1.4rem, 5vw, 3.5rem);
   font-weight: 900;
   color: #fff;
   letter-spacing: 0.04em;
-  line-height: 1;
+  line-height: 1.1;
   margin-bottom: 0.8rem;
   text-shadow: 0 0 40px rgba(255,0,255,0.3);
+  word-break: break-word;
 }
 
 .heroDesc {
@@ -206,4 +207,12 @@
 @media (max-width: 768px) {
   .heroContent { padding: 1.5rem; }
   .heroTitle { font-size: 1.8rem; }
+}
+
+@media (max-width: 480px) {
+  .heroContent { padding: 1rem 1.25rem 1.5rem; }
+  .heroTitle { font-size: clamp(1.2rem, 7vw, 2rem); }
+  .heroDesc { font-size: 0.85rem; }
+  .heroBadges { gap: 0.4rem; }
+  .heroBadge { font-size: 0.55rem; }
 }
