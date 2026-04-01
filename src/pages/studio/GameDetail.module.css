@@ -1,9 +1,11 @@
-.page { padding-bottom: 6rem; }
+.page { padding-bottom: 6rem; padding-top: var(--nav-h); }
 
 .hero {
   position: relative;
   width: 100%;
-  aspect-ratio: 8 / 5;
+  height: 65vh;
+  min-height: 400px;
+  max-height: 650px;
   overflow: hidden;
 }
 
@@ -253,7 +255,7 @@
 }
 
 @media (max-width: 768px) {
-  .hero { height: 320px; }
+  .hero { height: 50vw; min-height: 260px; max-height: 380px; }
   .heroContent { padding: 1.5rem; }
   .heroTitle { font-size: 2rem; }
   .metaSection { grid-template-columns: 1fr 1fr; }

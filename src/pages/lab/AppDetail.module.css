@@ -1,9 +1,11 @@
-.page { padding-bottom: 6rem; }
+.page { padding-bottom: 6rem; padding-top: var(--nav-h); }
 
 /* ── Hero banner ── */
 .hero {
   position: relative;
-  height: 420px;
+  height: 65vh;
+  min-height: 420px;
+  max-height: 600px;
   overflow: hidden;
   margin-bottom: 0;
 }
@@ -258,7 +260,7 @@
 }
 
 @media (max-width: 768px) {
-  .hero { height: 320px; }
+  .hero { height: 50vw; min-height: 260px; max-height: 380px; }
   .heroContent { padding: 1.5rem; }
   .heroTitle { font-size: 2rem; }
   .metaSection { grid-template-columns: 1fr 1fr; }
