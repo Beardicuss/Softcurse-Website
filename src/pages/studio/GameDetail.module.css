@@ -7,6 +7,7 @@
   min-height: 400px;
   max-height: 650px;
   overflow: hidden;
+  margin-top: var(--nav-h);  /* = 68px — push below fixed navbar */
 }
 
 .heroImg {
@@ -255,7 +256,7 @@
 }
 
 @media (max-width: 768px) {
-  .hero { height: 50vw; min-height: 260px; max-height: 380px; }
+  .hero { height: 50vw; min-height: 260px; max-height: 380px; margin-top: var(--nav-h); }
   .heroContent { padding: 1.5rem; }
   .heroTitle { font-size: 2rem; }
   .metaSection { grid-template-columns: 1fr 1fr; }

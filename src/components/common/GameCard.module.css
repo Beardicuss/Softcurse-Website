@@ -253,3 +253,9 @@
     transform: none;
   }
 }
+
+/* ── Portrait variant for book/chronicle cards ── */
+.wrapperPortrait {
+  height: auto;
+  aspect-ratio: 2 / 3;
+}

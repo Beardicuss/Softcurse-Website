@@ -91,6 +91,27 @@ export const CHRONICLES = {
         pov: 'Unknown',
         status: 'published',
       },
+      {
+        num: 8,
+        title: 'Sector 13: The Graveyard of a Thousand Masts',
+        file: '/chronicles/black-ledger/chapter-08.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
+      {
+        num: 9,
+        title: 'The Ebony Cane',
+        file: '/chronicles/black-ledger/chapter-09.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
+      {
+        num: 10,
+        title: 'Porcelain and Bones',
+        file: '/chronicles/black-ledger/chapter-10.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
     ],
   },
 }

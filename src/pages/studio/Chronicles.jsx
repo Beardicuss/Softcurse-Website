@@ -74,7 +74,7 @@ export default function Chronicles() {
           <div
             ref={gridRef}
             className={`reveal ${gridVis ? 'visible' : ''}`}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.25rem' }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: '1.5rem' }}
           >
             {books.map(b => <ChronicleCard key={b.id} book={b} />)}
           </div>

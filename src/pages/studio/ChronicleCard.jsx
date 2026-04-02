@@ -23,7 +23,7 @@ export default function ChronicleCard({ book }) {
     <div className={styles.scene}>
       <Link
         to={`/chronicles/${book.id}`}
-        className={styles.wrapper}
+        className={`${styles.wrapper} ${styles.wrapperPortrait}`}
         ref={wrapRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
