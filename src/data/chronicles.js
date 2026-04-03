@@ -112,6 +112,27 @@ export const CHRONICLES = {
         pov: 'Unknown',
         status: 'published',
       },
+      {
+        num: 11,
+        title: 'Dust on the Lips of Saints',
+        file: '/chronicles/black-ledger/chapter-11.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
+      {
+        num: 12,
+        title: 'The Navigator of the Abyss',
+        file: '/chronicles/black-ledger/chapter-12.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
+      {
+        num: 13,
+        title: 'The Sea of the Sleeping',
+        file: '/chronicles/black-ledger/chapter-13.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
     ],
   },
 }
