@@ -133,6 +133,13 @@ export const CHRONICLES = {
         pov: 'Unknown',
         status: 'published',
       },
+      {
+        num: 14,
+        title: 'Voice Without a Tongue',
+        file: '/chronicles/black-ledger/chapter-14.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
     ],
   },
 }

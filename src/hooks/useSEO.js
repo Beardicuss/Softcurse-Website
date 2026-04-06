@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 const SITE_URL  = 'https://softcurse-website.pages.dev'
-const SITE_NAME = 'Softcurse'
+const SITE_NAME = 'Softcurse Systems'
 const DEFAULT_OG = `${SITE_URL}/og-image.png`
 
 /**

@@ -20,7 +20,7 @@ export default function Footer() {
         <div className={styles.brand}>
           <Link to="/" className={styles.logo}>
             <img src="/logo.png" alt="" className={styles.logoImg} />
-            <span>SOFTCURSE</span>
+            <span>SOFTCURSE SYSTEMS</span>
           </Link>
           <p className={styles.tagline}>
             A small, slightly sinister digital universe.<br />
@@ -117,7 +117,7 @@ export default function Footer() {
           <span className={styles.buildTag}>UPTIME: ∞</span>
         </div>
         <div className={styles.copy}>
-          © {year} SOFTCURSE — NO CURSE WAIVED.
+          © {year} SOFTCURSE SYSTEMS — NO CURSE WAIVED.
         </div>
       </div>
 

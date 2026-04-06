@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const BASE = 'SOFTCURSE'
+const BASE = 'SOFTCURSE SYSTEMS'
 
 /**
  * Sets document.title for SEO and browser tab clarity.
