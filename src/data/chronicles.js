@@ -140,6 +140,13 @@ export const CHRONICLES = {
         pov: 'Unknown',
         status: 'published',
       },
+      {
+        num: 15,
+        title: 'Rotten Water',
+        file: '/chronicles/black-ledger/chapter-15.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
     ],
   },
 }
