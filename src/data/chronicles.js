@@ -147,6 +147,13 @@ export const CHRONICLES = {
         pov: 'Unknown',
         status: 'published',
       },
+      {
+        num: 16,
+        title: 'Steel Bone',
+        file: '/chronicles/black-ledger/chapter-16.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
     ],
   },
 }
