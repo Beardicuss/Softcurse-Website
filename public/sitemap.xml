@@ -1,23 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://softcurse.com/</loc><priority>1.0</priority></url>
-  <url><loc>https://softcurse.com/lab</loc><priority>0.9</priority></url>
-  <url><loc>https://softcurse.com/lab/devnotes</loc><priority>0.7</priority></url>
-  <url><loc>https://softcurse.com/lab/medialab</loc><priority>0.7</priority></url>
-  <url><loc>https://softcurse.com/lab/archvis</loc><priority>0.7</priority></url>
-  <url><loc>https://softcurse.com/lab/livescriptor</loc><priority>0.7</priority></url>
-  <url><loc>https://softcurse.com/lab/blackwatch</loc><priority>0.7</priority></url>
-  <url><loc>https://softcurse.com/lab/spectral</loc><priority>0.7</priority></url>
-  <url><loc>https://softcurse.com/lab/inkmind</loc><priority>0.7</priority></url>
-  <url><loc>https://softcurse.com/lab/ytdl</loc><priority>0.7</priority></url>
-  <url><loc>https://softcurse.com/lab/vault</loc><priority>0.7</priority></url>
-  <url><loc>https://softcurse.com/studio</loc><priority>0.9</priority></url>
-  <url><loc>https://softcurse.com/studio/chronicles</loc><priority>0.7</priority></url>
-  <url><loc>https://softcurse.com/studio/isle</loc><priority>0.7</priority></url>
-  <url><loc>https://softcurse.com/studio/ww3</loc><priority>0.7</priority></url>
-  <url><loc>https://softcurse.com/about</loc><priority>0.6</priority></url>
-  <url><loc>https://softcurse.com/contact</loc><priority>0.6</priority></url>
-  <url><loc>https://softcurse.com/blog</loc><priority>0.8</priority></url>
-  <url><loc>https://softcurse.com/roadmap</loc><priority>0.7</priority></url>
-  <url><loc>https://softcurse.com/press</loc><priority>0.5</priority></url>
+
+  <!-- Core -->
+  <url><loc>https://softcurse-website.pages.dev/</loc><priority>1.0</priority></url>
+
+  <!-- Lab -->
+  <url><loc>https://softcurse-website.pages.dev/lab</loc><priority>0.9</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/lab/devnotes</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/lab/medialab</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/lab/archvis</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/lab/livescriptor</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/lab/blackwatch</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/lab/spectral</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/lab/inkmind</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/lab/ytdl</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/lab/vault</loc><priority>0.7</priority></url>
+
+  <!-- Experiments (Lab sub-module) -->
+  <url><loc>https://softcurse-website.pages.dev/experiments</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/experiments/sebas</loc><priority>0.6</priority></url>
+
+  <!-- Studio -->
+  <url><loc>https://softcurse-website.pages.dev/studio</loc><priority>0.9</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/studio/chronicles</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/studio/isle</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/studio/ww3</loc><priority>0.7</priority></url>
+
+  <!-- Chronicles (Studio sub-module) -->
+  <url><loc>https://softcurse-website.pages.dev/chronicles</loc><priority>0.8</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/chronicles/black-ledger</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/chronicles/black-ledger/chapter/1</loc><priority>0.6</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/chronicles/black-ledger/chapter/2</loc><priority>0.6</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/chronicles/black-ledger/chapter/3</loc><priority>0.6</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/chronicles/black-ledger/chapter/4</loc><priority>0.6</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/chronicles/black-ledger/chapter/5</loc><priority>0.6</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/chronicles/black-ledger/chapter/6</loc><priority>0.6</priority></url>
+
+  <!-- Other pages -->
+  <url><loc>https://softcurse-website.pages.dev/about</loc><priority>0.6</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/contact</loc><priority>0.6</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/blog</loc><priority>0.8</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/roadmap</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/press</loc><priority>0.5</priority></url>
+
 </urlset>

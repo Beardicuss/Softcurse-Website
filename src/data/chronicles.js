@@ -154,6 +154,20 @@ export const CHRONICLES = {
         pov: 'Unknown',
         status: 'published',
       },
+      {
+        num: 17,
+        title: 'Resonance',
+        file: '/chronicles/black-ledger/chapter-17.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
+      {
+        num: 18,
+        title: 'Force Majeure',
+        file: '/chronicles/black-ledger/chapter-18.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
     ],
   },
 }
