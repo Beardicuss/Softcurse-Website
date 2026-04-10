@@ -168,6 +168,20 @@ export const CHRONICLES = {
         pov: 'Unknown',
         status: 'published',
       },
+      {
+        num: 19,
+        title: 'Calibration',
+        file: '/chronicles/black-ledger/chapter-19.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
+      {
+        num: 20,
+        title: 'Cold Calculation',
+        file: '/chronicles/black-ledger/chapter-20.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
     ],
   },
 }

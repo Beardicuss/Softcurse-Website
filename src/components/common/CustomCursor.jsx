@@ -95,8 +95,8 @@ export default function CustomCursor() {
     }
 
     const tick = () => {
-      cx += (mx - cx) * 0.22
-      cy += (my - cy) * 0.22
+      cx += (mx - cx) * 0.65
+      cy += (my - cy) * 0.65
       wrap.style.left = cx + 'px'
       wrap.style.top  = cy + 'px'
       requestAnimationFrame(tick)
