@@ -1,53 +1,87 @@
 .screen {
   position: fixed;
   inset: 0;
-  background: #050608;
   z-index: 9999;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  padding-bottom: 8vh;
+  transition: opacity 0.75s ease, transform 0.75s ease;
+  background: #000008;
 }
 
 .fading {
   opacity: 0;
-  transform: scale(1.02);
+  transform: scale(1.03);
   pointer-events: none;
 }
 
+/* Full-screen canvas sits behind everything */
+.cityCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Overlay panel — floats above canvas */
 .inner {
+  position: relative;
+  z-index: 1;
   width: min(520px, 90vw);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.6rem;
+  padding: 1.8rem 2rem;
+  background: rgba(0, 4, 18, 0.55);
+  border: 1px solid rgba(0, 245, 255, 0.18);
+  border-radius: 4px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 0 40px rgba(0, 180, 255, 0.08),
+    inset 0 1px 0 rgba(0, 245, 255, 0.12);
 }
+
+/* Corner accents */
+.inner::before,
+.inner::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: rgba(0, 245, 255, 0.6);
+  border-style: solid;
+}
+.inner::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+.inner::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
 
 /* Logo */
 .logo {
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  margin-bottom: 0.5rem;
 }
 
 .logoImg {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   mix-blend-mode: screen;
   filter: brightness(2.2) saturate(1.8) contrast(1.3) hue-rotate(40deg)
           drop-shadow(0 0 8px #01ebfc)
-          drop-shadow(0 0 24px #01ebfc);
+          drop-shadow(0 0 20px #01ebfc);
   animation: bootFlicker 0.8s ease forwards;
 }
 
 .logoText {
   font-family: 'Orbitron', sans-serif;
   font-weight: 900;
-  font-size: 1.4rem;
-  letter-spacing: 0.2em;
+  font-size: 1.3rem;
+  letter-spacing: 0.22em;
   color: #01ebfc;
-  text-shadow: 0 0 12px #01ebfc, 0 0 30px rgba(1,235,252,0.4);
+  text-shadow: 0 0 10px #01ebfc, 0 0 28px rgba(1,235,252,0.4);
   animation: bootFlicker 0.8s ease forwards;
 }
 
@@ -63,12 +97,12 @@
 /* Terminal */
 .terminal {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.8rem;
-  color: rgba(0, 255, 255, 0.7);
+  font-size: 0.78rem;
+  color: rgba(0, 255, 255, 0.75);
   letter-spacing: 0.06em;
   line-height: 1.9;
-  min-height: 120px;
-  border-left: 2px solid rgba(0,255,255,0.2);
+  min-height: 118px;
+  border-left: 2px solid rgba(0, 255, 255, 0.2);
   padding-left: 1rem;
 }
 
@@ -99,21 +133,21 @@
   display: flex;
   justify-content: space-between;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.65rem;
-  color: rgba(0,255,255,0.45);
+  font-size: 0.62rem;
+  color: rgba(0, 255, 255, 0.45);
   letter-spacing: 0.18em;
 }
 
 .barTrack {
   position: relative;
   height: 3px;
-  background: rgba(0,255,255,0.08);
+  background: rgba(0, 255, 255, 0.08);
   overflow: visible;
 }
 
 .barFill {
   height: 100%;
-  background: linear-gradient(90deg, rgba(0,180,255,0.6), #01ebfc);
+  background: linear-gradient(90deg, rgba(0, 180, 255, 0.6), #01ebfc);
   transition: width 0.04s linear;
   position: relative;
 }
@@ -145,9 +179,9 @@
   align-items: center;
   gap: 0.6rem;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   letter-spacing: 0.2em;
-  color: rgba(0,255,255,0.4);
+  color: rgba(0, 255, 255, 0.4);
 }
 
 .statusDot {
@@ -156,24 +190,10 @@
   background: #01ebfc;
   box-shadow: 0 0 8px #01ebfc;
   animation: pulse 1.2s ease-in-out infinite;
+  flex-shrink: 0;
 }
 
 @keyframes pulse {
   0%, 100% { opacity: 0.5; transform: scale(0.8); }
   50%       { opacity: 1;   transform: scale(1.2); }
-}
-
-/* Scanline */
-.scanline {
-  position: absolute;
-  left: 0; right: 0;
-  height: 2px;
-  background: rgba(0,255,255,0.04);
-  animation: scanDown 3s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes scanDown {
-  from { top: 0; }
-  to   { top: 100%; }
 }
