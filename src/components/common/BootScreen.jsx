@@ -676,7 +676,12 @@ function runCity(canvas, totalMs) {
     const raw=Math.min((ts-startTs)/totalMs,1)
     const tick=ts/1000
     const g=geo()
-    const {CX,CY,mobile}=g
+    const {CX,CY,mobile,dpr}=g
+
+    // CRITICAL: scale ctx by DPR so all draw coordinates are in CSS pixels.
+    // canvas.width = innerWidth*dpr but geo() returns CSS pixel values.
+    // Without this, at DPR=1.5 everything is crammed into top-left 2/3 of canvas.
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
     const inSurge=active('surge',raw), inBuild=active('build',raw)
     const inAlive=active('alive',raw)||active('hold',raw)
