@@ -20,9 +20,18 @@ export default function BootScreen({ onComplete }) {
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-    const setSize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight }
+
+    // Render at CSS pixels × min(DPR, 1.5) — crisp but not 9× pixels on 3× phones
+    const setSize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
+      canvas.width  = Math.round(window.innerWidth  * dpr)
+      canvas.height = Math.round(window.innerHeight * dpr)
+      canvas.style.width  = window.innerWidth  + 'px'
+      canvas.style.height = window.innerHeight + 'px'
+    }
     setSize()
     window.addEventListener('resize', setSize)
+
     const stop = runCity(canvas, ANIM_MS)
     const t = setTimeout(() => { setFading(true); setTimeout(onComplete, FADE_MS) }, ANIM_MS)
     return () => { stop(); clearTimeout(t); window.removeEventListener('resize', setSize) }
@@ -66,22 +75,37 @@ function runCity(canvas, totalMs) {
     ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r); ctx.closePath()
   }
 
+  // ── geo: all layout constants, recomputed each frame ──────────────────────
+  // canvas.width/height are at physical DPR scale; divide back to CSS pixels
   const geo = () => {
-    const W=canvas.width, H=canvas.height
-    const portrait = H>W
-    const CX=W/2
-    // on portrait/mobile push city lower so chip sits in upper half
-    const CY = portrait ? H*0.36 : H*0.44
+    const dpr = canvas.width / window.innerWidth || 1
+    const W = canvas.width / dpr   // CSS-pixel width
+    const H = canvas.height / dpr  // CSS-pixel height
+    const portrait = H > W
+    const CX = W / 2
+    const CY = portrait ? H * 0.36 : H * 0.44
     const CS = portrait ? Math.min(W,H)*0.30 : Math.min(W,H)*0.22
-    // sc: universal scale — 1.0 at 1100px wide, shrinks on mobile
     const sc = Math.max(0.28, Math.min(1, W/1100))
     const GROUND = CY + (portrait ? H*0.18 : H*0.14)
-    return { W, H, CX, CY, CS, GROUND, sc, portrait }
+    // is this a narrow/mobile viewport?
+    const mobile = W < 700
+    return { W, H, CX, CY, CS, GROUND, sc, portrait, mobile, dpr }
+  }
+
+  // ── shadow helper: skip on mobile (shadowBlur is the #1 perf killer) ──────
+  const setShadow = (color, blur, mobile) => {
+    if (mobile) {
+      ctx.shadowColor = 'transparent'
+      ctx.shadowBlur  = 0
+    } else {
+      ctx.shadowColor = color
+      ctx.shadowBlur  = blur
+    }
   }
 
   // ── traces (relative to chip centre) ──────────────────────────────────────
   const TCOLS=['#00f5ff','#00f5ff','#00aaff','#7700ff','#00ffaa','#ff7700','#0055ff']
-  const TRACES=Array.from({length:56},(_,i)=>{
+  const TRACES_FULL=Array.from({length:56},(_,i)=>{
     const ang=(i/56)*Math.PI*2
     const pts=[{x:rng(i)*60-30,y:rng(i*3)*60-30}]
     let cx=pts[0].x,cy=pts[0].y
@@ -91,6 +115,8 @@ function runCity(canvas, totalMs) {
     }
     return{pts,col:TCOLS[i%TCOLS.length],delay:i/56,w:rng(i*11)*0.9+0.4}
   })
+  // mobile: only use every other trace
+  const TRACES_MOBILE = TRACES_FULL.filter((_,i)=>i%2===0)
 
   // ── buildings ──────────────────────────────────────────────────────────────
   const BCOLS=['#00f5ff','#0077ff','#7700ff','#00ffaa','#ff7700','#00aaff']
@@ -130,8 +156,10 @@ function runCity(canvas, totalMs) {
     const n=pts.length-1,si=Math.min(Math.floor(t*n),n-1),f=t*n-si
     return{x:lerp(pts[si].x,pts[si+1].x,f),y:lerp(pts[si].y,pts[si+1].y,f)}
   }
-  const spawnPulse=(CX,CY,sc)=>{
-    if(PULSES.length>65) return
+  const spawnPulse=(CX,CY,sc,mobile)=>{
+    const cap = mobile ? 14 : 65
+    if(PULSES.length>cap) return
+    const TRACES = mobile ? TRACES_MOBILE : TRACES_FULL
     const tr=TRACES[Math.floor(Math.random()*TRACES.length)]
     PULSES.push({tr,t:0,spd:0.004+Math.random()*0.012,col:tr.col,r:1.5+Math.random()*2.5,tail:[],CX,CY,sc})
   }
@@ -139,7 +167,7 @@ function runCity(canvas, totalMs) {
   // ─────────────────────────────────────────────────────────────────────────
   //  CHIP  — the centrepiece
   // ─────────────────────────────────────────────────────────────────────────
-  const drawChip=(raw,tick,{W,H,CX,CY,CS})=>{
+  const drawChip=(raw,tick,{W,H,CX,CY,CS,mobile})=>{
     const hw=CS/2, hh=CS/2
 
     // alpha / glow per phase
@@ -161,7 +189,6 @@ function runCity(canvas, totalMs) {
     if(alpha<0.004) return
 
     ctx.save()
-    // subtle breathe scale
     const S=1+Math.sin(tick*1.05)*0.006
     ctx.translate(CX,CY); ctx.scale(S,S); ctx.translate(-CX,-CY)
 
@@ -176,23 +203,20 @@ function runCity(canvas, totalMs) {
     // ── 2. pin traces (all 4 sides, 7 pins each) ──────────────────────────
     const PIN=7, PINalpha=alpha*0.94
     ctx.lineWidth=1.8; ctx.lineCap='butt'
-    ctx.shadowColor='#00e8ff'; ctx.shadowBlur=glow*14
+    setShadow('#00e8ff', glow*14, mobile)
     for(let i=1;i<=PIN;i++){
       const py=CY-hh+i*(hh*2/(PIN+1))
       const px=CX-hw+i*(hw*2/(PIN+1))
       ;[[-hw-26,-hw],[hw,hw+26]].forEach(([x1,x2])=>{
-        // pin track
         ctx.strokeStyle=`rgba(0,210,255,${PINalpha*0.55})`
         ctx.beginPath(); ctx.moveTo(CX+x1,py); ctx.lineTo(CX+x2,py); ctx.stroke()
-        // pad
         const px2=CX+(x1<0?x1-5:x2)
         ctx.fillStyle=`rgba(0,200,240,${PINalpha*0.9})`
         ctx.fillRect(px2,py-3.5,5,7)
-        // hot pin tip glow
         const tipX=CX+(x1<0?x1-5:x2+5)
         ctx.beginPath(); ctx.arc(tipX,py,1.8,0,Math.PI*2)
         ctx.fillStyle=`rgba(100,255,255,${PINalpha*(0.6+0.4*Math.sin(tick*2+i))})`
-        ctx.shadowBlur=glow*8; ctx.fill()
+        setShadow('#00e8ff', glow*8, mobile); ctx.fill()
       })
       ;[[-hh-26,-hh],[hh,hh+26]].forEach(([y1,y2])=>{
         ctx.strokeStyle=`rgba(0,210,255,${PINalpha*0.55})`
@@ -203,12 +227,12 @@ function runCity(canvas, totalMs) {
         const tipY=CY+(y1<0?y1-5:y2+5)
         ctx.beginPath(); ctx.arc(px,tipY,1.8,0,Math.PI*2)
         ctx.fillStyle=`rgba(100,255,255,${PINalpha*(0.6+0.4*Math.sin(tick*2+i+3))})`
-        ctx.shadowBlur=glow*8; ctx.fill()
+        setShadow('#00e8ff', glow*8, mobile); ctx.fill()
       })
     }
 
     // ── 3. chip body ───────────────────────────────────────────────────────
-    ctx.shadowColor='#00f5ff'; ctx.shadowBlur=glow*36
+    setShadow('#00f5ff', glow*36, mobile)
     const bodyGrad=ctx.createLinearGradient(CX-hw,CY-hh,CX+hw,CY+hh)
     bodyGrad.addColorStop(0,`rgba(2,22,58,${alpha})`)
     bodyGrad.addColorStop(0.5,`rgba(0,14,42,${alpha})`)
@@ -239,7 +263,7 @@ function runCity(canvas, totalMs) {
     }
 
     // ── 6. inner circuit traces ────────────────────────────────────────────
-    ctx.shadowColor='#00f5ff'; ctx.shadowBlur=glow*8
+    setShadow('#00f5ff', glow*8, mobile)
     ctx.lineWidth=1.1; ctx.lineCap='round'
     const ROUTES=[
       {pts:[[CX-hw*0.74,CY-hh*0.65],[CX-hw*0.74,CY-hh*0.18],[CX-hw*0.2,CY-hh*0.18],[CX-hw*0.2,CY+hh*0.44]],col:'#00f5ff'},
@@ -257,13 +281,11 @@ function runCity(canvas, totalMs) {
       {pts:[[CX-hw*0.74,CY-hh*0.4],[CX-hw*0.54,CY-hh*0.4]],col:'#00aaff'},
     ]
     ROUTES.forEach(seg=>{
-      // animated data packet running along each route
       const progress=(tick*0.35+ROUTES.indexOf(seg)*0.11)%1
       ctx.strokeStyle=rgba(seg.col,alpha*0.82)
       ctx.beginPath(); ctx.moveTo(seg.pts[0][0],seg.pts[0][1])
       for(let k=1;k<seg.pts.length;k++) ctx.lineTo(seg.pts[k][0],seg.pts[k][1])
       ctx.stroke()
-      // moving data nub
       if(glow>0.6&&seg.pts.length>=2){
         const n=seg.pts.length-1, si=Math.min(Math.floor(progress*n),n-1)
         const f=progress*n-si
@@ -271,7 +293,7 @@ function runCity(canvas, totalMs) {
         const ny=lerp(seg.pts[si][1],seg.pts[si+1][1],f)
         ctx.beginPath(); ctx.arc(nx,ny,2.2,0,Math.PI*2)
         ctx.fillStyle=rgba(seg.col,alpha*0.9)
-        ctx.shadowColor=seg.col; ctx.shadowBlur=10; ctx.fill()
+        setShadow(seg.col, 10, mobile); ctx.fill()
       }
     })
 
@@ -289,16 +311,14 @@ function runCity(canvas, totalMs) {
       const p=0.6+0.4*Math.sin(tick*1.4+vi*0.75)
       ctx.beginPath(); ctx.arc(vx,vy,vr,0,Math.PI*2)
       ctx.fillStyle=`rgba(0,245,255,${alpha*p})`
-      ctx.shadowColor='#00f5ff'; ctx.shadowBlur=glow*12; ctx.fill()
-      // outer ring
+      setShadow('#00f5ff', glow*12, mobile); ctx.fill()
       ctx.beginPath(); ctx.arc(vx,vy,vr+2.5,0,Math.PI*2)
       ctx.strokeStyle=`rgba(0,245,255,${alpha*p*0.35})`; ctx.lineWidth=0.7; ctx.stroke()
     })
 
     // ── 8. centre CPU die ──────────────────────────────────────────────────
     const dieS=hw*0.28
-    // die body
-    ctx.shadowColor='#00f5ff'; ctx.shadowBlur=glow*20
+    setShadow('#00f5ff', glow*20, mobile)
     const dieG=ctx.createRadialGradient(CX,CY,0,CX,CY,dieS*1.6)
     dieG.addColorStop(0,`rgba(0,180,255,${alpha*0.55})`)
     dieG.addColorStop(0.5,`rgba(0,80,200,${alpha*0.25})`)
@@ -312,7 +332,6 @@ function runCity(canvas, totalMs) {
     ctx.fillStyle=dieBody; ctx.fill()
     ctx.strokeStyle=`rgba(0,245,255,${alpha})`; ctx.lineWidth=1.2; ctx.stroke()
 
-    // die grid
     for(let g2=1;g2<4;g2++){
       const gp=CX-dieS+g2*(dieS*2/4)
       const gq=CY-dieS+g2*(dieS*2/4)
@@ -321,7 +340,6 @@ function runCity(canvas, totalMs) {
       ctx.beginPath(); ctx.moveTo(CX-dieS,gq); ctx.lineTo(CX+dieS,gq); ctx.stroke()
     }
 
-    // die scan bar
     const dieScan=(tick*dieS*1.1)%(dieS*2)
     const dsg=ctx.createLinearGradient(CX-dieS,CY-dieS+dieScan-2,CX-dieS,CY-dieS+dieScan+2)
     dsg.addColorStop(0,'rgba(0,255,255,0)')
@@ -329,13 +347,11 @@ function runCity(canvas, totalMs) {
     dsg.addColorStop(1,'rgba(0,255,255,0)')
     ctx.fillStyle=dsg; ctx.fillRect(CX-dieS,CY-dieS+dieScan-2,dieS*2,4)
 
-    // centre core dot
     const cp=0.7+0.3*Math.sin(tick*2.2)
     ctx.beginPath(); ctx.arc(CX,CY,5,0,Math.PI*2)
     ctx.fillStyle=`rgba(255,255,255,${alpha*cp})`
-    ctx.shadowColor='#ffffff'; ctx.shadowBlur=glow*22; ctx.fill()
+    setShadow('#ffffff', glow*22, mobile); ctx.fill()
 
-    // ── 9. 4 concentric aura rings ─────────────────────────────────────────
     ctx.shadowBlur=0
     for(let ring=0;ring<5;ring++){
       const rs=hw*(0.55+ring*0.2)
@@ -345,7 +361,6 @@ function runCity(canvas, totalMs) {
       ctx.lineWidth=ring===0?1.2:0.5; ctx.stroke()
     }
 
-    // ── 10. corner bracket marks on chip face ──────────────────────────────
     const bOff=8, bLen=hw*0.22
     const corners=[[CX-hw+bOff,CY-hh+bOff],[CX+hw-bOff,CY-hh+bOff],[CX-hw+bOff,CY+hh-bOff],[CX+hw-bOff,CY+hh-bOff]]
     const dirs=[[[1,0],[0,1]],[[-1,0],[0,1]],[[1,0],[0,-1]],[[-1,0],[0,-1]]]
@@ -371,25 +386,28 @@ function runCity(canvas, totalMs) {
   }
 
   // ── stars ─────────────────────────────────────────────────────────────────
-  const drawStars=(raw,{W,H})=>{
+  const drawStars=(raw,{W,H,mobile})=>{
     const a=1-clamp(ph('boot',raw)*2,0,1)
     if(a<0.01) return
-    for(let i=0;i<130;i++){
+    const count = mobile ? 60 : 130
+    for(let i=0;i<count;i++){
       ctx.beginPath(); ctx.arc(rng(i*2.3)*W,rng(i*5.7)*H*0.42,0.8,0,Math.PI*2)
       ctx.fillStyle=`rgba(160,200,255,${a*(0.5+0.5*Math.sin(raw*12+i))*0.7})`; ctx.fill()
     }
   }
 
   // ── circuit traces (outward) ──────────────────────────────────────────────
-  const drawTraces=(raw,{CX,CY,sc})=>{
+  const drawTraces=(raw,{CX,CY,sc,mobile})=>{
     let alpha
     if(active('surge',raw)) alpha=eOut(ph('surge',raw))
     else if(active('build',raw)||active('alive',raw)||active('hold',raw)) alpha=1
     else return
+    const TRACES = mobile ? TRACES_MOBILE : TRACES_FULL
     TRACES.forEach(tr=>{
       const p=eOut(clamp((alpha-tr.delay*0.55)/0.72,0,1))
       if(p<0.01) return
-      ctx.save(); ctx.shadowColor=tr.col; ctx.shadowBlur=10
+      ctx.save()
+      if(!mobile){ ctx.shadowColor=tr.col; ctx.shadowBlur=10 }
       ctx.strokeStyle=rgba(tr.col,p*0.75); ctx.lineWidth=tr.w+0.5
       ctx.lineCap='round'; ctx.lineJoin='round'
       ctx.beginPath(); ctx.moveTo(CX+tr.pts[0].x*sc,CY+tr.pts[0].y*sc)
@@ -399,29 +417,34 @@ function runCity(canvas, totalMs) {
   }
 
   // ── pulses ────────────────────────────────────────────────────────────────
-  const drawPulses=raw=>{
+  const drawPulses=(raw,mobile)=>{
     if(!active('surge',raw)&&!active('build',raw)&&!active('alive',raw)&&!active('hold',raw)) return
+    // mobile: shorter tails, no shadowBlur
+    const tailMax = mobile ? 8 : 20
     PULSES.forEach(p=>{
       if(p.tr.pts.length<2) return
       const rel=ptOn(p.tr.pts,p.t)
       const psc=p.sc||1
       const pos={x:p.CX+rel.x*psc,y:p.CY+rel.y*psc}
-      p.tail.push({...pos}); if(p.tail.length>20) p.tail.shift()
+      p.tail.push({...pos}); if(p.tail.length>tailMax) p.tail.shift()
       ctx.save()
       p.tail.forEach((tp,i)=>{
         ctx.beginPath(); ctx.arc(tp.x,tp.y,p.r*(i/p.tail.length)*0.75,0,Math.PI*2)
         ctx.fillStyle=rgba(p.col,(i/p.tail.length)*0.45)
-        ctx.shadowColor=p.col; ctx.shadowBlur=5; ctx.fill()
+        if(!mobile){ ctx.shadowColor=p.col; ctx.shadowBlur=5 }
+        ctx.fill()
       })
       ctx.beginPath(); ctx.arc(pos.x,pos.y,p.r+1.5,0,Math.PI*2)
-      ctx.fillStyle=rgba(p.col,0.95); ctx.shadowColor=p.col; ctx.shadowBlur=22; ctx.fill()
+      ctx.fillStyle=rgba(p.col,0.95)
+      if(!mobile){ ctx.shadowColor=p.col; ctx.shadowBlur=22 }
+      ctx.fill()
       ctx.restore(); p.t+=p.spd
     })
     for(let i=PULSES.length-1;i>=0;i--) if(PULSES[i].t>=1) PULSES.splice(i,1)
   }
 
   // ── buildings ─────────────────────────────────────────────────────────────
-  const drawBuildings=(raw,tick,{CX,GROUND,sc})=>{
+  const drawBuildings=(raw,tick,{CX,GROUND,sc,mobile})=>{
     let prog,alpha
     if(active('build',raw)){prog=eOut(ph('build',raw),2.5);alpha=1}
     else if(active('alive',raw)){prog=1;alpha=1}
@@ -432,7 +455,8 @@ function runCity(canvas, totalMs) {
       if(p<0.01) return
       const sw=b.w*sc, sh=b.h*sc
       const h=sh*eOut(p,3), bx=CX+b.ox*sc-sw/2, by=GROUND-h
-      ctx.save(); ctx.shadowColor=b.col; ctx.shadowBlur=12
+      ctx.save()
+      if(!mobile){ ctx.shadowColor=b.col; ctx.shadowBlur=12 }
       const bg=ctx.createLinearGradient(bx,by,bx+sw,by+h)
       bg.addColorStop(0,rgba(b.col,alpha*0.23)); bg.addColorStop(0.5,rgba(b.col,alpha*0.10)); bg.addColorStop(1,rgba(b.col,alpha*0.05))
       ctx.fillStyle=bg; ctx.fillRect(bx,by,sw,h)
@@ -442,23 +466,29 @@ function runCity(canvas, totalMs) {
         ctx.beginPath(); ctx.moveTo(bx+sw*0.35,by); ctx.lineTo(bx+sw*0.35,by+h); ctx.stroke()
         ctx.beginPath(); ctx.moveTo(bx+sw*0.7,by);  ctx.lineTo(bx+sw*0.7,by+h);  ctx.stroke()
       }
-      const wStep=Math.max(7,9*sc), wH=Math.max(8,12*sc)
-      b.wins.forEach(({r,c,b:bright})=>{
-        const wy=by+h-(r+1)*20*sc+4*sc, wx=bx+c*wStep+1.5
-        if(wy<by||wy+wH>by+h) return
-        ctx.fillStyle=rgba(b.col,alpha*bright*0.55*(0.6+0.4*Math.sin(tick*1.1+bright*20)))
-        ctx.fillRect(wx,wy,wStep*0.7,wH)
-      })
+      // skip individual windows on mobile (big perf win)
+      if(!mobile){
+        const wStep=Math.max(7,9*sc), wH=Math.max(8,12*sc)
+        b.wins.forEach(({r,c,b:bright})=>{
+          const wy=by+h-(r+1)*20*sc+4*sc, wx=bx+c*wStep+1.5
+          if(wy<by||wy+wH>by+h) return
+          ctx.fillStyle=rgba(b.col,alpha*bright*0.55*(0.6+0.4*Math.sin(tick*1.1+bright*20)))
+          ctx.fillRect(wx,wy,wStep*0.7,wH)
+        })
+      }
       if(b.hasTip&&p>0.82){
         const tp=clamp((p-0.82)/0.18,0,1)
         ctx.strokeStyle=rgba(b.col,alpha*tp); ctx.lineWidth=1.5
         ctx.beginPath(); ctx.moveTo(bx+sw/2,by); ctx.lineTo(bx+sw/2,by-b.tipH*sc*tp); ctx.stroke()
         if(Math.sin(tick*3+i)>0.3){
           ctx.beginPath(); ctx.arc(bx+sw/2,by-b.tipH*sc*tp,2.5,0,Math.PI*2)
-          ctx.fillStyle=`rgba(255,60,60,${alpha*tp})`; ctx.shadowColor='#ff3333'; ctx.shadowBlur=10; ctx.fill()
+          ctx.fillStyle=`rgba(255,60,60,${alpha*tp})`
+          if(!mobile){ ctx.shadowColor='#ff3333'; ctx.shadowBlur=10 }
+          ctx.fill()
         }
       }
-      if(p>0.94&&h>10){
+      // skip scan shimmer on mobile
+      if(!mobile&&p>0.94&&h>10){
         const sy=by+((tick*36)%h)
         const sg=ctx.createLinearGradient(bx,sy-5,bx,sy+5)
         sg.addColorStop(0,'rgba(255,255,255,0)'); sg.addColorStop(0.5,rgba(b.col,alpha*0.18)); sg.addColorStop(1,'rgba(255,255,255,0)')
@@ -492,8 +522,9 @@ function runCity(canvas, totalMs) {
     ctx.restore()
   }
 
-  // ── reflection ────────────────────────────────────────────────────────────
+  // ── reflection — skip entirely on mobile ──────────────────────────────────
   const drawReflection=(raw,tick,g)=>{
+    if(g.mobile) return
     const a=clamp(ph('build',raw)*2-0.35,0,1)*0.15
     if(a<0.005) return
     ctx.save(); ctx.globalAlpha=a
@@ -531,33 +562,40 @@ function runCity(canvas, totalMs) {
   }
 
   // ── SOFTCURSE SYSTEMS wordmark ─────────────────────────────────────────────
-  const drawReveal=(raw,tick,{W,H,CX,CY})=>{
+  const drawReveal=(raw,tick,{W,H,CX,CY,mobile})=>{
     if(!active('hold',raw)) return
     const hp=ph('hold',raw)
-    // fast fade-in (first 20% of hold), stays full, no fade-out (canvas itself fades)
     const a=eOut(clamp(hp/0.2,0,1),2)
     if(a<0.005) return
 
     ctx.save()
     ctx.textAlign='center'; ctx.textBaseline='middle'
 
-    // responsive font: clamp tighter on narrow screens
-    const fz=Math.min(W*0.10,68)
-    const textY = H*0.5
-    ctx.font=`900 ${fz}px 'Orbitron','Share Tech Mono',monospace`
+    // ── auto-fit font: measure actual pixel width, shrink until it fits ────
+    const maxTextW = W * 0.88
+    let fz = Math.min(W * 0.10, 68)
+    ctx.font = `900 ${fz}px 'Orbitron','Share Tech Mono',monospace`
+    // shrink until 'SOFTCURSE SYSTEMS' fits within 88% of screen width
+    while (ctx.measureText('SOFTCURSE SYSTEMS').width > maxTextW && fz > 10) {
+      fz -= 0.5
+      ctx.font = `900 ${fz}px 'Orbitron','Share Tech Mono',monospace`
+    }
 
-    // glow layers
-    ctx.shadowColor='#00f5ff'; ctx.shadowBlur=80*a
+    const textY = H * 0.5
+
+    // glow layers — reduce blur on mobile
+    const blurMult = mobile ? 0.4 : 1
+    ctx.shadowColor='#00f5ff'; ctx.shadowBlur=80*a*blurMult
     ctx.fillStyle=`rgba(0,245,255,${a*0.14})`; ctx.fillText('SOFTCURSE SYSTEMS',CX,textY)
-    ctx.shadowBlur=40*a
+    ctx.shadowBlur=40*a*blurMult
     ctx.fillStyle=`rgba(0,245,255,${a*0.28})`; ctx.fillText('SOFTCURSE SYSTEMS',CX,textY)
-    ctx.shadowBlur=16*a
+    ctx.shadowBlur=16*a*blurMult
     ctx.fillStyle=`rgba(255,255,255,${a*0.94})`; ctx.fillText('SOFTCURSE SYSTEMS',CX,textY)
 
-    // tagline — wrap on mobile
+    // tagline
     const tz=Math.max(10,Math.min(W*0.030,13))
     ctx.font=`400 ${tz}px 'Share Tech Mono',monospace`
-    ctx.shadowBlur=10*a; ctx.fillStyle=`rgba(0,245,255,${a*0.75})`
+    ctx.shadowBlur=mobile?0:10*a; ctx.fillStyle=`rgba(0,245,255,${a*0.75})`
     const tagLine1='A small, slightly sinister'
     const tagLine2='digital universe.'
     const tagFull='A small, slightly sinister digital universe.'
@@ -588,31 +626,42 @@ function runCity(canvas, totalMs) {
     ctx.fillStyle=vg; ctx.fillRect(0,0,W,H)
   }
 
-  // ── RAF ───────────────────────────────────────────────────────────────────
-  let startTs=null, rafId=null, stopped=false
+  // ── RAF — throttle to 30fps on mobile ────────────────────────────────────
+  let startTs=null, rafId=null, stopped=false, lastFrameTs=0
   const frame=ts=>{
     if(stopped) return
+
+    // throttle: mobile targets ~30fps (33ms frame budget), desktop runs free
+    const g0=geo()
+    if(g0.mobile && ts-lastFrameTs < 33){
+      rafId=requestAnimationFrame(frame); return
+    }
+    lastFrameTs=ts
+
     if(!startTs) startTs=ts
     const raw=Math.min((ts-startTs)/totalMs,1)
     const tick=ts/1000
     const g=geo()
-    const {CX,CY}=g
+    const {CX,CY,mobile}=g
 
     const inSurge=active('surge',raw), inBuild=active('build',raw)
     const inAlive=active('alive',raw)||active('hold',raw)
     const rate=inAlive?0.10:inBuild?0.20:inSurge?0.30:2
-    if(Math.random()>rate) spawnPulse(CX,CY,g.sc)
+    if(Math.random()>rate) spawnPulse(CX,CY,g.sc,mobile)
 
     drawBg(raw,g); drawStars(raw,g)
     drawMegaGlow(raw,g); drawShockwave(raw,g)
-    drawGround(raw,g); drawTraces(raw,g); drawPulses(raw)
+    drawGround(raw,g); drawTraces(raw,g); drawPulses(raw,mobile)
     drawBuildings(raw,tick,g); drawReflection(raw,tick,g); drawFog(raw,g)
     drawChip(raw,tick,g); drawVignette(g)
     drawReveal(raw,tick,g)
 
-    ctx.globalAlpha=0.022
-    for(let y=0;y<g.H;y+=2){ctx.fillStyle='#000';ctx.fillRect(0,y,g.W,1)}
-    ctx.globalAlpha=1
+    // scanline overlay — skip on mobile
+    if(!mobile){
+      ctx.globalAlpha=0.022
+      for(let y=0;y<g.H;y+=2){ctx.fillStyle='#000';ctx.fillRect(0,y,g.W,1)}
+      ctx.globalAlpha=1
+    }
 
     rafId=requestAnimationFrame(frame)
   }
