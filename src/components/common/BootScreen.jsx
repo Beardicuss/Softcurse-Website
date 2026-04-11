@@ -67,9 +67,16 @@ function runCity(canvas, totalMs) {
   }
 
   const geo = () => {
-    const W=canvas.width, H=canvas.height, CX=W/2, CY=H*0.44
-    const CS=Math.min(W,H)*0.22
-    return { W, H, CX, CY, CS, GROUND: CY+H*0.14 }
+    const W=canvas.width, H=canvas.height
+    const portrait = H>W
+    const CX=W/2
+    // on portrait/mobile push city lower so chip sits in upper half
+    const CY = portrait ? H*0.36 : H*0.44
+    const CS = portrait ? Math.min(W,H)*0.30 : Math.min(W,H)*0.22
+    // sc: universal scale — 1.0 at 1100px wide, shrinks on mobile
+    const sc = Math.max(0.28, Math.min(1, W/1100))
+    const GROUND = CY + (portrait ? H*0.18 : H*0.14)
+    return { W, H, CX, CY, CS, GROUND, sc, portrait }
   }
 
   // ── traces (relative to chip centre) ──────────────────────────────────────
@@ -123,10 +130,10 @@ function runCity(canvas, totalMs) {
     const n=pts.length-1,si=Math.min(Math.floor(t*n),n-1),f=t*n-si
     return{x:lerp(pts[si].x,pts[si+1].x,f),y:lerp(pts[si].y,pts[si+1].y,f)}
   }
-  const spawnPulse=(CX,CY)=>{
+  const spawnPulse=(CX,CY,sc)=>{
     if(PULSES.length>65) return
     const tr=TRACES[Math.floor(Math.random()*TRACES.length)]
-    PULSES.push({tr,t:0,spd:0.004+Math.random()*0.012,col:tr.col,r:1.5+Math.random()*2.5,tail:[],CX,CY})
+    PULSES.push({tr,t:0,spd:0.004+Math.random()*0.012,col:tr.col,r:1.5+Math.random()*2.5,tail:[],CX,CY,sc})
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -374,7 +381,7 @@ function runCity(canvas, totalMs) {
   }
 
   // ── circuit traces (outward) ──────────────────────────────────────────────
-  const drawTraces=(raw,{CX,CY})=>{
+  const drawTraces=(raw,{CX,CY,sc})=>{
     let alpha
     if(active('surge',raw)) alpha=eOut(ph('surge',raw))
     else if(active('build',raw)||active('alive',raw)||active('hold',raw)) alpha=1
@@ -385,8 +392,8 @@ function runCity(canvas, totalMs) {
       ctx.save(); ctx.shadowColor=tr.col; ctx.shadowBlur=10
       ctx.strokeStyle=rgba(tr.col,p*0.75); ctx.lineWidth=tr.w+0.5
       ctx.lineCap='round'; ctx.lineJoin='round'
-      ctx.beginPath(); ctx.moveTo(CX+tr.pts[0].x,CY+tr.pts[0].y)
-      tr.pts.slice(1).forEach(p2=>ctx.lineTo(CX+p2.x,CY+p2.y))
+      ctx.beginPath(); ctx.moveTo(CX+tr.pts[0].x*sc,CY+tr.pts[0].y*sc)
+      tr.pts.slice(1).forEach(p2=>ctx.lineTo(CX+p2.x*sc,CY+p2.y*sc))
       ctx.stroke(); ctx.restore()
     })
   }
@@ -397,7 +404,8 @@ function runCity(canvas, totalMs) {
     PULSES.forEach(p=>{
       if(p.tr.pts.length<2) return
       const rel=ptOn(p.tr.pts,p.t)
-      const pos={x:p.CX+rel.x,y:p.CY+rel.y}
+      const psc=p.sc||1
+      const pos={x:p.CX+rel.x*psc,y:p.CY+rel.y*psc}
       p.tail.push({...pos}); if(p.tail.length>20) p.tail.shift()
       ctx.save()
       p.tail.forEach((tp,i)=>{
@@ -413,7 +421,7 @@ function runCity(canvas, totalMs) {
   }
 
   // ── buildings ─────────────────────────────────────────────────────────────
-  const drawBuildings=(raw,tick,{CX,GROUND})=>{
+  const drawBuildings=(raw,tick,{CX,GROUND,sc})=>{
     let prog,alpha
     if(active('build',raw)){prog=eOut(ph('build',raw),2.5);alpha=1}
     else if(active('alive',raw)){prog=1;alpha=1}
@@ -422,44 +430,46 @@ function runCity(canvas, totalMs) {
     BUILDINGS.forEach((b,i)=>{
       const p=clamp((prog-b.delay)/(1-b.delay),0,1)
       if(p<0.01) return
-      const h=b.h*eOut(p,3), bx=CX+b.ox-b.w/2, by=GROUND-h
+      const sw=b.w*sc, sh=b.h*sc
+      const h=sh*eOut(p,3), bx=CX+b.ox*sc-sw/2, by=GROUND-h
       ctx.save(); ctx.shadowColor=b.col; ctx.shadowBlur=12
-      const bg=ctx.createLinearGradient(bx,by,bx+b.w,by+h)
+      const bg=ctx.createLinearGradient(bx,by,bx+sw,by+h)
       bg.addColorStop(0,rgba(b.col,alpha*0.23)); bg.addColorStop(0.5,rgba(b.col,alpha*0.10)); bg.addColorStop(1,rgba(b.col,alpha*0.05))
-      ctx.fillStyle=bg; ctx.fillRect(bx,by,b.w,h)
-      ctx.strokeStyle=rgba(b.col,alpha*0.72); ctx.lineWidth=0.9; ctx.strokeRect(bx,by,b.w,h)
-      if(b.w>20){
+      ctx.fillStyle=bg; ctx.fillRect(bx,by,sw,h)
+      ctx.strokeStyle=rgba(b.col,alpha*0.72); ctx.lineWidth=0.9; ctx.strokeRect(bx,by,sw,h)
+      if(sw>14){
         ctx.strokeStyle=rgba(b.col,alpha*0.2); ctx.lineWidth=0.38
-        ctx.beginPath(); ctx.moveTo(bx+b.w*0.35,by); ctx.lineTo(bx+b.w*0.35,by+h); ctx.stroke()
-        ctx.beginPath(); ctx.moveTo(bx+b.w*0.7,by);  ctx.lineTo(bx+b.w*0.7,by+h);  ctx.stroke()
+        ctx.beginPath(); ctx.moveTo(bx+sw*0.35,by); ctx.lineTo(bx+sw*0.35,by+h); ctx.stroke()
+        ctx.beginPath(); ctx.moveTo(bx+sw*0.7,by);  ctx.lineTo(bx+sw*0.7,by+h);  ctx.stroke()
       }
+      const wStep=Math.max(7,9*sc), wH=Math.max(8,12*sc)
       b.wins.forEach(({r,c,b:bright})=>{
-        const wy=by+h-(r+1)*20+4, wx=bx+c*9+1.5
-        if(wy<by||wy+14>by+h) return
+        const wy=by+h-(r+1)*20*sc+4*sc, wx=bx+c*wStep+1.5
+        if(wy<by||wy+wH>by+h) return
         ctx.fillStyle=rgba(b.col,alpha*bright*0.55*(0.6+0.4*Math.sin(tick*1.1+bright*20)))
-        ctx.fillRect(wx,wy,6,12)
+        ctx.fillRect(wx,wy,wStep*0.7,wH)
       })
       if(b.hasTip&&p>0.82){
         const tp=clamp((p-0.82)/0.18,0,1)
         ctx.strokeStyle=rgba(b.col,alpha*tp); ctx.lineWidth=1.5
-        ctx.beginPath(); ctx.moveTo(bx+b.w/2,by); ctx.lineTo(bx+b.w/2,by-b.tipH*tp); ctx.stroke()
+        ctx.beginPath(); ctx.moveTo(bx+sw/2,by); ctx.lineTo(bx+sw/2,by-b.tipH*sc*tp); ctx.stroke()
         if(Math.sin(tick*3+i)>0.3){
-          ctx.beginPath(); ctx.arc(bx+b.w/2,by-b.tipH*tp,2.5,0,Math.PI*2)
+          ctx.beginPath(); ctx.arc(bx+sw/2,by-b.tipH*sc*tp,2.5,0,Math.PI*2)
           ctx.fillStyle=`rgba(255,60,60,${alpha*tp})`; ctx.shadowColor='#ff3333'; ctx.shadowBlur=10; ctx.fill()
         }
       }
-      if(p>0.94){
+      if(p>0.94&&h>10){
         const sy=by+((tick*36)%h)
         const sg=ctx.createLinearGradient(bx,sy-5,bx,sy+5)
         sg.addColorStop(0,'rgba(255,255,255,0)'); sg.addColorStop(0.5,rgba(b.col,alpha*0.18)); sg.addColorStop(1,'rgba(255,255,255,0)')
-        ctx.fillStyle=sg; ctx.fillRect(bx,sy-5,b.w,10)
+        ctx.fillStyle=sg; ctx.fillRect(bx,sy-5,sw,10)
       }
       ctx.restore()
     })
   }
 
   // ── ground ────────────────────────────────────────────────────────────────
-  const drawGround=(raw,{W,H,CX,GROUND})=>{
+  const drawGround=(raw,{W,H,CX,GROUND,sc})=>{
     const a=clamp(ph('build',raw)*3,0,1)
     if(a<0.01) return
     ctx.save()
@@ -468,8 +478,9 @@ function runCity(canvas, totalMs) {
     grd.addColorStop(0.5,`rgba(0,22,55,${a*0.32})`); grd.addColorStop(1,`rgba(0,5,18,${a*0.92})`)
     ctx.fillStyle=grd; ctx.fillRect(0,GROUND,W,H-GROUND)
     ctx.strokeStyle=`rgba(0,245,255,${a*0.25})`; ctx.lineWidth=0.5
+    const gsp=Math.max(20,52*sc)
     for(let i=-15;i<=15;i++){
-      ctx.beginPath(); ctx.moveTo(CX+i*52,GROUND); ctx.lineTo(CX+i*52*5,H+200); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(CX+i*gsp,GROUND); ctx.lineTo(CX+i*gsp*5,H+200); ctx.stroke()
     }
     for(let j=0;j<8;j++){
       const y=GROUND+j*32, ww=lerp(W,18,j/7)
@@ -530,26 +541,37 @@ function runCity(canvas, totalMs) {
     ctx.save()
     ctx.textAlign='center'; ctx.textBaseline='middle'
 
-    const fz=Math.min(W*0.082,68)
+    // responsive font: clamp tighter on narrow screens
+    const fz=Math.min(W*0.10,68)
+    const textY = H*0.5
     ctx.font=`900 ${fz}px 'Orbitron','Share Tech Mono',monospace`
 
     // glow layers
     ctx.shadowColor='#00f5ff'; ctx.shadowBlur=80*a
-    ctx.fillStyle=`rgba(0,245,255,${a*0.14})`; ctx.fillText('SOFTCURSE SYSTEMS',CX,CY)
+    ctx.fillStyle=`rgba(0,245,255,${a*0.14})`; ctx.fillText('SOFTCURSE SYSTEMS',CX,textY)
     ctx.shadowBlur=40*a
-    ctx.fillStyle=`rgba(0,245,255,${a*0.28})`; ctx.fillText('SOFTCURSE SYSTEMS',CX,CY)
+    ctx.fillStyle=`rgba(0,245,255,${a*0.28})`; ctx.fillText('SOFTCURSE SYSTEMS',CX,textY)
     ctx.shadowBlur=16*a
-    ctx.fillStyle=`rgba(255,255,255,${a*0.94})`; ctx.fillText('SOFTCURSE SYSTEMS',CX,CY)
+    ctx.fillStyle=`rgba(255,255,255,${a*0.94})`; ctx.fillText('SOFTCURSE SYSTEMS',CX,textY)
 
-    // tagline
-    const tz=Math.min(W*0.017,13)
+    // tagline — wrap on mobile
+    const tz=Math.max(10,Math.min(W*0.030,13))
     ctx.font=`400 ${tz}px 'Share Tech Mono',monospace`
     ctx.shadowBlur=10*a; ctx.fillStyle=`rgba(0,245,255,${a*0.75})`
-    ctx.fillText('A small, slightly sinister digital universe.',CX,CY+fz*0.88)
+    const tagLine1='A small, slightly sinister'
+    const tagLine2='digital universe.'
+    const tagFull='A small, slightly sinister digital universe.'
+    const tagW=ctx.measureText(tagFull).width
+    if(tagW>W*0.9){
+      ctx.fillText(tagLine1,CX,textY+fz*0.88)
+      ctx.fillText(tagLine2,CX,textY+fz*0.88+tz*1.6)
+    } else {
+      ctx.fillText(tagFull,CX,textY+fz*0.88)
+    }
 
     // ruled lines
-    const rw=Math.min(W*0.48,390)
-    const ry=CY-fz*0.72
+    const rw=Math.min(W*0.82,390)
+    const ry=textY-fz*0.72
     const lg=ctx.createLinearGradient(CX-rw/2,0,CX+rw/2,0)
     lg.addColorStop(0,'rgba(0,245,255,0)'); lg.addColorStop(0.5,`rgba(0,245,255,${a*0.6})`); lg.addColorStop(1,'rgba(0,245,255,0)')
     ctx.strokeStyle=lg; ctx.lineWidth=1; ctx.shadowBlur=0
@@ -579,7 +601,7 @@ function runCity(canvas, totalMs) {
     const inSurge=active('surge',raw), inBuild=active('build',raw)
     const inAlive=active('alive',raw)||active('hold',raw)
     const rate=inAlive?0.10:inBuild?0.20:inSurge?0.30:2
-    if(Math.random()>rate) spawnPulse(CX,CY)
+    if(Math.random()>rate) spawnPulse(CX,CY,g.sc)
 
     drawBg(raw,g); drawStars(raw,g)
     drawMegaGlow(raw,g); drawShockwave(raw,g)
