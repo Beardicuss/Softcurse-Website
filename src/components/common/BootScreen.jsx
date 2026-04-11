@@ -203,7 +203,7 @@ function runCity(canvas, totalMs) {
     // ── 2. pin traces (all 4 sides, 7 pins each) ──────────────────────────
     const PIN=7, PINalpha=alpha*0.94
     ctx.lineWidth=1.8; ctx.lineCap='butt'
-    setShadow('#00e8ff', glow*14, mobile)
+    setShadow('#00e8ff', glow*9, mobile)
     for(let i=1;i<=PIN;i++){
       const py=CY-hh+i*(hh*2/(PIN+1))
       const px=CX-hw+i*(hw*2/(PIN+1))
@@ -216,7 +216,7 @@ function runCity(canvas, totalMs) {
         const tipX=CX+(x1<0?x1-5:x2+5)
         ctx.beginPath(); ctx.arc(tipX,py,1.8,0,Math.PI*2)
         ctx.fillStyle=`rgba(100,255,255,${PINalpha*(0.6+0.4*Math.sin(tick*2+i))})`
-        setShadow('#00e8ff', glow*8, mobile); ctx.fill()
+        setShadow('#00e8ff', glow*5, mobile); ctx.fill()
       })
       ;[[-hh-26,-hh],[hh,hh+26]].forEach(([y1,y2])=>{
         ctx.strokeStyle=`rgba(0,210,255,${PINalpha*0.55})`
@@ -227,12 +227,12 @@ function runCity(canvas, totalMs) {
         const tipY=CY+(y1<0?y1-5:y2+5)
         ctx.beginPath(); ctx.arc(px,tipY,1.8,0,Math.PI*2)
         ctx.fillStyle=`rgba(100,255,255,${PINalpha*(0.6+0.4*Math.sin(tick*2+i+3))})`
-        setShadow('#00e8ff', glow*8, mobile); ctx.fill()
+        setShadow('#00e8ff', glow*5, mobile); ctx.fill()
       })
     }
 
     // ── 3. chip body ───────────────────────────────────────────────────────
-    setShadow('#00f5ff', glow*36, mobile)
+    setShadow('#00f5ff', glow*6, mobile)
     const bodyGrad=ctx.createLinearGradient(CX-hw,CY-hh,CX+hw,CY+hh)
     bodyGrad.addColorStop(0,`rgba(2,22,58,${alpha})`)
     bodyGrad.addColorStop(0.5,`rgba(0,14,42,${alpha})`)
@@ -263,7 +263,7 @@ function runCity(canvas, totalMs) {
     }
 
     // ── 6. inner circuit traces ────────────────────────────────────────────
-    setShadow('#00f5ff', glow*8, mobile)
+    setShadow('#00f5ff', glow*6, mobile)
     ctx.lineWidth=1.1; ctx.lineCap='round'
     const ROUTES=[
       {pts:[[CX-hw*0.74,CY-hh*0.65],[CX-hw*0.74,CY-hh*0.18],[CX-hw*0.2,CY-hh*0.18],[CX-hw*0.2,CY+hh*0.44]],col:'#00f5ff'},
@@ -293,7 +293,7 @@ function runCity(canvas, totalMs) {
         const ny=lerp(seg.pts[si][1],seg.pts[si+1][1],f)
         ctx.beginPath(); ctx.arc(nx,ny,2.2,0,Math.PI*2)
         ctx.fillStyle=rgba(seg.col,alpha*0.9)
-        setShadow(seg.col, 10, mobile); ctx.fill()
+        setShadow(seg.col, 7, mobile); ctx.fill()
       }
     })
 
@@ -311,14 +311,14 @@ function runCity(canvas, totalMs) {
       const p=0.6+0.4*Math.sin(tick*1.4+vi*0.75)
       ctx.beginPath(); ctx.arc(vx,vy,vr,0,Math.PI*2)
       ctx.fillStyle=`rgba(0,245,255,${alpha*p})`
-      setShadow('#00f5ff', glow*12, mobile); ctx.fill()
+      setShadow('#00f5ff', glow*6, mobile); ctx.fill()
       ctx.beginPath(); ctx.arc(vx,vy,vr+2.5,0,Math.PI*2)
       ctx.strokeStyle=`rgba(0,245,255,${alpha*p*0.35})`; ctx.lineWidth=0.7; ctx.stroke()
     })
 
     // ── 8. centre CPU die ──────────────────────────────────────────────────
     const dieS=hw*0.28
-    setShadow('#00f5ff', glow*20, mobile)
+    setShadow('#00f5ff', glow*6, mobile)
     const dieG=ctx.createRadialGradient(CX,CY,0,CX,CY,dieS*1.6)
     dieG.addColorStop(0,`rgba(0,180,255,${alpha*0.55})`)
     dieG.addColorStop(0.5,`rgba(0,80,200,${alpha*0.25})`)
@@ -350,7 +350,7 @@ function runCity(canvas, totalMs) {
     const cp=0.7+0.3*Math.sin(tick*2.2)
     ctx.beginPath(); ctx.arc(CX,CY,5,0,Math.PI*2)
     ctx.fillStyle=`rgba(255,255,255,${alpha*cp})`
-    setShadow('#ffffff', glow*22, mobile); ctx.fill()
+    setShadow('#ffffff', glow*14, mobile); ctx.fill()
 
     ctx.shadowBlur=0
     for(let ring=0;ring<5;ring++){
@@ -407,7 +407,7 @@ function runCity(canvas, totalMs) {
       const p=eOut(clamp((alpha-tr.delay*0.55)/0.72,0,1))
       if(p<0.01) return
       ctx.save()
-      if(!mobile){ ctx.shadowColor=tr.col; ctx.shadowBlur=10 }
+      if(!mobile){ ctx.shadowColor=tr.col; ctx.shadowBlur=6 }
       ctx.strokeStyle=rgba(tr.col,p*0.75); ctx.lineWidth=tr.w+0.5
       ctx.lineCap='round'; ctx.lineJoin='round'
       ctx.beginPath(); ctx.moveTo(CX+tr.pts[0].x*sc,CY+tr.pts[0].y*sc)
@@ -431,12 +431,12 @@ function runCity(canvas, totalMs) {
       p.tail.forEach((tp,i)=>{
         ctx.beginPath(); ctx.arc(tp.x,tp.y,p.r*(i/p.tail.length)*0.75,0,Math.PI*2)
         ctx.fillStyle=rgba(p.col,(i/p.tail.length)*0.45)
-        if(!mobile){ ctx.shadowColor=p.col; ctx.shadowBlur=5 }
+        if(!mobile){ ctx.shadowColor=p.col; ctx.shadowBlur=4 }
         ctx.fill()
       })
       ctx.beginPath(); ctx.arc(pos.x,pos.y,p.r+1.5,0,Math.PI*2)
       ctx.fillStyle=rgba(p.col,0.95)
-      if(!mobile){ ctx.shadowColor=p.col; ctx.shadowBlur=22 }
+      if(!mobile){ ctx.shadowColor=p.col; ctx.shadowBlur=14 }
       ctx.fill()
       ctx.restore(); p.t+=p.spd
     })
@@ -456,7 +456,7 @@ function runCity(canvas, totalMs) {
       const sw=b.w*sc, sh=b.h*sc
       const h=sh*eOut(p,3), bx=CX+b.ox*sc-sw/2, by=GROUND-h
       ctx.save()
-      if(!mobile){ ctx.shadowColor=b.col; ctx.shadowBlur=12 }
+      if(!mobile){ ctx.shadowColor=b.col; ctx.shadowBlur=8 }
       const bg=ctx.createLinearGradient(bx,by,bx+sw,by+h)
       bg.addColorStop(0,rgba(b.col,alpha*0.23)); bg.addColorStop(0.5,rgba(b.col,alpha*0.10)); bg.addColorStop(1,rgba(b.col,alpha*0.05))
       ctx.fillStyle=bg; ctx.fillRect(bx,by,sw,h)
@@ -483,7 +483,7 @@ function runCity(canvas, totalMs) {
         if(Math.sin(tick*3+i)>0.3){
           ctx.beginPath(); ctx.arc(bx+sw/2,by-b.tipH*sc*tp,2.5,0,Math.PI*2)
           ctx.fillStyle=`rgba(255,60,60,${alpha*tp})`
-          if(!mobile){ ctx.shadowColor='#ff3333'; ctx.shadowBlur=10 }
+          if(!mobile){ ctx.shadowColor='#ff3333'; ctx.shadowBlur=6 }
           ctx.fill()
         }
       }
@@ -516,7 +516,7 @@ function runCity(canvas, totalMs) {
       const y=GROUND+j*32, ww=lerp(W,18,j/7)
       ctx.beginPath(); ctx.moveTo(CX-ww/2,y); ctx.lineTo(CX+ww/2,y); ctx.stroke()
     }
-    ctx.shadowColor='#00f5ff'; ctx.shadowBlur=22*a
+    ctx.shadowColor='#00f5ff'; ctx.shadowBlur=14*a
     ctx.strokeStyle=`rgba(0,245,255,${a*0.8})`; ctx.lineWidth=1.2
     ctx.beginPath(); ctx.moveTo(0,GROUND); ctx.lineTo(W,GROUND); ctx.stroke()
     ctx.restore()
@@ -585,36 +585,61 @@ function runCity(canvas, totalMs) {
 
     // glow layers — reduce blur on mobile
     const blurMult = mobile ? 0.4 : 1
-    ctx.shadowColor='#00f5ff'; ctx.shadowBlur=80*a*blurMult
+    ctx.shadowColor='#00f5ff'; ctx.shadowBlur=50*a*blurMult
     ctx.fillStyle=`rgba(0,245,255,${a*0.14})`; ctx.fillText('SOFTCURSE SYSTEMS',CX,textY)
-    ctx.shadowBlur=40*a*blurMult
+    ctx.shadowBlur=26*a*blurMult
     ctx.fillStyle=`rgba(0,245,255,${a*0.28})`; ctx.fillText('SOFTCURSE SYSTEMS',CX,textY)
-    ctx.shadowBlur=16*a*blurMult
+    ctx.shadowBlur=12*a*blurMult
     ctx.fillStyle=`rgba(255,255,255,${a*0.94})`; ctx.fillText('SOFTCURSE SYSTEMS',CX,textY)
 
-    // tagline
-    const tz=Math.max(10,Math.min(W*0.030,13))
-    ctx.font=`400 ${tz}px 'Share Tech Mono',monospace`
-    ctx.shadowBlur=mobile?0:10*a; ctx.fillStyle=`rgba(0,245,255,${a*0.75})`
-    const tagLine1='A small, slightly sinister'
-    const tagLine2='digital universe.'
-    const tagFull='A small, slightly sinister digital universe.'
-    const tagW=ctx.measureText(tagFull).width
-    if(tagW>W*0.9){
-      ctx.fillText(tagLine1,CX,textY+fz*0.88)
-      ctx.fillText(tagLine2,CX,textY+fz*0.88+tz*1.6)
-    } else {
-      ctx.fillText(tagFull,CX,textY+fz*0.88)
-    }
-
-    // ruled lines
-    const rw=Math.min(W*0.82,390)
-    const ry=textY-fz*0.72
+    // ruled lines (frame the title only)
+    const rw=Math.min(W*0.82,520)
+    const ry=textY-fz*0.68         // top rule
+    const ry2=textY+fz*0.68        // bottom rule (tight around title)
     const lg=ctx.createLinearGradient(CX-rw/2,0,CX+rw/2,0)
     lg.addColorStop(0,'rgba(0,245,255,0)'); lg.addColorStop(0.5,`rgba(0,245,255,${a*0.6})`); lg.addColorStop(1,'rgba(0,245,255,0)')
     ctx.strokeStyle=lg; ctx.lineWidth=1; ctx.shadowBlur=0
     ctx.beginPath(); ctx.moveTo(CX-rw/2,ry); ctx.lineTo(CX+rw/2,ry); ctx.stroke()
-    ctx.beginPath(); ctx.moveTo(CX-rw/2,ry+fz*1.76); ctx.lineTo(CX+rw/2,ry+fz*1.76); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(CX-rw/2,ry2); ctx.lineTo(CX+rw/2,ry2); ctx.stroke()
+
+    // tagline — positioned below bottom rule so it clears the skyline
+    const tz=Math.max(10,Math.min(W*0.028,13))
+    ctx.font=`400 ${tz}px 'Share Tech Mono',monospace`
+    ctx.shadowBlur=0
+
+    const tagLine1='A small, slightly sinister'
+    const tagLine2='digital universe.'
+    const tagFull='A small, slightly sinister digital universe.'
+    const tagWrapped = ctx.measureText(tagFull).width > W*0.9
+    const tagLines = tagWrapped ? [tagLine1, tagLine2] : [tagFull]
+    const tagLineH = tz * 1.55
+    const tagTotalH = tagLines.length * tagLineH
+    const tagY = ry2 + tz * 1.4    // below bottom rule with breathing room
+
+    // dark frosted pill behind tagline for readability
+    const tagMeasure = tagWrapped
+      ? Math.max(ctx.measureText(tagLine1).width, ctx.measureText(tagLine2).width)
+      : ctx.measureText(tagFull).width
+    const padX = tz * 1.4, padY = tz * 0.7
+    const pillX = CX - tagMeasure/2 - padX
+    const pillY = tagY - tz/2 - padY
+    const pillW = tagMeasure + padX*2
+    const pillH = tagTotalH + padY*2
+    const pillR = pillH * 0.35
+    ctx.save()
+    ctx.globalAlpha = a * 0.72
+    ctx.fillStyle = 'rgba(0,4,18,0.82)'
+    rc(pillX, pillY, pillW, pillH, pillR); ctx.fill()
+    // subtle pill border
+    ctx.strokeStyle = `rgba(0,245,255,0.18)`; ctx.lineWidth = 0.8
+    rc(pillX, pillY, pillW, pillH, pillR); ctx.stroke()
+    ctx.restore()
+
+    // tagline text — bright cyan, fully readable
+    ctx.fillStyle = `rgba(0,245,255,${a * 0.92})`
+    tagLines.forEach((line, i) => {
+      ctx.fillText(line, CX, tagY + i * tagLineH)
+    })
 
     ctx.restore()
   }
@@ -626,14 +651,23 @@ function runCity(canvas, totalMs) {
     ctx.fillStyle=vg; ctx.fillRect(0,0,W,H)
   }
 
-  // ── RAF — throttle to 30fps on mobile ────────────────────────────────────
+  // ── pre-bake scanline pattern (one draw call instead of H/2 fillRects) ───
+  const scanOffscreen = document.createElement('canvas')
+  scanOffscreen.width = 2; scanOffscreen.height = 4
+  const sc2 = scanOffscreen.getContext('2d')
+  sc2.fillStyle = 'rgba(0,0,0,0.028)'
+  sc2.fillRect(0, 0, 2, 2)   // dark row
+  // rows 2-3 left transparent = light row
+  const scanPattern = ctx.createPattern(scanOffscreen, 'repeat')
+
+  // ── RAF — throttle: 30fps mobile, 60fps desktop ───────────────────────────
   let startTs=null, rafId=null, stopped=false, lastFrameTs=0
   const frame=ts=>{
     if(stopped) return
 
-    // throttle: mobile targets ~30fps (33ms frame budget), desktop runs free
     const g0=geo()
-    if(g0.mobile && ts-lastFrameTs < 33){
+    const fpsLimit = g0.mobile ? 33 : 16   // ~30fps / ~60fps
+    if(ts-lastFrameTs < fpsLimit){
       rafId=requestAnimationFrame(frame); return
     }
     lastFrameTs=ts
@@ -656,11 +690,10 @@ function runCity(canvas, totalMs) {
     drawChip(raw,tick,g); drawVignette(g)
     drawReveal(raw,tick,g)
 
-    // scanline overlay — skip on mobile
-    if(!mobile){
-      ctx.globalAlpha=0.022
-      for(let y=0;y<g.H;y+=2){ctx.fillStyle='#000';ctx.fillRect(0,y,g.W,1)}
-      ctx.globalAlpha=1
+    // scanline overlay — single draw call via pre-baked pattern
+    if(!mobile && scanPattern){
+      ctx.fillStyle = scanPattern
+      ctx.fillRect(0, 0, g.W, g.H)
     }
 
     rafId=requestAnimationFrame(frame)
