@@ -182,6 +182,13 @@ export const CHRONICLES = {
         pov: 'Unknown',
         status: 'published',
       },
+      {
+        num: 21,
+        title: 'Ice Contract',
+        file: '/chronicles/black-ledger/chapter-21.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
     ],
   },
 }
