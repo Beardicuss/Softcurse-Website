@@ -88,12 +88,25 @@ function runCity(canvas, totalMs) {
   // ── buildings ──────────────────────────────────────────────────────────────
   const BCOLS=['#00f5ff','#0077ff','#7700ff','#00ffaa','#ff7700','#00aaff']
   const BRAW=[
+    // core skyline
     [-310,22,340],[-282,16,200],[-260,28,400],[-226,18,260],[-202,35,480],
     [-162,20,220],[-136,30,520],[-100,22,340],[-74,32,560],[-36,38,600],
     [-2,34,580],[36,30,520],[70,24,400],[98,28,320],[130,22,460],
     [158,20,260],[182,32,300],[218,20,240],[244,18,200],[268,26,340],
     [298,20,180],[324,18,140],[-338,18,160],[346,16,120],[-358,16,110],
     [366,14,90],[80,14,160],[-120,14,140],
+    // extended left wing
+    [-390,24,200],[-418,18,160],[-444,26,220],[-470,16,140],[-496,20,180],
+    [-522,14,120],[-548,18,150],[-574,12,90],[-600,16,110],[-626,10,70],
+    [-652,14,85],[-678,10,60],
+    // extended right wing
+    [392,22,190],[416,18,155],[440,24,210],[466,14,130],[490,20,170],
+    [516,14,115],[540,16,140],[566,12,85],[592,14,100],[618,10,65],
+    [644,12,80],[670,10,55],
+    // mid-distance filler left
+    [-376,12,130],[-404,10,100],[-432,14,115],[-460,10,85],
+    // mid-distance filler right
+    [378,12,125],[406,10,95],[434,14,110],[462,10,80],
   ]
   const BUILDINGS=BRAW.map((d,i)=>{
     const[ox,w,h]=d,col=BCOLS[i%BCOLS.length]
@@ -101,7 +114,7 @@ function runCity(canvas, totalMs) {
     for(let r=0;r<Math.ceil(h/20);r++)
       for(let c=0;c<Math.floor(w/9);c++)
         if(rng(i*r+c*3)>0.4) wins.push({r,c,b:rng(i+r*c)*0.8+0.2})
-    return{ox,w,h,col,delay:0.10+Math.abs(ox)/700*0.75,wins,hasTip:rng(i*17)>0.5,tipH:20+rng(i)*55}
+    return{ox,w,h,col,delay:0.10+Math.abs(ox)/900*0.72,wins,hasTip:rng(i*17)>0.5,tipH:20+rng(i)*55}
   })
 
   // ── pulses ─────────────────────────────────────────────────────────────────
@@ -532,7 +545,7 @@ function runCity(canvas, totalMs) {
     const tz=Math.min(W*0.017,13)
     ctx.font=`400 ${tz}px 'Share Tech Mono',monospace`
     ctx.shadowBlur=10*a; ctx.fillStyle=`rgba(0,245,255,${a*0.75})`
-    ctx.fillText('URBAN GENESIS ENGINE  //  v2025.ALPHA',CX,CY+fz*0.88)
+    ctx.fillText('A small, slightly sinister digital universe.',CX,CY+fz*0.88)
 
     // ruled lines
     const rw=Math.min(W*0.48,390)
