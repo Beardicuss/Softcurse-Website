@@ -189,6 +189,13 @@ export const CHRONICLES = {
         pov: 'Unknown',
         status: 'published',
       },
+      {
+        num: 22,
+        title: 'Living Workshop',
+        file: '/chronicles/black-ledger/chapter-22.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
     ],
   },
 }
