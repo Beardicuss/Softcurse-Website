@@ -196,6 +196,13 @@ export const CHRONICLES = {
         pov: 'Unknown',
         status: 'published',
       },
+      {
+        num: 23,
+        title: 'Black Skin',
+        file: '/chronicles/black-ledger/chapter-23.html',
+        pov: 'Unknown',
+        status: 'published',
+      },
     ],
   },
 }
