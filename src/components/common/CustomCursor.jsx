@@ -10,7 +10,7 @@ export default function CustomCursor() {
     // Skip touch devices
     if (window.matchMedia('(pointer: coarse)').matches) return
 
-    const FRAMES = 6
+    const FRAMES = 11
     const FPS    = 12          // animation speed — change to taste
     const SIZE   = 32          // cursor hotspot size in CSS pixels
     const HOT_X  = 4           // hotspot X (tip of cursor)
