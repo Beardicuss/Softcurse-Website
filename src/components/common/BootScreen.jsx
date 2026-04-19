@@ -29,6 +29,12 @@ export default function BootScreen({ onComplete }) {
     }, PORTAL_MS)
   }, [phase, onComplete])
 
+  // Lock body scroll while intro is showing
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
+
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
@@ -71,7 +77,7 @@ export default function BootScreen({ onComplete }) {
   const handleClick = () => {
     if (!showText) {
       triggerText()
-      setTimeout(() => triggerPortal(), 2000)
+      setTimeout(() => triggerPortal(), 3000)
     }
   }
 
