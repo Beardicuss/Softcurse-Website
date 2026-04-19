@@ -136,3 +136,19 @@
 @media (max-width: 900px) {
   .infoGrid { grid-template-columns: 1fr; }
 }
+
+/* ── Book grid ── */
+.chroniclesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 800px);
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+@media (max-width: 1700px) {
+  .chroniclesGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .chroniclesGrid { grid-template-columns: 1fr; }
+}
