@@ -73,8 +73,7 @@ export default function Chronicles() {
         {books.length > 0 ? (
           <div
             ref={gridRef}
-            className={`reveal ${gridVis ? 'visible' : ''}`}
-            className={styles.chroniclesGrid}
+            className={`${styles.chroniclesGrid} reveal ${gridVis ? 'visible' : ''}`}
           >
             {books.map(b => <ChronicleCard key={b.id} book={b} />)}
           </div>

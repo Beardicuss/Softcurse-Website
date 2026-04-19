@@ -31,7 +31,7 @@ export default function ChronicleCard({ book }) {
       >
         <div className={styles.card}>
           {book.image
-            ? <img src={book.image} alt="" className={styles.coverImg} loading="lazy" decoding="async" />
+            ? <img src={book.image} alt="" className={`${styles.coverImg} ${styles.coverImgContain}`} loading="lazy" decoding="async" />
             : <div className={styles.coverPlaceholder}><span>{book.icon || '◈'}</span></div>
           }
           <div className={styles.overlay} />

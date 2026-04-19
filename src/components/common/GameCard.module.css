@@ -266,3 +266,19 @@
   object-position: center center;
   background: #000;
 }
+
+@media (max-width: 900px) {
+  .wrapper { height: 56vw; min-height: 220px; max-height: 400px; }
+}
+
+@media (max-width: 480px) {
+  .wrapper { height: 65vw; min-height: 200px; }
+}
+
+/* ── For book/POV cards that need full image visible ── */
+.coverImgContain {
+  object-fit: contain !important;
+  object-position: center center !important;
+  background: #000 !important;
+  filter: brightness(0.9) saturate(1.0) !important;
+}
