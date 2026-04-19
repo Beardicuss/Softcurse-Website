@@ -259,3 +259,10 @@
   height: auto;
   aspect-ratio: 2 / 3;
 }
+
+/* Portrait card: show full image, no cropping */
+.wrapperPortrait .coverImg {
+  object-fit: contain;
+  object-position: center center;
+  background: #000;
+}
