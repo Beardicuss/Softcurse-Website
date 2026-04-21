@@ -29,6 +29,9 @@
   <!-- Chronicles (Studio sub-module) -->
   <url><loc>https://softcurse-website.pages.dev/chronicles</loc><priority>0.8</priority></url>
   <url><loc>https://softcurse-website.pages.dev/chronicles/black-ledger</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/chronicles/empire-of-shadows</loc><priority>0.7</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/chronicles/empire-of-shadows/chapter/1</loc><priority>0.6</priority></url>
+  <url><loc>https://softcurse-website.pages.dev/chronicles/empire-of-shadows/chapter/2</loc><priority>0.6</priority></url>
   <url><loc>https://softcurse-website.pages.dev/chronicles/black-ledger/chapter/1</loc><priority>0.6</priority></url>
   <url><loc>https://softcurse-website.pages.dev/chronicles/black-ledger/chapter/2</loc><priority>0.6</priority></url>
   <url><loc>https://softcurse-website.pages.dev/chronicles/black-ledger/chapter/3</loc><priority>0.6</priority></url>
