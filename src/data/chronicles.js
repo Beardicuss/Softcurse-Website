@@ -70,7 +70,7 @@ export const CHRONICLES = {
     id: 'empire-of-shadows',
     series: 'Chronicles of the Fallen World',
     book: 'Book IV',
-    name: 'Auditor: Empire of Shadows',
+    name: 'Empire of Shadows',
     image: '/posters/chronicles/cotf/pt2/black-ledger_pt2.png',
     character: '/posters/chronicles/cotf/pt2/black-ledger-char2.png',
     characterName: 'The Auditor',
