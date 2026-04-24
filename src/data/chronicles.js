@@ -97,6 +97,8 @@ export const CHRONICLES = {
     chapters: [
       { num: 1, title: 'Dead Capital',   file: '/chronicles/black-ledger/pt2/chapter-01.html', status: 'published' },
       { num: 2, title: 'Black Registry', file: '/chronicles/black-ledger/pt2/chapter-02.html', status: 'published' },
+      { num: 3, title: 'Sovereign Debt', file: '/chronicles/black-ledger/pt2/chapter-03.html', status: 'published' },
+      { num: 4, title: 'The Bonesmasher', file: '/chronicles/black-ledger/pt2/chapter-04.html', status: 'published' },
     ],
   },
 }
