@@ -16,6 +16,12 @@
   background: var(--green-dim);
 }
 
+.beta {
+  color: var(--cyan);
+  border-color: var(--cyan);
+  background: var(--cyan-dim);
+}
+
 .dev {
   color: var(--magenta);
   border-color: var(--magenta);

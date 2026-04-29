@@ -20,11 +20,11 @@ export default function GameDetail() {
     image: game.image || undefined,
   })
 
-  const [heroRef,    heroVis]    = useScrollReveal(0.05)
-  const [featRef,    featVis]    = useScrollReveal()
-  const [blogRef,    blogVis]    = useScrollReveal()
+  const [heroRef, heroVis] = useScrollReveal(0.05)
+  const [featRef, featVis] = useScrollReveal()
+  const [blogRef, blogVis] = useScrollReveal()
 
-  const statusLabel = { active: '● LIVE', dev: '◎ IN DEV', planned: '○ PLANNED' }
+  const statusLabel = { active: '● LIVE', beta: '⬡ BETA', dev: '◎ IN DEV', planned: '○ PLANNED' }
 
   return (
     <div className={styles.page}>
@@ -46,7 +46,8 @@ export default function GameDetail() {
           <h1 className={styles.heroTitle}>{game.name}</h1>
           <p className={styles.heroDesc}>{game.shortDesc}</p>
           <div className={styles.heroActions}>
-            <Button variant="magenta">WISHLIST</Button>
+            {game.playUrl && <Button variant="cyan" external={game.playUrl}>▶ PLAY NOW</Button>}
+            {!game.playUrl && <Button variant="magenta">WISHLIST</Button>}
             <Button variant="ghost" href="/studio">← BACK TO STUDIO</Button>
           </div>
         </div>
@@ -128,7 +129,10 @@ export default function GameDetail() {
 
         {/* ── CTA ── */}
         <div className={styles.cta}>
-          <Button variant="magenta">WISHLIST THIS GAME</Button>
+          {game.playUrl
+            ? <Button variant="cyan" external={game.playUrl}>▶ PLAY NOW</Button>
+            : <Button variant="magenta">WISHLIST THIS GAME</Button>
+          }
           <Button variant="outlineMagenta" href="/blog">DEV BLOG</Button>
         </div>
 

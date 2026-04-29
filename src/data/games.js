@@ -4,6 +4,42 @@
  */
 
 export const GAMES = {
+  chess: {
+    id: 'chess',
+    image: '/posters/games/chess.png',
+    character: '/posters/games/chess_char.png',
+    charSize: { w: 300, h: 450 },
+    name: "Softcurse's Chess — Angels vs Demons",
+    icon: '♟',
+    tag: 'STRATEGY / DARK FANTASY',
+    genre: 'Strategy',
+    status: 'beta',
+    engine: 'Three.js + React',
+    platforms: ['Web'],
+    playUrl: 'https://softcurse-chess.pages.dev',
+    shortDesc: 'A free-to-play 3D chess experience where celestial Angels clash against infernal Demons on a gothic battlefield.',
+    desc: `Step onto a shattered realm suspended between heaven and hell. Softcurse's Chess
+    reimagines the classic game as a dark fantasy war — every piece is a hand-crafted 3D model,
+    the board is a gothic fortress floating in a procedural galaxy, and every capture triggers
+    cinematic battle animations. Choose your allegiance: command the radiant Angels or lead the
+    twisted Demons. No downloads, no accounts — the entire experience runs in your browser.`,
+    features: [
+      'Full 3D Gothic Battlefield',
+      'Hand-Crafted Angel & Demon Pieces',
+      'Player vs AI — 4 Difficulty Tiers',
+      'Online PvP via Room Codes',
+      'Local PvP — Pass & Play',
+      'AI vs AI Spectator Mode',
+      'Cinematic Battle Animations',
+      'Procedural Sound & Galaxy Skybox',
+      'Mobile & Tablet Ready',
+      'Auto-Save & Undo System',
+    ],
+    devBlog: [],
+    releaseDate: '2026 — Open Beta',
+    version: 'beta',
+  },
+
   chronicles: {
     id: 'chronicles',
     image: '/posters/games/chronicles.png',
@@ -92,7 +128,7 @@ export const GAMES = {
     image: '/posters/games/ww3.png',
     character: '/posters/games/ww3-char.png',
     charSize: { w: 300, h: 300 },
-  // transparent PNG, ~300px tall  // 800×450px WebP or PNG, place in public/posters/games/
+    // transparent PNG, ~300px tall  // 800×450px WebP or PNG, place in public/posters/games/
     name: 'World War III: Global Collapse',
     icon: '🌍',
     tag: 'STRATEGY / SIMULATION',
