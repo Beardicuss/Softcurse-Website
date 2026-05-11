@@ -6,7 +6,8 @@
 export const APPS = {
   devnotes: {
     id: 'devnotes',
-    image: '/posters/apps/devnotes.png',  // 800×450px WebP or PNG, place in public/posters/apps/
+    image: '/posters/apps/devnotes.png',
+    heroImage: '/posters/apps/page/devnotes-page.png',
     name: 'DEVNOTES',
     icon: '📋',
     tag: 'PRODUCTIVITY',
@@ -34,7 +35,8 @@ export const APPS = {
 
   medialab: {
     id: 'medialab',
-    image: '/posters/apps/medialab.png',  // 800×450px WebP or PNG, place in public/posters/apps/
+    image: '/posters/apps/medialab.png',
+    heroImage: '/posters/apps/page/medialab-page.png',
     name: 'Softcurse Media Lab AI',
     icon: '🤖',
     tag: 'AI TOOL',
@@ -63,7 +65,8 @@ export const APPS = {
 
   archvis: {
     id: 'archvis',
-    image: '/posters/apps/arch.png',  // 800×450px WebP or PNG, place in public/posters/apps/
+    image: '/posters/apps/arch.png',
+    heroImage: '/posters/apps/page/arch-page.png',
     name: 'Softcurse Architecture Visualizer',
     icon: '🏗️',
     tag: 'DEV TOOL',
@@ -92,7 +95,8 @@ export const APPS = {
 
   livescriptor: {
     id: 'livescriptor',
-    image: '/posters/apps/livescriptor.png',  // 800×450px WebP or PNG, place in public/posters/apps/
+    image: '/posters/apps/livescriptor.png',
+    heroImage: '/posters/apps/page/livescriptor-page.png',
     name: 'LiveScriptor',
     icon: '✍️',
     tag: 'DEV TOOL',
@@ -121,7 +125,8 @@ export const APPS = {
 
   blackwatch: {
     id: 'blackwatch',
-    image: '/posters/apps/blackwatch.png',  // 800×450px WebP or PNG, place in public/posters/apps/
+    image: '/posters/apps/blackwatch.png',
+    heroImage: '/posters/apps/page/blackwatch-page.png',
     name: 'Softcurse Blackwatch',
     icon: '🔒',
     tag: 'SECURITY',
@@ -150,7 +155,8 @@ export const APPS = {
 
   spectral: {
     id: 'spectral',
-    image: '/posters/apps/spectral.png',  // 800×450px WebP or PNG, place in public/posters/apps/
+    image: '/posters/apps/spectral.png',
+    heroImage: '/posters/apps/page/spectral-page.png',
     name: 'Softcurse Spectral',
     icon: '👁️',
     tag: 'UTILITY',
@@ -179,7 +185,8 @@ export const APPS = {
 
   inkmind: {
     id: 'inkmind',
-    image: '/posters/apps/inkmind.png',  // 800×450px WebP or PNG, place in public/posters/apps/
+    image: '/posters/apps/inkmind.png',
+    heroImage: '/posters/apps/page/inkmind-page.png',
     name: 'Softcurse InkMind',
     icon: '🧠',
     tag: 'AI / WRITING',
@@ -209,7 +216,8 @@ export const APPS = {
 
   ytdl: {
     id: 'ytdl',
-    image: '/posters/apps/ytdl.png',  // 800×450px WebP or PNG, place in public/posters/apps/
+    image: '/posters/apps/ytdl.png',
+    heroImage: '/posters/apps/page/ytdl-page.png',
     name: 'Softcurse YT Downloader',
     icon: '⬇️',
     tag: 'UTILITY',
@@ -237,7 +245,8 @@ export const APPS = {
 
   vault: {
     id: 'vault',
-    image: '/posters/apps/vault.png',  // 800×450px WebP or PNG, place in public/posters/apps/
+    image: '/posters/apps/vault.png',
+    heroImage: '/posters/apps/page/vault-page.png',
     name: 'Softcurse Vault Cleaner',
     icon: '🧹',
     tag: 'UTILITY',

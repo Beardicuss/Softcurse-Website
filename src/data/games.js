@@ -7,6 +7,7 @@ export const GAMES = {
   chess: {
     id: 'chess',
     image: '/posters/games/chess.png',
+    heroImage: '/posters/games/page/chess-page.png',
     character: '/posters/games/chess_char.png',
     charSize: { w: 300, h: 450 },
     name: "Softcurse's Chess",
@@ -44,6 +45,7 @@ export const GAMES = {
   chronicles: {
     id: 'chronicles',
     image: '/posters/games/chronicles.png',
+    heroImage: '/posters/games/page/chronicles-page.png',
     character: '/posters/games/chronicles-char.png',
     charSize: { w: 300, h: 450 },
     characterName: 'The Auditor',  // transparent PNG, ~300px tall  // 800×450px WebP or PNG, place in public/posters/games/
@@ -88,6 +90,7 @@ export const GAMES = {
   isle: {
     id: 'isle',
     image: '/posters/games/isle.png',
+    heroImage: '/posters/games/page/isle-page.png',
     character: '/posters/games/isle-char.png',
     charSize: { w: 300, h: 450 },
     characterName: 'The Stranger',  // transparent PNG, ~300px tall  // 800×450px WebP or PNG, place in public/posters/games/
@@ -127,6 +130,8 @@ export const GAMES = {
   ww3: {
     id: 'ww3',
     image: '/posters/games/ww3.png',
+    heroImage: '/posters/games/page/ww3-page.png',
+    heroPosition: 'center',
     character: '/posters/games/ww3-char.png',
     charSize: { w: 300, h: 300 },
     // transparent PNG, ~300px tall  // 800×450px WebP or PNG, place in public/posters/games/

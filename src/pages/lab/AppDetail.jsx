@@ -36,8 +36,8 @@ export default function AppDetail() {
 
       {/* ── HERO BANNER ── */}
       <div className={styles.hero} ref={heroRef}>
-        {app.image
-          ? <img src={app.image} alt={app.name} className={styles.heroImg} loading="lazy" decoding="async" />
+        {(app.heroImage || app.image)
+          ? <img src={app.heroImage || app.image} alt={app.name} className={styles.heroImg} loading="lazy" decoding="async" />
           : <div className={styles.heroPlaceholder}><span className={styles.heroIcon}>{app.icon}</span></div>
         }
         <div className={styles.heroOverlay} />

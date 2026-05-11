@@ -19,15 +19,15 @@ export default function ChronicleDetail() {
   })
 
   const [heroRef, heroVis] = useScrollReveal(0.05)
-  const [chRef,   chVis]   = useScrollReveal()
+  const [chRef, chVis] = useScrollReveal()
 
   return (
     <div className={styles.page}>
 
       {/* ── Hero banner ── */}
       <div className={styles.hero} ref={heroRef}>
-        {book.image
-          ? <img src={book.image} alt="" className={styles.heroImg} loading="lazy" decoding="async" />
+        {(book.heroImage || book.image)
+          ? <img src={book.heroImage || book.image} alt="" className={styles.heroImg} loading="lazy" decoding="async" />
           : <div className={styles.heroPlaceholder}><span>◈</span></div>
         }
         <div className={styles.heroOverlay} />

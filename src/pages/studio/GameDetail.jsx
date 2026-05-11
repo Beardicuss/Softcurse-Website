@@ -31,8 +31,15 @@ export default function GameDetail() {
 
       {/* ── HERO BANNER ── */}
       <div className={styles.hero} ref={heroRef}>
-        {game.image
-          ? <img src={game.image} alt={game.name} className={styles.heroImg} loading="lazy" decoding="async" />
+        {(game.heroImage || game.image)
+          ? <img
+            src={game.heroImage || game.image}
+            alt={game.name}
+            className={styles.heroImg}
+            style={{ objectPosition: game.heroPosition || 'top center' }}
+            loading="lazy"
+            decoding="async"
+          />
           : <div className={styles.heroPlaceholder}><span className={styles.heroIcon}>{game.icon}</span></div>
         }
         <div className={styles.heroOverlay} />

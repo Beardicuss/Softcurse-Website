@@ -28,6 +28,11 @@ body {
   overflow-x: hidden;
 }
 
+/* Push all page content below the fixed navbar */
+#main-content {
+  padding-top: var(--nav-h);
+}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar {
   width: 4px;

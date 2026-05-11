@@ -21,10 +21,10 @@ export default function ExperimentDetail() {
     image: app.image || undefined,
   })
 
-  const [heroRef,     heroVis]     = useScrollReveal(0.05)
-  const [featRef,     featVis]     = useScrollReveal()
-  const [stackRef,    stackVis]    = useScrollReveal()
-  const [relatedRef,  relatedVis]  = useScrollReveal()
+  const [heroRef, heroVis] = useScrollReveal(0.05)
+  const [featRef, featVis] = useScrollReveal()
+  const [stackRef, stackVis] = useScrollReveal()
+  const [relatedRef, relatedVis] = useScrollReveal()
 
   const statusLabel = { active: '● LIVE', dev: '◎ IN DEV', planned: '○ PLANNED' }
   const relatedTools = getExperiments()
@@ -36,8 +36,8 @@ export default function ExperimentDetail() {
 
       {/* ── HERO BANNER ── */}
       <div className={styles.hero} ref={heroRef}>
-        {app.image
-          ? <img src={app.image} alt={app.name} className={styles.heroImg} loading="lazy" decoding="async" />
+        {(app.heroImage || app.image)
+          ? <img src={app.heroImage || app.image} alt={app.name} className={styles.heroImg} loading="lazy" decoding="async" />
           : <div className={styles.heroPlaceholder}><span className={styles.heroIcon}>{app.icon}</span></div>
         }
         <div className={styles.heroOverlay} />
