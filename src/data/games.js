@@ -9,7 +9,7 @@ export const GAMES = {
     image: '/posters/games/chess.png',
     character: '/posters/games/chess_char.png',
     charSize: { w: 300, h: 450 },
-    name: "Softcurse's Chess — Angels vs Demons",
+    name: "Softcurse's Chess",
     icon: '♟',
     tag: 'STRATEGY / DARK FANTASY',
     genre: 'Strategy',
