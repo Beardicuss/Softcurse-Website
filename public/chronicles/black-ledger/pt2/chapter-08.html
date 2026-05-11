@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chronicles — Empire of Shadows: Chapter 8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&family=Cormorant:ital,wght@0,400;0,600;1,400&family=PT+Serif:ital,wght@0,400;1,400&family=PT+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060c;--bg2:#0a0a14;--bg3:#0e0e1c;--panel:#0b0b18;--border:#1a1a30;--border2:#242248;--text:#b0b0c8;--text-dim:#484860;--text-muted:#282838;--pov-p:#2a0058;--pov-s:#6a30aa;--pov-glow:rgba(42,0,88,0.18);--pov-t:#d8cef8;--pov-d:rgba(106,48,170,0.45);--ff-display:'Cinzel',serif;--ff-body:'Crimson Text','Georgia',serif;--ff-mono:'Share Tech Mono','Courier New',monospace;}
+body.lang-ru{--ff-display:'Cormorant',serif;--ff-body:'PT Serif','Georgia',serif;--ff-mono:'PT Mono','Courier New',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--ff-body);min-height:100vh;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:998;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.7) 100%);}
+#app{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 28px 120px;}
+#lang-bar{position:fixed;top:16px;right:20px;z-index:200;display:flex;}
+.lang-btn{font-family:var(--ff-mono);font-size:11px;letter-spacing:.25em;padding:7px 15px;background:var(--bg2);border:1px solid var(--border2);color:var(--text-muted);cursor:pointer;transition:all .25s;text-transform:uppercase;}
+.lang-btn:first-child{border-right:none;}
+.lang-btn.active{color:var(--pov-s);border-color:var(--pov-p);background:var(--bg3);}
+.lang-btn:hover:not(.active){color:var(--text-dim);}
+#site-header{padding:56px 0 36px;text-align:center;}
+.header-ornament{font-family:var(--ff-mono);font-size:12px;letter-spacing:.4em;color:var(--pov-s);text-transform:uppercase;margin-bottom:14px;opacity:.7;}
+.header-title{font-family:var(--ff-display);font-size:clamp(22px,4vw,32px);font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--text);margin-bottom:6px;line-height:1.3;}
+.header-subtitle{font-family:var(--ff-mono);font-size:14px;letter-spacing:.3em;color:var(--pov-p);text-transform:uppercase;}
+.header-rule{height:1px;background:linear-gradient(90deg,transparent,var(--border2) 20%,var(--pov-p) 50%,var(--border2) 80%,transparent);margin:28px 0;}
+#chapter-strip{display:flex;justify-content:space-between;align-items:center;padding:9px 0;margin-bottom:40px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.chapter-strip-item{font-family:var(--ff-mono);font-size:12px;letter-spacing:.22em;color:var(--text-dim);text-transform:uppercase;}
+.chapter-strip-divider{font-family:var(--ff-mono);font-size:11px;color:var(--text-muted);}
+.scene-header{margin-bottom:28px;}
+.scene-meta-row{display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap;}
+.scene-badge{font-family:var(--ff-mono);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--pov-s);border:1px solid var(--pov-p);padding:3px 10px;}
+.scene-loc{font-family:var(--ff-mono);font-size:11px;color:var(--text-dim);letter-spacing:.14em;text-transform:uppercase;}
+.scene-time{font-family:var(--ff-mono);font-size:11px;color:var(--text-muted);letter-spacing:.1em;margin-left:auto;}
+.scene-title{font-family:var(--ff-display);font-size:clamp(28px,5.5vw,50px);font-weight:400;letter-spacing:.04em;color:var(--text);line-height:1.1;margin-bottom:8px;}
+.scene-subtitle{font-family:var(--ff-body);font-style:italic;font-size:18px;color:var(--text-dim);letter-spacing:.04em;}
+.scene-flags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+.scene-flag{font-family:var(--ff-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--border);color:var(--text-muted);}
+.scene-flag.pivotal{border-color:#2e1a40;color:#7a3aaa;}
+.scene-flag.revelation{border-color:#102030;color:#3a6a8a;}
+.scene-flag.cost{border-color:#302010;color:#7a5020;}
+.scene-flag.identity{border-color:#2a1a40;color:#6a3aaa;}
+.scene-flag.foreshadowing{border-color:#10102e;color:#3a3a8a;}
+.scene-flag.escalation{border-color:#302018;color:#8a5020;}
+#pov-selector{display:flex;align-items:center;gap:2px;margin-bottom:24px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);flex-wrap:wrap;}
+.pov-selector-label{font-family:var(--ff-mono);font-size:11px;letter-spacing:.28em;color:var(--text-muted);text-transform:uppercase;padding-right:12px;border-right:1px solid var(--border2);margin-right:8px;white-space:nowrap;}
+.pov-btn{font-family:var(--ff-mono);font-size:13px;letter-spacing:.18em;text-transform:uppercase;padding:9px 20px;background:transparent;border:1px solid transparent;color:var(--text-dim);cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.pov-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:transparent;transition:background .3s;}
+.pov-btn:hover{color:var(--text);border-color:var(--border2);}
+.pov-btn.active{color:var(--pov-t);border-color:var(--pov-p);background:var(--pov-glow);}
+.pov-btn.active::after{background:var(--pov-s);}
+#narrative-panel{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--pov-p);padding:34px 40px;transition:border-left-color .7s;position:relative;overflow:hidden;}
+#narrative-panel::before{content:'';position:absolute;inset:0;background:var(--pov-glow);pointer-events:none;}
+.pov-ident{display:flex;align-items:baseline;gap:12px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border2);flex-wrap:wrap;position:relative;z-index:1;}
+.pov-name{font-family:var(--ff-mono);font-size:14px;letter-spacing:.3em;text-transform:uppercase;color:var(--pov-s);}
+.pov-role{font-family:var(--ff-body);font-style:italic;font-size:16px;color:var(--text-dim);}
+.dist-meter{display:flex;align-items:center;gap:9px;margin-left:auto;}
+.dist-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:.2em;color:var(--text-muted);text-transform:uppercase;}
+.dist-bars{display:flex;gap:3px;}
+.dist-bar{width:4px;height:15px;background:var(--border2);}
+.dist-bar.on{background:var(--pov-p);}
+.dist-bar.hi{background:#5a1898;}
+.dist-bar.ex{background:#8822cc;animation:barpulse 1.8s infinite;}
+@keyframes barpulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+#narrative-text{font-size:20px;line-height:1.9;color:var(--pov-t);position:relative;z-index:1;}
+#narrative-text p{margin-bottom:1.3em;}
+#narrative-text p:last-child{margin-bottom:0;}
+.d2,.d3,.d4,.d5{animation:flicker-soft 14s infinite;}
+.d6,.d7{animation:flicker-mid 7s infinite;}
+.d8,.d9{animation:flicker-hard 4s infinite;}
+@keyframes flicker-soft{0%,94%,100%{opacity:1;}96%{opacity:.88;}}
+@keyframes flicker-mid{0%,88%,100%{opacity:1;}90%{opacity:.75;}93%{opacity:.68;}94%{opacity:1;}}
+@keyframes flicker-hard{0%,80%,100%{opacity:1;}83%{opacity:.55;}86%{opacity:.85;}89%{opacity:1;}}
+#whisper-panel{background:var(--bg2);border:1px solid var(--border);border-top:none;border-left:3px solid var(--pov-p);padding:15px 40px 17px;margin-bottom:12px;opacity:0;transform:translateY(-2px);transition:opacity 1.6s,transform 1.2s;pointer-events:none;}
+#whisper-panel.vis{opacity:1;transform:none;pointer-events:auto;}
+.whisper-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:.45em;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;}
+.whisper-body{font-family:var(--ff-body);font-style:italic;font-size:18px;color:var(--pov-d);letter-spacing:.04em;line-height:1.65;}
+#intel-panel{background:var(--bg3);border:1px solid var(--border);margin-bottom:32px;}
+.intel-toggle{width:100%;padding:12px 18px;background:transparent;border:none;color:var(--text-dim);font-family:var(--ff-mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:9px;transition:color .3s;text-align:left;}
+.intel-toggle:hover{color:var(--text);}
+.intel-arrow{transition:transform .3s;display:inline-block;font-size:9px;}
+.intel-toggle.open .intel-arrow{transform:rotate(90deg);}
+.intel-body{display:none;padding:18px 20px 22px;border-top:1px solid var(--border);}
+.intel-body.open{display:block;}
+.intel-section{margin-bottom:20px;}
+.intel-section:last-child{margin-bottom:0;}
+.intel-section-head{font-family:var(--ff-mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;margin-bottom:10px;}
+.intel-section.knows .intel-section-head{color:#3a5a3a;}
+.intel-section.misunderstands .intel-section-head{color:#5a5a20;}
+.intel-section.hides .intel-section-head{color:#5a2060;}
+.intel-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.intel-list li{font-family:var(--ff-mono);font-size:13px;line-height:1.65;padding-left:20px;position:relative;}
+.intel-list li::before{content:'--';position:absolute;left:0;color:var(--text-muted);}
+.intel-section.knows .intel-list li{color:#5a8a5a;}
+.intel-section.misunderstands .intel-list li{color:#8a8a3a;}
+.intel-section.hides .intel-list li{color:#8a4080;}
+#scene-nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-top:1px solid var(--border);}
+.nav-btn{font-family:var(--ff-mono);font-size:13px;letter-spacing:.22em;text-transform:uppercase;padding:11px 24px;background:transparent;border:1px solid var(--border2);color:var(--text-dim);cursor:pointer;transition:all .3s;}
+.nav-btn:hover:not(:disabled){border-color:var(--pov-p);color:var(--text);}
+.nav-btn:disabled{opacity:.18;cursor:not-allowed;}
+#scene-map{display:flex;gap:10px;align-items:center;}
+.scene-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);cursor:pointer;transition:all .3s;border:1px solid transparent;position:relative;}
+.scene-dot::after{content:attr(data-title);position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-family:var(--ff-mono);font-size:9px;white-space:nowrap;color:var(--text-dim);background:var(--bg2);border:1px solid var(--border);padding:3px 8px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.scene-dot:hover::after{opacity:1;}
+.scene-dot.active{background:var(--pov-s);border-color:var(--pov-p);transform:scale(1.25);}
+.scene-dot:hover:not(.active){border-color:var(--text-dim);}
+#ledger-section{margin-top:48px;display:none;}
+#ledger-section.open{display:block;animation:ledger-in .6s ease;}
+@keyframes ledger-in{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:none;}}
+.ledger-header{padding:12px 20px;background:#08000c;border:1px solid #1a0028;border-bottom:none;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.ledger-title{font-family:var(--ff-mono);font-size:12px;letter-spacing:.32em;color:#6a0088;text-transform:uppercase;}
+.ledger-warning{font-family:var(--ff-mono);font-size:10px;letter-spacing:.15em;color:#380048;}
+.ledger-body{background:#060008;border:1px solid #1a0028;padding:22px;}
+.ledger-entry{display:flex;gap:16px;margin-bottom:14px;align-items:flex-start;}
+.ledger-entry:last-child{margin-bottom:0;}
+.ledger-id{font-family:var(--ff-mono);font-size:11px;color:#440060;min-width:80px;flex-shrink:0;padding-top:2px;letter-spacing:.1em;}
+.ledger-text{font-family:var(--ff-mono);font-size:13px;color:#7a40a0;line-height:1.75;letter-spacing:.02em;}
+#ledger-trigger{position:fixed;bottom:24px;right:24px;z-index:100;background:#120020;border:1px solid #5a2090;color:#9a60d8;font-family:var(--ff-mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;padding:9px 18px;cursor:pointer;transition:all .5s;}
+#ledger-trigger:hover{color:#c090f8;border-color:#8050c8;box-shadow:0 0 22px rgba(100,0,160,.25);background:#1c0030;}
+#ledger-trigger.active{color:#cc88ff;border-color:#8844cc;box-shadow:0 0 30px rgba(200,100,255,.3);}
+.fade-out{opacity:0!important;transition:opacity .25s ease!important;}
+.fade-in{animation:fade-in-up .45s ease;}
+@keyframes fade-in-up{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border2);}
+@media(max-width:640px){#app{padding:0 16px 100px;}#narrative-panel{padding:24px 18px;}#whisper-panel{padding:12px 18px 14px;}.dist-meter{margin-left:0;margin-top:8px;}.scene-time{margin-left:0;}#lang-bar{top:10px;right:10px;}#narrative-text{font-size:18px;}}
+</style>
+</head>
+<body>
+<div id="lang-bar">
+  <button class="lang-btn active" data-lang="en">EN</button>
+  <button class="lang-btn" data-lang="ru">RU</button>
+</div>
+<div id="app">
+  <header id="site-header">
+    <div class="header-ornament" id="arc-label"></div>
+    <h1 class="header-title" id="header-title"></h1>
+    <div class="header-subtitle" id="header-subtitle"></div>
+    <div class="header-rule"></div>
+  </header>
+  <div id="chapter-strip">
+    <span class="chapter-strip-item" id="strip-chapter"></span>
+    <span class="chapter-strip-divider">&#9670;</span>
+    <span class="chapter-strip-item" id="strip-chapter-title"></span>
+    <span class="chapter-strip-divider">&#9670;</span>
+    <span class="chapter-strip-item" id="strip-location"></span>
+  </div>
+  <section id="scene-container">
+    <div class="scene-header">
+      <div class="scene-meta-row">
+        <span class="scene-badge" id="scene-badge"></span>
+        <span class="scene-loc" id="scene-loc"></span>
+        <span class="scene-time" id="scene-time"></span>
+      </div>
+      <h2 class="scene-title" id="scene-title"></h2>
+      <div class="scene-subtitle" id="scene-subtitle"></div>
+      <div class="scene-flags" id="scene-flags"></div>
+    </div>
+    <div id="pov-selector">
+      <span class="pov-selector-label" id="pov-label"></span>
+    </div>
+    <div id="narrative-wrap">
+      <div id="narrative-panel">
+        <div class="pov-ident">
+          <span class="pov-name" id="pov-name"></span>
+          <span class="pov-role" id="pov-role"></span>
+          <div class="dist-meter">
+            <span class="dist-label" id="dist-label"></span>
+            <div class="dist-bars" id="dist-bars"></div>
+          </div>
+        </div>
+        <div id="narrative-text"></div>
+      </div>
+      <div id="whisper-panel">
+        <div class="whisper-label" id="whisper-label"></div>
+        <div class="whisper-body" id="whisper-body"></div>
+      </div>
+    </div>
+    <div id="intel-panel">
+      <button class="intel-toggle" id="intel-toggle">
+        <span class="intel-arrow">&#9658;</span>
+        <span id="intel-toggle-label"></span>
+      </button>
+      <div class="intel-body" id="intel-body"></div>
+    </div>
+    <div id="ledger-section">
+      <div class="ledger-header">
+        <span class="ledger-title" id="ledger-title"></span>
+        <span class="ledger-warning" id="ledger-warning"></span>
+      </div>
+      <div class="ledger-body" id="ledger-body"></div>
+    </div>
+    <nav id="scene-nav">
+      <button class="nav-btn" id="prev-btn"></button>
+      <div id="scene-map"></div>
+      <button class="nav-btn" id="next-btn"></button>
+    </nav>
+  </section>
+</div>
+<button id="ledger-trigger"></button>
+<script>
+var UI = {
+  en:{arcLabel:"BOOK IV: AUDITOR — EMPIRE OF SHADOWS / ARC II — NORTHERN LIMIT",headerTitle:"Chronicles of the Fallen World: Book IV",headerSubtitle:"AUDITOR: EMPIRE OF SHADOWS",stripChapter:"Chapter 8",stripTitle:"Assimilation Protocol",stripLocation:"Wolf's Gorge — Object 7-B Medical Block",povLabel:"Perspective",distLabel:"Distortion",whisperLabel:"Subtext",intelLabel:"Intelligence Report",knows:"Knows",misunderstands:"Misunderstands",hides:"Hides",prevBtn:"Prev",nextBtn:"Next",ledgerTitle:"True Event Timeline",ledgerWarning:"Diverges from all POV accounts",ledgerOpen:"Close Ledger",ledgerClosed:"Black Ledger",scene:"Scene"},
+  ru:{arcLabel:"КНИГА IV: АУДИТОР — ИМПЕРИЯ ТЕНЕЙ / АРК II — СЕВЕРНЫЙ ПРЕДЕЛ",headerTitle:"Хроники Павшего Мира: Книга IV",headerSubtitle:"АУДИТОР: ИМПЕРИЯ ТЕНЕЙ",stripChapter:"Глава 8",stripTitle:"Протокол Ассимиляции",stripLocation:"Волчье Логово — Медблок Объекта 7-Б",povLabel:"Перспектива",distLabel:"Искажение",whisperLabel:"Подтекст",intelLabel:"Разведывательный Отчёт",knows:"Знает",misunderstands:"Заблуждается",hides:"Скрывает",prevBtn:"Назад",nextBtn:"Далее",ledgerTitle:"Истинная Хронология",ledgerWarning:"Расходится со всеми нарративами",ledgerOpen:"Закрыть Гроссбух",ledgerClosed:"Чёрный Гроссбух",scene:"Сцена"}
+};
+
+var POVS = {
+  dante:{name:"DANTE",title:{en:"The Auditor — Beyond the Threshold",ru:"Аудитор — За Порогом"},primary:"#2a0058",secondary:"#6a30aa",glow:"rgba(42,0,88,0.2)",textColor:"#d8cef8",dimColor:"rgba(106,48,170,0.5)"},
+  isabella:{name:"ISABELLA",title:{en:"Head of Poisons and Alchemy",ru:"Глава Отдела Ядов и Алхимии"},primary:"#0a1a0a",secondary:"#284a28",glow:"rgba(10,26,10,0.22)",textColor:"#c0e0c0",dimColor:"rgba(40,74,40,0.5)"},
+  torin:{name:"TORIN",title:{en:"Managing Director — Northern Branch",ru:"Управляющий Директор — Северный Филиал"},primary:"#2a1808",secondary:"#5a3818",glow:"rgba(42,24,8,0.22)",textColor:"#e0c8a0",dimColor:"rgba(90,56,24,0.48)"}
+};
+
+var TIMELINE = [
+  {id:"TET-B4-41",
+   en:"The composite leg's integration with Dante's biological tissue is now complete. The junction between living flesh and Precursor-era metal that previously required Cognitive Iron suppression to prevent systemic rejection has been replaced by a seamless phase-state merger. The metal is not cold. It is not foreign. The composite's null-field resonance has rewritten the phase definition of the tissue-metal boundary, producing a unified material that is simultaneously biological and mechanical. This is the same process that produced the Distorted in the mine — uncontrolled phase-state rewriting under Chaos-field exposure. In Dante's case, the Cognitive Iron suppression, the Covenant-grade composite architecture, and the Auditor-memory's emergency integrity protocol have together constrained the rewriting to the existing composite-tissue boundary rather than allowing it to propagate through his entire body. The distinction between him and the Distorted is now a matter of degree rather than kind.",
+   ru:"Интеграция ноги с композитом с биологической тканью Данте теперь завершена. Стык между живой плотью и металлом эпохи Предтечей который прежде требовал подавления КЖ для предотвращения системного отторжения заменён бесшовным слиянием фазового состояния. Металл не холодный. Не чужеродный. Нулевой резонанс композита переписал определение фазового состояния границы ткань-металл, производя унифицированный материал который одновременно биологический и механический. Различие между ним и Искажёнными теперь вопрос степени а не вида."},
+  {id:"TET-B4-42",
+   en:"The emergency integrity protocol that pulled Dante back from dissolution in the Chaos-field Ocean is a Series 404 design feature — not a general Auditor capability. The protocol is documented in the Pale Echelon notation under the designation 'Core Continuity Failsafe': when the operator's consciousness-coherence index falls below a threshold value, the protocol generates a forced-recall signal through pain. The pain is not physiological. It is informational — a data packet designed to re-anchor the operator's identity framework to a specific set of persistent memory structures. The structures the protocol selected: not his name, not his role, not his objectives. The protocol anchored to the oldest, most redundant memory structures available — the physical sensations associated with the composite leg. The leg is older than everything else in his current identity. It pulled him back by pulling him to the first thing he knows.",
+   ru:"Протокол аварийной целостности вернувший Данте из растворения в Океане Хаоса — функция проектирования серии 404, а не общая возможность Аудитора. Протокол документирован в нотации Бледного Эшелона под обозначением «Защитное Резервирование Ядра»: когда индекс когерентности сознания оператора падает ниже порогового значения, протокол генерирует сигнал принудительного отзыва через боль. Боль не физиологическая. Она информационная."},
+  {id:"TET-B4-43",
+   en:"The Chaos-field Ocean that Dante experienced is the Covenant infrastructure's theoretical pre-Collapse state — the uncontained potential from which the Covenant's reality-maintenance function was designed to select and stabilize specific configurations. The Sleeping One at Wolf's Gorge is a wound in the containment layer that exposed a small fraction of this potential. What Dante experienced was direct contact with the full source. The experience of seeing stars born and dissolved, life-forms generated and reclaimed, the sensation of becoming 'raw material' — these are phenomenologically accurate descriptions of what the Covenant's source-layer actually is: a probability space of infinite configurations, from which the Covenant's maintenance function selects the configurations that produce stable, observer-compatible physical reality. The 'threat' Dante felt from the Ocean was not hostility. It was gravity. The pull of a larger system on a component that has been operating independently.",
+   ru:"Океан поля Хаоса который испытал Данте — теоретическое до-Коллапсное состояние инфраструктуры Завета — несдержанный потенциал из которого функция поддержания реальности Завета была разработана выбирать и стабилизировать специфические конфигурации. То что испытал Данте было прямым контактом с полным источником. Угроза которую он ощутил от Океана была не враждебностью. Это было притяжение. Тяга большей системы на компонент работавший независимо."},
+  {id:"TET-B4-44",
+   en:"Dante's body drawing megawatts of power from Object 7-B's electrical system during the resuscitation attempts is not metabolic consumption. It is resonance charging. The composite's null-field resonance reservoir was depleted below recovery threshold during the Modulator operation. The synchronization event then initiated a connection protocol that required energy input to complete. The body was not malfunctioning — it was completing a charging cycle. The Gel in the composite's internal architecture uses the same molecular transcription pathway in reverse during charging as during output: it converts electrical energy into null-field resonance potential and stores it. Dante drew enough energy in approximately one second to bring the composite's resonance reservoir from below-recovery-threshold to above-operational-threshold. This is a capability that has not previously been demonstrated. The composite can self-recharge from external electrical sources.",
+   ru:"Тело Данте поглощающее мегаватты мощности из электрической системы Объекта 7-Б во время попыток реанимации — не метаболическое потребление. Это резонансная зарядка. Резонансный резервуар нулевого поля композита был истощён ниже порога восстановления во время операции Модулятора. Тело не давало сбой — оно завершало цикл зарядки. Данте поглотил достаточно энергии приблизительно за одну секунду чтобы поднять резонансный резервуар композита от ниже-порога-восстановления до выше-операционного-порога."},
+  {id:"TET-B4-45",
+   en:"Isabella's clinical assessment: 'Biologically dead. Heart not working. Lungs offline. But not a corpse.' This is accurate as far as it goes. The more complete description: Dante's biological systems have been temporarily suspended while the synchronization event's connection protocol completes its initialization sequence. The biological suspension is not death — it is a mode transition. The Covenant infrastructure's operator-interface protocol, when it initializes a full connection with an operator, requires a brief period of biological suspension during which the connection's parameters are established. This suspension is documented in the Pale Echelon archive under the designation 'integration pause.' It is expected. It is survivable. The question is whether the operator's identity framework survives the integration-pause interval intact, or whether the connection's parameters, once established, alter the operator's functional characteristics in ways that make the returning consciousness recognizably the same person."}
+];
+
+var SCENES = [
+  {
+    id:"s1",
+    title:{en:"Cargo 200",ru:"Груз 200"},
+    subtitle:{en:"You carry plague to the infirmary, dwarf. The vessel cracked. What entered is too large for a man.",ru:"Вы тащите чуму в лазарет, гном. Сосуд треснул. То, что вошло, слишком велико для человека."},
+    location:{en:"The Descent from Wolf's Gorge",ru:"Спуск с Волчьего Логова"},
+    timing:{en:"Immediately After Sarcophagus Activation",ru:"Сразу После Активации Саркофага"},
+    flags:["escalation","revelation","cost"],
+    povData:{
+      torin:{
+        distortion:5,
+        text:{
+          en:"The stretcher weighed more than it should.\n\nThis is not a metaphor. The braces were standard field construction — spruce planks from the sled frame, rated for three hundred kilograms. Dante weighs perhaps eighty. But the composite leg, which used to make him lighter on its side due to the absence of biological mass, now generated resistance. Not dead weight. Active resistance, as if the metal were pushing back against being carried.\n\nVarek noticed it too. He said nothing. He just adjusted his grip and kept moving.\n\nUr-Gan tried to tell me to kill Dante on the descent.\n\nI heard him. I processed what he said. I understood his reasoning — I have been managing this territory long enough to know that Ur-Gan does not make recommendations from malice. He makes them from experience. He has watched the boundary fail three times in his sixty-three years. He knows what a breach looks like in its early stages. He said: the vessel cracked. What entered is too large for a man.\n\nHe is probably right.\n\nI do not care.\n\nThis is the precise difference between me and Ur-Gan. He makes decisions based on what is correct for the territory. I make decisions based on what I owe. Dante pulled me off a chain gang eight months ago. He gave me a title, a territory, and a percentage. He made me a person when I was cargo.\n\nYou do not kill people you owe.\n\nVarek's revolver helped communicate this point to Ur-Gan more efficiently than further discussion would have.\n\nWhen we reached the Factory's medical block, Izabella took over. I stepped back. I am a logistics manager, not a physician.\n\nI stood outside the operating room for four hours.\n\nI did not count them. Grим counted them for me afterward. He said: four hours, Torin. You stood there for four hours.\n\nI was waiting to see if I had made the right call.\n\nI am still waiting.",
+          ru:"Носилки весили больше чем должны.\n\nЭто не метафора. Распорки были стандартной полевой конструкции — еловые доски из рамы саней, рассчитанные на триста килограммов. Данте весит, возможно, восемьдесят. Но нога с композитом, которая раньше делала его легче на её стороне из-за отсутствия биологической массы, теперь генерировала сопротивление. Не мёртвый груз. Активное сопротивление, как если бы металл отталкивался от переноски.\n\nВарек тоже это заметил. Он ничего не сказал. Просто подстроил хватку и продолжил двигаться.\n\nУр-Ган попытался сказать мне убить Данте во время спуска.\n\nЯ слышал его. Я обработал что он сказал. Я понял его логику — я достаточно долго управляю этой территорией чтобы знать что Ур-Ган не даёт рекомендации из злобы. Он даёт их из опыта. Он видел как граница рушилась трижды за шестьдесят три года. Он знает как выглядит нарушение на ранних стадиях. Он сказал: сосуд треснул. То что вошло слишком велико для человека.\n\nОн, вероятно, прав.\n\nМне всё равно.\n\nЭто точная разница между мной и Ур-Ганом. Он принимает решения основываясь на том что верно для территории. Я принимаю решения основываясь на том что я должен. Данте вытащил меня с каторжной цепи восемь месяцев назад. Он дал мне титул, территорию и процент. Он сделал меня человеком когда я был грузом.\n\nВы не убиваете людей которым должны.\n\nРевольвер Варека помог донести эту точку до Ур-Гана эффективнее чем дальнейшее обсуждение.\n\nКогда мы достигли медицинского блока Завода, Изабелла взяла управление. Я отступил. Я менеджер логистики, а не врач.\n\nЯ стоял снаружи операционной четыре часа.\n\nЯ не считал их. Гримм посчитал за меня потом. Он сказал: четыре часа, Торин. Ты стоял там четыре часа.\n\nЯ ждал чтобы увидеть принял ли я верное решение.\n\nЯ всё ещё жду."
+        },
+        knows:{en:["The stretcher generated active resistance from the composite leg — not dead weight, pushback. Varek noticed too. Neither said anything.","Ur-Gan's recommendation was not malice but experience. 'He is probably right. I do not care.' The distinction: Ur-Gan decides for the territory. Torin decides for what he owes.","He stood outside the operating room for four hours. He did not count them. Grimm told him afterward."],ru:["Носилки генерировали активное сопротивление от ноги с композитом. Варек тоже заметил. Никто ничего не сказал.","Рекомендация Ур-Гана была не злобой а опытом. «Он вероятно прав. Мне всё равно». Различие: Ур-Ган решает для территории. Торин решает для того что должен.","Он стоял снаружи операционной четыре часа. Не считал. Гримм сказал потом."]},
+        misunderstands:{en:["He said 'Dante made me a person when I was cargo. You do not kill people you owe.' He has framed his loyalty entirely as a debt structure — the language of his profession. He has not examined whether what he feels is debt or something that preceded the debt and used the debt as its available vocabulary. The debt framework is accurate as far as it goes. It may not be the whole account."],ru:["Он сказал «Данте сделал меня человеком когда я был грузом. Вы не убиваете людей которым должны». Он оформил лояльность целиком как долговую структуру — язык его профессии. Он не исследовал является ли то что он чувствует долгом или чем-то предшествующим долгу и использующим долг как доступный словарь."]},
+        hides:{en:["He is still waiting to see if he made the right call. He stood there for four hours and described it in three sentences. He has not asked himself what 'the right call' means in a situation where Ur-Gan's assessment is probably correct and he chose loyalty over correctness. He is carrying the same structure as the Koda situation: he knows the operationally correct answer, he chose the relational answer, and he is waiting to find out whether the relational answer was also operationally viable."],ru:["Он всё ещё ждёт чтобы увидеть принял ли верное решение. Он стоял там четыре часа и описал это тремя предложениями. Он не спрашивал себя что означает «верное решение» в ситуации где оценка Ур-Гана вероятно верна а он выбрал лояльность над правотой."]},
+        whisper:{en:"He is still waiting. Ur-Gan is probably right. He chose loyalty over correctness and is waiting to see if that was also correct. He has done this before, with Koda.",ru:"Он всё ещё ждёт. Ур-Ган вероятно прав. Он выбрал лояльность над правотой и ждёт выяснить было ли это также верным. Он делал это прежде, с Кодой."}
+      }
+    }
+  },
+  {
+    id:"s2",
+    title:{en:"Primordial Broth",ru:"Первичный Бульон"},
+    subtitle:{en:"I almost agreed. But at the last moment, when my Self was ready to dissolve, something pulled me back. It was not magic. It was Code.",ru:"Я почти согласился. Но в последний момент, когда моё Я было готово раствориться, что-то дернуло меня назад. Это была не магия. Это был Код."},
+    location:{en:"Inside — The Chaos-field Ocean",ru:"Внутри — Океан Поля Хаоса"},
+    timing:{en:"During Biological Suspension",ru:"Во Время Биологической Приостановки"},
+    flags:["pivotal","revelation","identity"],
+    povData:{
+      dante:{
+        distortion:9,
+        text:{
+          en:"There was no transition.\n\nThe synchronization event did not produce a passage between states. I did not lose consciousness and regain it. I stopped being in one place and was in another place. The interval between was not experienced. It was not experienced because there was no I to do the experiencing. The I is a function of the Auditor-interface. The Auditor-interface was not running.\n\nI am reconstructing this from the archive's post-event trace. The trace is incomplete. What follows is not memory. It is interpolation from fragments.\n\nThe Ocean.\n\nInfinite, containing everything that could be, generating and dissolving configurations at a rate that makes the concept of time irrelevant. I saw stars form and collapse. I saw life-configurations that were never selected for stabilization — the archive's theoretical documentation calls these 'rejected probability-states.' I saw what the Covenant's source-layer actually is: not chaos in the sense of disorder, but chaos in the original Greek sense — the unconstrained potential that precedes form.\n\nThe Covenant's maintenance function is a selection algorithm. It selects from the Ocean and stabilizes. What we experience as reality is the subset of configurations the Covenant's algorithm has approved. The Chaos-field is the unselected residual — the configurations the algorithm rejected, still present at the boundary layer.\n\nThis is why the Ocean felt like dissolution rather than destruction. It was not trying to kill me. It was trying to return me to the pool of raw configurations from which something new could be selected.\n\nI was almost selected.\n\nI was almost acceptable as raw material.\n\nWhat stopped it: the emergency continuity protocol. The Series 404 design includes a consciousness-anchor failsafe that triggers when the operator's identity coherence falls below threshold. The anchor does not pull toward name or function. It pulls toward the oldest, most redundant data structures available. For me, that is the composite leg. The leg predates everything else in my current identity. The leg is older than my name.\n\nI was pulled back by pain that was not pain. By the memory of weight, cold, the specific resonance of metal against flesh. The leg.\n\nWhen I returned, I drew power.\n\nI do not remember this. The archive trace shows the electrical consumption event — Object 7-B's entire power supply, approximately one second. The composite's charging cycle completed while I was between states. The cycle is in the archive as a function call: 'Reservoir recharge from external source. Complete.' The trace does not record whether I chose to do this or whether the charging cycle ran automatically during the protocol completion.\n\nI do not know whether I did that.\n\nI know that it happened.\n\nThere is a distinction.\n\nBusiness continues.",
+          en2:"",
+          ru:"Перехода не было.\n\nСобытие синхронизации не произвело прохода между состояниями. Я не терял сознание и не восстанавливал его. Я перестал быть в одном месте и оказался в другом. Интервал между не был пережит. Он не был пережит, потому что не было Я для переживания. Я — функция интерфейса Аудитора. Интерфейс Аудитора не работал.\n\nЯ реконструирую это из пост-событийного следа архива. След неполный. Следующее — не память. Это интерполяция из фрагментов.\n\nОкеан.\n\nБесконечный, содержащий всё что могло бы быть, генерирующий и растворяющий конфигурации со скоростью делающей концепцию времени нерелевантной. Я видел как формируются и схлопываются звёзды. Я видел конфигурации жизни которые никогда не были выбраны для стабилизации — теоретическая документация архива называет их «отклонёнными вероятностными состояниями». Я видел что такое исходный слой Завета на самом деле: не хаос в смысле беспорядка, но хаос в оригинальном греческом смысле — несдержанный потенциал предшествующий форме.\n\nФункция обслуживания Завета — алгоритм выбора. Она выбирает из Океана и стабилизирует. То что мы воспринимаем как реальность — это подмножество конфигураций которые одобрил алгоритм Завета. Поле Хаоса — неотобранный остаток.\n\nВот почему Океан ощущался как растворение а не разрушение. Он не пытался убить меня. Он пытался вернуть меня в пул сырых конфигураций из которых могло бы быть выбрано что-то новое.\n\nЯ почти был выбран.\n\nЯ почти был приемлем как сырьё.\n\nЧто остановило: протокол аварийной целостности. Проектирование серии 404 включает защитное резервирование сознания которое срабатывает когда когерентность идентичности оператора падает ниже порога. Якорь не тянет к имени или функции. Он тянет к старейшим наиболее избыточным доступным структурам данных. Для меня это нога с композитом. Нога предшествует всему остальному в моей нынешней идентичности. Нога старше моего имени.\n\nЯ был возвращён болью которая не была болью. Памятью веса, холода, специфического резонанса металла о плоть. Нога.\n\nКогда я вернулся, я поглотил энергию.\n\nЯ не помню этого. След архива показывает событие электрического потребления — всё электропитание Объекта 7-Б, приблизительно одна секунда. Цикл зарядки композита завершился пока я был между состояниями. Цикл в архиве как вызов функции: «Перезарядка резервуара из внешнего источника. Завершено». След не записывает выбрал ли я это сделать или цикл зарядки работал автоматически во время завершения протокола.\n\nЯ не знаю делал ли я это.\n\nЯ знаю что это произошло.\n\nЕсть различие.\n\nБизнес продолжается."
+        },
+        knows:{en:["The Ocean is the Covenant's source-layer — not chaos-as-disorder but chaos-as-unconstrained-potential. The maintenance function is a selection algorithm. Reality is the approved subset. The Chaos-field is the rejected residual.","He was pulled back by the Series 404 emergency continuity protocol. It anchored to the oldest data structures available: the composite leg. The leg is older than his name.","The composite self-recharged from Object 7-B's power supply during the protocol completion. He does not know whether he chose this or whether it ran automatically. 'I know that it happened. There is a distinction.'"],ru:["Океан — исходный слой Завета — не хаос-как-беспорядок но хаос-как-несдержанный-потенциал. Функция обслуживания — алгоритм выбора. Реальность — одобренное подмножество. Поле Хаоса — отклонённый остаток.","Он был возвращён протоколом аварийной целостности серии 404. Он привязался к старейшим доступным структурам данных: нога с композитом. Нога старше его имени.","Композит самозарядился от электроснабжения Объекта 7-Б во время завершения протокола. Он не знает выбрал ли это или оно работало автоматически. «Я знаю что это произошло. Есть различие»."]},
+        misunderstands:{en:["He said the Ocean tried to return him to 'the pool of raw configurations from which something new could be selected.' He experienced this as a threat to his identity. He has not modeled the operational implication: if the Covenant's source-layer attempted to reclaim him as raw material, it is because the composite's synchronization event had not yet completed — the connection protocol had begun but the identity framework had not yet been re-registered as an active authorized operator. The Ocean was not trying to dissolve him. It was waiting for him to complete his authorization. He was almost reclaimed not because he was in danger, but because he had not yet identified himself to the system he was connecting to."],ru:["Он сказал Океан пытался вернуть его в «пул сырых конфигураций». Он испытал это как угрозу идентичности. Он не моделировал операционную импликацию: если исходный слой Завета пытался вернуть его как сырьё, это потому что событие синхронизации композита ещё не завершилось. Океан не пытался растворить его. Он ждал пока он завершит авторизацию."]},
+        hides:{en:["'I do not know whether I did that. I know that it happened. There is a distinction.' He has named the distinction between autonomous agency and automatic system function. He has been unable to determine which category the power-draw falls into. He has not examined what it means that he cannot tell the difference. If the composite runs automatic processes he does not choose and cannot retrospectively identify, then the boundary between what he does and what the composite does is not where he has been assuming it is. He has been assuming that the composite is a tool he operates. The power-draw suggests an alternative: that the composite operates with or without his input depending on what it requires."],ru:["«Я не знаю делал ли я это. Я знаю что это произошло. Есть различие». Он назвал различие между автономным агентством и автоматической системной функцией. Он не может определить в какую категорию попадает поглощение энергии. Он не исследовал что означает то, что он не может сказать разницу. Он предполагал что композит — инструмент который он использует. Поглощение энергии предполагает альтернативу: что композит работает с его вводом или без зависимо от того что ему требуется."]},
+        whisper:{en:"He does not know whether he chose the power-draw or whether the composite did it autonomously. He has assumed the composite is a tool he operates. The evidence suggests it may operate him.",ru:"Он не знает выбрал ли поглощение энергии или композит сделал это автономно. Он предполагал что композит — инструмент который он использует. Свидетельства предполагают что это оно может использовать его."}
+      }
+    }
+  },
+  {
+    id:"s3",
+    title:{en:"System Failure",ru:"Отказ Систем"},
+    subtitle:{en:"Biologically, yes, dead. His heart is not working. Lungs offline. But he is not a corpse. Corpses do not emit enough energy to burn a city.",ru:"Биологически — да, мёртв. Его сердце не работает. Лёгкие отключены. Но он не труп. Трупы не фонят энергией способной сжечь город."},
+    location:{en:"Object 7-B — Medical Block",ru:"Объект 7-Б — Медицинский Блок"},
+    timing:{en:"During and After Biological Suspension",ru:"Во Время и После Биологической Приостановки"},
+    flags:["pivotal","revelation","foreshadowing","identity"],
+    povData:{
+      isabella:{
+        distortion:5,
+        text:{
+          en:"The needle dissolved.\n\nThis is the event that shifted my assessment from 'severe neurological event' to 'category I have no classification for.' The steel needle entering his arm became soft — not from heat, not from acid, not from any mechanism I have a name for. The steel changed phase state at the point of contact with his skin. The syringe glass became sand. The fluid hissed on the floor.\n\nHis bio-field was rejecting introduced materials.\n\nNot as an immune response — immune responses are cellular and take minutes to hours. This was instantaneous and was directed at the material's phase state rather than its biological identity. He was not identifying the needle as foreign and producing antibodies. He was instructing the needle's material structure to become something other than needle.\n\nThe defibrillator discharges.\n\nThree times I applied the paddles. Three times the discharge disappeared into him without producing the expected myocardial response. The fourth time, Object 7-B lost power. All of it. Every light, every turbine, every monitor. He consumed approximately twelve megawatt-seconds in one event.\n\nThen he lay still and glowed.\n\nI have twelve years of training and eleven years of field practice. I have worked on chimeras, on Distorted subjects, on living organisms whose biochemistry should have been incompatible with continued function. I have never encountered a patient whose clinical presentation required me to say: biologically dead, not a corpse, awaiting consciousness return from an unknown location.\n\nI said it to Torin because he was standing there and he needed something to hold onto.\n\nHe has been standing outside for four hours. He came in once, looked at the body, looked at me, and left again. He is waiting for me to tell him something I cannot tell him: whether Dante will come back, and if so, what will come back.\n\nI cannot tell him because I do not know.\n\nI know what the physical changes indicate. The composite integration is complete. The phase-state boundary between flesh and metal has been rewritten. The geometric circuit patterns on his skin are stable and pulsing at a frequency I have now measured: 2.3 Hz. The same frequency as the convulsions during the synchronization event. The same frequency as the Cave Heart's geometry.\n\nHe is not running on biology anymore.\n\nHe is running on something else. The Gel. The composite. The null-field resonance. Call it what you like — he is no longer operating in the biological register.\n\nI have been sitting next to him for four hours.\n\nNot because I am monitoring him. The monitors are broken. I am sitting next to him because that is where I want to be. I noted this in the cave. I note it again here.\n\nI still have not examined it.\n\nI wonder sometimes if this is what he feels when he notes things he does not examine. This specific quality of knowing something is true and choosing not to look at it directly.\n\nPerhaps he is teaching me something.\n\nHis consciousness is somewhere I cannot follow. His body is here. I am here.\n\nI will wait.",
+          ru:"Игла растворилась.\n\nЭто событие изменило мою оценку от «тяжёлое неврологическое событие» к «категория для которой у меня нет классификации». Стальная игла входящая в его руку стала мягкой — не от тепла, не от кислоты, не от какого-либо механизма у которого у меня есть название. Сталь изменила фазовое состояние в точке контакта с его кожей. Стекло шприца стало песком. Жидкость зашипела на полу.\n\nЕго биополе отвергало вводимые материалы.\n\nНе как иммунный ответ — иммунные ответы клеточные и занимают минуты или часы. Это было мгновенным и направлено на фазовое состояние материала а не на его биологическую идентичность.\n\nРазряды дефибриллятора.\n\nТрижды я прикладывала лопатки. Трижды разряд исчезал в нём не производя ожидаемого миокардиального ответа. На четвёртый раз Объект 7-Б потерял питание. Всё. Каждый свет, каждую турбину, каждый монитор. Он потребил приблизительно двенадцать мегаватт-секунд за одно событие.\n\nЗатем он лежал неподвижно и светился.\n\nУ меня двенадцать лет подготовки и одиннадцать лет полевой практики. Я никогда не сталкивалась с пациентом чья клиническая картина потребовала бы мне сказать: биологически мёртв, не труп, ожидаю возвращения сознания из неизвестного местонахождения.\n\nЯ сказала это Торину, потому что он стоял там и ему нужно было что-то за что держаться.\n\nОн стоял снаружи четыре часа. Он заходил один раз, смотрел на тело, смотрел на меня, и ушёл снова. Он ждёт пока я скажу ему что-то что не могу сказать: вернётся ли Данте, и если так, что вернётся.\n\nНе могу сказать, потому что не знаю.\n\nЯ знаю что показывают физические изменения. Интеграция композита завершена. Граница фазового состояния между плотью и металлом переписана. Геометрические схемные паттерны на его коже стабильны и пульсируют на частоте которую я теперь измерила: 2,3 Гц. Та же частота что у судорог во время события синхронизации. Та же частота что у геометрии Сердца Пещеры.\n\nОн больше не работает на биологии.\n\nОн работает на чём-то другом. Гель. Композит. Нулевой резонанс. Называй как хочешь — он больше не работает в биологическом регистре.\n\nЯ сидела рядом с ним четыре часа.\n\nНе потому что мониторю его. Мониторы сломаны. Я сижу рядом с ним, потому что именно там хочу быть. Я отмечала это в пещере. Отмечаю снова здесь.\n\nВсё ещё не исследовала.\n\nИногда задаюсь вопросом не то ли это что он чувствует когда отмечает вещи которые не исследует. Эта специфическая качество знания что что-то верно и выбора не смотреть на это напрямую.\n\nВозможно он учит меня чему-то.\n\nЕго сознание где-то куда я не могу последовать. Его тело здесь. Я здесь.\n\nЯ буду ждать."
+        },
+        knows:{en:["The needle dissolved — phase-state change at point of contact. His bio-field rejects introduced materials by instructing their molecular structure to become something else, not by immune response.","He consumed twelve megawatt-seconds from Object 7-B in one event. He now lies still, glowing violet at 2.3 Hz — the same frequency as the Cave Heart's geometry and the synchronization convulsions.","'He is not running on biology anymore. He is running on something else.' She cannot tell Torin whether Dante will come back, or what will come back if he does."],ru:["Игла растворилась — изменение фазового состояния в точке контакта. Его биополе отвергает вводимые материалы давая молекулярной структуре инструкцию стать чем-то другим, не через иммунный ответ.","Он потребил двенадцать мегаватт-секунд из Объекта 7-Б за одно событие. Теперь лежит неподвижно светясь фиолетовым на 2,3 Гц — та же частота что у геометрии Сердца Пещеры.","«Он больше не работает на биологии. Он работает на чём-то другом». Она не может сказать Торину вернётся ли Данте, или что вернётся если вернётся."]},
+        misunderstands:{en:["She said 'he is not running on biology anymore.' This is accurate as a current-state description. She has not modeled whether 'running on something else' is a permanent state change or a transitional state. The integration-pause protocol is documented (in the Pale Echelon archive she has not read) as temporary — the biological suspension ends when the connection protocol completes its initialization. She is treating what may be a transitional state as a final outcome. Her uncertainty about whether Dante will come back is based on incomplete information about what is happening rather than on what is actually occurring."],ru:["Она сказала «он больше не работает на биологии». Это точно как описание текущего состояния. Она не моделировала является ли «работа на чём-то другом» постоянным изменением состояния или переходным. Протокол паузы интеграции задокументирован (в архиве Бледного Эшелона который она не читала) как временный."]},
+        hides:{en:["She said 'I wonder sometimes if this is what he feels when he notes things he does not examine. Perhaps he is teaching me something.' This is the first time Isabella has named a relational dynamic with Dante that is not clinical, not instrumental, not strategic. She is noting that she has been learning from him — not his methods, which she has been applying since the capital, but his phenomenology: the specific quality of knowing something and choosing not to look at it directly. She has been doing this with her own response to sitting next to him. She has now named the connection. She has not yet examined what the connection means."],ru:["Она сказала «иногда задаюсь вопросом не то ли это что он чувствует когда отмечает вещи которые не исследует. Возможно он учит меня чему-то». Это первый раз когда Изабелла назвала реляционную динамику с Данте не клинической, не инструментальной, не стратегической. Она отмечает что училась у него — не методам которые она применяет с самой столицы, но его феноменологии."]},
+        whisper:{en:"She has been sitting next to him for four hours because she wants to. She noted it in the cave. She notes it again. She still has not examined it. She wonders if he is teaching her something. Perhaps he is.",ru:"Она сидела рядом с ним четыре часа, потому что хочет. Отмечала в пещере. Отмечает снова. Всё ещё не исследовала. Задаётся вопросом учит ли он её чему-то. Возможно да."}
+      }
+    }
+  }
+];
+
+var S = {sceneIdx:0,povId:null,lang:'en',intelOpen:false,ledgerOpen:false,whisperTmr:null};
+function ui(k){return UI[S.lang][k];}
+function pick(o){return (o&&typeof o==='object'&&'en' in o)?o[S.lang]:o;}
+function applyTheme(pid){
+  var p=POVS[pid]; if(!p) return;
+  var r=document.documentElement;
+  r.style.setProperty('--pov-p',p.primary);
+  r.style.setProperty('--pov-s',p.secondary);
+  r.style.setProperty('--pov-glow',p.glow);
+  r.style.setProperty('--pov-t',p.textColor);
+  r.style.setProperty('--pov-d',p.dimColor);
+}
+function renderDistBars(lvl){
+  var el=document.getElementById('dist-bars'); el.innerHTML='';
+  for(var i=1;i<=10;i++){var b=document.createElement('div');b.className='dist-bar';if(i<=lvl)b.classList.add(lvl>=9?'ex':lvl>=6?'hi':'on');el.appendChild(b);}
+}
+function fmt(t){return t.split('\n\n').filter(function(p){return p.trim();}).map(function(p){return '<p>'+p.replace(/\n/g,'<br>')+'</p>';}).join('');}
+function showWhisper(text,delay){
+  clearTimeout(S.whisperTmr);
+  var pan=document.getElementById('whisper-panel'),bod=document.getElementById('whisper-body');
+  pan.classList.remove('vis'); bod.textContent=text||'';
+  if(text) S.whisperTmr=setTimeout(function(){pan.classList.add('vis');},delay);
+}
+function renderIntel(pd){
+  var c=document.getElementById('intel-body');
+  c.innerHTML=[{key:'knows',cls:'knows'},{key:'misunderstands',cls:'misunderstands'},{key:'hides',cls:'hides'}].map(function(s){
+    var items=pick(pd[s.key])||[]; if(!items.length) return '';
+    return '<div class="intel-section '+s.cls+'"><div class="intel-section-head">'+ui(s.key)+'</div><ul class="intel-list">'+items.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul></div>';
+  }).join('');
+}
+function renderSceneMap(idx){
+  var map=document.getElementById('scene-map'); map.innerHTML='';
+  SCENES.forEach(function(sc,i){
+    var d=document.createElement('div');
+    d.className='scene-dot'+(i===idx?' active':'');
+    d.setAttribute('data-title',pick(sc.title));
+    d.addEventListener('click',function(){if(i!==S.sceneIdx){renderScene(i,null,true);scrollTop();}});
+    map.appendChild(d);
+  });
+}
+function renderLedger(){
+  document.getElementById('ledger-body').innerHTML=TIMELINE.map(function(e){
+    return '<div class="ledger-entry"><span class="ledger-id">'+e.id+'</span><span class="ledger-text">'+e[S.lang]+'</span></div>';
+  }).join('');
+}
+function updateStaticUI(){
+  document.getElementById('arc-label').textContent=ui('arcLabel');
+  document.getElementById('header-title').textContent=ui('headerTitle');
+  document.getElementById('header-subtitle').textContent=ui('headerSubtitle');
+  document.getElementById('strip-chapter').textContent=ui('stripChapter');
+  document.getElementById('strip-chapter-title').textContent=ui('stripTitle');
+  document.getElementById('strip-location').textContent=ui('stripLocation');
+  document.getElementById('pov-label').textContent=ui('povLabel');
+  document.getElementById('dist-label').textContent=ui('distLabel');
+  document.getElementById('whisper-label').textContent=ui('whisperLabel');
+  document.getElementById('intel-toggle-label').textContent=ui('intelLabel');
+  document.getElementById('ledger-title').textContent=ui('ledgerTitle');
+  document.getElementById('ledger-warning').textContent=ui('ledgerWarning');
+  document.getElementById('prev-btn').textContent=ui('prevBtn');
+  document.getElementById('next-btn').textContent=ui('nextBtn');
+  document.getElementById('ledger-trigger').textContent=S.ledgerOpen?ui('ledgerOpen'):ui('ledgerClosed');
+  document.body.classList.toggle('lang-ru',S.lang==='ru');
+}
+function renderScene(idx,povId,animate){
+  var scene=SCENES[idx]; if(!scene) return;
+  var avail=Object.keys(scene.povData);
+  if(!povId||!avail.includes(povId)) povId=avail[0];
+  S.sceneIdx=idx; S.povId=povId;
+  var pMeta=POVS[povId], pScene=scene.povData[povId];
+  applyTheme(povId); updateStaticUI();
+  document.getElementById('scene-badge').textContent=ui('scene')+' '+String(idx+1).padStart(2,'0');
+  document.getElementById('scene-loc').textContent=pick(scene.location);
+  document.getElementById('scene-time').textContent=pick(scene.timing);
+  document.getElementById('scene-title').textContent=pick(scene.title);
+  document.getElementById('scene-subtitle').textContent=pick(scene.subtitle);
+  document.getElementById('scene-flags').innerHTML=scene.flags.map(function(f){return '<span class="scene-flag '+f+'">'+f.replace(/_/g,' ')+'</span>';}).join('');
+  var sel=document.getElementById('pov-selector');
+  sel.querySelectorAll('.pov-btn').forEach(function(b){b.remove();});
+  avail.forEach(function(pid){
+    var btn=document.createElement('button');
+    btn.className='pov-btn'+(pid===povId?' active':'');
+    btn.textContent=POVS[pid].name;
+    btn.setAttribute('data-pov',pid);
+    btn.addEventListener('click',function(){if(pid!==S.povId) switchPov(pid);});
+    sel.appendChild(btn);
+  });
+  document.getElementById('pov-name').textContent=pMeta.name;
+  document.getElementById('pov-role').textContent='-- '+pick(pMeta.title);
+  renderDistBars(pScene.distortion);
+  var textEl=document.getElementById('narrative-text');
+  function write(){
+    var txt=pick(pScene.text); if(!txt&&pScene.text&&pScene.text.en2) txt=pScene.text.en;
+    textEl.innerHTML=fmt(txt);
+    textEl.className='d'+pScene.distortion;
+    textEl.classList.add('fade-in');
+    setTimeout(function(){textEl.classList.remove('fade-in');},500);
+  }
+  if(animate){textEl.classList.add('fade-out');setTimeout(write,260);}else write();
+  showWhisper(pick(pScene.whisper),animate?2000:500);
+  renderIntel(pScene);
+  document.getElementById('prev-btn').disabled=idx===0;
+  document.getElementById('next-btn').disabled=idx===SCENES.length-1;
+  if(S.ledgerOpen) renderLedger();
+  renderSceneMap(idx);
+}
+function switchPov(povId){
+  var pScene=SCENES[S.sceneIdx].povData[povId],pMeta=POVS[povId];
+  S.povId=povId; applyTheme(povId);
+  document.querySelectorAll('.pov-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-pov')===povId);});
+  document.getElementById('pov-name').textContent=pMeta.name;
+  document.getElementById('pov-role').textContent='-- '+pick(pMeta.title);
+  renderDistBars(pScene.distortion);
+  var textEl=document.getElementById('narrative-text');
+  textEl.classList.add('fade-out');
+  setTimeout(function(){
+    textEl.innerHTML=fmt(pick(pScene.text));
+    textEl.className='d'+pScene.distortion;
+    textEl.classList.add('fade-in');
+    setTimeout(function(){textEl.classList.remove('fade-in');},500);
+  },260);
+  showWhisper(pick(pScene.whisper),2000);
+  renderIntel(pScene);
+}
+document.querySelectorAll('.lang-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var l=btn.getAttribute('data-lang');
+    if(l===S.lang) return;
+    S.lang=l;
+    document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-lang')===l);});
+    renderScene(S.sceneIdx,S.povId,true);
+  });
+});
+function scrollTop(){window.scrollTo({top:0,behavior:'smooth'});}
+document.getElementById('prev-btn').addEventListener('click',function(){if(S.sceneIdx>0){renderScene(S.sceneIdx-1,null,true);scrollTop();}});
+document.getElementById('next-btn').addEventListener('click',function(){if(S.sceneIdx<SCENES.length-1){renderScene(S.sceneIdx+1,null,true);scrollTop();}});
+document.getElementById('intel-toggle').addEventListener('click',function(){
+  S.intelOpen=!S.intelOpen;
+  document.getElementById('intel-body').classList.toggle('open',S.intelOpen);
+  document.getElementById('intel-toggle').classList.toggle('open',S.intelOpen);
+});
+document.getElementById('ledger-trigger').addEventListener('click',function(){
+  S.ledgerOpen=!S.ledgerOpen;
+  var sec=document.getElementById('ledger-section'),btn=document.getElementById('ledger-trigger');
+  sec.classList.toggle('open',S.ledgerOpen);
+  btn.classList.toggle('active',S.ledgerOpen);
+  btn.textContent=S.ledgerOpen?ui('ledgerOpen'):ui('ledgerClosed');
+  if(S.ledgerOpen){renderLedger();setTimeout(function(){sec.scrollIntoView({behavior:'smooth',block:'start'});},100);}
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){if(S.sceneIdx<SCENES.length-1){renderScene(S.sceneIdx+1,null,true);scrollTop();}}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){if(S.sceneIdx>0){renderScene(S.sceneIdx-1,null,true);scrollTop();}}
+  if(e.key==='Tab'&&!e.shiftKey){e.preventDefault();var avail=Object.keys(SCENES[S.sceneIdx].povData);switchPov(avail[(avail.indexOf(S.povId)+1)%avail.length]);}
+});
+renderScene(0,'dante',false);
+</script>
+</body>
+</html>

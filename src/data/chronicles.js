@@ -102,6 +102,7 @@ export const CHRONICLES = {
       { num: 5, title: 'Inventory', file: '/chronicles/black-ledger/pt2/chapter-05.html', status: 'published' },
       { num: 6, title: 'Audit of a Deity', file: '/chronicles/black-ledger/pt2/chapter-06.html', status: 'published' },
       { num: 7, title: 'Technical Specification: Sarcophagus', file: '/chronicles/black-ledger/pt2/chapter-07.html', status: 'published' },
+      { num: 8, title: 'Assimilation Protocol', file: '/chronicles/black-ledger/pt2/chapter-08.html', status: 'published' },
     ],
   },
 }

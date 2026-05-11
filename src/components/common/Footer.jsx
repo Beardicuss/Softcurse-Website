@@ -4,9 +4,9 @@ import { getGames } from '../../data/games'
 import styles from './Footer.module.css'
 
 export default function Footer() {
-  const apps  = getApps()
+  const apps = getApps()
   const games = getGames()
-  const year  = new Date().getFullYear()
+  const year = new Date().getFullYear()
 
   return (
     <footer className={styles.footer}>
@@ -37,12 +37,12 @@ export default function Footer() {
           {/* Socials */}
           <div className={styles.socials}>
             {[
-              { label: 'GitHub',   href: 'https://github.com/Beardicuss' },
-              { label: 'Twitter',  href: '#' },
-              { label: 'Discord',  href: '#' },
+              { label: 'GitHub', href: 'https://github.com/Beardicuss' },
+              { label: 'Twitter', href: '#' },
+              { label: 'Discord', href: '#' },
             ].map(({ label, href }) => (
               <a key={label} href={href} className={styles.social}
-                 target="_blank" rel="noopener noreferrer">
+                target="_blank" rel="noopener noreferrer">
                 {label}
               </a>
             ))}
@@ -55,8 +55,8 @@ export default function Footer() {
             <span className={styles.colAccent}>◈</span> LAB
           </div>
           <ul className={styles.colList}>
-            <li><Link to="/lab" className={styles.colLink}>All Tools</Link>
-            <li><Link to="/experiments" className={styles.colLink}>Experiments</Link></li></li>
+            <li><Link to="/lab" className={styles.colLink}>All Tools</Link></li>
+            <li><Link to="/experiments" className={styles.colLink}>Experiments</Link></li>
             {apps.map(a => (
               <li key={a.id}>
                 <Link to={`/lab/${a.id}`} className={styles.colLink}>
@@ -73,8 +73,8 @@ export default function Footer() {
             <span className={styles.colAccentMagenta}>◈</span> STUDIO
           </div>
           <ul className={styles.colList}>
-            <li><Link to="/studio" className={styles.colLink}>All Games</Link>
-            <li><Link to="/chronicles" className={styles.colLink}>Chronicles</Link></li></li>
+            <li><Link to="/studio" className={styles.colLink}>All Games</Link></li>
+            <li><Link to="/chronicles" className={styles.colLink}>Chronicles</Link></li>
             {games.map(g => (
               <li key={g.id}>
                 <Link to={`/studio/${g.id}`} className={styles.colLink}>
@@ -92,11 +92,11 @@ export default function Footer() {
           </div>
           <ul className={styles.colList}>
             {[
-              ['/about',   'About'],
+              ['/about', 'About'],
               ['/contact', 'Contact'],
-              ['/blog',    'Blog'],
+              ['/blog', 'Blog'],
               ['/roadmap', 'Roadmap'],
-              ['/press',   'Press Kit'],
+              ['/press', 'Press Kit'],
             ].map(([to, label]) => (
               <li key={to}>
                 <Link to={to} className={styles.colLink}>{label}</Link>

@@ -21,10 +21,10 @@ export default function AppDetail() {
     image: app.image || undefined,
   })
 
-  const [heroRef,     heroVis]     = useScrollReveal(0.05)
-  const [featRef,     featVis]     = useScrollReveal()
-  const [stackRef,    stackVis]    = useScrollReveal()
-  const [relatedRef,  relatedVis]  = useScrollReveal()
+  const [heroRef, heroVis] = useScrollReveal(0.05)
+  const [featRef, featVis] = useScrollReveal()
+  const [stackRef, stackVis] = useScrollReveal()
+  const [relatedRef, relatedVis] = useScrollReveal()
 
   const statusLabel = { active: '● LIVE', dev: '◎ IN DEV', planned: '○ PLANNED' }
   const relatedTools = getApps()
@@ -68,7 +68,7 @@ export default function AppDetail() {
         </section>
 
         {/* ── FEATURES GRID ── */}
-        <section className={`${styles.section} ${styles.featSection}`} ref={featRef}>
+        <section className={styles.section} ref={featRef}>
           <div className={styles.sectionLabel}>// CORE FEATURES</div>
           <h2 className={styles.sectionTitle}>What it does</h2>
           <ul className={`${styles.featGrid} reveal-group ${featVis ? 'visible' : ''}`}>
