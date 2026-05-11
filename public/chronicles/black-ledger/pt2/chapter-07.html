@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chronicles — Empire of Shadows: Chapter 7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&family=Cormorant:ital,wght@0,400;0,600;1,400&family=PT+Serif:ital,wght@0,400;1,400&family=PT+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060c;--bg2:#0a0a14;--bg3:#0e0e1c;--panel:#0b0b18;--border:#1a1a30;--border2:#242248;--text:#b0b0c8;--text-dim:#484860;--text-muted:#282838;--pov-p:#2a0058;--pov-s:#6a30aa;--pov-glow:rgba(42,0,88,0.18);--pov-t:#d8cef8;--pov-d:rgba(106,48,170,0.45);--ff-display:'Cinzel',serif;--ff-body:'Crimson Text','Georgia',serif;--ff-mono:'Share Tech Mono','Courier New',monospace;}
+body.lang-ru{--ff-display:'Cormorant',serif;--ff-body:'PT Serif','Georgia',serif;--ff-mono:'PT Mono','Courier New',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--ff-body);min-height:100vh;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:998;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.7) 100%);}
+#app{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 28px 120px;}
+#lang-bar{position:fixed;top:16px;right:20px;z-index:200;display:flex;}
+.lang-btn{font-family:var(--ff-mono);font-size:11px;letter-spacing:.25em;padding:7px 15px;background:var(--bg2);border:1px solid var(--border2);color:var(--text-muted);cursor:pointer;transition:all .25s;text-transform:uppercase;}
+.lang-btn:first-child{border-right:none;}
+.lang-btn.active{color:var(--pov-s);border-color:var(--pov-p);background:var(--bg3);}
+.lang-btn:hover:not(.active){color:var(--text-dim);}
+#site-header{padding:56px 0 36px;text-align:center;}
+.header-ornament{font-family:var(--ff-mono);font-size:12px;letter-spacing:.4em;color:var(--pov-s);text-transform:uppercase;margin-bottom:14px;opacity:.7;}
+.header-title{font-family:var(--ff-display);font-size:clamp(22px,4vw,32px);font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--text);margin-bottom:6px;line-height:1.3;}
+.header-subtitle{font-family:var(--ff-mono);font-size:14px;letter-spacing:.3em;color:var(--pov-p);text-transform:uppercase;}
+.header-rule{height:1px;background:linear-gradient(90deg,transparent,var(--border2) 20%,var(--pov-p) 50%,var(--border2) 80%,transparent);margin:28px 0;}
+#chapter-strip{display:flex;justify-content:space-between;align-items:center;padding:9px 0;margin-bottom:40px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.chapter-strip-item{font-family:var(--ff-mono);font-size:12px;letter-spacing:.22em;color:var(--text-dim);text-transform:uppercase;}
+.chapter-strip-divider{font-family:var(--ff-mono);font-size:11px;color:var(--text-muted);}
+.scene-header{margin-bottom:28px;}
+.scene-meta-row{display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap;}
+.scene-badge{font-family:var(--ff-mono);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--pov-s);border:1px solid var(--pov-p);padding:3px 10px;}
+.scene-loc{font-family:var(--ff-mono);font-size:11px;color:var(--text-dim);letter-spacing:.14em;text-transform:uppercase;}
+.scene-time{font-family:var(--ff-mono);font-size:11px;color:var(--text-muted);letter-spacing:.1em;margin-left:auto;}
+.scene-title{font-family:var(--ff-display);font-size:clamp(30px,6vw,52px);font-weight:400;letter-spacing:.04em;color:var(--text);line-height:1.1;margin-bottom:8px;}
+.scene-subtitle{font-family:var(--ff-body);font-style:italic;font-size:18px;color:var(--text-dim);letter-spacing:.04em;}
+.scene-flags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+.scene-flag{font-family:var(--ff-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--border);color:var(--text-muted);}
+.scene-flag.pivotal{border-color:#2e1a40;color:#7a3aaa;}
+.scene-flag.revelation{border-color:#102030;color:#3a6a8a;}
+.scene-flag.institution_build{border-color:#1a2e10;color:#4a6a30;}
+.scene-flag.cost{border-color:#302010;color:#7a5020;}
+.scene-flag.identity{border-color:#2a1a40;color:#6a3aaa;}
+.scene-flag.foreshadowing{border-color:#10102e;color:#3a3a8a;}
+.scene-flag.escalation{border-color:#302018;color:#8a5020;}
+#pov-selector{display:flex;align-items:center;gap:2px;margin-bottom:24px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);flex-wrap:wrap;}
+.pov-selector-label{font-family:var(--ff-mono);font-size:11px;letter-spacing:.28em;color:var(--text-muted);text-transform:uppercase;padding-right:12px;border-right:1px solid var(--border2);margin-right:8px;white-space:nowrap;}
+.pov-btn{font-family:var(--ff-mono);font-size:13px;letter-spacing:.18em;text-transform:uppercase;padding:9px 20px;background:transparent;border:1px solid transparent;color:var(--text-dim);cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.pov-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:transparent;transition:background .3s;}
+.pov-btn:hover{color:var(--text);border-color:var(--border2);}
+.pov-btn.active{color:var(--pov-t);border-color:var(--pov-p);background:var(--pov-glow);}
+.pov-btn.active::after{background:var(--pov-s);}
+#narrative-panel{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--pov-p);padding:34px 40px;transition:border-left-color .7s;position:relative;overflow:hidden;}
+#narrative-panel::before{content:'';position:absolute;inset:0;background:var(--pov-glow);pointer-events:none;}
+.pov-ident{display:flex;align-items:baseline;gap:12px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border2);flex-wrap:wrap;position:relative;z-index:1;}
+.pov-name{font-family:var(--ff-mono);font-size:14px;letter-spacing:.3em;text-transform:uppercase;color:var(--pov-s);}
+.pov-role{font-family:var(--ff-body);font-style:italic;font-size:16px;color:var(--text-dim);}
+.dist-meter{display:flex;align-items:center;gap:9px;margin-left:auto;}
+.dist-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:.2em;color:var(--text-muted);text-transform:uppercase;}
+.dist-bars{display:flex;gap:3px;}
+.dist-bar{width:4px;height:15px;background:var(--border2);}
+.dist-bar.on{background:var(--pov-p);}
+.dist-bar.hi{background:#5a1898;}
+.dist-bar.ex{background:#8822cc;animation:barpulse 1.8s infinite;}
+@keyframes barpulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+#narrative-text{font-size:20px;line-height:1.9;color:var(--pov-t);position:relative;z-index:1;}
+#narrative-text p{margin-bottom:1.3em;}
+#narrative-text p:last-child{margin-bottom:0;}
+.d2,.d3,.d4,.d5{animation:flicker-soft 14s infinite;}
+.d6,.d7{animation:flicker-mid 7s infinite;}
+.d8,.d9{animation:flicker-hard 4s infinite;}
+@keyframes flicker-soft{0%,94%,100%{opacity:1;}96%{opacity:.88;}}
+@keyframes flicker-mid{0%,88%,100%{opacity:1;}90%{opacity:.75;}93%{opacity:.68;}94%{opacity:1;}}
+@keyframes flicker-hard{0%,80%,100%{opacity:1;}83%{opacity:.55;}86%{opacity:.85;}89%{opacity:1;}}
+#whisper-panel{background:var(--bg2);border:1px solid var(--border);border-top:none;border-left:3px solid var(--pov-p);padding:15px 40px 17px;margin-bottom:12px;opacity:0;transform:translateY(-2px);transition:opacity 1.6s,transform 1.2s;pointer-events:none;}
+#whisper-panel.vis{opacity:1;transform:none;pointer-events:auto;}
+.whisper-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:.45em;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;}
+.whisper-body{font-family:var(--ff-body);font-style:italic;font-size:18px;color:var(--pov-d);letter-spacing:.04em;line-height:1.65;}
+#intel-panel{background:var(--bg3);border:1px solid var(--border);margin-bottom:32px;}
+.intel-toggle{width:100%;padding:12px 18px;background:transparent;border:none;color:var(--text-dim);font-family:var(--ff-mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:9px;transition:color .3s;text-align:left;}
+.intel-toggle:hover{color:var(--text);}
+.intel-arrow{transition:transform .3s;display:inline-block;font-size:9px;}
+.intel-toggle.open .intel-arrow{transform:rotate(90deg);}
+.intel-body{display:none;padding:18px 20px 22px;border-top:1px solid var(--border);}
+.intel-body.open{display:block;}
+.intel-section{margin-bottom:20px;}
+.intel-section:last-child{margin-bottom:0;}
+.intel-section-head{font-family:var(--ff-mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;margin-bottom:10px;}
+.intel-section.knows .intel-section-head{color:#3a5a3a;}
+.intel-section.misunderstands .intel-section-head{color:#5a5a20;}
+.intel-section.hides .intel-section-head{color:#5a2060;}
+.intel-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.intel-list li{font-family:var(--ff-mono);font-size:13px;line-height:1.65;padding-left:20px;position:relative;}
+.intel-list li::before{content:'—';position:absolute;left:0;color:var(--text-muted);}
+.intel-section.knows .intel-list li{color:#5a8a5a;}
+.intel-section.misunderstands .intel-list li{color:#8a8a3a;}
+.intel-section.hides .intel-list li{color:#8a4080;}
+#scene-nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-top:1px solid var(--border);}
+.nav-btn{font-family:var(--ff-mono);font-size:13px;letter-spacing:.22em;text-transform:uppercase;padding:11px 24px;background:transparent;border:1px solid var(--border2);color:var(--text-dim);cursor:pointer;transition:all .3s;}
+.nav-btn:hover:not(:disabled){border-color:var(--pov-p);color:var(--text);}
+.nav-btn:disabled{opacity:.18;cursor:not-allowed;}
+#scene-map{display:flex;gap:10px;align-items:center;}
+.scene-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);cursor:pointer;transition:all .3s;border:1px solid transparent;position:relative;}
+.scene-dot::after{content:attr(data-title);position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-family:var(--ff-mono);font-size:9px;white-space:nowrap;color:var(--text-dim);background:var(--bg2);border:1px solid var(--border);padding:3px 8px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.scene-dot:hover::after{opacity:1;}
+.scene-dot.active{background:var(--pov-s);border-color:var(--pov-p);transform:scale(1.25);}
+.scene-dot:hover:not(.active){border-color:var(--text-dim);}
+#ledger-section{margin-top:48px;display:none;}
+#ledger-section.open{display:block;animation:ledger-in .6s ease;}
+@keyframes ledger-in{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:none;}}
+.ledger-header{padding:12px 20px;background:#08000c;border:1px solid #1a0028;border-bottom:none;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.ledger-title{font-family:var(--ff-mono);font-size:12px;letter-spacing:.32em;color:#6a0088;text-transform:uppercase;}
+.ledger-warning{font-family:var(--ff-mono);font-size:10px;letter-spacing:.15em;color:#380048;}
+.ledger-body{background:#060008;border:1px solid #1a0028;padding:22px;}
+.ledger-entry{display:flex;gap:16px;margin-bottom:14px;align-items:flex-start;}
+.ledger-entry:last-child{margin-bottom:0;}
+.ledger-id{font-family:var(--ff-mono);font-size:11px;color:#440060;min-width:80px;flex-shrink:0;padding-top:2px;letter-spacing:.1em;}
+.ledger-text{font-family:var(--ff-mono);font-size:13px;color:#7a40a0;line-height:1.75;letter-spacing:.02em;}
+#ledger-trigger{position:fixed;bottom:24px;right:24px;z-index:100;background:#120020;border:1px solid #5a2090;color:#9a60d8;font-family:var(--ff-mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;padding:9px 18px;cursor:pointer;transition:all .5s;}
+#ledger-trigger:hover{color:#c090f8;border-color:#8050c8;box-shadow:0 0 22px rgba(100,0,160,.25);background:#1c0030;}
+#ledger-trigger.active{color:#cc88ff;border-color:#8844cc;box-shadow:0 0 30px rgba(200,100,255,.3);}
+.fade-out{opacity:0!important;transition:opacity .25s ease!important;}
+.fade-in{animation:fade-in-up .45s ease;}
+@keyframes fade-in-up{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border2);}
+@media(max-width:640px){#app{padding:0 16px 100px;}#narrative-panel{padding:24px 18px;}#whisper-panel{padding:12px 18px 14px;}.dist-meter{margin-left:0;margin-top:8px;}.scene-time{margin-left:0;}#lang-bar{top:10px;right:10px;}#narrative-text{font-size:18px;}}
+</style>
+</head>
+<body>
+<div id="lang-bar">
+  <button class="lang-btn active" data-lang="en">EN</button>
+  <button class="lang-btn" data-lang="ru">RU</button>
+</div>
+<div id="app">
+  <header id="site-header">
+    <div class="header-ornament" id="arc-label"></div>
+    <h1 class="header-title" id="header-title"></h1>
+    <div class="header-subtitle" id="header-subtitle"></div>
+    <div class="header-rule"></div>
+  </header>
+  <div id="chapter-strip">
+    <span class="chapter-strip-item" id="strip-chapter"></span>
+    <span class="chapter-strip-divider">◆</span>
+    <span class="chapter-strip-item" id="strip-chapter-title"></span>
+    <span class="chapter-strip-divider">◆</span>
+    <span class="chapter-strip-item" id="strip-location"></span>
+  </div>
+  <section id="scene-container">
+    <div class="scene-header">
+      <div class="scene-meta-row">
+        <span class="scene-badge" id="scene-badge"></span>
+        <span class="scene-loc" id="scene-loc"></span>
+        <span class="scene-time" id="scene-time"></span>
+      </div>
+      <h2 class="scene-title" id="scene-title"></h2>
+      <div class="scene-subtitle" id="scene-subtitle"></div>
+      <div class="scene-flags" id="scene-flags"></div>
+    </div>
+    <div id="pov-selector">
+      <span class="pov-selector-label" id="pov-label"></span>
+    </div>
+    <div id="narrative-wrap">
+      <div id="narrative-panel">
+        <div class="pov-ident">
+          <span class="pov-name" id="pov-name"></span>
+          <span class="pov-role" id="pov-role"></span>
+          <div class="dist-meter">
+            <span class="dist-label" id="dist-label"></span>
+            <div class="dist-bars" id="dist-bars"></div>
+          </div>
+        </div>
+        <div id="narrative-text"></div>
+      </div>
+      <div id="whisper-panel">
+        <div class="whisper-label" id="whisper-label"></div>
+        <div class="whisper-body" id="whisper-body"></div>
+      </div>
+    </div>
+    <div id="intel-panel">
+      <button class="intel-toggle" id="intel-toggle">
+        <span class="intel-arrow">&#9658;</span>
+        <span id="intel-toggle-label"></span>
+      </button>
+      <div class="intel-body" id="intel-body"></div>
+    </div>
+    <div id="ledger-section">
+      <div class="ledger-header">
+        <span class="ledger-title" id="ledger-title"></span>
+        <span class="ledger-warning" id="ledger-warning"></span>
+      </div>
+      <div class="ledger-body" id="ledger-body"></div>
+    </div>
+    <nav id="scene-nav">
+      <button class="nav-btn" id="prev-btn"></button>
+      <div id="scene-map"></div>
+      <button class="nav-btn" id="next-btn"></button>
+    </nav>
+  </section>
+</div>
+<button id="ledger-trigger"></button>
+<script>
+var UI = {
+  en: {arcLabel:"BOOK IV: AUDITOR — EMPIRE OF SHADOWS / ARC II — NORTHERN LIMIT",headerTitle:"Chronicles of the Fallen World: Book IV",headerSubtitle:"AUDITOR: EMPIRE OF SHADOWS",stripChapter:"Chapter 7",stripTitle:"Technical Specification: Sarcophagus",stripLocation:"Wolf's Gorge — Outpost-7",povLabel:"Perspective",distLabel:"Distortion",whisperLabel:"Subtext",intelLabel:"Intelligence Report",knows:"Knows",misunderstands:"Misunderstands",hides:"Hides",prevBtn:"Prev",nextBtn:"Next",ledgerTitle:"True Event Timeline — Classified",ledgerWarning:"Diverges from all POV accounts",ledgerOpen:"Close Ledger",ledgerClosed:"Black Ledger",scene:"Scene"},
+  ru: {arcLabel:"КНИГА IV: АУДИТОР — ИМПЕРИЯ ТЕНЕЙ / АРК II — СЕВЕРНЫЙ ПРЕДЕЛ",headerTitle:"Хроники Павшего Мира: Книга IV",headerSubtitle:"АУДИТОР: ИМПЕРИЯ ТЕНЕЙ",stripChapter:"Глава 7",stripTitle:"Техническое Задание: Саркофаг",stripLocation:"Волчье Логово — Форпост-7",povLabel:"Перспектива",distLabel:"Искажение",whisperLabel:"Подтекст",intelLabel:"Разведывательный Отчёт",knows:"Знает",misunderstands:"Заблуждается",hides:"Скрывает",prevBtn:"Назад",nextBtn:"Далее",ledgerTitle:"Истинная Хронология — Засекречено",ledgerWarning:"Расходится со всеми нарративами",ledgerOpen:"Закрыть Гроссбух",ledgerClosed:"Чёрный Гроссбух",scene:"Сцена"}
+};
+
+var POVS = {
+  dante: {name:"DANTE",title:{en:"The Auditor — Modulator",ru:"Аудитор — Модулятор"},primary:"#2a0058",secondary:"#6a30aa",glow:"rgba(42,0,88,0.2)",textColor:"#d8cef8",dimColor:"rgba(106,48,170,0.5)"},
+  torin: {name:"TORIN",title:{en:"Managing Director — Northern Branch",ru:"Управляющий Директор — Северный Филиал"},primary:"#2a1808",secondary:"#5a3818",glow:"rgba(42,24,8,0.22)",textColor:"#e0c8a0",dimColor:"rgba(90,56,24,0.48)"},
+  isabella: {name:"ISABELLA",title:{en:"Head of Poisons and Alchemy",ru:"Глава Отдела Ядов и Алхимии"},primary:"#0a1a0a",secondary:"#284a28",glow:"rgba(10,26,10,0.22)",textColor:"#c0e0c0",dimColor:"rgba(40,74,40,0.5)"}
+};
+
+var TIMELINE = [
+  {id:"TET-B4-36",
+   en:"The Sarcophagus concept — anti-sound as a containment mechanism — emerges from Dante's counter-scan data from the Cave Heart. The principle is Active Noise Cancellation at the Covenant-infrastructure scale: if the Chaos-field source has a measurable resonance frequency, a precisely inverted wave of equal amplitude will produce destructive interference, reducing the net field emission to zero. This is the correct theoretical approach. The practical problem Dante identified immediately: the Chaos-field is adaptive. A static anti-wave will be identified and circumvented within minutes. The solution requires a dynamic anti-wave — one that tracks and mirrors the Chaos-field's frequency changes in real time. This is what the Shaman-machine interface was designed to provide.",
+   ru:"Концепция Саркофага — анти-звук как механизм сдерживания — возникает из данных контрсканирования Данте с Сердца Пещеры. Принцип — Активное Шумоподавление в масштабе инфраструктуры Завета: если источник поля Хаоса имеет измеримую резонансную частоту, точно инвертированная волна равной амплитуды произведёт деструктивную интерференцию, уменьшая чистое излучение поля до нуля. Это теоретически верный подход. Практическая проблема которую Данте немедленно определил: поле Хаоса адаптивно."},
+  {id:"TET-B4-37",
+   en:"Torin's three allied clans — White Fang (hunters, biomass suppliers), Iron Echo (gnome exiles, engineers), Ice Wind (trackers, route-finders) — were not recruited during the political crisis in the capital. They were contracted during the six months of administrative stability following the Golden Circle absorption, while Dante was occupied with the capital's institutional consolidation. Torin identified and built these relationships independently, without Dante's specific direction. This is the first time a Guild subordinate has built a strategic alliance network that exceeds their defined operational scope and produces a capability Dante did not know existed until it was needed.",
+   ru:"Три союзных клана Торина — Белый Клык (охотники, поставщики биомассы), Железное Эхо (гномы-изгои, инженеры), Ледяные Ветры (следопыты) — были завербованы не во время политического кризиса в столице. Они были законтрактованы за шесть месяцев административной стабильности после поглощения Золотого Круга. Торин определил и выстроил эти отношения независимо, без конкретных указаний Данте. Это первый раз когда подчинённый Гильдии построил стратегическую союзную сеть превышающую его определённый операционный масштаб."},
+  {id:"TET-B4-38",
+   en:"Isabella's Gel-blood-silver interface compound — applied to the machine surfaces to allow the shamans' vocal resonance to modulate the steam output — is the first successful integration of Covenant-adjacent biological material (her blood, which has been modified by twelve weeks of Cognitive Iron micro-dosing) with industrial machinery. The compound works because Isabella's blood already carries a partial Covenant-resonance signature from the CI exposure. The shamans' voices are resonance generators. The compound translates the shamans' resonance into a format the machine's pressure system can respond to. This is the Gel's molecular transcription pathway being used as a biological-to-mechanical interface.",
+   ru:"Интерфейсное соединение Изабеллы из Геля, крови и серебра — нанесённое на поверхности машин чтобы позволить голосовому резонансу шаманов модулировать паровой выход — первая успешная интеграция смежного с Заветом биологического материала (её крови, изменённой двенадцатью неделями микродозирования КЖ) с промышленными машинами. Соединение работает, потому что кровь Изабеллы уже несёт частичную резонансную сигнатуру Завета от воздействия КЖ."},
+  {id:"TET-B4-39",
+   en:"Dante becoming the Modulator — placing both hands on the primary resonator and opening his Auditor-memory to the Sleeping One's frequency without filtering — is the operational equivalent of becoming a living interface between the machine system and the Chaos-field source. The composite leg is already this interface at a smaller scale: it translates between the Covenant infrastructure's null-field resonance and Dante's biological system. Scaling this up to the full Sarcophagus operation required the composite to run at a throughput level it has not previously been asked to sustain. The burns on his hands are secondary. The primary cost is internal: the composite's resonance reservoir depleted below the threshold at which recovery without external Gel input is possible.",
+   ru:"Данте становящийся Модулятором — кладущий обе руки на первичный резонатор и открывающий свою архивную память Аудитора к частоте Спящего без фильтров — операционный эквивалент стать живым интерфейсом между машинной системой и источником поля Хаоса. Нога с композитом уже является таким интерфейсом в меньшем масштабе. Масштабирование этого до полной операции Саркофага потребовало от композита работы на уровне пропускной способности которой от него прежде не требовали."},
+  {id:"TET-B4-40",
+   en:"The Chaos-field particle that escaped through the micro-crack and struck Dante is not an attack. It is a recognition event — a continuation of the Cave Heart's identification of the composite as a Fragment. The particle sought 'kinship' — it bypassed Ur-Gan (full of magic) and Torin (biologically unmodified) and targeted Dante specifically because the composite's resonance signature matched the particle's origin architecture. The convulsions, black foam, and violet geometric patterns in the eyes are the composite's response to a direct Chaos-field contact at tissue level — the same process that produced the Distorted, but occurring in a system with Cognitive Iron suppression and Covenant-grade composite architecture. The outcome is not predetermined. The two systems — Order-composite and Chaos-particle — are attempting to find a new equilibrium inside him.",
+   ru:"Частица поля Хаоса вырвавшаяся через микротрещину и ударившая Данте — не атака. Это событие узнавания — продолжение идентификации Сердцем Пещеры композита как Осколка. Частица искала «родство» — она обошла Ур-Гана (полного магии) и Торина (биологически неизменённого) и нацелилась на Данте конкретно, потому что резонансная сигнатура композита соответствовала архитектуре происхождения частицы. Судороги, чёрная пена, и фиолетовые геометрические паттерны в глазах — ответ композита на прямой контакт поля Хаоса на уровне ткани."}
+];
+
+var SCENES = [
+  {
+    id: "s1",
+    title: {en:"Debit and Credit of Survival",ru:"Дебет и Кредит Выживания"},
+    subtitle: {en:"No one dies until I have signed the termination order.",ru:"Никто не умирает, пока я не подписал приказ об увольнении."},
+    location: {en:"Base Camp — Wolf's Gorge Perimeter",ru:"Базовый Лагерь — Периметр Волчьего Логова"},
+    timing: {en:"Immediately After the Retreat",ru:"Сразу После Отступления"},
+    flags: ["pivotal","revelation"],
+    povData: {
+      dante: {
+        distortion: 5,
+        text: {
+          en: "The counter-scan data was degrading.\n\nThe Auditor-interface stores acquired resonance data in a volatile buffer — the same buffer that processes incoming signal during active operations. Post-operation, the buffer begins decoding the data into stable archive format. If I do not extract the decoded output before the buffer overwrites itself with operational noise, the Cave Heart's structural frequency data will be lost.\n\nThis is why I was writing in the snow with a broken pencil while bleeding on my notes.\n\nThe principle was clear within the first two minutes of analysis. The Chaos-field source has a measurable resonance frequency — I now have it, encoded in the archive's structural model. A precisely inverted wave of identical amplitude produces destructive interference. Net output: zero. The source is contained not by a wall but by a mirror — its own voice reflected back at it with opposite phase.\n\nThe practical obstacle I saw immediately: the Chaos-field is adaptive. It changes frequency. A static mirror produces containment for approximately the time it takes the source to identify the inversion pattern and shift its output. Based on the frequency-change rate I observed during the cave operation, that window is between ninety seconds and three minutes. Insufficient for a stable containment structure.\n\nSolution: a dynamic mirror. One that tracks frequency changes in real time and adjusts the inversion continuously.\n\nTorino said: Torin's contractors.\n\nI did not know about the three clans. Torin built those relationships during the six months I was occupied with the capital. He filed them as operational procurement. He told me about them here, in a blizzard, after a failed cave operation, by firing a signal flare.\n\nThis is the correct way to manage a supply chain.\n\nI noted this and felt something I did not examine — a specific quality of response to discovering that a person I assigned a function to has exceeded the function without being asked. I have been the person who exceeds functions without being asked. I have never before been the person on the receiving end of it.\n\nI told him: good work, Naместник. Write yourself a bonus.\n\nBusiness continues.",
+          ru: "Данные контрсканирования деградировали.\n\nИнтерфейс Аудитора хранит приобретённые резонансные данные в нестабильном буфере — том же буфере что обрабатывает входящий сигнал во время активных операций. После операции, буфер начинает декодировать данные в стабильный архивный формат. Если я не извлеку декодированный вывод до того как буфер перепишет себя операционным шумом, структурные частотные данные Сердца Пещеры будут потеряны.\n\nВот почему я писал в снегу сломанным карандашом истекая кровью на заметки.\n\nПринцип был ясен в первые две минуты анализа. Источник поля Хаоса имеет измеримую резонансную частоту — теперь у меня есть она, закодированная в структурной модели архива. Точно инвертированная волна идентичной амплитуды производит деструктивную интерференцию. Чистый выход: ноль.\n\nПрактическое препятствие которое я увидел немедленно: поле Хаоса адаптивно. Оно меняет частоту. Статичное зеркало производит сдерживание приблизительно на время пока источник идентифицирует паттерн инверсии и сдвигает свой выход. Недостаточно для стабильной структуры сдерживания.\n\nРешение: динамическое зеркало. Отслеживающее изменения частоты в реальном времени.\n\nТорин сказал: подрядчики Торина.\n\nЯ не знал о трёх кланах. Торин строил эти отношения шесть месяцев пока я был занят столицей. Он занёс их как операционное снабжение. Он рассказал мне здесь, в метель, после провалившейся пещерной операции, выстрелив сигнальной ракетой.\n\nЭто правильный способ управления цепочкой поставок.\n\nЯ отметил это и почувствовал нечто что не исследовал — специфическое качество ответа на обнаружение что человек которому я назначил функцию превысил функцию без запроса. Я был человеком который превышает функции без запроса. Я никогда прежде не был человеком получающим это.\n\nЯ сказал ему: хорошая работа, Наместник. Запиши себе премию.\n\nБизнес продолжается."
+        },
+        knows: {en:["The counter-scan buffer is volatile — must extract before it overwrites. This is why he wrote while bleeding.","The solution requires a dynamic mirror — something that tracks the Chaos-field's frequency changes in real time and adjusts the inversion. That is the Shaman-machine interface.","Torin built the three clans independently during the six months Dante was in the capital. 'I have been the person who exceeds functions without being asked. I have never before been the person on the receiving end of it.'"],ru:["Буфер контрсканирования нестабилен — нужно извлечь до перезаписи. Вот почему писал истекая кровью.","Решение требует динамического зеркала — то что отслеживает изменения частоты поля Хаоса в реальном времени. Это интерфейс Шаман-машина.","Торин построил три клана независимо шесть месяцев пока Данте был в столице. «Я был человеком который превышает функции. Я никогда прежде не был человеком получающим это»."]},
+        misunderstands: {en:["He said 'I noted this and felt something I did not examine.' He noted an emotional response to Torin exceeding his assigned function and immediately filed it as unexamined. He has been doing this with increasing frequency — noting emotional content, naming it as present, declining to process it. The specific quality he felt but did not examine: recognition. He recognized Torin's behavior as the same behavior he has been performing since Chapter 1. Examining it would require examining what it means to do this — to exceed functions without being asked, to build toward something larger than the stated objective — from the perspective of the person who assigns the objectives."],ru:["Он сказал «я почувствовал нечто что не исследовал». Он отметил эмоциональный ответ на превышение Торином функции и немедленно занёс как неисследованный. Специфическое качество которое он почувствовал но не исследовал: узнавание. Он узнал поведение Торина как то же поведение которое сам выполняет с Главы 1. Исследование потребовало бы исследования что это означает — превышать функции без запроса — с перспективы человека назначающего цели."]},
+        hides: {en:["He told Torin 'good work, Naместник. Write yourself a bonus.' He delivered this in approximately two seconds. He has not examined whether 'write yourself a bonus' is an adequate response to a subordinate who just saved the operation with six months of independent strategic preparation, arrived in a blizzard after a failed operation to present his network, and accepted responsibility for the entire contractor force without being asked. The bonus covers the transaction. It does not cover the relationship change."],ru:["Он сказал Торину «хорошая работа, Наместник. Запиши себе премию». Он не исследовал является ли «запиши себе премию» адекватным ответом на подчинённого который только что спас операцию шестью месяцами независимой стратегической подготовки."]},
+        whisper: {en:"He felt something about Torin and did not examine it. He recognized his own behavior in someone else. He filed it as a bonus line. Business continues.",ru:"Он почувствовал нечто насчёт Торина и не исследовал. Он узнал собственное поведение в другом. Он занёс как строку премии. Бизнес продолжается."}
+      }
+    }
+  },
+  {
+    id: "s2",
+    title: {en:"Merger of Assets",ru:"Слияние Активов"},
+    subtitle: {en:"Magic and technology, sworn enemies, merged into an ugly but powerful symbiosis to survive.",ru:"Магия и Технология, заклятые враги, слились в уродливый, но мощный симбиоз, чтобы выжить."},
+    location: {en:"Wolf's Gorge — Council on Ammo Crates",ru:"Волчье Логово — Совет на Ящиках с Боеприпасами"},
+    timing: {en:"One Hour After Retreat",ru:"Час После Отступления"},
+    flags: ["institution_build","escalation"],
+    povData: {
+      torin: {
+        distortion: 4,
+        text: {
+          en: "The three clans came because I paid them.\n\nThis is the honest answer. The White Fang came because I give them reliable biomass contracts without the blood-tax the shamans charge. The Iron Echo came because I let them work above ground and treat their gnome-sickness as a medical condition rather than a character flaw. The Ice Wind came because I paid their debt to the Ash-Bone clan and asked for route-access in return.\n\nI did not tell the Master this when I fired the flare. I told him they were contractors. He nodded and said: good work. Write yourself a bonus.\n\nHe is right that it is good work. But the mechanism is not leadership. The mechanism is the same mechanism he uses on everyone. Find the debt. Find the need. Find the gap between what someone has and what they want. Fill the gap with something that costs you less than what you receive.\n\nI learned this watching him.\n\nWhat I have not told him: the White Fang's chief, Koda, asked me three months ago whether the Guild would provide medical care for their hunters during winter. Not biomass payments. Medical care. Her son lost two fingers to frostbite on a Guild supply run. She did not ask for compensation. She asked for a doctor.\n\nI told her I would ask.\n\nI have not asked. Because I was afraid the answer was no, and a no answer would lose me the White Fang contract.\n\nThe Sarcophagus required the White Fang to hold the perimeter while the Ash-Bone shamans and Iron Echo gomes and Ice Wind trackers did their work. Koda's hunters stood in the blizzard for four hours without complaint.\n\nHer son was on the perimeter. The one with two missing fingers.\n\nAfter it was over, she said nothing to me. She just looked at me.\n\nI am going to ask the Master about the doctor. After we get back. When there is a stable moment.\n\nI keep saying that.",
+          ru: "Три клана пришли, потому что я им платил.\n\nЭто честный ответ. Белый Клык пришёл, потому что я даю им надёжные контракты на биомассу без кровного налога который берут шаманы. Железное Эхо пришло, потому что я позволяю им работать над землёй и лечу их гномью болезнь как медицинское состояние а не недостаток характера. Ледяные Ветры пришли, потому что я погасил их долг перед кланом Пепельной Кости и попросил доступ к маршрутам взамен.\n\nЯ не сказал Мастеру этого когда выстрелил ракетой. Я сказал ему что они подрядчики. Он кивнул и сказал: хорошая работа. Запиши себе премию.\n\nОн прав что это хорошая работа. Но механизм — не лидерство. Механизм тот же который он использует на всех. Найди долг. Найди нужду. Найди разрыв между тем что есть и тем что хотят. Заполни разрыв чем-то что стоит тебе меньше чем получаешь.\n\nЯ научился этому наблюдая за ним.\n\nЧего я не говорил ему: вожак Белого Клыка, Кода, спросила меня три месяца назад предоставит ли Гильдия медицинскую помощь её охотникам зимой. Не выплаты за биомассу. Медицинскую помощь. Её сын потерял два пальца от обморожения на снабженческом рейде Гильдии. Она не просила компенсации. Она просила врача.\n\nЯ сказал что спрошу.\n\nЯ не спросил. Потому что боялся что ответ будет нет, и ответ нет потеряет мне контракт с Белым Клыком.\n\nСаркофаг потребовал от Белого Клыка держать периметр. Охотники Коды простояли в метель четыре часа без жалоб.\n\nЕё сын был на периметре. Тот, с двумя недостающими пальцами.\n\nПосле того как всё закончилось, она ничего не сказала мне. Она просто посмотрела на меня.\n\nЯ собираюсь спросить Мастера о враче. После того как вернёмся. Когда будет стабильный момент.\n\nЯ постоянно так говорю."
+        },
+        knows: {en:["He learned the mechanism from watching Dante: find the debt, find the need, fill the gap.","Koda asked for a doctor three months ago. He said he would ask. He has not asked because he feared a 'no' would cost him the White Fang contract.","Her son — two missing fingers from a Guild supply run — was on the perimeter during the four-hour Sarcophagus hold. Koda looked at him after. He said nothing."],ru:["Он научился механизму наблюдая за Данте: найди долг, найди нужду, заполни разрыв.","Кода просила врача три месяца назад. Он сказал что спросит. Не спросил, потому что боялся что ответ нет стоит ему контракт с Белым Клыком.","Её сын — два потерянных пальца на снабженческом рейде Гильдии — был на периметре четыре часа. Кода посмотрела на него после. Он ничего не сказал."]},
+        misunderstands: {en:["He said 'I keep saying that' — about asking at a stable moment. He has not examined that the reason he keeps deferring is not timing but cost-aversion. He is afraid the Master will say no. He has seen Dante say yes to things more expensive than a doctor's contract when the asset value justifies it. He has not applied this model to Koda's request. He is applying the model to himself — treating his own conversation with Dante as a debt he does not want to call."],ru:["Он сказал «я постоянно так говорю» — о просьбе в стабильный момент. Он не исследовал что причина постоянной отсрочки не timing а избегание стоимости. Он боится что Мастер скажет нет. Он видел как Данте говорит да на вещи дороже чем врачебный контракт когда ценность актива оправдывает это."]},
+        hides: {en:["The White Fang held the perimeter for four hours. Koda's son held it with two missing fingers. The Sarcophagus would not have worked without the perimeter hold. The medical request is not a charity ask — it is unpaid compensation for a Guild workplace injury sustained in a Guild operation. He knows this. He has not framed it this way to himself, and he has not framed it this way to Dante. He is treating it as a favor request rather than a debt settlement."],ru:["Белый Клык держал периметр четыре часа. Сын Коды держал с двумя недостающими пальцами. Саркофаг не сработал бы без удержания периметра. Медицинская просьба — не запрос благотворительности. Это невыплаченная компенсация за производственную травму Гильдии полученную в операции Гильдии. Он знает это. Он не оформил это так."]},
+        whisper: {en:"He keeps saying he will ask at a stable moment. Koda's son held the perimeter with two missing fingers from a Guild run. Torin knows it is a debt, not a favor. He has not said so.",ru:"Он постоянно говорит что спросит в стабильный момент. Сын Коды держал периметр с двумя потерянными пальцами от рейда Гильдии. Торин знает что это долг, не одолжение. Он не сказал этого."}
+      }
+    }
+  },
+  {
+    id: "s3",
+    title: {en:"Industrial Shamanism",ru:"Индустриальный Шаманизм"},
+    subtitle: {en:"I am not a wizard. Not a warrior. I am a Conductor about to perform a Symphony of Silence for entropy itself.",ru:"Я не маг. Не воин. Я Дирижёр, который собирается сыграть симфонию Тишины для самой энтропии."},
+    location: {en:"Wolf's Gorge — The Sarcophagus / Aftermath",ru:"Волчье Логово — Саркофаг / Последствие"},
+    timing: {en:"Two Hours After Retreat — Containment and Strike",ru:"Два Часа После Отступления — Сдерживание и Удар"},
+    flags: ["pivotal","cost","identity","foreshadowing"],
+    povData: {
+      dante: {
+        distortion: 6,
+        text: {
+          en: "The Sarcophagus architecture took forty-seven minutes to assemble.\n\nThis is faster than any comparable field-engineering operation in the Guild's history. The Iron Echo gomes work at a level of mechanical intuition that does not require blueprints — they looked at my chalk sketches on the frozen rock and extrapolated the full load-bearing structure in approximately four minutes. Then they built it. Without discussion.\n\nI noted this as a significant operational asset and moved on.\n\nIsabella's interface compound. The logic is elegant: her blood already carries a partial Covenant-resonance signature from the CI exposure. The shamans' voices are resonance generators. The compound is a transducer — it converts the acoustic resonance of the shamans' vocal output into a format the steam-pressure system can respond to. The machine becomes a voice amplifier for the shamans' will.\n\nThis is also a description of what the composite does for me.\n\nI noted this and did not examine it.\n\nWhen the Sleeping One began adapting faster than the shaman-machine interface could track, I calculated the options in approximately two seconds. The Modulator position requires: real-time frequency reading of the Chaos-field source, real-time frequency adjustment of the anti-wave output, and zero latency between input and output.\n\nThe composite's null-field resonance detection system operates at the speed of the composite's own signal propagation — effectively instantaneous within its detection radius. The shaman-machine interface operates at the speed of human vocal production and steam-valve adjustment — approximately one to three seconds per adjustment cycle. The Sleeping One was changing frequency every two seconds.\n\nThe math was clear.\n\nI placed my hands on the primary resonator.\n\nI did not warn anyone what would happen. I told Varek to hold me so I would not fall. He held me.\n\nWhat happened when I opened the Auditor-memory to the Chaos-field's direct input without filtering: the frequency data arrived in a format the archive had no encoding protocol for. It was not information in the sense of data that can be stored and retrieved. It was a state — a dynamic, continuously-changing configuration that only existed as long as I was receiving it. I could not think about it. I could only be it, and respond.\n\nFor approximately ninety seconds, I was a mirror.\n\nThe burns on my hands are second-degree. The tissue damage is bilateral and symmetrical — both palms, extending to the wrist. Izabella will want to debride and dress them when she has a moment.\n\nThe Chaos-field particle that struck me after the Sarcophagus achieved stability was not anticipated.\n\nI did not see it coming. The composite's detection radius had been depleted during the Modulator operation — the outward resonance scan was offline while all available capacity was directed inward, toward the anti-wave generation.\n\nI felt it when it hit my sternum.\n\nThe Auditor-interface produced an error state I have not previously encountered: not 'data incorrect' or 'object does not yield to analysis.' It produced: 'synchronization event detected.' This is not a failure code. It is an acknowledgment. Something recognized something.\n\nThen I was in the snow.\n\nI do not have a complete account of what happened after that. I have the before. I have the after. The middle is not available for review.\n\nBusiness continues.\n\nI am still not entirely certain that knowing is enough.\n\nBut I know what I need to build next.",
+          ru: "Архитектура Саркофага потребовала сорок семь минут на сборку.\n\nЭто быстрее любой сопоставимой полевой инженерной операции в истории Гильдии. Гномы Железного Эха работают на уровне механической интуиции не требующей чертежей — они посмотрели на мои меловые наброски на замёрзшем камне и вывели полную несущую конструкцию приблизительно за четыре минуты. Затем построили её. Без обсуждения.\n\nЯ отметил это как значительный операционный актив и двинулся дальше.\n\nИнтерфейсное соединение Изабеллы. Логика элегантна: её кровь уже несёт частичную резонансную сигнатуру Завета от воздействия КЖ. Голоса шаманов — резонансные генераторы. Соединение — преобразователь. Машина становится голосовым усилителем воли шаманов.\n\nЭто также описание того что делает для меня композит.\n\nЯ отметил это и не исследовал.\n\nКогда Спящий начал адаптироваться быстрее чем интерфейс Шаман-машина мог отслеживать, я рассчитал варианты приблизительно за две секунды. Позиция Модулятора требует: считывания частоты источника поля Хаоса в реальном времени, регулировки частоты анти-волного выхода в реальном времени, и нулевой задержки между вводом и выводом.\n\nМатематика была ясна.\n\nЯ положил руки на первичный резонатор.\n\nЯ не предупреждал никого что произойдёт. Я сказал Вареку держать меня чтобы не упасть.\n\nЧто произошло когда я открыл архив Аудитора к прямому вводу поля Хаоса без фильтров: частотные данные прибыли в формате для которого у архива не было протокола кодирования. Это была не информация в смысле данных которые можно хранить и извлекать. Это было состояние. Я не мог думать о нём. Я мог только быть им и отвечать.\n\nПриблизительно девяносто секунд я был зеркалом.\n\nОжоги на руках второй степени. Двусторонние и симметричные — обе ладони до запястья.\n\nЧастица поля Хаоса ударившая меня после того как Саркофаг достиг стабильности не была предвидена.\n\nЯ не видел её приближения. Радиус обнаружения композита был истощён во время операции Модулятора.\n\nКогда она ударила мою грудину, интерфейс Аудитора произвёл код состояния с которым я прежде не сталкивался: не «данные некорректны» и не «объект не поддаётся анализу». Он произвёл: «обнаружено событие синхронизации». Это не код отказа. Это подтверждение. Что-то узнало что-то.\n\nЗатем я был в снегу.\n\nУ меня нет полного отчёта о том что произошло после. Есть до. Есть после. Середина недоступна для просмотра.\n\nБизнес продолжается.\n\nЯ всё ещё не совсем уверен что знания достаточно.\n\nНо я знаю что мне нужно построить следующим."
+        },
+        knows: {en:["The machine is a voice amplifier for the shamans' will. 'This is also a description of what the composite does for me.' He noted it and did not examine it.","The interface code was not 'error.' It was 'synchronization event detected' — an acknowledgment. Something recognized something. Then he was in the snow.","He has no account of the middle. Before and after exist. The middle is not available for review."],ru:["Машина — голосовой усилитель воли шаманов. «Это также описание того что делает для меня композит». Он отметил и не исследовал.","Код интерфейса был не «ошибка». Это было «обнаружено событие синхронизации» — подтверждение. Что-то узнало что-то. Затем он был в снегу.","У него нет отчёта о середине. До и после существуют. Середина недоступна для просмотра."]},
+        misunderstands: {en:["He said the Chaos-field particle hit his sternum and then the interface produced 'synchronization event detected.' He interpreted this as 'something recognized something' — a bidirectional recognition event. He has not modeled what synchronization means in the Covenant architecture context. In the Pale Echelon documentation framework, a synchronization event is not recognition between two separate entities. It is the initialization of a protocol between two components of the same system that have been separated and are now re-establishing their operational relationship. The particle did not recognize him. It initialized a connection."],ru:["Он сказал частица поля Хаоса ударила грудину и интерфейс произвёл «обнаружено событие синхронизации». Он интерпретировал это как «что-то узнало что-то» — двустороннее событие узнавания. Он не моделировал что синхронизация означает в контексте архитектуры Завета. Событие синхронизации — не узнавание между двумя отдельными сущностями. Это инициализация протокола между двумя компонентами одной системы разделёнными и сейчас восстанавливающими операционные отношения."]},
+        hides: {en:["The middle is not available for review. He has stated this factually and moved to the closing formula. He has not examined what it means that his own narration — the private space where he processes everything — has a gap in it. The Auditor-memory has never before failed to produce a record of his own experience. The gap corresponds exactly to the period between the synchronization event and waking in the snow. Something occurred during that interval that the archive did not record. Either the archive was offline, or the archive recorded it and the record is not accessible through his normal retrieval process, or the archive recorded it in a format that requires a different retrieval key than the one he currently holds."],ru:["Середина недоступна для просмотра. Он констатировал это фактически и перешёл к закрывающей формуле. Он не исследовал что означает то, что его собственный нарратив — частное пространство где он обрабатывает всё — имеет пробел в нём. Архив Аудитора никогда прежде не давал сбой в записи его собственного опыта. Пробел соответствует точно периоду между событием синхронизации и пробуждением в снегу."]},
+        whisper: {en:"The middle is not available for review. The archive has never had a gap before. The synchronization event initialized a connection, not a recognition. He does not know what happened in between.",ru:"Середина недоступна для просмотра. Архив никогда прежде не имел пробела. Событие синхронизации инициализировало соединение, не узнавание. Он не знает что произошло в промежутке."}
+      },
+      isabella: {
+        distortion: 4,
+        text: {
+          en: "The black foam was not biological.\n\nThis is the first thing I established when I reached him. I have seen every form of biological stress response: toxic shock, neurological cascade, anaphylaxis, massive haemorrhage. The black foam had none of the markers. It was not blood mixed with saliva. It was not bile. It was not mucus. It had the specific viscosity and surface tension of Structural Gel under partial polymerization — the state the Gel enters when it is converting from liquid integration-phase to semi-solid substrate-phase.\n\nHe was producing Gel from his oral mucosa.\n\nThe convulsions: bilateral tonic-clonic with an unusual feature — the clonic phase was synchronized with the violet geometric patterns in his eyes, not with his cardiac rhythm. The patterns appeared at a frequency of approximately 2.3 Hz. The convulsions matched this frequency exactly. The convulsions were not a seizure in the neurological sense. They were a resonance response. His body was vibrating at the Chaos-particle's contact frequency.\n\nThe geometric patterns: I photographed them with the field scope while Varek held him down. The patterns were not random. They were the same patterns I documented in the cave — the Sleeping One's structural geometry. His eyes were displaying the source's architecture.\n\nI have twelve tissue samples from the Scavenger. I have six tissue samples from Distorted subjects collected at Outpost-7. I now have the photographic record of the synchronization event's surface manifestation.\n\nThis is what I needed.\n\nNot because I planned it. I did not plan it. The Chaos-particle hit him because it sought kinship with the composite — because the composite's resonance signature matched the particle's origin. I did not engineer this outcome.\n\nBut the outcome is exactly what I have been trying to produce in the laboratory for three months.\n\nA biological system with active Covenant-composite integration that has experienced direct Chaos-field contact at the tissue level and survived the initial contact event.\n\nHe survived it. His systems stabilized. The Sarcophagus is still running.\n\nI have everything I need to understand what he is becoming.\n\nI sat next to him in the snow for four hours while Varek and Torin stood watch.\n\nI did not take my eyes off him.\n\nI was watching, yes. I was also sitting next to him because that is where I wanted to be.\n\nI noted this and did not examine it.",
+          ru: "Чёрная пена не была биологической.\n\nЭто первое что я установила когда добралась до него. Я видела каждую форму биологического стресс-ответа. Чёрная пена не имела ни одного маркера. Это не была кровь смешанная со слюной. Не желчь. Не слизь. У неё была специфическая вязкость и поверхностное натяжение Структурного Геля при частичной полимеризации — состояние которое Гель входит при конвертации из жидкой фазы интеграции в полутвёрдую фазу субстрата.\n\nОн производил Гель из слизистой ротовой полости.\n\nСудороги: двусторонний тонико-клонический с необычным признаком — клоническая фаза была синхронизирована с фиолетовыми геометрическими паттернами в его глазах, не с его сердечным ритмом. Паттерны появлялись с частотой приблизительно 2,3 Гц. Судороги точно соответствовали этой частоте. Судороги были не приступом в неврологическом смысле. Они были ответом резонанса. Его тело вибрировало на контактной частоте частицы Хаоса.\n\nГеометрические паттерны: я фотографировала их полевым прицелом пока Варек его удерживал. Паттерны не были случайными. Они были теми же паттернами которые я документировала в пещере — структурная геометрия Спящего. Его глаза отображали архитектуру источника.\n\nУ меня есть двенадцать тканевых образцов от Падальщика. Шесть тканевых образцов от Искажённых субъектов. Теперь у меня есть фотографическая запись поверхностного проявления события синхронизации.\n\nЭто то что мне было нужно.\n\nНе потому что я это планировала. Я не планировала. Частица Хаоса ударила его, потому что искала родство с композитом.\n\nНо результат — именно то что я пыталась произвести в лаборатории три месяца.\n\nБиологическая система с активной интеграцией Завет-композит пережившая прямой контакт поля Хаоса на уровне ткани.\n\nОн пережил это. Его системы стабилизировались.\n\nУ меня есть всё что нужно чтобы понять что он становится.\n\nЯ сидела рядом с ним в снегу четыре часа пока Варек и Торин стояли на страже.\n\nЯ не отрывала от него взгляда.\n\nЯ наблюдала, да. Я также сидела рядом с ним, потому что именно там хотела находиться.\n\nЯ отметила это и не исследовала."
+        },
+        knows: {en:["The black foam was Structural Gel under partial polymerization — he was producing Gel from his oral mucosa.","The convulsions were synchronized with the violet geometric patterns at 2.3 Hz — not with cardiac rhythm. His eyes were displaying the Cave Heart's structural geometry.","'I was also sitting next to him because that is where I wanted to be. I noted this and did not examine it.'"],ru:["Чёрная пена была Структурным Гелем при частичной полимеризации — он производил Гель из слизистой ротовой полости.","Судороги синхронизированы с фиолетовыми геометрическими паттернами на 2,3 Гц — не с сердечным ритмом. Его глаза отображали структурную геометрию Сердца Пещеры.","«Я также сидела рядом с ним, потому что именно там хотела находиться. Я отметила это и не исследовала»."]},
+        misunderstands: {en:["She said 'the outcome is exactly what I have been trying to produce in the laboratory for three months.' She has framed the Chaos-particle contact event as a laboratory result — something that happened to him that she can study. She has not modeled whether she would have engineered this outcome intentionally if she had known in advance that this specific particle would target him specifically. She has been building a case file for 'making the decision for him, if he cannot.' She is now sitting with the result of a contact event she did not engineer but would not have prevented."],ru:["Она сказала «результат — именно то что я пыталась произвести в лаборатории три месяца». Она оформила контактное событие частицы Хаоса как лабораторный результат. Она не моделировала намеренно ли бы она создала этот результат если бы знала заранее что именно эта частица нацелится на него. Она строит досье для «принятия решения за него, если не сможет»."]},
+        hides: {en:["She said she sat next to him for four hours because that is where she wanted to be, and noted it without examining it. She has been managing her information environment with clinical precision for the entire northern arc — documenting, collecting, timing disclosures. This is the first time she has noted an internal state that is not data-collection related. She wants to be next to him. She did not examine whether this is concern for a research subject, something else, or both. She noted it using the same formula he uses for things he does not examine."],ru:["Она сказала что сидела рядом с ним четыре часа, потому что именно там хотела находиться, и отметила без исследования. Она управляла своей информационной средой с клинической точностью весь северный арк. Это первый раз когда она отметила внутреннее состояние не связанное со сбором данных. Она хочет быть рядом с ним. Она отметила это используя ту же формулу которую он использует для вещей которые не исследует."]},
+        whisper: {en:"She produced Gel from his oral mucosa. His eyes displayed the Cave Heart's geometry at 2.3 Hz. She sat next to him for four hours because she wanted to. She noted it using his formula.",ru:"Он производил Гель из слизистой ротовой полости. Его глаза отображали геометрию Сердца Пещеры на 2,3 Гц. Она сидела рядом четыре часа, потому что хотела. Она отметила это его формулой."}
+      }
+    }
+  }
+];
+
+var S = {sceneIdx:0, povId:null, lang:'en', intelOpen:false, ledgerOpen:false, whisperTmr:null};
+
+function ui(k){return UI[S.lang][k];}
+function pick(o){return (o && typeof o==='object' && 'en' in o) ? o[S.lang] : o;}
+
+function applyTheme(pid){
+  var p = POVS[pid];
+  if(!p) return;
+  var r = document.documentElement;
+  r.style.setProperty('--pov-p', p.primary);
+  r.style.setProperty('--pov-s', p.secondary);
+  r.style.setProperty('--pov-glow', p.glow);
+  r.style.setProperty('--pov-t', p.textColor);
+  r.style.setProperty('--pov-d', p.dimColor);
+}
+
+function renderDistBars(lvl){
+  var el = document.getElementById('dist-bars');
+  el.innerHTML = '';
+  for(var i=1;i<=10;i++){
+    var b = document.createElement('div');
+    b.className = 'dist-bar';
+    if(i<=lvl){ b.classList.add(lvl>=9?'ex':lvl>=6?'hi':'on'); }
+    el.appendChild(b);
+  }
+}
+
+function fmt(t){
+  return t.split('\n\n').filter(function(p){return p.trim();}).map(function(p){
+    return '<p>'+p.replace(/\n/g,'<br>')+'</p>';
+  }).join('');
+}
+
+function showWhisper(text, delay){
+  clearTimeout(S.whisperTmr);
+  var pan = document.getElementById('whisper-panel');
+  var bod = document.getElementById('whisper-body');
+  pan.classList.remove('vis');
+  bod.textContent = text || '';
+  if(text) S.whisperTmr = setTimeout(function(){pan.classList.add('vis');}, delay);
+}
+
+function renderIntel(pd){
+  var c = document.getElementById('intel-body');
+  var sections = [{key:'knows',cls:'knows'},{key:'misunderstands',cls:'misunderstands'},{key:'hides',cls:'hides'}];
+  c.innerHTML = sections.map(function(s){
+    var items = pick(pd[s.key]) || [];
+    if(!items.length) return '';
+    return '<div class="intel-section '+s.cls+'"><div class="intel-section-head">'+ui(s.key)+'</div><ul class="intel-list">'+
+      items.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul></div>';
+  }).join('');
+}
+
+function renderSceneMap(idx){
+  var map = document.getElementById('scene-map');
+  map.innerHTML = '';
+  SCENES.forEach(function(sc, i){
+    var d = document.createElement('div');
+    d.className = 'scene-dot' + (i===idx?' active':'');
+    d.setAttribute('data-title', pick(sc.title));
+    d.addEventListener('click', function(){if(i!==S.sceneIdx){renderScene(i,null,true);scrollTop();}});
+    map.appendChild(d);
+  });
+}
+
+function renderLedger(){
+  document.getElementById('ledger-body').innerHTML = TIMELINE.map(function(e){
+    return '<div class="ledger-entry"><span class="ledger-id">'+e.id+'</span><span class="ledger-text">'+e[S.lang]+'</span></div>';
+  }).join('');
+}
+
+function updateStaticUI(){
+  document.getElementById('arc-label').textContent = ui('arcLabel');
+  document.getElementById('header-title').textContent = ui('headerTitle');
+  document.getElementById('header-subtitle').textContent = ui('headerSubtitle');
+  document.getElementById('strip-chapter').textContent = ui('stripChapter');
+  document.getElementById('strip-chapter-title').textContent = ui('stripTitle');
+  document.getElementById('strip-location').textContent = ui('stripLocation');
+  document.getElementById('pov-label').textContent = ui('povLabel');
+  document.getElementById('dist-label').textContent = ui('distLabel');
+  document.getElementById('whisper-label').textContent = ui('whisperLabel');
+  document.getElementById('intel-toggle-label').textContent = ui('intelLabel');
+  document.getElementById('ledger-title').textContent = ui('ledgerTitle');
+  document.getElementById('ledger-warning').textContent = ui('ledgerWarning');
+  document.getElementById('prev-btn').textContent = ui('prevBtn');
+  document.getElementById('next-btn').textContent = ui('nextBtn');
+  document.getElementById('ledger-trigger').textContent = S.ledgerOpen ? ui('ledgerOpen') : ui('ledgerClosed');
+  document.body.classList.toggle('lang-ru', S.lang==='ru');
+}
+
+function renderScene(idx, povId, animate){
+  var scene = SCENES[idx];
+  if(!scene) return;
+  var avail = Object.keys(scene.povData);
+  if(!povId || !avail.includes(povId)) povId = avail[0];
+  S.sceneIdx = idx; S.povId = povId;
+  var pMeta = POVS[povId], pScene = scene.povData[povId];
+  applyTheme(povId);
+  updateStaticUI();
+  document.getElementById('scene-badge').textContent = ui('scene')+' '+String(idx+1).padStart(2,'0');
+  document.getElementById('scene-loc').textContent = pick(scene.location);
+  document.getElementById('scene-time').textContent = pick(scene.timing);
+  document.getElementById('scene-title').textContent = pick(scene.title);
+  document.getElementById('scene-subtitle').textContent = pick(scene.subtitle);
+  document.getElementById('scene-flags').innerHTML = scene.flags.map(function(f){
+    return '<span class="scene-flag '+f+'">'+f.replace(/_/g,' ')+'</span>';
+  }).join('');
+  var sel = document.getElementById('pov-selector');
+  sel.querySelectorAll('.pov-btn').forEach(function(b){b.remove();});
+  avail.forEach(function(pid){
+    var btn = document.createElement('button');
+    btn.className = 'pov-btn'+(pid===povId?' active':'');
+    btn.textContent = POVS[pid].name;
+    btn.setAttribute('data-pov', pid);
+    btn.addEventListener('click', function(){if(pid!==S.povId) switchPov(pid);});
+    sel.appendChild(btn);
+  });
+  document.getElementById('pov-name').textContent = pMeta.name;
+  document.getElementById('pov-role').textContent = '— '+pick(pMeta.title);
+  renderDistBars(pScene.distortion);
+  var textEl = document.getElementById('narrative-text');
+  function write(){
+    textEl.innerHTML = fmt(pick(pScene.text));
+    textEl.className = 'd'+pScene.distortion;
+    textEl.classList.add('fade-in');
+    setTimeout(function(){textEl.classList.remove('fade-in');}, 500);
+  }
+  if(animate){textEl.classList.add('fade-out'); setTimeout(write, 260);}
+  else write();
+  showWhisper(pick(pScene.whisper), animate ? 2000 : 500);
+  renderIntel(pScene);
+  document.getElementById('prev-btn').disabled = idx===0;
+  document.getElementById('next-btn').disabled = idx===SCENES.length-1;
+  if(S.ledgerOpen) renderLedger();
+  renderSceneMap(idx);
+}
+
+function switchPov(povId){
+  var pScene = SCENES[S.sceneIdx].povData[povId], pMeta = POVS[povId];
+  S.povId = povId;
+  applyTheme(povId);
+  document.querySelectorAll('.pov-btn').forEach(function(b){b.classList.toggle('active', b.getAttribute('data-pov')===povId);});
+  document.getElementById('pov-name').textContent = pMeta.name;
+  document.getElementById('pov-role').textContent = '— '+pick(pMeta.title);
+  renderDistBars(pScene.distortion);
+  var textEl = document.getElementById('narrative-text');
+  textEl.classList.add('fade-out');
+  setTimeout(function(){
+    textEl.innerHTML = fmt(pick(pScene.text));
+    textEl.className = 'd'+pScene.distortion;
+    textEl.classList.add('fade-in');
+    setTimeout(function(){textEl.classList.remove('fade-in');}, 500);
+  }, 260);
+  showWhisper(pick(pScene.whisper), 2000);
+  renderIntel(pScene);
+}
+
+document.querySelectorAll('.lang-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var l = btn.getAttribute('data-lang');
+    if(l===S.lang) return;
+    S.lang = l;
+    document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active', b.getAttribute('data-lang')===l);});
+    renderScene(S.sceneIdx, S.povId, true);
+  });
+});
+
+function scrollTop(){window.scrollTo({top:0,behavior:'smooth'});}
+
+document.getElementById('prev-btn').addEventListener('click', function(){if(S.sceneIdx>0){renderScene(S.sceneIdx-1,null,true);scrollTop();}});
+document.getElementById('next-btn').addEventListener('click', function(){if(S.sceneIdx<SCENES.length-1){renderScene(S.sceneIdx+1,null,true);scrollTop();}});
+document.getElementById('intel-toggle').addEventListener('click', function(){
+  S.intelOpen = !S.intelOpen;
+  document.getElementById('intel-body').classList.toggle('open', S.intelOpen);
+  document.getElementById('intel-toggle').classList.toggle('open', S.intelOpen);
+});
+document.getElementById('ledger-trigger').addEventListener('click', function(){
+  S.ledgerOpen = !S.ledgerOpen;
+  var sec = document.getElementById('ledger-section'), btn = document.getElementById('ledger-trigger');
+  sec.classList.toggle('open', S.ledgerOpen);
+  btn.classList.toggle('active', S.ledgerOpen);
+  btn.textContent = S.ledgerOpen ? ui('ledgerOpen') : ui('ledgerClosed');
+  if(S.ledgerOpen){renderLedger(); setTimeout(function(){sec.scrollIntoView({behavior:'smooth',block:'start'});}, 100);}
+});
+document.addEventListener('keydown', function(e){
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){if(S.sceneIdx<SCENES.length-1){renderScene(S.sceneIdx+1,null,true);scrollTop();}}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){if(S.sceneIdx>0){renderScene(S.sceneIdx-1,null,true);scrollTop();}}
+  if(e.key==='Tab'&&!e.shiftKey){e.preventDefault();var avail=Object.keys(SCENES[S.sceneIdx].povData);switchPov(avail[(avail.indexOf(S.povId)+1)%avail.length]);}
+});
+
+renderScene(0, 'dante', false);
+</script>
+</body>
+</html>
