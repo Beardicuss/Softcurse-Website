@@ -17,23 +17,24 @@ export const GAMES = {
     engine: 'Three.js + React',
     platforms: ['Web'],
     playUrl: 'https://softcurse-chess.pages.dev',
-    shortDesc: 'A free-to-play 3D chess experience where celestial Angels clash against infernal Demons on a gothic battlefield.',
-    desc: `Step onto a shattered realm suspended between heaven and hell. Softcurse's Chess
-    reimagines the classic game as a dark fantasy war — every piece is a hand-crafted 3D model,
-    the board is a gothic fortress floating in a procedural galaxy, and every capture triggers
-    cinematic battle animations. Choose your allegiance: command the radiant Angels or lead the
-    twisted Demons. No downloads, no accounts — the entire experience runs in your browser.`,
+    shortDesc: 'A free-to-play 3D chess experience set on a dark gothic battlefield suspended in the cosmos.',
+    desc: `Step onto a shattered realm drifting through an endless void. Softcurse's Chess
+    reimagines the classic game as a dark fantasy war — every piece is a hand-crafted 3D model
+    carved from antique stone, the board is a gothic fortress floating in a procedural galaxy,
+    and every capture triggers cinematic battle animations. No downloads, no accounts — the
+    entire experience runs in your browser.`,
     features: [
       'Full 3D Gothic Battlefield',
-      'Hand-Crafted Angel & Demon Pieces',
+      'Hand-Crafted Antique Stone Pieces',
       'Player vs AI — 4 Difficulty Tiers',
       'Online PvP via Room Codes',
       'Local PvP — Pass & Play',
       'AI vs AI Spectator Mode',
       'Cinematic Battle Animations',
-      'Procedural Sound & Galaxy Skybox',
+      'Asset-Based Audio & Ambient Soundscape',
+      'Procedural Galaxy Skybox',
       'Mobile & Tablet Ready',
-      'Auto-Save & Undo System',
+      'Auto-Save & ELO Rating System',
     ],
     devBlog: [],
     releaseDate: '2026 — Open Beta',
