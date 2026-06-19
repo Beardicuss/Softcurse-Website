@@ -8,6 +8,7 @@ import ErrorBoundary from './components/common/ErrorBoundary'
 import BackToTop from './components/common/BackToTop'
 import CustomCursor from './components/common/CustomCursor'
 import BootScreen from './components/common/BootScreen'
+import ThemeProvider from './components/common/ThemeProvider'
 
 import Home from './pages/Home'
 import Lab from './pages/lab/Lab'
@@ -55,6 +56,7 @@ export default function App() {
 
   return (
     <>
+      <ThemeProvider />
       {!booted && <BootScreen onComplete={() => setBooted(true)} />}
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <CustomCursor />

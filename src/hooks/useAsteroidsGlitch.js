@@ -58,8 +58,8 @@ export function useAsteroidsGlitch(active = true) {
             loadImage(`/assets/asteroid/destroy/${i + 1}.webp`)
         )
 
-        const SHIP_SIZE = 100
-        const ASTEROID_SIZES = { large: 64, medium: 42, small: 26 }
+        let SHIP_SIZE = 100
+        let ASTEROID_SIZES = { large: 64, medium: 42, small: 26 }
 
         let particles = []
         let fragments = []
@@ -70,6 +70,10 @@ export function useAsteroidsGlitch(active = true) {
         let frame = 0
         let lastInputT = 0
         let idleMode = true
+
+        let pointerDragId = null
+        let dragOriginX = 0
+        let dragOriginY = 0
 
         // ── Audio Engine ──
         const playSound = (src, baseVol = 0.5) => {
@@ -136,6 +140,9 @@ export function useAsteroidsGlitch(active = true) {
         const setSize = (w, h) => {
             if (!w || !h) return
             canvas.width = w; canvas.height = h
+            const scale = Math.min(1.0, Math.max(0.4, w / 800))
+            SHIP_SIZE = 100 * scale
+            ASTEROID_SIZES = { large: 64 * scale, medium: 42 * scale, small: 26 * scale }
             initField(w, h)
         }
 
@@ -186,14 +193,49 @@ export function useAsteroidsGlitch(active = true) {
             }
 
             if (ship.alive) {
-                ship.angle = Math.atan2(py - ship.y, px - ship.x)
-                fire()
+                if (e.pointerType === 'touch') {
+                    if (px < rect.width / 2) {
+                        pointerDragId = e.pointerId
+                        dragOriginX = px
+                        dragOriginY = py
+                        keys['TouchThrust'] = true
+                    } else {
+                        ship.angle = Math.atan2(py - ship.y, px - ship.x)
+                        fire()
+                    }
+                } else {
+                    ship.angle = Math.atan2(py - ship.y, px - ship.x)
+                    fire()
+                }
+            }
+        }
+
+        const onPointerMove = (e) => {
+            if (e.pointerId === pointerDragId && ship.alive) {
+                const rect = canvas.getBoundingClientRect()
+                const px = e.clientX - rect.left
+                const py = e.clientY - rect.top
+                const dx = px - dragOriginX
+                const dy = py - dragOriginY
+                if (Math.hypot(dx, dy) > 5) {
+                    ship.angle = Math.atan2(dy, dx)
+                }
+            }
+        }
+
+        const onPointerUp = (e) => {
+            if (e.pointerId === pointerDragId) {
+                pointerDragId = null
+                keys['TouchThrust'] = false
             }
         }
 
         window.addEventListener('keydown', onKeyDown)
         window.addEventListener('keyup', onKeyUp)
         canvas.addEventListener('pointerdown', onPointerDown)
+        canvas.addEventListener('pointermove', onPointerMove)
+        canvas.addEventListener('pointerup', onPointerUp)
+        canvas.addEventListener('pointercancel', onPointerUp)
 
         // ── Idle auto-pilot ──
         const autoStep = (w, h) => {
@@ -246,7 +288,7 @@ export function useAsteroidsGlitch(active = true) {
 
             if (keys['ArrowLeft'] || keys['KeyA']) ship.angle -= TURN
             if (keys['ArrowRight'] || keys['KeyD']) ship.angle += TURN
-            if (keys['ArrowUp'] || keys['KeyW']) {
+            if (keys['ArrowUp'] || keys['KeyW'] || keys['TouchThrust']) {
                 ship.vx += Math.cos(ship.angle) * THRUST
                 ship.vy += Math.sin(ship.angle) * THRUST
                 thrusting = true
@@ -603,6 +645,9 @@ export function useAsteroidsGlitch(active = true) {
             window.removeEventListener('keydown', onKeyDown)
             window.removeEventListener('keyup', onKeyUp)
             canvas.removeEventListener('pointerdown', onPointerDown)
+            canvas.removeEventListener('pointermove', onPointerMove)
+            canvas.removeEventListener('pointerup', onPointerUp)
+            canvas.removeEventListener('pointercancel', onPointerUp)
         }
     }, [active])
 
