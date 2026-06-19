@@ -56,7 +56,7 @@ export default function App() {
   return (
     <>
       {!booted && <BootScreen onComplete={() => setBooted(true)} />}
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <CustomCursor />
         <ScrollToTop />
         <Layout>
