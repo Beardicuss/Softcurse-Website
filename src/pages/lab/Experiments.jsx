@@ -60,7 +60,7 @@ export default function Experiments() {
             <div className={styles.emptyIcon}>⚗</div>
             <div className={styles.emptyTitle}>EXPERIMENTS PENDING</div>
             <p className={styles.emptyText}>
-              Something is being built. It just isn't ready to be seen yet.
+              Something is being built. It just isn&apos;t ready to be seen yet.
             </p>
           </div>
         )}

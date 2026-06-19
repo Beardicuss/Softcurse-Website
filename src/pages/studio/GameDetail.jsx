@@ -10,19 +10,20 @@ import styles from './GameDetail.module.css'
 export default function GameDetail() {
   const { id } = useParams()
   const game = GAMES[id]
-  if (!game) return <Navigate to="/studio" replace />
 
-  usePageTitle(game.name)
-  useSEO({
+  usePageTitle(game ? game.name : '')
+  useSEO(game ? {
     title: game.name,
     description: game.shortDesc + ' — A Softcurse Studio game. ' + game.genre + ' for ' + (game.platforms || []).join(', '),
     url: `/studio/${game.id}`,
     image: game.image || undefined,
-  })
+  } : {})
 
   const [heroRef, heroVis] = useScrollReveal(0.05)
   const [featRef, featVis] = useScrollReveal()
   const [blogRef, blogVis] = useScrollReveal()
+
+  if (!game) return <Navigate to="/studio" replace />
 
   const statusLabel = { active: '● LIVE', beta: '⬡ BETA', dev: '◎ IN DEV', planned: '○ PLANNED' }
 
@@ -64,13 +65,13 @@ export default function GameDetail() {
 
         {/* ── DESCRIPTION ── */}
         <section className={styles.section}>
-          <div className={styles.sectionLabel}>// ABOUT THE GAME</div>
+          <div className={styles.sectionLabel}>{"// ABOUT THE GAME"}</div>
           <p className={styles.desc}>{game.desc}</p>
         </section>
 
         {/* ── FEATURES ── */}
         <section className={`${styles.section}`} ref={featRef}>
-          <div className={styles.sectionLabel}>// FEATURES</div>
+          <div className={styles.sectionLabel}>{"// FEATURES"}</div>
           <h2 className={styles.sectionTitle}>What to expect</h2>
           <ul className={`${styles.featGrid} reveal-group ${featVis ? 'visible' : ''}`}>
             {game.features.map((f, i) => (
@@ -117,7 +118,7 @@ export default function GameDetail() {
         {/* ── DEV BLOG ── */}
         {game.devBlog?.length > 0 && (
           <section className={`${styles.section} reveal ${blogVis ? 'visible' : ''}`} ref={blogRef}>
-            <div className={styles.sectionLabel}>// DEV LOG</div>
+            <div className={styles.sectionLabel}>{"// DEV LOG"}</div>
             <h2 className={styles.sectionTitle}>From the build</h2>
             <div className={styles.devBlog}>
               {game.devBlog.map(post => (

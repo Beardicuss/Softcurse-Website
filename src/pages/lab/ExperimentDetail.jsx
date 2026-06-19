@@ -1,4 +1,4 @@
-import { useParams, Link, Navigate } from 'react-router-dom'
+import { useParams, Navigate } from 'react-router-dom'
 import { EXPERIMENTS, getExperiments } from '../../data/experiments'
 import Button from '../../components/common/Button'
 import Badge from '../../components/common/Badge'
@@ -11,20 +11,21 @@ import styles from './ExperimentDetail.module.css'
 export default function ExperimentDetail() {
   const { id } = useParams()
   const app = EXPERIMENTS[id]
-  if (!app) return <Navigate to="/experiments" replace />
 
-  usePageTitle(app.name)
-  useSEO({
+  usePageTitle(app ? app.name : '')
+  useSEO(app ? {
     title: app.name,
     description: app.shortDesc + ' — ' + (app.techStack || []).join(', ') + '. Part of the Softcurse Lab.',
     url: `/lab/${app.id}`,
     image: app.image || undefined,
-  })
+  } : {})
 
   const [heroRef, heroVis] = useScrollReveal(0.05)
   const [featRef, featVis] = useScrollReveal()
   const [stackRef, stackVis] = useScrollReveal()
   const [relatedRef, relatedVis] = useScrollReveal()
+
+  if (!app) return <Navigate to="/experiments" replace />
 
   const statusLabel = { active: '● LIVE', dev: '◎ IN DEV', planned: '○ PLANNED' }
   const relatedTools = getExperiments()
@@ -63,13 +64,13 @@ export default function ExperimentDetail() {
 
         {/* ── DESCRIPTION ── */}
         <section className={styles.section}>
-          <div className={styles.sectionLabel}>// OVERVIEW</div>
+          <div className={styles.sectionLabel}>{"// OVERVIEW"}</div>
           <p className={styles.desc}>{app.desc}</p>
         </section>
 
         {/* ── FEATURES GRID ── */}
         <section className={`${styles.section} ${styles.featSection}`} ref={featRef}>
-          <div className={styles.sectionLabel}>// CORE FEATURES</div>
+          <div className={styles.sectionLabel}>{"// CORE FEATURES"}</div>
           <h2 className={styles.sectionTitle}>What it does</h2>
           <ul className={`${styles.featGrid} reveal-group ${featVis ? 'visible' : ''}`}>
             {app.features.map((f, i) => (
@@ -84,7 +85,7 @@ export default function ExperimentDetail() {
         {/* ── TECH STACK ── */}
         {app.techStack && (
           <section className={`${styles.section} reveal ${stackVis ? 'visible' : ''}`} ref={stackRef}>
-            <div className={styles.sectionLabel}>// TECH STACK</div>
+            <div className={styles.sectionLabel}>{"// TECH STACK"}</div>
             <h2 className={styles.sectionTitle}>Built with</h2>
             <div className={styles.stackGrid}>
               {app.techStack.map(t => (
@@ -126,7 +127,7 @@ export default function ExperimentDetail() {
         {/* ── RELATED ── */}
         {relatedTools.length > 0 && (
           <section className={`${styles.section} reveal ${relatedVis ? 'visible' : ''}`} ref={relatedRef}>
-            <div className={styles.sectionLabel}>// MORE FROM THE LAB</div>
+            <div className={styles.sectionLabel}>{"// MORE FROM THE LAB"}</div>
             <h2 className={styles.sectionTitle}>Related tools</h2>
             <div className={styles.relatedGrid}>
               {relatedTools.map(a => <AppCard key={a.id} app={a} />)}

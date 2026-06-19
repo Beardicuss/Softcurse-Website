@@ -22,7 +22,7 @@ export default function Blog() {
     <div>
       <div className="page-header grid-bg">
         <div className="scanline" />
-        <div className="page-header__eyebrow">// TRANSMISSIONS</div>
+        <div className="page-header__eyebrow">{"// TRANSMISSIONS"}</div>
         <h1 className="page-header__title">BLOG</h1>
         <p className="page-header__desc">
           Development dispatches, design decisions, and occasional manifestos

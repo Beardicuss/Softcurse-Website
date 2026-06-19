@@ -8,18 +8,19 @@ import styles from './ChronicleDetail.module.css'
 export default function ChronicleDetail() {
   const { id } = useParams()
   const book = CHRONICLES[id]
-  if (!book) return <Navigate to="/chronicles" replace />
 
-  usePageTitle(book.name)
-  useSEO({
+  usePageTitle(book ? book.name : '')
+  useSEO(book ? {
     title: book.name,
     description: book.shortDesc,
     url: `/chronicles/${book.id}`,
     image: book.image || undefined,
-  })
+  } : {})
 
   const [heroRef, heroVis] = useScrollReveal(0.05)
   const [chRef, chVis] = useScrollReveal()
+
+  if (!book) return <Navigate to="/chronicles" replace />
 
   return (
     <div className={styles.page}>
@@ -48,13 +49,13 @@ export default function ChronicleDetail() {
 
         {/* ── Description ── */}
         <section className={styles.section}>
-          <div className={styles.sectionLabel}>// ABOUT THIS VOLUME</div>
+          <div className={styles.sectionLabel}>{"// ABOUT THIS VOLUME"}</div>
           <p className={styles.desc}>{book.desc}</p>
         </section>
 
         {/* ── Chapter list ── */}
         <section className={`${styles.section} reveal ${chVis ? 'visible' : ''}`} ref={chRef}>
-          <div className={styles.sectionLabel}>// CHAPTERS</div>
+          <div className={styles.sectionLabel}>{"// CHAPTERS"}</div>
           <h2 className={styles.sectionTitle}>{book.series}: {book.name}</h2>
           <div className={styles.chapterList}>
             {book.chapters.map(ch => (

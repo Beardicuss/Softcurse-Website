@@ -7,11 +7,9 @@ const PORTAL_MS    = 1400    // portal transition duration
 
 export default function BootScreen({ onComplete }) {
   const videoRef     = useRef(null)
-  const overlayRef   = useRef(null)
   const [showText,   setShowText]   = useState(false)
   const [showHint,   setShowHint]   = useState(false)
   const [phase, setPhase]           = useState('playing') // playing | text | portal | done
-  const isMobile = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
 
   // Show text (triggered by click or timer)
   const triggerText = useCallback(() => {
@@ -40,7 +38,6 @@ export default function BootScreen({ onComplete }) {
     if (!video) return
 
     // Auto-show text at second 16
-    let textTimer = null
     const onTimeUpdate = () => {
       if (!showText && video.currentTime >= TEXT_AUTO_S) {
         triggerText()
@@ -51,7 +48,7 @@ export default function BootScreen({ onComplete }) {
     const onEnded = () => triggerPortal()
 
     // Fallback: if video never fires ended (e.g. loops off)
-    let endFallback = setTimeout(triggerPortal, (VIDEO_END_S + 1) * 1000)
+    const endFallback = setTimeout(triggerPortal, (VIDEO_END_S + 1) * 1000)
 
     video.addEventListener('timeupdate', onTimeUpdate)
     video.addEventListener('ended', onEnded)
@@ -63,12 +60,11 @@ export default function BootScreen({ onComplete }) {
 
     // Show tap hint after 1.5s on mobile
     const hintTimer = setTimeout(() => setShowHint(true), 1500)
-    return () => clearTimeout(hintTimer)
 
     return () => {
       video.removeEventListener('timeupdate', onTimeUpdate)
       video.removeEventListener('ended', onEnded)
-      clearTimeout(textTimer)
+      clearTimeout(hintTimer)
       clearTimeout(endFallback)
     }
   }, [triggerText, triggerPortal, showText])

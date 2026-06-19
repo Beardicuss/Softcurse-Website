@@ -38,7 +38,7 @@ export default function PressKit() {
     <div>
       <div className="page-header grid-bg">
         <div className="scanline" />
-        <div className="page-header__eyebrow">// FOR PRESS & MEDIA</div>
+        <div className="page-header__eyebrow">{"// FOR PRESS & MEDIA"}</div>
         <h1 className="page-header__title">PRESS KIT</h1>
         <p className="page-header__desc">
           Everything you need to write about Softcurse — brand assets, company info,
@@ -51,7 +51,7 @@ export default function PressKit() {
         {/* Quick download */}
         <div className={styles.downloadBar}>
           <div className={styles.downloadText}>
-            <span className={styles.downloadLabel}>// PRESS PACKAGE</span>
+            <span className={styles.downloadLabel}>{"// PRESS PACKAGE"}</span>
             <p>Logo files, screenshots, and brand guidelines in one zip.</p>
           </div>
           <Button variant="cyan">DOWNLOAD PRESS PACK</Button>
@@ -68,13 +68,13 @@ export default function PressKit() {
               <div className={styles.copyBlock}>
                 <p className={styles.copyText}>
                   Softcurse is an independent software company building tools and games at the dark
-                  edge of digital craft. Operating under the banner of "a small, slightly sinister
-                  digital universe," Softcurse develops productivity software, security tools, and
+                  edge of digital craft. Operating under the banner of &ldquo;a small, slightly sinister
+                  digital universe,&rdquo; Softcurse develops productivity software, security tools, and
                   AI applications through its Lab division — alongside story-driven games through
                   Softcurse Studio. Founded in 2023, the company ships products that solve real
                   problems without compromise.
                 </p>
-<CopyButton text={`Softcurse is an independent software company building tools and games at the dark edge of digital craft. Operating under the banner of "a small, slightly sinister digital universe," Softcurse develops productivity software, security tools, and AI applications through its Lab division — alongside story-driven games through Softcurse Studio. Founded in 2023, the company ships products that solve real problems without compromise.`} />
+<CopyButton text={`Softcurse is an independent software company building tools and games at the dark edge of digital craft. Operating under the banner of &ldquo;a small, slightly sinister digital universe,&rdquo; Softcurse develops productivity software, security tools, and AI applications through its Lab division — alongside story-driven games through Softcurse Studio. Founded in 2023, the company ships products that solve real problems without compromise.`} />
               </div>
             </section>
 

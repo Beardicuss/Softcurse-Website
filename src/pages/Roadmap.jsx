@@ -24,10 +24,10 @@ export default function Roadmap() {
     <div>
       <div className="page-header grid-bg">
         <div className="scanline" />
-        <div className="page-header__eyebrow">// WHERE WE'RE GOING</div>
+        <div className="page-header__eyebrow">{"// WHERE WE'RE GOING"}</div>
         <h1 className="page-header__title">ROADMAP</h1>
         <p className="page-header__desc">
-          A live view of what's shipped, what's in progress, and what's coming next
+          A live view of what&apos;s shipped, what&apos;s in progress, and what&apos;s coming next
           across the Lab and Studio. No promises — just direction.
         </p>
       </div>

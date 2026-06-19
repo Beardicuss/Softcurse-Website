@@ -9,7 +9,7 @@ export default function GameCard({ game }) {
   const handleMouseMove = (e) => {
     const wrap = wrapRef.current
     if (!wrap) return
-    const { left, top, width } = wrap.getBoundingClientRect()
+    const { left, width } = wrap.getBoundingClientRect()
     const x = (e.clientX - left) / width - 0.5
     // Gentle lateral tilt only (the rotateX is CSS-driven on hover)
     wrap.style.setProperty('--tilt-x', `${x * 6}deg`)

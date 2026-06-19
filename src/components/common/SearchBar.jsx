@@ -49,7 +49,7 @@ export default function SearchBar({ onClose }) {
             {showEmpty && (
               <div className={styles.empty}>
                 <span className={styles.emptyIcon}>◌</span>
-                No results for <strong>"{query}"</strong>
+                No results for <strong>&ldquo;{query}&rdquo;</strong>
               </div>
             )}
 

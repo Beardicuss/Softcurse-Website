@@ -1,5 +1,4 @@
 import { useRef } from 'react'
-import { Link } from 'react-router-dom'
 import Badge from './Badge'
 import styles from './ChroniclesCard.module.css'
 

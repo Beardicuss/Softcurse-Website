@@ -23,7 +23,7 @@ export default function Experiments() {
 
       <div className={`page-header ${styles.header}`} ref={headerRef}>
         <div className={`${styles.headerInner} reveal ${headerVis ? 'visible' : ''}`}>
-          <div className="sec-header__label">// SOFTCURSE LAB — EXPERIMENTS</div>
+          <div className="sec-header__label">{"// SOFTCURSE LAB — EXPERIMENTS"}</div>
           <h1 className={styles.title}>
             SOFTCURSE <span className={styles.accent}>EXPERIMENTS</span>
           </h1>

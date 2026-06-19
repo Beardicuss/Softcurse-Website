@@ -83,11 +83,11 @@ export default function Contact() {
     <div>
       <div className="page-header grid-bg">
         <div className="scanline" />
-        <div className="page-header__eyebrow">// REACH OUT</div>
+        <div className="page-header__eyebrow">{"// REACH OUT"}</div>
         <h1 className="page-header__title">CONTACT</h1>
         <p className="page-header__desc">
           Got a project, a question, or just want to say something dark and cryptic?
-          We're listening.
+          We&apos;re listening.
         </p>
       </div>
       <div className="container section">
@@ -98,7 +98,7 @@ export default function Contact() {
               <div className={styles.sent}>
                 <span className={styles.sentIcon}>✓</span>
                 <strong>MESSAGE TRANSMITTED.</strong>
-                <p>We'll be in touch from the dark.</p>
+                <p>We&apos;ll be in touch from the dark.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate>
@@ -146,8 +146,8 @@ export default function Contact() {
             <div className={styles.collab}>
               <div className={styles.collabTitle}>Careers & Collaboration</div>
               <p className={styles.collabBody}>
-                We're always open to exceptional people and interesting collaborations.
-                No formal postings — just reach out with what you do and what you'd build with us.
+                We&apos;re always open to exceptional people and interesting collaborations.
+                No formal postings — just reach out with what you do and what you&apos;d build with us.
               </p>
               <Button variant="outlineMagenta">REACH OUT</Button>
             </div>

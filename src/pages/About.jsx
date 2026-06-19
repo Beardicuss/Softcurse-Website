@@ -18,7 +18,7 @@ export default function About() {
     <div>
       <div className="page-header grid-bg">
         <div className="scanline" />
-        <div className="page-header__eyebrow">// WHO WE ARE</div>
+        <div className="page-header__eyebrow">{"// WHO WE ARE"}</div>
         <h1 className="page-header__title">ABOUT SOFTCURSE</h1>
         <p className="page-header__desc">
           A small, slightly sinister digital universe. Building tools and worlds
@@ -30,18 +30,18 @@ export default function About() {
 
         {/* Mission statement */}
         <div className={styles.mission}>
-          <div className={styles.missionLabel}>// MISSION</div>
+          <div className={styles.missionLabel}>{"// MISSION"}</div>
           <blockquote className={styles.missionText}>
             Softcurse was born from a simple belief: the best software is built by people
             who actually use it. Every tool in the Lab was built because we needed it.
             Every game in the Studio exists because we wanted to play it. The name says it
-            all — there's a dark edge here, but it's precise. We don't curse without purpose.
+            all — there&apos;s a dark edge here, but it&apos;s precise. We don&apos;t curse without purpose.
           </blockquote>
         </div>
 
         {/* Values grid */}
         <div className={styles.valuesHeader}>
-          <div className="sec-header__label">// WHAT WE STAND FOR</div>
+          <div className="sec-header__label">{"// WHAT WE STAND FOR"}</div>
           <h2 className="sec-header__title">Core Values</h2>
         </div>
 
@@ -57,7 +57,7 @@ export default function About() {
 
         {/* Timeline */}
         <div className={styles.timeline}>
-        <div className={`sec-header__label ${styles.timelineEyebrow}`}>// TIMELINE</div>
+        <div className={`sec-header__label ${styles.timelineEyebrow}`}>{"// TIMELINE"}</div>
           {[
             { year: '2023', event: 'Softcurse founded. First tools shipped: YT Downloader and Vault Cleaner.' },
             { year: '2024', event: 'Lab expands: Blackwatch, DEVNOTES, and LiveScriptor launch. Studio enters development.' },

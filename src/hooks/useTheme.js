@@ -20,7 +20,7 @@ export function useTheme() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
-    try { localStorage.setItem(STORAGE_KEY, theme) } catch {}
+    try { localStorage.setItem(STORAGE_KEY, theme) } catch (_e) { /* storage unavailable */ }
   }, [theme])
 
   const toggle = () => setTheme(t => t === 'dark' ? 'light' : 'dark')

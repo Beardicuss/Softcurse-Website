@@ -9,7 +9,7 @@ export default function ChronicleCard({ book }) {
   const handleMouseMove = (e) => {
     const wrap = wrapRef.current
     if (!wrap) return
-    const { left, top, width } = wrap.getBoundingClientRect()
+    const { left, width } = wrap.getBoundingClientRect()
     const x = (e.clientX - left) / width - 0.5
     wrap.style.setProperty('--tilt-x', `${x * 6}deg`)
   }

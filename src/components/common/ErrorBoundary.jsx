@@ -25,7 +25,7 @@ export default class ErrorBoundary extends Component {
       <div className={styles.page}>
         <div className={styles.inner}>
           <div className={styles.code}>ERR</div>
-          <div className={styles.label}>// SYSTEM FAULT DETECTED</div>
+          <div className={styles.label}>{"// SYSTEM FAULT DETECTED"}</div>
           <h1 className={styles.title}>SOMETHING BROKE</h1>
           <p className={styles.desc}>
             An unexpected error occurred in the Softcurse system.

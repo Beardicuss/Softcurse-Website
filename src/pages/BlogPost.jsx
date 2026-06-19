@@ -10,9 +10,9 @@ import styles from './BlogPost.module.css'
 export default function BlogPost() {
   const { id } = useParams()
   const post = getPost(id)
+  usePageTitle(post ? post.title : '')
+  useSEO(post ? { title: post.title, description: post.excerpt, url: `/blog/${post.id}` } : {})
   if (!post) return <Navigate to="/blog" replace />
-  usePageTitle(post.title)
-  useSEO({ title: post.title, description: post.excerpt, url: `/blog/${post.id}` })
 
   // Render minimal markdown: ## headings and paragraphs
   const renderContent = (raw) => {
@@ -41,9 +41,9 @@ export default function BlogPost() {
         {/* Header */}
         <div className={styles.meta}>
           <span className={styles.cat}>{post.category}</span>
-          <span className={styles.sep}>//</span>
+          <span className={styles.sep}>{"//"}</span>
           <span className={styles.date}>{post.date}</span>
-          <span className={styles.sep}>//</span>
+          <span className={styles.sep}>{"//"}</span>
           <span className={styles.readTime}>{post.readTime} read</span>
         </div>
 
@@ -76,7 +76,7 @@ export default function BlogPost() {
         {/* Related posts */}
         {related.length > 0 && (
           <div className={styles.related}>
-            <div className={styles.relatedLabel}>// RELATED</div>
+            <div className={styles.relatedLabel}>{"// RELATED"}</div>
             <div className={styles.relatedGrid}>
               {related.map(p => (
                 <Link key={p.id} to={`/blog/${p.id}`} className={styles.relatedCard}>

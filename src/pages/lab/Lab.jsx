@@ -19,7 +19,7 @@ export default function Lab() {
     <div>
       <div className="page-header grid-bg">
         <div className="scanline" />
-        <div className="page-header__eyebrow">// SOFTCURSE</div>
+        <div className="page-header__eyebrow">{"// SOFTCURSE"}</div>
         <h1 className="page-header__title">THE LAB</h1>
         <p className="page-header__desc">
           Nine tools. Built sharp. Built dark. Each one a precise solution to

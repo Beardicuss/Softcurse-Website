@@ -14,11 +14,11 @@ export default function Studio() {
     <div>
       <div className={`page-header grid-bg ${styles.header}`}>
         <div className="scanline" />
-        <div className="page-header__eyebrow" style={{ color: 'var(--magenta)' }}>// SOFTCURSE</div>
+        <div className="page-header__eyebrow" style={{ color: 'var(--magenta)' }}>{"// SOFTCURSE"}</div>
         <h1 className="page-header__title page-header__title--magenta">THE STUDIO</h1>
         <p className="page-header__desc">
           Three worlds under construction. Each one built from a different kind of dark.
-          No release dates. No compromises. Shipped when they're right.
+          No release dates. No compromises. Shipped when they&apos;re right.
         </p>
       </div>
 
@@ -28,7 +28,7 @@ export default function Studio() {
         </div>
 
         <div className={styles.note}>
-          <span className={styles.noteLabel}>// STUDIO NOTE</span>
+          <span className={styles.noteLabel}>{"// STUDIO NOTE"}</span>
           <p className={styles.noteText}>
             All Softcurse Studio games are in active or planned development.
             Follow the <Link to="/blog">blog</Link> for dev updates, media drops, and lore reveals.

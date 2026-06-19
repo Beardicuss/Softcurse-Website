@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { getBooks } from '../../data/chronicles'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { useSEO } from '../../hooks/useSEO'
@@ -25,7 +24,7 @@ export default function Chronicles() {
       {/* ── Page header ── */}
       <div className={`page-header ${styles.header}`} ref={headerRef}>
         <div className={`${styles.headerInner} reveal ${headerVis ? 'visible' : ''}`}>
-          <div className="sec-header__label" style={{ color: 'var(--magenta)' }}>// SOFTCURSE CHRONICLES</div>
+          <div className="sec-header__label" style={{ color: 'var(--magenta)' }}>{"// SOFTCURSE CHRONICLES"}</div>
           <h1 className={styles.title}>
             CHRONICLES <span className={styles.accent}>SYSTEM</span>
           </h1>
@@ -46,7 +45,7 @@ export default function Chronicles() {
       <section className={`container ${styles.aboutSection}`}>
         <div className={styles.aboutGrid}>
           <div className={styles.aboutBlock}>
-            <div className={styles.aboutLabel}>// WHAT IS CHRONICLES</div>
+            <div className={styles.aboutLabel}>{"// WHAT IS CHRONICLES"}</div>
             <h2 className={styles.aboutTitle}>A narrative OS, not a book format.</h2>
             <p className={styles.aboutText}>
               Chronicles is a submodule of Softcurse Studio built specifically for long-form fiction.
@@ -83,7 +82,7 @@ export default function Chronicles() {
       {/* ── Books grid ── */}
       <section className={`container ${styles.gridSection}`}>
         <div className={styles.gridHeader}>
-          <div className={styles.gridLabel}>// THE LIBRARY</div>
+          <div className={styles.gridLabel}>{"// THE LIBRARY"}</div>
           <h2 className={styles.gridTitle}>Works in the system</h2>
         </div>
         <div

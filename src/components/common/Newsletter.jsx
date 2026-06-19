@@ -19,7 +19,7 @@ export default function Newsletter({ compact = false }) {
       return
     }
     setStatus('loading')
-    // Simulated submit — replace with your API/Mailchimp/Resend endpoint
+    {/* Simulated submit — replace with your API/Mailchimp/Resend endpoint */}
     setTimeout(() => setStatus('success'), 900)
   }
 
@@ -30,7 +30,7 @@ export default function Newsletter({ compact = false }) {
           <span className={styles.successIcon}>✓</span>
           <p className={styles.successMsg}>
             <strong>SIGNAL RECEIVED.</strong><br />
-            You're on the list. Expect transmissions.
+            You&apos;re on the list. Expect transmissions.
           </p>
         </div>
       </div>
@@ -41,11 +41,11 @@ export default function Newsletter({ compact = false }) {
     <div className={`${styles.wrap} ${compact ? styles.compact : ''}`}>
       {!compact && (
         <div className={styles.header}>
-          <div className={styles.eyebrow}>// STAY IN THE LOOP</div>
+          <div className={styles.eyebrow}>{"// STAY IN THE LOOP"}</div>
           <h2 className={styles.title}>SOFTCURSE TRANSMISSIONS</h2>
           <p className={styles.desc}>
             Dev updates, game launches, new tools, and dispatches from the Lab.
-            No spam. No schedule. Just signal when there's something worth saying.
+            No spam. No schedule. Just signal when there&apos;s something worth saying.
           </p>
         </div>
       )}

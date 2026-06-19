@@ -1,5 +1,4 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
 import { CHRONICLES } from '../../data/chronicles'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import styles from './ChapterViewer.module.css'
@@ -7,13 +6,13 @@ import styles from './ChapterViewer.module.css'
 export default function ChapterViewer() {
   const { id, num } = useParams()
   const book = CHRONICLES[id]
-  if (!book) return <Navigate to="/chronicles" replace />
-
   const chNum   = parseInt(num, 10)
-  const chapter = book.chapters.find(c => c.num === chNum)
-  if (!chapter || chapter.status !== 'published') return <Navigate to={`/chronicles/${id}`} replace />
+  const chapter = book ? book.chapters.find(c => c.num === chNum) : null
 
-  usePageTitle(`${chapter.title} — ${book.name}`)
+  usePageTitle(chapter && book ? `${chapter.title} — ${book.name}` : '')
+
+  if (!book) return <Navigate to="/chronicles" replace />
+  if (!chapter || chapter.status !== 'published') return <Navigate to={`/chronicles/${id}`} replace />
 
   const prev = book.chapters.find(c => c.num === chNum - 1 && c.status === 'published')
   const next = book.chapters.find(c => c.num === chNum + 1 && c.status === 'published')
