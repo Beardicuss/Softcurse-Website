@@ -74,7 +74,7 @@ export default function PressKit() {
                   Softcurse Studio. Founded in 2023, the company ships products that solve real
                   problems without compromise.
                 </p>
-<CopyButton text={`Softcurse is an independent software company building tools and games at the dark edge of digital craft. Operating under the banner of &ldquo;a small, slightly sinister digital universe,&rdquo; Softcurse develops productivity software, security tools, and AI applications through its Lab division — alongside story-driven games through Softcurse Studio. Founded in 2023, the company ships products that solve real problems without compromise.`} />
+                <CopyButton text={`Softcurse is an independent software company building tools and games at the dark edge of digital craft. Operating under the banner of &ldquo;a small, slightly sinister digital universe,&rdquo; Softcurse develops productivity software, security tools, and AI applications through its Lab division — alongside story-driven games through Softcurse Studio. Founded in 2023, the company ships products that solve real problems without compromise.`} />
               </div>
             </section>
 
@@ -85,7 +85,7 @@ export default function PressKit() {
                 <p className={styles.copyText}>
                   Softcurse is an independent company building sharp tools and dark games — a small, slightly sinister digital universe.
                 </p>
-<CopyButton text='Softcurse is an independent company building sharp tools and dark games — a small, slightly sinister digital universe.' />
+                <CopyButton text='Softcurse is an independent company building sharp tools and dark games — a small, slightly sinister digital universe.' />
               </div>
             </section>
 
@@ -94,14 +94,14 @@ export default function PressKit() {
               <h2 className={styles.sectionTitle}>KEY FACTS</h2>
               <dl className={styles.facts}>
                 {[
-                  ['Founded',    '2023'],
-                  ['HQ',         'Remote / Independent'],
-                  ['Products',   '9 Lab tools, 3 Studio games'],
-                  ['Stage',      'Independent / Self-funded'],
-                  ['Website',    'softcurse.com'],
-                  ['Email',      'press@softcurse.com'],
-                  ['Twitter',    '@softcurse'],
-                  ['GitHub',     'github.com/softcurse'],
+                  ['Founded', '2023'],
+                  ['HQ', 'Remote / Independent'],
+                  ['Products', '9 Lab tools, 3 Studio games'],
+                  ['Stage', 'Independent / Self-funded'],
+                  ['Website', 'softcurse.com'],
+                  ['Email', 'press@softcurse.com'],
+                  ['Twitter', '@softcurse'],
+                  ['GitHub', 'github.com/softcurse'],
                 ].map(([k, v]) => (
                   <div key={k} className={styles.fact}>
                     <dt className={styles.factKey}>{k}</dt>
@@ -120,11 +120,11 @@ export default function PressKit() {
               <h2 className={styles.sectionTitle}>LOGO ASSETS</h2>
               <div className={styles.logoGrid}>
                 <div className={styles.logoCard} style={{ background: '#0B0C10' }}>
-                  <img src="/logo.png" alt="Softcurse logo on dark" className={styles.logoPreview} />
+                  <img src="/logo.webp" alt="Softcurse logo on dark" className={styles.logoPreview} />
                   <span className={styles.logoLabel}>DARK BG</span>
                 </div>
                 <div className={styles.logoCard} style={{ background: '#fff' }}>
-                  <img src="/logo.png" alt="Softcurse logo on light" className={`${styles.logoPreview} ${styles.logoInvert}`} />
+                  <img src="/logo.webp" alt="Softcurse logo on light" className={`${styles.logoPreview} ${styles.logoInvert}`} />
                   <span className={styles.logoLabel} style={{ color: '#333' }}>LIGHT BG</span>
                 </div>
               </div>
@@ -140,12 +140,12 @@ export default function PressKit() {
               <h2 className={styles.sectionTitle}>BRAND COLOURS</h2>
               <div className={styles.colorGrid}>
                 {[
-                  ['#00FFFF', 'Neon Cyan',    'PRIMARY'],
+                  ['#00FFFF', 'Neon Cyan', 'PRIMARY'],
                   ['#FF00FF', 'Neon Magenta', 'SECONDARY'],
-                  ['#007BFF', 'Electric Blue','ACCENT'],
-                  ['#39FF14', 'Neon Green',   'STATUS'],
-                  ['#0B0C10', 'Deep Charcoal','BACKGROUND'],
-                  ['#1C1E26', 'Dark Slate',   'SURFACE'],
+                  ['#007BFF', 'Electric Blue', 'ACCENT'],
+                  ['#39FF14', 'Neon Green', 'STATUS'],
+                  ['#0B0C10', 'Deep Charcoal', 'BACKGROUND'],
+                  ['#1C1E26', 'Dark Slate', 'SURFACE'],
                 ].map(([hex, name, role]) => (
                   <div key={hex} className={styles.colorChip}>
                     <div className={styles.colorSwatch} style={{ background: hex }} />
@@ -195,7 +195,7 @@ export default function PressKit() {
                 <div key={g.id} className={styles.productRow}>
                   <span className={styles.productIcon}>{g.icon}</span>
                   <span className={styles.productName}>{g.name}</span>
-                  <span className={styles.productTag} style={{ color:'var(--magenta)', borderColor:'rgba(255,0,255,0.25)' }}>{g.genre}</span>
+                  <span className={styles.productTag} style={{ color: 'var(--magenta)', borderColor: 'rgba(255,0,255,0.25)' }}>{g.genre}</span>
                 </div>
               ))}
             </div>

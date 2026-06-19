@@ -8,7 +8,7 @@
 export const EXPERIMENTS = {
   sebas: {
     id: 'sebas',
-    image: '/posters/experiments/sebas.png',
+    image: '/posters/experiments/sebas.webp',
     name: 'S.E.B.A.S',
     icon: '🜄',
     tag: 'AUTONOMOUS AI',

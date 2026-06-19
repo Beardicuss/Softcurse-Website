@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 
 /**
- * Animated PNG cursor.
- * - Default: /cursor/01.png – 11.png
- * - Text:    /cursor/txt/frame_0001.png – frame_0015.png
+ * Animated WebP cursor.
+ * - Default: /cursor/01.webp – 11.webp
+ * - Text:    /cursor/txt/frame_0001.webp – frame_0015.webp
  *
  * Performance: data URLs are baked ONCE on load.
  * The style tag only updates when the frame index changes (~12fps).
@@ -13,10 +13,10 @@ export default function CustomCursor() {
   useEffect(() => {
     if (window.matchMedia('(pointer: coarse)').matches) return
 
-    const FPS       = 12
-    const SIZE      = 32
-    const HOT_X     = 4
-    const HOT_Y     = 4
+    const FPS = 12
+    const SIZE = 32
+    const HOT_X = 4
+    const HOT_Y = 4
     const DEF_COUNT = 11
     const TXT_COUNT = 15
 
@@ -28,7 +28,7 @@ export default function CustomCursor() {
     const bake = (img) => {
       ctx2.clearRect(0, 0, SIZE, SIZE)
       ctx2.drawImage(img, 0, 0, SIZE, SIZE)
-      return canvas.toDataURL('image/png')
+      return canvas.toDataURL('image/webp')
     }
 
     // Style tag — created once, updated in place
@@ -82,7 +82,7 @@ export default function CustomCursor() {
     // Load default frames
     for (let i = 0; i < DEF_COUNT; i++) {
       const idx = i
-      loadImage(`/cursor/${String(i + 1).padStart(2, '0')}.png`, (img) => {
+      loadImage(`/cursor/${String(i + 1).padStart(2, '0')}.webp`, (img) => {
         defUrls[idx] = bake(img)
       })
     }
@@ -90,7 +90,7 @@ export default function CustomCursor() {
     // Load text frames
     for (let i = 0; i < TXT_COUNT; i++) {
       const idx = i
-      loadImage(`/cursor/txt/frame_${String(i + 1).padStart(4, '0')}.png`, (img) => {
+      loadImage(`/cursor/txt/frame_${String(i + 1).padStart(4, '0')}.webp`, (img) => {
         txtUrls[idx] = bake(img)
       })
     }

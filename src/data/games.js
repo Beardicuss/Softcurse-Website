@@ -6,9 +6,9 @@
 export const GAMES = {
   chess: {
     id: 'chess',
-    image: '/posters/games/chess.png',
-    heroImage: '/posters/games/page/chess-page.png',
-    character: '/posters/games/chess_char.png',
+    image: '/posters/games/chess.webp',
+    heroImage: '/posters/games/page/chess-page.webp',
+    character: '/posters/games/chess_char.webp',
     charSize: { w: 300, h: 450 },
     name: "Softcurse's Chess",
     icon: '♟',
@@ -44,9 +44,9 @@ export const GAMES = {
 
   chronicles: {
     id: 'chronicles',
-    image: '/posters/games/chronicles.png',
-    heroImage: '/posters/games/page/chronicles-page.png',
-    character: '/posters/games/chronicles-char.png',
+    image: '/posters/games/chronicles.webp',
+    heroImage: '/posters/games/page/chronicles-page.webp',
+    character: '/posters/games/chronicles-char.webp',
     charSize: { w: 300, h: 450 },
     characterName: 'The Auditor',  // transparent PNG, ~300px tall  // 800×450px WebP or PNG, place in public/posters/games/
     name: 'Chronicles of a Fallen World',
@@ -89,9 +89,9 @@ export const GAMES = {
 
   isle: {
     id: 'isle',
-    image: '/posters/games/isle.png',
-    heroImage: '/posters/games/page/isle-page.png',
-    character: '/posters/games/isle-char.png',
+    image: '/posters/games/isle.webp',
+    heroImage: '/posters/games/page/isle-page.webp',
+    character: '/posters/games/isle-char.webp',
     charSize: { w: 300, h: 450 },
     characterName: 'The Stranger',  // transparent PNG, ~300px tall  // 800×450px WebP or PNG, place in public/posters/games/
     name: 'Isle of Quiet Men',
@@ -129,10 +129,10 @@ export const GAMES = {
 
   ww3: {
     id: 'ww3',
-    image: '/posters/games/ww3.png',
-    heroImage: '/posters/games/page/ww3-page.png',
+    image: '/posters/games/ww3.webp',
+    heroImage: '/posters/games/page/ww3-page.webp',
     heroPosition: 'center',
-    character: '/posters/games/ww3-char.png',
+    character: '/posters/games/ww3-char.webp',
     charSize: { w: 300, h: 300 },
     // transparent PNG, ~300px tall  // 800×450px WebP or PNG, place in public/posters/games/
     name: 'World War III: Global Collapse',

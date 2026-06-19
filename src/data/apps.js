@@ -6,8 +6,8 @@
 export const APPS = {
   devnotes: {
     id: 'devnotes',
-    image: '/posters/apps/devnotes.png',
-    heroImage: '/posters/apps/page/devnotes-page.png',
+    image: '/posters/apps/devnotes.webp',
+    heroImage: '/posters/apps/page/devnotes-page.webp',
     name: 'DEVNOTES',
     icon: '📋',
     tag: 'PRODUCTIVITY',
@@ -35,8 +35,8 @@ export const APPS = {
 
   medialab: {
     id: 'medialab',
-    image: '/posters/apps/medialab.png',
-    heroImage: '/posters/apps/page/medialab-page.png',
+    image: '/posters/apps/medialab.webp',
+    heroImage: '/posters/apps/page/medialab-page.webp',
     name: 'Softcurse Media Lab AI',
     icon: '🤖',
     tag: 'AI TOOL',
@@ -65,8 +65,8 @@ export const APPS = {
 
   archvis: {
     id: 'archvis',
-    image: '/posters/apps/arch.png',
-    heroImage: '/posters/apps/page/arch-page.png',
+    image: '/posters/apps/arch.webp',
+    heroImage: '/posters/apps/page/arch-page.webp',
     name: 'Softcurse Architecture Visualizer',
     icon: '🏗️',
     tag: 'DEV TOOL',
@@ -95,8 +95,8 @@ export const APPS = {
 
   livescriptor: {
     id: 'livescriptor',
-    image: '/posters/apps/livescriptor.png',
-    heroImage: '/posters/apps/page/livescriptor-page.png',
+    image: '/posters/apps/livescriptor.webp',
+    heroImage: '/posters/apps/page/livescriptor-page.webp',
     name: 'LiveScriptor',
     icon: '✍️',
     tag: 'DEV TOOL',
@@ -125,8 +125,8 @@ export const APPS = {
 
   blackwatch: {
     id: 'blackwatch',
-    image: '/posters/apps/blackwatch.png',
-    heroImage: '/posters/apps/page/blackwatch-page.png',
+    image: '/posters/apps/blackwatch.webp',
+    heroImage: '/posters/apps/page/blackwatch-page.webp',
     name: 'Softcurse Blackwatch',
     icon: '🔒',
     tag: 'SECURITY',
@@ -155,8 +155,8 @@ export const APPS = {
 
   spectral: {
     id: 'spectral',
-    image: '/posters/apps/spectral.png',
-    heroImage: '/posters/apps/page/spectral-page.png',
+    image: '/posters/apps/spectral.webp',
+    heroImage: '/posters/apps/page/spectral-page.webp',
     name: 'Softcurse Spectral',
     icon: '👁️',
     tag: 'UTILITY',
@@ -185,8 +185,8 @@ export const APPS = {
 
   inkmind: {
     id: 'inkmind',
-    image: '/posters/apps/inkmind.png',
-    heroImage: '/posters/apps/page/inkmind-page.png',
+    image: '/posters/apps/inkmind.webp',
+    heroImage: '/posters/apps/page/inkmind-page.webp',
     name: 'Softcurse InkMind',
     icon: '🧠',
     tag: 'AI / WRITING',
@@ -216,8 +216,8 @@ export const APPS = {
 
   ytdl: {
     id: 'ytdl',
-    image: '/posters/apps/ytdl.png',
-    heroImage: '/posters/apps/page/ytdl-page.png',
+    image: '/posters/apps/ytdl.webp',
+    heroImage: '/posters/apps/page/ytdl-page.webp',
     name: 'Softcurse YT Downloader',
     icon: '⬇️',
     tag: 'UTILITY',
@@ -245,8 +245,8 @@ export const APPS = {
 
   vault: {
     id: 'vault',
-    image: '/posters/apps/vault.png',
-    heroImage: '/posters/apps/page/vault-page.png',
+    image: '/posters/apps/vault.webp',
+    heroImage: '/posters/apps/page/vault-page.webp',
     name: 'Softcurse Vault Cleaner',
     icon: '🧹',
     tag: 'UTILITY',

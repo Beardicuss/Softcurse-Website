@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import styles from './BootScreen.module.css'
 
-const TEXT_AUTO_S  = 16      // text appears at this second if no click
-const VIDEO_END_S  = 18      // expected video duration
-const PORTAL_MS    = 1400    // portal transition duration
+const TEXT_AUTO_S = 16      // text appears at this second if no click
+const VIDEO_END_S = 18      // expected video duration
+const PORTAL_MS = 1400    // portal transition duration
 
 export default function BootScreen({ onComplete }) {
-  const videoRef     = useRef(null)
-  const [showText,   setShowText]   = useState(false)
-  const [showHint,   setShowHint]   = useState(false)
-  const [phase, setPhase]           = useState('playing') // playing | text | portal | done
+  const videoRef = useRef(null)
+  const [showText, setShowText] = useState(false)
+  const [showHint, setShowHint] = useState(false)
+  const [phase, setPhase] = useState('playing') // playing | text | portal | done
 
   // Show text (triggered by click or timer)
   const triggerText = useCallback(() => {
@@ -87,7 +87,7 @@ export default function BootScreen({ onComplete }) {
       <video
         ref={videoRef}
         className={styles.video}
-        src="/video/intro.mp4"
+        src="/video/intro.webm"
         muted
         playsInline
         preload="auto"
@@ -106,7 +106,7 @@ export default function BootScreen({ onComplete }) {
         <div className={styles.textBlock}>
           <div className={styles.textInner}>
             <h1 className={styles.title}>SOFTCURSE SYSTEMS</h1>
-            <p  className={styles.subtitle}>A small, slightly sinister digital universe.</p>
+            <p className={styles.subtitle}>A small, slightly sinister digital universe.</p>
           </div>
         </div>
       )}

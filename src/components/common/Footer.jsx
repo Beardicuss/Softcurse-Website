@@ -19,7 +19,7 @@ export default function Footer() {
         {/* Brand column */}
         <div className={styles.brand}>
           <Link to="/" className={styles.logo}>
-            <img src="/logo.png" alt="" className={styles.logoImg} />
+            <img src="/logo.webp" alt="" className={styles.logoImg} />
             <span>SOFTCURSE SYSTEMS</span>
           </Link>
           <p className={styles.tagline}>
