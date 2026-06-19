@@ -15,7 +15,17 @@ export function useAsteroidsGlitch(active = true) {
     const [score, setScore] = useState(0)
     const [playing, setPlaying] = useState(false)
     const [lives, setLives] = useState(3)
+    const [volume, setVolume] = useState(1.0)
     const stateRef = useRef({ playing: false, lives: 3, score: 0 })
+    const volRef = useRef(1.0)
+
+    useEffect(() => {
+        volRef.current = volume
+        // We ensure changes to the state instantly apply to the already-looping sound.
+        if (typeof window !== 'undefined' && window.__shipIdleAudio) {
+            window.__shipIdleAudio.volume = 1.0 * volume
+        }
+    }, [volume])
 
     useEffect(() => {
         if (!active) return
@@ -60,6 +70,24 @@ export function useAsteroidsGlitch(active = true) {
         let frame = 0
         let lastInputT = 0
         let idleMode = true
+
+        // ── Audio Engine ──
+        const playSound = (src, baseVol = 0.5) => {
+            if (volRef.current <= 0) return
+            const a = new Audio(src)
+            a.volume = baseVol * volRef.current
+            a.play().catch(() => { })
+        }
+        const playFire = () => playSound('/assets/sounds/fire.wav', 0.1)
+        const playCoin = () => playSound('/assets/sounds/coin_gain.wav', 0.5)
+        const playDestroySmall = () => playSound('/assets/sounds/asteroid_destroyed_small.wav', 0.1)
+        const playDestroyBig = () => playSound('/assets/sounds/asteroid_destroyed_big.wav', 0.1)
+
+        window.__shipIdleAudio = window.__shipIdleAudio || new Audio('/assets/sounds/ship_idle.wav')
+        const shipIdleAudio = window.__shipIdleAudio
+        shipIdleAudio.loop = true
+        shipIdleAudio.volume = 1 * volRef.current
+        let engineSoundActive = false
 
         const ship = { x: 0, y: 0, angle: -Math.PI / 2, vx: 0, vy: 0, alive: true, blinkT: 0, shootT: 0 }
         const keys = {}
@@ -128,12 +156,14 @@ export function useAsteroidsGlitch(active = true) {
             stateRef.current.lives = 3
             stateRef.current.score = 0
             ship.blinkT = 60
+            ship.alive = true
             setPlaying(true); setLives(3); setScore(0)
         }
 
         const fire = () => {
             if (!ship.alive) return
             ship.shootT = 15 // Show attack frame for 15 frames
+            playFire()
             bullets.push({
                 x: ship.x + Math.cos(ship.angle) * 22,
                 y: ship.y + Math.sin(ship.angle) * 22,
@@ -239,7 +269,8 @@ export function useAsteroidsGlitch(active = true) {
             if (ship.x < 0) ship.x = w; if (ship.x > w) ship.x = 0
             if (ship.y < 0) ship.y = h; if (ship.y > h) ship.y = 0
 
-            if (frame - lastInputT > 600 && stateRef.current.playing) {
+            // Auto-fallback to idle mode if no input for 5 sec (300 frames)
+            if (frame - lastInputT > 300 && stateRef.current.playing) {
                 idleMode = true
             }
         }
@@ -277,6 +308,8 @@ export function useAsteroidsGlitch(active = true) {
 
                         // Spawn animated destruction sequence
                         spawnExplosion(f.x, f.y, f.r)
+                        if (f.size === 'small') playDestroySmall()
+                        else playDestroyBig()
 
                         // Split into smaller pieces
                         if (f.size === 'large') {
@@ -318,6 +351,11 @@ export function useAsteroidsGlitch(active = true) {
                             const pts = f.size === 'large' ? 20 : f.size === 'medium' ? 50 : 100
                             stateRef.current.score += pts
                             setScore(stateRef.current.score)
+
+                            // Every 1000 points get an extra life
+                            if (stateRef.current.score % 1000 === 0 || (pts === 100 && Math.random() < 0.2)) {
+                                playCoin()
+                            }
                         }
                         break
                     }
@@ -363,6 +401,29 @@ export function useAsteroidsGlitch(active = true) {
         const draw = () => {
             const { width: w, height: h } = canvas
             if (!w || !h) { animRef.current = requestAnimationFrame(draw); return }
+
+            // Do not run game loop during BootScreen video
+            if (typeof window !== 'undefined' && !window.__SITE_BOOTED) {
+                animRef.current = requestAnimationFrame(draw)
+                return
+            }
+
+            // 5 second auto-start if game over
+            if (!stateRef.current.playing && frame - lastInputT > 300) {
+                startGame()
+                idleMode = true
+            }
+
+            // Audio Engine Sync
+            const shouldPlayEngine = stateRef.current.playing && ship.alive && !idleMode
+            if (shouldPlayEngine && !engineSoundActive) {
+                shipIdleAudio.play().catch(() => { })
+                engineSoundActive = true
+            } else if (!shouldPlayEngine && engineSoundActive) {
+                shipIdleAudio.pause()
+                engineSoundActive = false
+            }
+
             frame++
 
             try {
@@ -537,6 +598,7 @@ export function useAsteroidsGlitch(active = true) {
 
         return () => {
             cancelAnimationFrame(animRef.current)
+            shipIdleAudio.pause()
             ro.disconnect()
             window.removeEventListener('keydown', onKeyDown)
             window.removeEventListener('keyup', onKeyUp)
@@ -544,5 +606,5 @@ export function useAsteroidsGlitch(active = true) {
         }
     }, [active])
 
-    return { canvasRef, score, playing, lives }
+    return { canvasRef, score, playing, lives, volume, setVolume }
 }

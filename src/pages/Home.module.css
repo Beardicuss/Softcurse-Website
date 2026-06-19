@@ -322,3 +322,41 @@
     grid-template-columns: 1fr !important;
   }
 }
+
+.volumeControl {
+  position: absolute;
+  top: calc(var(--nav-h) - 55px);
+  right: 2rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--cyan);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  background: rgba(12, 14, 18, 0.6);
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(79, 255, 240, 0.2);
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+}
+
+.volumeControl input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80px;
+  height: 4px;
+  background: rgba(79, 255, 240, 0.2);
+  outline: none;
+  border-radius: 2px;
+}
+
+.volumeControl input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--cyan);
+  cursor: pointer;
+  border-radius: 50%;
+}

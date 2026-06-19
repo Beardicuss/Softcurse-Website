@@ -13,7 +13,7 @@ import styles from './Home.module.css'
 
 export default function Home() {
   usePageTitle(null) // just "SOFTCURSE" on homepage
-  const { canvasRef } = useAsteroidsGlitch(true)
+  const { canvasRef, volume, setVolume } = useAsteroidsGlitch(true)
   const apps = getApps().slice(0, 6)
   const games = getGames()
 
@@ -30,6 +30,17 @@ export default function Home() {
       <section className={`${styles.hero} grid-bg grain`}>
         <div className="scanline" />
         <canvas ref={canvasRef} className={styles.canvas} />
+
+        <div className={styles.volumeControl}>
+          <span>VOL</span>
+          <input
+            type="range"
+            min="0" max="1" step="0.05"
+            value={volume}
+            onChange={(e) => setVolume(parseFloat(e.target.value))}
+            title="Background Audio Volume"
+          />
+        </div>
 
         <div className={`${styles.heroInner} anim-fade-up`}>
           <div className={`${styles.eyebrow} ${styles.typewriter}`}>{'// DIGITAL UNIVERSE INITIALIZED'}</div>

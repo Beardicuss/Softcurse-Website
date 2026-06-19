@@ -50,6 +50,9 @@ function Layout({ children }) {
 export default function App() {
   const [booted, setBooted] = useState(false)
 
+  // We can just use the standard global `window` assignment here during render if we want, or useEffect
+  if (typeof window !== 'undefined') window.__SITE_BOOTED = booted
+
   return (
     <>
       {!booted && <BootScreen onComplete={() => setBooted(true)} />}
