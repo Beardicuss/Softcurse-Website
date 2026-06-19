@@ -30,7 +30,7 @@
   border-radius: 10px;
   overflow: hidden;
   background: rgba(20, 8, 24, 0.9);
-  border: 1px solid rgba(255,0,255,0.18);
+  border: 1px solid rgba(255, 95, 95,0.18);
   box-shadow:
     0 12px 40px rgba(0,0,0,0.6),
     inset 0 1px 0 rgba(255,255,255,0.06);
@@ -40,9 +40,9 @@
 .wrapper:hover .card {
   box-shadow:
     0 60px 120px rgba(0,0,0,0.95),
-    0 0 0 1px rgba(255,0,255,0.4),
+    0 0 0 1px rgba(255, 95, 95,0.4),
     inset 0 1px 0 rgba(255,255,255,0.1);
-  border-color: rgba(255,0,255,0.45);
+  border-color: rgba(255, 95, 95,0.45);
 }
 
 .coverImg {
@@ -111,8 +111,8 @@
   font-size: 0.58rem;
   letter-spacing: 0.16em;
   color: rgba(255,80,255,0.7);
-  background: rgba(255,0,255,0.06);
-  border: 1px solid rgba(255,0,255,0.18);
+  background: rgba(255, 95, 95,0.06);
+  border: 1px solid rgba(255, 95, 95,0.18);
   padding: 0.15rem 0.45rem;
 }
 

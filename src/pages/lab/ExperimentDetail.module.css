@@ -22,7 +22,7 @@
 .heroPlaceholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0B0C10 0%, #0d1520 50%, #0B0C10 100%);
+  background: linear-gradient(135deg, var(--c-bg) 0%, #0d1520 50%, var(--c-bg) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,8 +73,8 @@
   font-size: 0.65rem;
   letter-spacing: 0.18em;
   color: var(--muted);
-  background: rgba(0, 255, 255, 0.06);
-  border: 1px solid rgba(0, 255, 255, 0.15);
+  background: rgba(79, 255, 240, 0.06);
+  border: 1px solid rgba(79, 255, 240, 0.15);
   padding: 0.2rem 0.55rem;
 }
 
@@ -94,7 +94,7 @@
   letter-spacing: 0.05em;
   line-height: 1;
   margin-bottom: 0.8rem;
-  text-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+  text-shadow: 0 0 40px rgba(79, 255, 240, 0.3);
 }
 
 .heroDesc {
@@ -115,7 +115,7 @@
 /* ── Sections ── */
 .section {
   padding: 3rem 0;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(79, 255, 240, 0.06);
 }
 
 .sectionLabel {
@@ -160,16 +160,16 @@
   font-family: var(--font-body);
   font-size: 0.95rem;
   color: var(--muted);
-  background: rgba(0, 255, 255, 0.03);
-  border: 1px solid rgba(0, 255, 255, 0.08);
+  background: rgba(79, 255, 240, 0.03);
+  border: 1px solid rgba(79, 255, 240, 0.08);
   padding: 0.8rem 1rem;
   line-height: 1.5;
   transition: border-color 0.2s, background 0.2s;
 }
 
 .featItem:hover {
-  border-color: rgba(0, 255, 255, 0.2);
-  background: rgba(0, 255, 255, 0.05);
+  border-color: rgba(79, 255, 240, 0.2);
+  background: rgba(79, 255, 240, 0.05);
   color: var(--txt);
 }
 
@@ -194,8 +194,8 @@
   font-family: var(--font-mono);
   font-size: 0.78rem;
   color: var(--muted);
-  background: rgba(0, 255, 255, 0.04);
-  border: 1px solid rgba(0, 255, 255, 0.12);
+  background: rgba(79, 255, 240, 0.04);
+  border: 1px solid rgba(79, 255, 240, 0.12);
   padding: 0.45rem 0.9rem;
   letter-spacing: 0.06em;
   transition: all 0.2s;
@@ -204,7 +204,7 @@
 .stackItem:hover {
   border-color: var(--cyan);
   color: var(--cyan);
-  background: rgba(0, 255, 255, 0.07);
+  background: rgba(79, 255, 240, 0.07);
 }
 
 .stackDot {
@@ -220,7 +220,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 0;
-  border: 1px solid rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(79, 255, 240, 0.1);
   margin: 3rem 0;
 }
 
@@ -229,7 +229,7 @@
   flex-direction: column;
   gap: 0.4rem;
   padding: 1.2rem 1.5rem;
-  border-right: 1px solid rgba(0, 255, 255, 0.08);
+  border-right: 1px solid rgba(79, 255, 240, 0.08);
 }
 
 .metaItem:last-child {
@@ -291,6 +291,6 @@
 
   .metaItem {
     border-right: none;
-    border-bottom: 1px solid rgba(0, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(79, 255, 240, 0.08);
   }
 }

@@ -20,7 +20,7 @@
   width: 32px;
   height: 32px;
   background: var(--panel);
-  border: 1px solid rgba(0,255,255,0.15);
+  border: 1px solid rgba(79, 255, 240,0.15);
   color: var(--muted);
   font-size: 0.85rem;
   text-decoration: none;
@@ -31,8 +31,8 @@
 .btn:hover {
   color: var(--cyan);
   border-color: var(--cyan);
-  background: rgba(0,255,255,0.06);
-  box-shadow: 0 0 8px rgba(0,255,255,0.15);
+  background: rgba(79, 255, 240,0.06);
+  box-shadow: 0 0 8px rgba(79, 255, 240,0.15);
 }
 
 .copied {

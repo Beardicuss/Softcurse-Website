@@ -10,7 +10,7 @@
   font-size: 0.66rem;
   letter-spacing: 0.14em;
   padding: 0.3rem 0.85rem;
-  border: 1px solid rgba(0,255,255,0.18);
+  border: 1px solid rgba(79, 255, 240,0.18);
   color: var(--muted);
   background: transparent;
   cursor: pointer;
@@ -20,7 +20,7 @@
 
 .filter:hover {
   color: var(--cyan);
-  border-color: rgba(0,255,255,0.4);
+  border-color: rgba(79, 255, 240,0.4);
 }
 
 .filterActive {
@@ -38,10 +38,10 @@
 .card {
   display: flex;
   flex-direction: column;
-  background: rgba(28, 30, 38, 0.5);
+  background: rgba(7, 15, 25, 0.5);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(0,255,255,0.12);
+  border: 1px solid rgba(79, 255, 240,0.12);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
   padding: 1.6rem;
   text-decoration: none;
@@ -63,7 +63,7 @@
 
 .card:hover {
   border-color: var(--cyan);
-  box-shadow: 0 0 20px rgba(0,255,255,0.1);
+  box-shadow: 0 0 20px rgba(79, 255, 240,0.1);
   transform: translateY(-2px);
 }
 
@@ -82,9 +82,9 @@
   color: var(--cyan);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  background: rgba(0,255,255,0.06);
+  background: rgba(79, 255, 240,0.06);
   padding: 0.18rem 0.5rem;
-  border: 1px solid rgba(0,255,255,0.2);
+  border: 1px solid rgba(79, 255, 240,0.2);
 }
 
 .read {

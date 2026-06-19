@@ -1,7 +1,7 @@
 .downloadBar {
   display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
-  gap: 1rem; padding: 1.4rem 1.8rem; border: 1px solid rgba(0,255,255,0.18);
-  background: rgba(0,255,255,0.03); margin-bottom: 3rem;
+  gap: 1rem; padding: 1.4rem 1.8rem; border: 1px solid rgba(79, 255, 240,0.18);
+  background: rgba(79, 255, 240,0.03); margin-bottom: 3rem;
 }
 .downloadLabel { font-family: var(--font-mono); font-size: 0.65rem; color: var(--cyan); letter-spacing: 0.2em; margin-bottom: 0.3rem; }
 .downloadText p { font-size: 0.88rem; color: var(--muted); }
@@ -13,17 +13,17 @@
 .sectionTitle {
   font-family: var(--font-heading); font-size: 0.7rem; color: var(--cyan);
   letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem;
-  padding-bottom: 0.5rem; border-bottom: 1px solid rgba(0,255,255,0.1);
+  padding-bottom: 0.5rem; border-bottom: 1px solid rgba(79, 255, 240,0.1);
 }
 
-.copyBlock { background: var(--panel); border: 1px solid rgba(0,255,255,0.1); padding: 1.1rem; position: relative; }
+.copyBlock { background: var(--panel); border: 1px solid rgba(79, 255, 240,0.1); padding: 1.1rem; position: relative; }
 .copyText { font-size: 0.88rem; color: var(--muted); line-height: 1.8; margin-bottom: 0.75rem; }
 .copyBtn {
   font-family: var(--font-mono); font-size: 0.6rem; color: var(--cyan); letter-spacing: 0.1em;
-  background: transparent; border: 1px solid rgba(0,255,255,0.2); padding: 0.25rem 0.6rem;
+  background: transparent; border: 1px solid rgba(79, 255, 240,0.2); padding: 0.25rem 0.6rem;
   cursor: pointer; transition: all 0.18s;
 }
-.copyBtn:hover { background: rgba(0,255,255,0.08); border-color: var(--cyan); }
+.copyBtn:hover { background: rgba(79, 255, 240,0.08); border-color: var(--cyan); }
 
 .facts { display: grid; gap: 0; }
 .fact { display: flex; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
@@ -37,7 +37,7 @@
 .logoFormats { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .fmtBtn {
   font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em;
-  padding: 0.28rem 0.7rem; border: 1px solid rgba(0,255,255,0.18); color: var(--muted);
+  padding: 0.28rem 0.7rem; border: 1px solid rgba(79, 255, 240,0.18); color: var(--muted);
   background: transparent; cursor: pointer; transition: all 0.18s;
 }
 .fmtBtn:hover { color: var(--cyan); border-color: var(--cyan); }
@@ -54,13 +54,13 @@
 .pressLine { display: flex; gap: 1rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--txt); padding: 0.45rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
 .pressKey { color: var(--cyan); opacity: 0.6; min-width: 80px; font-size: 0.65rem; letter-spacing: 0.1em; }
 
-.productsSection { border-top: 1px solid rgba(0,255,255,0.08); padding-top: 2.5rem; }
+.productsSection { border-top: 1px solid rgba(79, 255, 240,0.08); padding-top: 2.5rem; }
 .productsGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
 .productsCat { font-family: var(--font-heading); font-size: 0.62rem; color: var(--cyan); letter-spacing: 0.2em; opacity: 0.55; margin-bottom: 0.8rem; }
 .productRow { display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
 .productIcon { font-size: 1rem; width: 22px; text-align: center; }
 .productName { font-family: var(--font-mono); font-size: 0.72rem; color: var(--txt); flex: 1; }
-.productTag { font-family: var(--font-mono); font-size: 0.58rem; color: var(--cyan); border: 1px solid rgba(0,255,255,0.22); padding: 0.12rem 0.35rem; letter-spacing: 0.06em; }
+.productTag { font-family: var(--font-mono); font-size: 0.58rem; color: var(--cyan); border: 1px solid rgba(79, 255, 240,0.22); padding: 0.12rem 0.35rem; letter-spacing: 0.06em; }
 
 @media (max-width: 768px) {
   .grid { grid-template-columns: 1fr; gap: 2rem; }

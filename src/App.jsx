@@ -1,31 +1,31 @@
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Navbar         from './components/common/Navbar'
-import Footer         from './components/common/Footer'
-import ScrollToTop    from './components/common/ScrollToTop'
+import Navbar from './components/common/Navbar'
+import Footer from './components/common/Footer'
+import ScrollToTop from './components/common/ScrollToTop'
 import PageTransition from './components/common/PageTransition'
-import ErrorBoundary  from './components/common/ErrorBoundary'
-import BackToTop      from './components/common/BackToTop'
-import CustomCursor   from './components/common/CustomCursor'
-import BootScreen     from './components/common/BootScreen'
+import ErrorBoundary from './components/common/ErrorBoundary'
+import BackToTop from './components/common/BackToTop'
+import CustomCursor from './components/common/CustomCursor'
+import BootScreen from './components/common/BootScreen'
 
-import Home       from './pages/Home'
-import Lab        from './pages/lab/Lab'
-import AppDetail  from './pages/lab/AppDetail'
-import Studio     from './pages/studio/Studio'
-import GameDetail   from './pages/studio/GameDetail'
-import Chronicles        from './pages/studio/Chronicles'
-import ChronicleDetail   from './pages/studio/ChronicleDetail'
-import ChapterViewer     from './pages/studio/ChapterViewer'
-import About      from './pages/About'
-import Contact    from './pages/Contact'
-import Blog       from './pages/Blog'
-import BlogPost   from './pages/BlogPost'
-import Roadmap    from './pages/Roadmap'
-import PressKit   from './pages/PressKit'
-import Experiments       from './pages/lab/Experiments'
-import ExperimentDetail  from './pages/lab/ExperimentDetail'
-import NotFound    from './pages/NotFound'
+import Home from './pages/Home'
+import Lab from './pages/lab/Lab'
+import AppDetail from './pages/lab/AppDetail'
+import Studio from './pages/studio/Studio'
+import GameDetail from './pages/studio/GameDetail'
+import Chronicles from './pages/studio/Chronicles'
+import ChronicleDetail from './pages/studio/ChronicleDetail'
+import ChapterViewer from './pages/studio/ChapterViewer'
+import About from './pages/About'
+import Contact from './pages/Contact'
+import Blog from './pages/Blog'
+import BlogPost from './pages/BlogPost'
+import Roadmap from './pages/Roadmap'
+import PressKit from './pages/PressKit'
+import Experiments from './pages/lab/Experiments'
+import ExperimentDetail from './pages/lab/ExperimentDetail'
+import NotFound from './pages/NotFound'
 
 import './styles/globals.css'
 
@@ -33,8 +33,12 @@ function Layout({ children }) {
   return (
     <ErrorBoundary>
       <a href="#main-content" className="skip-link">Skip to content</a>
+      {/* HEX theme background layers */}
+      <div className="glow-orb-cyan" />
+      <div className="glow-orb-red" />
+      <div className="noise-grid" />
       <Navbar />
-      <main id="main-content">
+      <main id="main-content" style={{ position: 'relative', zIndex: 10 }}>
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer />
@@ -54,23 +58,23 @@ export default function App() {
         <ScrollToTop />
         <Layout>
           <Routes>
-            <Route path="/"           element={<Home />} />
-            <Route path="/lab"        element={<Lab />} />
-            <Route path="/lab/:id"       element={<AppDetail />} />
-            <Route path="/experiments"         element={<Experiments />} />
-            <Route path="/experiments/:id"    element={<ExperimentDetail />} />
-            <Route path="/studio"     element={<Studio />} />
-            <Route path="/studio/:id"    element={<GameDetail />} />
-            <Route path="/chronicles"                element={<Chronicles />} />
-            <Route path="/chronicles/:id"            element={<ChronicleDetail />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/lab" element={<Lab />} />
+            <Route path="/lab/:id" element={<AppDetail />} />
+            <Route path="/experiments" element={<Experiments />} />
+            <Route path="/experiments/:id" element={<ExperimentDetail />} />
+            <Route path="/studio" element={<Studio />} />
+            <Route path="/studio/:id" element={<GameDetail />} />
+            <Route path="/chronicles" element={<Chronicles />} />
+            <Route path="/chronicles/:id" element={<ChronicleDetail />} />
             <Route path="/chronicles/:id/chapter/:num" element={<ChapterViewer />} />
-            <Route path="/about"      element={<About />} />
-            <Route path="/contact"    element={<Contact />} />
-            <Route path="/blog"       element={<Blog />} />
-            <Route path="/blog/:id"   element={<BlogPost />} />
-            <Route path="/roadmap"    element={<Roadmap />} />
-            <Route path="/press"      element={<PressKit />} />
-            <Route path="*"           element={<NotFound />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<BlogPost />} />
+            <Route path="/roadmap" element={<Roadmap />} />
+            <Route path="/press" element={<PressKit />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
       </BrowserRouter>

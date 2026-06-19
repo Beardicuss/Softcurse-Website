@@ -20,8 +20,8 @@
   width: 100%;
   max-width: 660px;
   background: var(--panel);
-  border: 1px solid rgba(0, 255, 255, 0.22);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0,255,255,0.06);
+  border: 1px solid rgba(79, 255, 240, 0.22);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6), 0 0 40px rgba(79, 255, 240,0.06);
   animation: slideDown 0.18s ease both;
   max-height: 80vh;
   display: flex;
@@ -38,7 +38,7 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(79, 255, 240, 0.1);
   flex-shrink: 0;
 }
 
@@ -46,7 +46,7 @@
   color: var(--cyan);
   opacity: 0.75;
   flex-shrink: 0;
-  filter: drop-shadow(0 0 3px rgba(0,255,255,0.4));
+  filter: drop-shadow(0 0 3px rgba(79, 255, 240,0.4));
 }
 
 .input {
@@ -105,7 +105,7 @@
   transition: background 0.15s;
 }
 
-.item:hover { background: rgba(0, 255, 255, 0.05); }
+.item:hover { background: rgba(79, 255, 240, 0.05); }
 
 .itemIcon { font-size: 1.25rem; flex-shrink: 0; width: 24px; text-align: center; }
 
@@ -134,7 +134,7 @@
   font-family: var(--font-mono);
   font-size: 0.58rem;
   color: var(--cyan);
-  border: 1px solid rgba(0,255,255,0.2);
+  border: 1px solid rgba(79, 255, 240,0.2);
   padding: 0.15rem 0.4rem;
   letter-spacing: 0.06em;
   flex-shrink: 0;
@@ -158,7 +158,7 @@
   font-size: 0.68rem;
   color: var(--muted);
   opacity: 0.45;
-  border-top: 1px solid rgba(0,255,255,0.06);
+  border-top: 1px solid rgba(79, 255, 240,0.06);
 }
 .hint em { font-style: normal; color: var(--cyan); opacity: 0.8; }
 

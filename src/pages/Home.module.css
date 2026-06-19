@@ -1,4 +1,7 @@
-.page { display: flex; flex-direction: column; }
+.page {
+  display: flex;
+  flex-direction: column;
+}
 
 /* ── Hero ── */
 .hero {
@@ -16,14 +19,16 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  z-index: 1;
+  cursor: default;
 }
 
 .scanline {
   position: absolute;
-  left: 0; right: 0;
+  left: 0;
+  right: 0;
   height: 3px;
-  background: linear-gradient(transparent, rgba(0,255,255,0.07), transparent);
+  background: linear-gradient(transparent, rgba(79, 255, 240, 0.07), transparent);
   animation: scanline 8s linear infinite;
   pointer-events: none;
   z-index: 5;
@@ -45,13 +50,11 @@
   transform: translate(-50%, -55%);
   width: 700px;
   height: 500px;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 255, 255, 0.09) 0%,
-    rgba(0, 180, 255, 0.055) 30%,
-    rgba(0, 80, 160, 0.025) 60%,
-    transparent 75%
-  );
+  background: radial-gradient(ellipse at center,
+      rgba(79, 255, 240, 0.09) 0%,
+      rgba(0, 180, 255, 0.055) 30%,
+      rgba(0, 80, 160, 0.025) 60%,
+      transparent 75%);
   pointer-events: none;
   z-index: -1;
   filter: blur(18px);
@@ -59,12 +62,23 @@
 }
 
 @keyframes glowBreathe {
-  0%, 100% { opacity: 0.8; transform: translate(-50%, -55%) scale(1); }
-  50%       { opacity: 1.0; transform: translate(-50%, -55%) scale(1.08); }
+
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: translate(-50%, -55%) scale(1);
+  }
+
+  50% {
+    opacity: 1.0;
+    transform: translate(-50%, -55%) scale(1.08);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .heroInner::before { animation: none; }
+  .heroInner::before {
+    animation: none;
+  }
 }
 
 .eyebrow {
@@ -146,12 +160,14 @@
   justify-content: center;
   flex-wrap: wrap;
   padding: 2.5rem 2rem;
-  border-top: 1px solid rgba(0,255,255,0.08);
-  border-bottom: 1px solid rgba(0,255,255,0.08);
-  background: rgba(28,30,38,0.45);
+  border-top: 1px solid rgba(79, 255, 240, 0.08);
+  border-bottom: 1px solid rgba(79, 255, 240, 0.08);
+  background: rgba(7, 15, 25, 0.45);
 }
 
-.stat { text-align: center; }
+.stat {
+  text-align: center;
+}
 
 .statN {
   display: block;
@@ -172,7 +188,9 @@
 }
 
 /* ── Sections ── */
-.section { padding: 6rem 0 5rem; }
+.section {
+  padding: 6rem 0 5rem;
+}
 
 .sectionCta {
   display: flex;
@@ -187,14 +205,17 @@
 /* ── CTA Banner ── */
 .ctaBanner {
   background: var(--panel);
-  border-top: 1px solid rgba(0,255,255,0.08);
-  border-bottom: 1px solid rgba(0,255,255,0.08);
+  border-top: 1px solid rgba(79, 255, 240, 0.08);
+  border-bottom: 1px solid rgba(79, 255, 240, 0.08);
   padding: 4rem 2rem;
   text-align: center;
   margin-top: 0;
 }
 
-.ctaBannerInner { max-width: 640px; margin: 0 auto; }
+.ctaBannerInner {
+  max-width: 640px;
+  margin: 0 auto;
+}
 
 .ctaTitle {
   font-family: var(--font-heading);
@@ -220,17 +241,24 @@
 }
 
 @media (max-width: 480px) {
-  .stats { gap: 1.5rem; }
-  .section { padding: 3.5rem 0; }
+  .stats {
+    gap: 1.5rem;
+  }
+
+  .section {
+    padding: 3.5rem 0;
+  }
 }
 
-.studioSection { padding-bottom: 2rem; }
+.studioSection {
+  padding-bottom: 2rem;
+}
 
 .newsletterWrapper {
   /* Full-width block with its own bg + clear vertical breathing room */
   background: var(--panel);
-  border-top: 1px solid rgba(0, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(0, 255, 255, 0.08);
+  border-top: 1px solid rgba(79, 255, 240, 0.08);
+  border-bottom: 1px solid rgba(79, 255, 240, 0.08);
   padding: 5rem 2rem;
   /* Push away from the Studio section cards above */
   margin-top: 4rem;
@@ -251,12 +279,20 @@
 }
 
 @keyframes typeReveal {
-  from { width: 0; }
-  to   { width: 100%; }
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .typewriter { animation: none; width: auto; }
+  .typewriter {
+    animation: none;
+    width: auto;
+  }
 }
 
 /* ── Grid overrides for home page modules ── */
@@ -272,10 +308,17 @@
 }
 
 @media (max-width: 1700px) {
-  .studioGrid { grid-template-columns: repeat(2, 1fr) !important; }
+  .studioGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
 @media (max-width: 900px) {
-  .labGrid    { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
-  .studioGrid { grid-template-columns: 1fr !important; }
+  .labGrid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+  }
+
+  .studioGrid {
+    grid-template-columns: 1fr !important;
+  }
 }

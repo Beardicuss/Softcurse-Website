@@ -22,7 +22,7 @@
 .heroPlaceholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0B0C10 0%, #1a0620 50%, #0B0C10 100%);
+  background: linear-gradient(135deg, var(--c-bg) 0%, #1a0620 50%, var(--c-bg) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,8 +73,8 @@
   font-size: 0.65rem;
   letter-spacing: 0.18em;
   color: var(--muted);
-  background: rgba(255, 0, 255, 0.06);
-  border: 1px solid rgba(255, 0, 255, 0.18);
+  background: rgba(255, 95, 95, 0.06);
+  border: 1px solid rgba(255, 95, 95, 0.18);
   padding: 0.2rem 0.55rem;
 }
 
@@ -94,7 +94,7 @@
   letter-spacing: 0.05em;
   line-height: 1;
   margin-bottom: 0.8rem;
-  text-shadow: 0 0 40px rgba(255, 0, 255, 0.3);
+  text-shadow: 0 0 40px rgba(255, 95, 95, 0.3);
 }
 
 .heroDesc {
@@ -114,7 +114,7 @@
 
 .section {
   padding: 3rem 0;
-  border-bottom: 1px solid rgba(255, 0, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 95, 95, 0.06);
 }
 
 .sectionLabel {
@@ -157,16 +157,16 @@
   font-family: var(--font-body);
   font-size: 0.95rem;
   color: var(--muted);
-  background: rgba(255, 0, 255, 0.03);
-  border: 1px solid rgba(255, 0, 255, 0.08);
+  background: rgba(255, 95, 95, 0.03);
+  border: 1px solid rgba(255, 95, 95, 0.08);
   padding: 0.8rem 1rem;
   line-height: 1.5;
   transition: border-color 0.2s, background 0.2s;
 }
 
 .featItem:hover {
-  border-color: rgba(255, 0, 255, 0.25);
-  background: rgba(255, 0, 255, 0.06);
+  border-color: rgba(255, 95, 95, 0.25);
+  background: rgba(255, 95, 95, 0.06);
   color: var(--txt);
 }
 
@@ -180,7 +180,7 @@
 .metaSection {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  border: 1px solid rgba(255, 0, 255, 0.1);
+  border: 1px solid rgba(255, 95, 95, 0.1);
   margin: 3rem 0;
 }
 
@@ -189,7 +189,7 @@
   flex-direction: column;
   gap: 0.4rem;
   padding: 1.2rem 1.5rem;
-  border-right: 1px solid rgba(255, 0, 255, 0.08);
+  border-right: 1px solid rgba(255, 95, 95, 0.08);
 }
 
 .metaItem:last-child {
@@ -238,15 +238,15 @@
   align-items: center;
   gap: 1.5rem;
   padding: 1.1rem 1.4rem;
-  background: rgba(255, 0, 255, 0.03);
-  border: 1px solid rgba(255, 0, 255, 0.1);
+  background: rgba(255, 95, 95, 0.03);
+  border: 1px solid rgba(255, 95, 95, 0.1);
   text-decoration: none;
   transition: all 0.2s;
 }
 
 .devPost:hover {
-  border-color: rgba(255, 0, 255, 0.3);
-  background: rgba(255, 0, 255, 0.06);
+  border-color: rgba(255, 95, 95, 0.3);
+  background: rgba(255, 95, 95, 0.06);
   padding-left: 1.7rem;
 }
 
@@ -321,6 +321,6 @@
 
   .metaItem {
     border-right: none;
-    border-bottom: 1px solid rgba(255, 0, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 95, 95, 0.08);
   }
 }

@@ -1,7 +1,7 @@
 .footer {
   position: relative;
   background: rgba(5, 6, 10, 0.98);
-  border-top: 1px solid rgba(0,255,255,0.08);
+  border-top: 1px solid rgba(79, 255, 240,0.08);
   margin-top: 4rem;
 }
 
@@ -11,12 +11,12 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(0,255,255,0.15) 20%,
-    rgba(0,255,255,0.5) 50%,
-    rgba(0,255,255,0.15) 80%,
+    rgba(79, 255, 240,0.15) 20%,
+    rgba(79, 255, 240,0.5) 50%,
+    rgba(79, 255, 240,0.15) 80%,
     transparent 100%
   );
-  box-shadow: 0 0 20px rgba(0,255,255,0.2), 0 0 60px rgba(0,255,255,0.08);
+  box-shadow: 0 0 20px rgba(79, 255, 240,0.2), 0 0 60px rgba(79, 255, 240,0.08);
 }
 
 .inner {
@@ -41,7 +41,7 @@
   font-size: 1rem;
   letter-spacing: 0.16em;
   color: var(--cyan);
-  text-shadow: 0 0 10px rgba(0,255,255,0.4);
+  text-shadow: 0 0 10px rgba(79, 255, 240,0.4);
   width: fit-content;
 }
 
@@ -170,7 +170,7 @@
   max-width: min(92vw, 1600px);
   margin: 0 auto;
   padding: 1.2rem 2rem;
-  border-top: 1px solid rgba(0,255,255,0.06);
+  border-top: 1px solid rgba(79, 255, 240,0.06);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -189,16 +189,16 @@
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.58rem;
   letter-spacing: 0.16em;
-  color: rgba(0,255,255,0.25);
+  color: rgba(79, 255, 240,0.25);
 }
 
-.sep { color: rgba(0,255,255,0.15); font-size: 0.7rem; }
+.sep { color: rgba(79, 255, 240,0.15); font-size: 0.7rem; }
 
 .copy {
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.6rem;
   letter-spacing: 0.14em;
-  color: rgba(0,255,255,0.2);
+  color: rgba(79, 255, 240,0.2);
 }
 
 /* Mobile */

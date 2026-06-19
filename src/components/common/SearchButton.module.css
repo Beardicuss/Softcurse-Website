@@ -19,12 +19,12 @@
 }
 
 .icon {
-  filter: drop-shadow(0 0 5px rgba(0,255,255,0.55));
+  filter: drop-shadow(0 0 5px rgba(79, 255, 240,0.55));
   transition: filter 0.25s;
 }
 
 .btn:hover .icon {
-  filter: drop-shadow(0 0 10px var(--cyan)) drop-shadow(0 0 22px rgba(0,255,255,0.5));
+  filter: drop-shadow(0 0 10px var(--cyan)) drop-shadow(0 0 22px rgba(79, 255, 240,0.5));
 }
 
 .spinArc {

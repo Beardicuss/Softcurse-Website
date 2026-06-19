@@ -22,7 +22,7 @@
 .heroPlaceholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0B0C10 0%, #1a0620 50%, #0B0C10 100%);
+  background: linear-gradient(135deg, var(--c-bg) 0%, #1a0620 50%, var(--c-bg) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,8 +69,8 @@
   font-size: 0.62rem;
   letter-spacing: 0.16em;
   color: var(--muted);
-  background: rgba(255, 0, 255, 0.07);
-  border: 1px solid rgba(255, 0, 255, 0.2);
+  background: rgba(255, 95, 95, 0.07);
+  border: 1px solid rgba(255, 95, 95, 0.2);
   padding: 0.18rem 0.5rem;
 }
 
@@ -91,7 +91,7 @@
   letter-spacing: 0.04em;
   line-height: 1.1;
   margin-bottom: 0.8rem;
-  text-shadow: 0 0 40px rgba(255, 0, 255, 0.3);
+  text-shadow: 0 0 40px rgba(255, 95, 95, 0.3);
   word-break: break-word;
 }
 
@@ -122,7 +122,7 @@
 /* Sections */
 .section {
   padding: 3rem 0;
-  border-bottom: 1px solid rgba(255, 0, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 95, 95, 0.06);
 }
 
 .sectionLabel {
@@ -163,15 +163,15 @@
   align-items: center;
   gap: 1.5rem;
   padding: 1.1rem 1.4rem;
-  background: rgba(255, 0, 255, 0.03);
-  border: 1px solid rgba(255, 0, 255, 0.1);
+  background: rgba(255, 95, 95, 0.03);
+  border: 1px solid rgba(255, 95, 95, 0.1);
   text-decoration: none;
   transition: all 0.2s;
 }
 
 .chapterRow:hover:not(.chapterLocked) {
-  border-color: rgba(255, 0, 255, 0.35);
-  background: rgba(255, 0, 255, 0.07);
+  border-color: rgba(255, 95, 95, 0.35);
+  background: rgba(255, 95, 95, 0.07);
   padding-left: 1.8rem;
 }
 

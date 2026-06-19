@@ -14,7 +14,7 @@
   text-transform: uppercase;
   margin-bottom: 2rem;
   padding-bottom: 0.6rem;
-  border-bottom: 1px solid rgba(0,255,255,0.12);
+  border-bottom: 1px solid rgba(79, 255, 240,0.12);
 }
 
 /* ── Form ── */
@@ -34,7 +34,7 @@
 .input {
   width: 100%;
   background: var(--panel);
-  border: 1px solid rgba(0,255,255,0.16);
+  border: 1px solid rgba(79, 255, 240,0.16);
   color: var(--txt);
   font-family: var(--font-body);
   font-size: 1rem;
@@ -45,7 +45,7 @@
 
 .input:focus {
   border-color: var(--cyan);
-  box-shadow: 0 0 10px rgba(0,255,255,0.1);
+  box-shadow: 0 0 10px rgba(79, 255, 240,0.1);
 }
 
 .inputError { border-color: var(--red) !important; }
@@ -118,8 +118,8 @@
 
 .collab {
   padding: 1.4rem 1.6rem;
-  border: 1px solid rgba(255,0,255,0.18);
-  background: rgba(255,0,255,0.03);
+  border: 1px solid rgba(255, 95, 95,0.18);
+  background: rgba(255, 95, 95,0.03);
 }
 
 .collabTitle {

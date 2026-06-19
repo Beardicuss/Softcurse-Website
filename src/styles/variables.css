@@ -1,49 +1,84 @@
 /* ============================================================
-   SOFTCURSE DESIGN TOKENS
+   SOFTCURSE DESIGN TOKENS — HEX THEME
    Central source of truth for all CSS variables
    ============================================================ */
 
 :root {
   /* ── Colors ── */
-  --bg:           #0B0C10;
-  --panel:        #1C1E26;
-  --panel-light:  #23263A;
+  --c-bg: #05070c;
+  --c-surface: rgba(7, 15, 25, 0.82);
+  --c-surface-strong: rgba(10, 20, 34, 0.94);
 
-  --cyan:         #00FFFF;
-  --cyan-dim:     rgba(0, 255, 255, 0.12);
-  --cyan-glow:    rgba(0, 255, 255, 0.35);
+  --c-cyan: #4ffff0;
+  --c-cyan-soft: #8df7ff;
+  --c-cyan-dim: rgba(79, 255, 240, 0.50);
 
-  --magenta:      #FF00FF;
-  --magenta-dim:  rgba(255, 0, 255, 0.12);
-  --magenta-glow: rgba(255, 0, 255, 0.35);
+  --c-red: #ff5f5f;
+  --c-red-soft: #ff8a8a;
 
-  --blue:         #007BFF;
-  --blue-dim:     rgba(0, 123, 255, 0.12);
+  --c-green: #00ff88;
 
-  --green:        #39FF14;
-  --green-dim:    rgba(57, 255, 20, 0.08);
+  --c-text: #edf8ff;
+  --c-text-muted: rgba(237, 248, 255, 0.62);
 
-  --red:          #FF3B3B;
+  --c-border: rgba(73, 255, 227, 0.22);
+  --c-border-hover: rgba(73, 255, 227, 0.42);
+  --c-border-active: rgba(73, 255, 227, 0.70);
 
-  /* ── Text ── */
-  --txt:          #E5E5E5;
-  --muted:        #AAAAAA;
-  --faint:        #666680;
-  --grid-line:    0, 255, 255;  /* cyan — for grid-bg rgba() */
+  /* ── Legacy aliases (old variable names → new tokens) ── */
+  --bg: var(--c-bg);
+  --panel: var(--c-surface);
+  --panel-light: var(--c-surface-strong);
+  --cyan: var(--c-cyan);
+  --cyan-dim: rgba(79, 255, 240, 0.12);
+  --cyan-glow: rgba(79, 255, 240, 0.35);
+  --magenta: var(--c-red);
+  --magenta-dim: rgba(255, 95, 95, 0.12);
+  --magenta-glow: rgba(255, 95, 95, 0.35);
+  --blue: #007BFF;
+  --blue-dim: rgba(0, 123, 255, 0.12);
+  --green: var(--c-green);
+  --green-dim: rgba(0, 255, 136, 0.08);
+  --red: var(--c-red);
+  --txt: var(--c-text);
+  --muted: var(--c-text-muted);
+  --faint: rgba(237, 248, 255, 0.30);
+  --grid-line: 79, 255, 240;
+
+  /* ── Shadows / glows ── */
+  --shadow-cyan: 0 0 24px rgba(79, 255, 240, 0.18);
+  --shadow-red: 0 0 24px rgba(255, 95, 95, 0.14);
+  --shadow-cyan-lg: 0 0 48px rgba(79, 255, 240, 0.28), 0 0 12px rgba(79, 255, 240, 0.18);
+  --shadow-red-lg: 0 0 48px rgba(255, 95, 95, 0.22), 0 0 12px rgba(255, 95, 95, 0.14);
+
+  /* ── Blur / transition ── */
+  --blur-glass: blur(16px) saturate(160%);
+  --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
   /* ── Typography ── */
-  --font-heading: 'Orbitron', sans-serif;
-  --font-mono:    'Share Tech Mono', monospace;
-  --font-body:    'Rajdhani', sans-serif;
+  --font-display: 'Orbitron', 'Rajdhani', sans-serif;
+  --font-heading: 'Orbitron', 'Rajdhani', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+  --font-body: 'Chakra Petch', 'Segoe UI', sans-serif;
 
   /* ── Spacing ── */
-  --nav-h:        68px;
-  --radius:       0px;   /* Softcurse uses sharp corners */
-  --radius-sm:    2px;
+  --nav-h: 68px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
 
-  /* ── Transitions ── */
-  --ease:         0.25s ease;
-  --ease-fast:    0.15s ease;
+  /* ── Border radius ── */
+  --radius-sm: 8px;
+  --radius: 18px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* ── Transitions (legacy) ── */
+  --ease: 0.25s ease;
+  --ease-fast: 0.15s ease;
 }
-
-

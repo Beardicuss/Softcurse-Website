@@ -5,7 +5,7 @@
   width: 40px;
   height: 40px;
   background: var(--panel);
-  border: 1px solid rgba(0,255,255,0.25);
+  border: 1px solid rgba(79, 255, 240,0.25);
   color: var(--cyan);
   font-size: 1rem;
   cursor: pointer;
@@ -26,9 +26,9 @@
 }
 
 .btn:hover {
-  background: rgba(0,255,255,0.08);
+  background: rgba(79, 255, 240,0.08);
   border-color: var(--cyan);
-  box-shadow: 0 0 14px rgba(0,255,255,0.25);
+  box-shadow: 0 0 14px rgba(79, 255, 240,0.25);
 }
 
 @media (prefers-reduced-motion: reduce) {

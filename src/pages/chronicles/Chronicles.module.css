@@ -43,9 +43,9 @@
   font-family: var(--font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.16em;
-  color: rgba(255,0,255,0.7);
-  background: rgba(255,0,255,0.06);
-  border: 1px solid rgba(255,0,255,0.18);
+  color: rgba(255, 95, 95,0.7);
+  background: rgba(255, 95, 95,0.06);
+  border: 1px solid rgba(255, 95, 95,0.18);
   padding: 0.3rem 0.75rem;
 }
 
@@ -98,14 +98,14 @@
   gap: 1rem;
   align-items: flex-start;
   padding: 1rem 1.2rem;
-  background: rgba(255,0,255,0.03);
-  border: 1px solid rgba(255,0,255,0.08);
+  background: rgba(255, 95, 95,0.03);
+  border: 1px solid rgba(255, 95, 95,0.08);
   transition: border-color 0.2s, background 0.2s;
 }
 
 .featureItem:hover {
-  border-color: rgba(255,0,255,0.22);
-  background: rgba(255,0,255,0.06);
+  border-color: rgba(255, 95, 95,0.22);
+  background: rgba(255, 95, 95,0.06);
 }
 
 .featureIcon {

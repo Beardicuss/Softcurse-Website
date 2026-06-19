@@ -3,12 +3,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-heading);
+  font-family: var(--font-mono);
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   padding: 0.6rem 1.5rem;
-  border: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.25s ease;
   text-transform: uppercase;
@@ -27,6 +28,7 @@
   background: var(--cyan);
   color: var(--bg);
 }
+
 .cyan:hover {
   box-shadow: 0 0 20px var(--cyan), 0 0 40px var(--cyan-glow);
   transform: scale(1.04);
@@ -37,6 +39,7 @@
   background: var(--magenta);
   color: var(--bg);
 }
+
 .magenta:hover {
   box-shadow: 0 0 20px var(--magenta), 0 0 40px var(--magenta-glow);
   transform: scale(1.04);
@@ -48,6 +51,7 @@
   color: var(--cyan);
   border: 1px solid var(--cyan);
 }
+
 .outline:hover {
   background: var(--cyan-dim);
   box-shadow: 0 0 12px var(--cyan-dim);
@@ -59,6 +63,7 @@
   color: var(--magenta);
   border: 1px solid var(--magenta);
 }
+
 .outlineMagenta:hover {
   background: var(--magenta-dim);
   box-shadow: 0 0 12px var(--magenta-dim);
@@ -68,11 +73,12 @@
 .ghost {
   background: transparent;
   color: var(--muted);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .ghost:hover {
   color: var(--txt);
-  border-color: rgba(255,255,255,0.25);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 /* Scan-line sweep on hover */
@@ -80,22 +86,23 @@
   position: relative;
   overflow: hidden;
 }
+
 .btn::after {
   content: '';
   position: absolute;
-  top: 0; left: -100%;
+  top: 0;
+  left: -100%;
   width: 60%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255,255,255,0.08) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      transparent 100%);
   transform: skewX(-20deg);
   transition: left 0s;
   pointer-events: none;
 }
+
 .btn:hover::after {
   left: 140%;
   transition: left 0.55s cubic-bezier(0.22, 1, 0.36, 1);

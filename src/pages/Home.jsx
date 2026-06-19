@@ -1,4 +1,4 @@
-import { useParticles } from '../hooks/useParticles'
+import { useAsteroidsGlitch } from '../hooks/useAsteroidsGlitch'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { useSEO } from '../hooks/useSEO'
 import StatNumber from '../components/common/StatNumber'
@@ -13,15 +13,15 @@ import styles from './Home.module.css'
 
 export default function Home() {
   usePageTitle(null) // just "SOFTCURSE" on homepage
-  const canvasRef = useParticles(true)
-  const apps  = getApps().slice(0, 6)
+  const { canvasRef } = useAsteroidsGlitch(true)
+  const apps = getApps().slice(0, 6)
   const games = getGames()
 
   useSEO({ title: 'Home', description: 'A small, slightly sinister digital universe. Building tools that pierce the noise — and worlds that bend reality.', url: '/' })
-  const [statsRef,   statsVis]   = useScrollReveal()
-  const [labRef,     labVis]     = useScrollReveal()
-  const [studioRef,  studioVis]  = useScrollReveal()
-  const [ctaRef,     ctaVis]     = useScrollReveal()
+  const [statsRef, statsVis] = useScrollReveal()
+  const [labRef, labVis] = useScrollReveal()
+  const [studioRef, studioVis] = useScrollReveal()
+  const [ctaRef, ctaVis] = useScrollReveal()
 
   return (
     <div className={styles.page}>
@@ -32,7 +32,7 @@ export default function Home() {
         <canvas ref={canvasRef} className={styles.canvas} />
 
         <div className={`${styles.heroInner} anim-fade-up`}>
-          <div className={`${styles.eyebrow} ${styles.typewriter}`}>// DIGITAL UNIVERSE INITIALIZED</div>
+          <div className={`${styles.eyebrow} ${styles.typewriter}`}>{'// DIGITAL UNIVERSE INITIALIZED'}</div>
           <h1 className={`${styles.heroTitle} anim-glow`}>SOFTCURSE</h1>
           <div className={styles.heroSub}>LABS · STUDIO · SYSTEMS</div>
           <p className={styles.heroDesc}>
@@ -55,10 +55,10 @@ export default function Home() {
       {/* ── Stats ── */}
       <div ref={statsRef} className={`${styles.stats} reveal-group ${statsVis ? "visible" : ""}`}>
         {[
-          ['9',  'Lab Tools'],
-          ['3',  'Games in Dev'],
-          ['∞',  'Possibilities'],
-          ['1',  'Universe'],
+          ['9', 'Lab Tools'],
+          ['3', 'Games in Dev'],
+          ['∞', 'Possibilities'],
+          ['1', 'Universe'],
         ].map(([n, l]) => (
           <div key={l} className={styles.stat}>
             <StatNumber value={n} run={statsVis} className={styles.statN} />
@@ -70,7 +70,7 @@ export default function Home() {
       {/* ── Lab Preview ── */}
       <section ref={labRef} className={`${styles.section} container reveal ${labVis ? "visible" : ""}`}>
         <div className="sec-header">
-          <div className="sec-header__label">// MODULE 01</div>
+          <div className="sec-header__label">{'// MODULE 01'}</div>
           <h2 className="sec-header__title">
             SOFTCURSE <span className="text-cyan">LAB</span>
           </h2>
@@ -95,16 +95,16 @@ export default function Home() {
       {/* ── Studio Preview ── */}
       <section ref={studioRef} className={`${styles.section} ${styles.studioSection} reveal section--studio ${studioVis ? "visible" : ""}`}>
         <div className="container">
-        <div className="sec-header">
-          <div className="sec-header__label sec-header__label--magenta">// MODULE 02</div>
-          <h2 className="sec-header__title">
-            SOFTCURSE <span className="text-magenta">STUDIO</span>
-          </h2>
-          <p className="sec-header__desc">
-            Worlds that don't forgive. Stories that stay with you. Games built from
-            the ground up with intent.
-          </p>
-        </div>
+          <div className="sec-header">
+            <div className="sec-header__label sec-header__label--magenta">{'// MODULE 02'}</div>
+            <h2 className="sec-header__title">
+              SOFTCURSE <span className="text-magenta">STUDIO</span>
+            </h2>
+            <p className="sec-header__desc">
+              Worlds that don&apos;t forgive. Stories that stay with you. Games built from
+              the ground up with intent.
+            </p>
+          </div>
         </div>
         <div className={`card-grid ${styles.studioGrid}`}>
           {games.map(g => <GameCard key={g.id} game={g} />)}
