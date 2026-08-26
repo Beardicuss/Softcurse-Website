@@ -3,6 +3,7 @@ dist/
 _worker.bundle
 .wrangler/
 .claude/
+.playwright-cli/
 .env
 .env.local
 .dev.vars

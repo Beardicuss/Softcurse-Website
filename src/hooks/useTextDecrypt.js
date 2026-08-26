@@ -13,12 +13,11 @@ export function useTextDecrypt(text = '', trigger = false, speed = 38, iteration
   const [output, setOutput] = useState(text.replace(/[^ ]/g, '█'))
   const frame = useRef(0)
   const raf   = useRef(null)
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   useEffect(() => {
     if (!trigger) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setOutput(text); return
-    }
+    if (prefersReducedMotion) return
 
     frame.current = 0
     const totalFrames = text.length * iterations
@@ -44,7 +43,7 @@ export function useTextDecrypt(text = '', trigger = false, speed = 38, iteration
 
     raf.current = setTimeout(tick, 80) // small delay before starting
     return () => clearTimeout(raf.current)
-  }, [trigger, text, speed, iterations])
+  }, [trigger, text, speed, iterations, prefersReducedMotion])
 
-  return output
+  return prefersReducedMotion ? text : output
 }

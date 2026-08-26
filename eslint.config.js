@@ -36,9 +36,7 @@ export default [
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
       'react/prop-types': 'off',
-      // Existing animation hooks intentionally initialize visual state from
-      // browser APIs inside effects. Refactoring them belongs to Phase 6.
-      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/set-state-in-effect': 'error',
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   },

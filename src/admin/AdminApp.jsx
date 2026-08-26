@@ -103,7 +103,19 @@ function ContentEditor({ type, id, schema, onBack }) {
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
   const load = useCallback(async () => { if (!id) return; const result = await adminApi(`/content/${id}`); setItem(result.item); setAssets(result.assets.map(asset => ({ ...asset, url: `/api/assets/${asset.id}` }))); setReleases(result.releases) }, [id])
-  useEffect(() => { load().catch(error => setMessage(error.message)) }, [load])
+  useEffect(() => {
+    if (!id) return undefined
+    let active = true
+    adminApi(`/content/${id}`)
+      .then(result => {
+        if (!active) return
+        setItem(result.item)
+        setAssets(result.assets.map(asset => ({ ...asset, url: `/api/assets/${asset.id}` })))
+        setReleases(result.releases)
+      })
+      .catch(error => { if (active) setMessage(error.message) })
+    return () => { active = false }
+  }, [id])
   async function save(event) {
     event?.preventDefault(); setBusy(true); setMessage('Saving…')
     try {

@@ -8,14 +8,14 @@ import { useEffect, useRef, useState } from 'react'
  */
 export function useScrollReveal(threshold = 0.12, rootMargin = '0px 0px -40px 0px') {
   const ref     = useRef(null)
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReduced) { setVisible(true); return }
+    if (prefersReduced) return undefined
 
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect() } },

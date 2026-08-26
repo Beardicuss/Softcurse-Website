@@ -8,14 +8,18 @@ import styles from './PageTransition.module.css'
  */
 export default function PageTransition({ children }) {
   const location = useLocation()
-  const [phase, setPhase] = useState('idle') // idle | wipe | in
+
+  return <TransitionFrame key={location.pathname}>{children}</TransitionFrame>
+}
+
+function TransitionFrame({ children }) {
+  const [phase, setPhase] = useState('wipe') // wipe | in | idle
 
   useEffect(() => {
-    setPhase('wipe')
     const t1 = setTimeout(() => setPhase('in'), 120)
     const t2 = setTimeout(() => setPhase('idle'), 520)
     return () => { clearTimeout(t1); clearTimeout(t2) }
-  }, [location.pathname])
+  }, [])
 
   return (
     <div className={`${styles.wrap} ${styles[phase]}`}>

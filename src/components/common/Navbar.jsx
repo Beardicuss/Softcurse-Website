@@ -6,14 +6,14 @@ import styles from './Navbar.module.css'
 const SearchBar = lazy(() => import('./SearchBar'))
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [openDropdown, setOpenDropdown] = useState(null)
   const location = useLocation()
+  const [menuOpenAt, setMenuOpenAt] = useState(null)
+  const [dropdownState, setDropdownState] = useState({ name: null, locationKey: null })
   const navRef = useRef(null)
-
-  useEffect(() => { setMenuOpen(false); setOpenDropdown(null) }, [location])
+  const menuOpen = menuOpenAt === location.key
+  const openDropdown = dropdownState.locationKey === location.key ? dropdownState.name : null
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -23,11 +23,11 @@ export default function Navbar() {
 
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape') { setMenuOpen(false); setOpenDropdown(null); setSearchOpen(false) }
+      if (e.key === 'Escape') { setMenuOpenAt(null); setDropdownState({ name: null, locationKey: null }); setSearchOpen(false) }
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); setSearchOpen(true) }
     }
     const onClickOut = (e) => {
-      if (navRef.current && !navRef.current.contains(e.target)) setOpenDropdown(null)
+      if (navRef.current && !navRef.current.contains(e.target)) setDropdownState({ name: null, locationKey: null })
     }
     document.addEventListener('keydown', onKey)
     document.addEventListener('mousedown', onClickOut)
@@ -37,7 +37,10 @@ export default function Navbar() {
     }
   }, [])
 
-  const toggleDropdown = (name) => setOpenDropdown(prev => prev === name ? null : name)
+  const toggleDropdown = (name) => setDropdownState(previous => ({
+    name: previous.locationKey === location.key && previous.name === name ? null : name,
+    locationKey: location.key,
+  }))
   const linkCls = ({ isActive }) => isActive ? `${styles.link} ${styles.active}` : styles.link
 
   return (
@@ -52,7 +55,7 @@ export default function Navbar() {
           {/* ── MOBILE: hamburger LEFT ── */}
           <button
             className={`${styles.burger} ${menuOpen ? styles.burgerOpen : ''}`}
-            onClick={() => setMenuOpen(o => !o)}
+            onClick={() => setMenuOpenAt(previous => previous === location.key ? null : location.key)}
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
           >
@@ -114,7 +117,7 @@ export default function Navbar() {
             <li className={styles.mobileSearchItem}>
               <button
                 className={styles.mobileSearchBtn}
-                onClick={() => { setMenuOpen(false); setSearchOpen(true) }}
+                onClick={() => { setMenuOpenAt(null); setSearchOpen(true) }}
               >
                 <span>⌕</span> SEARCH
               </button>

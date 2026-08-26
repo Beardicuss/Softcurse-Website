@@ -14,7 +14,7 @@ export function useCountUp(target, run, duration = 1400) {
   useEffect(() => {
     if (!run) return
     const num = parseInt(target, 10)
-    if (isNaN(num)) { setValue(String(target)); return }
+    if (Number.isNaN(num)) return
 
     const start = performance.now()
     const tick = (now) => {
@@ -30,5 +30,5 @@ export function useCountUp(target, run, duration = 1400) {
     return () => cancelAnimationFrame(rafRef.current)
   }, [run, target, duration])
 
-  return value
+  return Number.isNaN(parseInt(target, 10)) ? String(target) : value
 }

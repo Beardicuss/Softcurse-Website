@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const SESSION_KEY = 'sc_first_load_done'
 
@@ -8,15 +8,12 @@ const SESSION_KEY = 'sc_first_load_done'
  * Resets on hard refresh (sessionStorage cleared).
  */
 export function useFirstLoad() {
-  const [isFirst, setIsFirst] = useState(false)
-
-  useEffect(() => {
+  const [isFirst] = useState(() => {
     const done = sessionStorage.getItem(SESSION_KEY)
-    if (!done) {
-      setIsFirst(true)
-      sessionStorage.setItem(SESSION_KEY, '1')
-    }
-  }, [])
+    if (done) return false
+    sessionStorage.setItem(SESSION_KEY, '1')
+    return true
+  })
 
   return isFirst
 }
