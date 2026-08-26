@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ROADMAP, STATUS_META } from '../data/roadmap'
+import { useCmsItems } from '../content/CmsContent'
 import { useSEO } from '../hooks/useSEO'
 import { usePageTitle } from '../hooks/usePageTitle'
 import styles from './Roadmap.module.css'
@@ -10,15 +11,16 @@ export default function Roadmap() {
   useSEO({ title: 'Roadmap', description: 'The public Softcurse roadmap — upcoming tools, games, and systems in the pipeline.', url: '/roadmap' })
   usePageTitle('Roadmap')
   const [filter, setFilter] = useState('ALL')
+  const roadmap = useCmsItems('roadmap', ROADMAP.map((entry, index) => ({ ...entry, id: `roadmap-${index}-${entry.quarter.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` })))
 
-  const filtered = ROADMAP.map(q => ({
+  const filtered = roadmap.map(q => ({
     ...q,
-    items: q.items.filter(i => filter === 'ALL' || i.type === filter)
+    items: (q.items || []).filter(i => filter === 'ALL' || i.type === filter)
   })).filter(q => q.items.length > 0)
 
-  const totalDone    = ROADMAP.flatMap(q => q.items).filter(i => i.status === 'done').length
-  const totalActive  = ROADMAP.flatMap(q => q.items).filter(i => i.status === 'in-progress').length
-  const totalPlanned = ROADMAP.flatMap(q => q.items).filter(i => i.status === 'planned' || i.status === 'next').length
+  const totalDone    = roadmap.flatMap(q => q.items || []).filter(i => i.status === 'done').length
+  const totalActive  = roadmap.flatMap(q => q.items || []).filter(i => i.status === 'in-progress').length
+  const totalPlanned = roadmap.flatMap(q => q.items || []).filter(i => i.status === 'planned' || i.status === 'next').length
 
   return (
     <div>

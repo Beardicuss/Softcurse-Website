@@ -2,8 +2,9 @@ import { useState } from 'react'
 import Button from '../components/common/Button'
 import { useSEO } from '../hooks/useSEO'
 import { usePageTitle } from '../hooks/usePageTitle'
-import { getApps } from '../data/apps'
-import { getGames } from '../data/games'
+import { APPS } from '../data/apps'
+import { GAMES } from '../data/games'
+import { useCmsItems } from '../content/CmsContent'
 import styles from './PressKit.module.css'
 
 
@@ -31,6 +32,8 @@ function CopyButton({ text }) {
 }
 
 export default function PressKit() {
+  const apps = useCmsItems('app', Object.values(APPS))
+  const games = useCmsItems('game', Object.values(GAMES))
   useSEO({ title: 'Press Kit', description: 'Softcurse press kit — brand assets, boilerplate, and press contact information.', url: '/press' })
   usePageTitle('Press Kit')
 
@@ -98,7 +101,7 @@ export default function PressKit() {
                   ['HQ', 'Remote / Independent'],
                   ['Products', '9 Lab tools, 3 Studio games'],
                   ['Stage', 'Independent / Self-funded'],
-                  ['Website', 'softcurse.com'],
+                  ['Website', 'softcursesystems.pages.dev'],
                   ['Email', 'press@softcurse.com'],
                   ['Twitter', '@softcurse'],
                   ['GitHub', 'github.com/softcurse'],
@@ -181,7 +184,7 @@ export default function PressKit() {
           <div className={styles.productsGrid}>
             <div>
               <div className={styles.productsCat}>LAB TOOLS</div>
-              {getApps().map(a => (
+              {apps.map(a => (
                 <div key={a.id} className={styles.productRow}>
                   <span className={styles.productIcon}>{a.icon}</span>
                   <span className={styles.productName}>{a.name}</span>
@@ -191,7 +194,7 @@ export default function PressKit() {
             </div>
             <div>
               <div className={styles.productsCat}>STUDIO GAMES</div>
-              {getGames().map(g => (
+              {games.map(g => (
                 <div key={g.id} className={styles.productRow}>
                   <span className={styles.productIcon}>{g.icon}</span>
                   <span className={styles.productName}>{g.name}</span>

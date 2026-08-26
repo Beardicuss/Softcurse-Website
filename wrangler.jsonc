@@ -1,0 +1,28 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "softcursesystems",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-08-26",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "TURNSTILE_HOSTNAMES": "softcursesystems.pages.dev",
+    "ADMIN_USERNAME": "admin",
+    "ADMIN_SESSION_HOURS": "12",
+    "CMS_MAX_IMAGE_BYTES": "8388608",
+    "CMS_UPLOAD_PART_BYTES": "8388608"
+  },
+  "d1_databases": [
+    {
+      "binding": "CMS_DB",
+      "database_name": "softcurse-cms",
+      "database_id": "6fd1bfe8-072e-4a45-a13f-7c84cfcc4a72",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "CMS_ASSETS",
+      "bucket_name": "softcurse-cms-assets"
+    }
+  ]
+}

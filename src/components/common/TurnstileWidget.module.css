@@ -1,0 +1,17 @@
+.wrap {
+  margin: 1rem 0;
+}
+
+.widget {
+  min-height: 65px;
+  max-width: 100%;
+}
+
+.label {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  margin-top: 0.35rem;
+  opacity: 0.55;
+}

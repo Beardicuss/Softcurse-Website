@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/common/Navbar'
 import Footer from './components/common/Footer'
@@ -10,25 +10,36 @@ import CustomCursor from './components/common/CustomCursor'
 import BootScreen from './components/common/BootScreen'
 import ThemeProvider from './components/common/ThemeProvider'
 
-import Home from './pages/Home'
-import Lab from './pages/lab/Lab'
-import AppDetail from './pages/lab/AppDetail'
-import Studio from './pages/studio/Studio'
-import GameDetail from './pages/studio/GameDetail'
-import Chronicles from './pages/studio/Chronicles'
-import ChronicleDetail from './pages/studio/ChronicleDetail'
-import ChapterViewer from './pages/studio/ChapterViewer'
-import About from './pages/About'
-import Contact from './pages/Contact'
-import Blog from './pages/Blog'
-import BlogPost from './pages/BlogPost'
-import Roadmap from './pages/Roadmap'
-import PressKit from './pages/PressKit'
-import Experiments from './pages/lab/Experiments'
-import ExperimentDetail from './pages/lab/ExperimentDetail'
-import NotFound from './pages/NotFound'
+import { CmsContentProvider } from './content/CmsContent'
 
 import './styles/globals.css'
+
+const Home = lazy(() => import('./pages/Home'))
+const Lab = lazy(() => import('./pages/lab/Lab'))
+const LabOverview = lazy(() => import('./pages/lab/LabOverview'))
+const AppDetail = lazy(() => import('./pages/lab/AppDetail'))
+const Studio = lazy(() => import('./pages/studio/Studio'))
+const StudioOverview = lazy(() => import('./pages/studio/StudioOverview'))
+const GameDetail = lazy(() => import('./pages/studio/GameDetail'))
+const Chronicles = lazy(() => import('./pages/studio/Chronicles'))
+const ChronicleDetail = lazy(() => import('./pages/studio/ChronicleDetail'))
+const ChapterViewer = lazy(() => import('./pages/studio/ChapterViewer'))
+const About = lazy(() => import('./pages/About'))
+const Contact = lazy(() => import('./pages/Contact'))
+const Blog = lazy(() => import('./pages/Blog'))
+const BlogPost = lazy(() => import('./pages/BlogPost'))
+const Roadmap = lazy(() => import('./pages/Roadmap'))
+const PressKit = lazy(() => import('./pages/PressKit'))
+const Experiments = lazy(() => import('./pages/lab/Experiments'))
+const ExperimentDetail = lazy(() => import('./pages/lab/ExperimentDetail'))
+const Localization = lazy(() => import('./pages/localization/Localization'))
+const LocalizationDetail = lazy(() => import('./pages/localization/LocalizationDetail'))
+const NotFound = lazy(() => import('./pages/NotFound'))
+const AdminApp = lazy(() => import('./admin/AdminApp'))
+
+function RouteFallback() {
+  return <div className="route-loading" role="status"><span>LOADING MODULE…</span></div>
+}
 
 function Layout({ children }) {
   return (
@@ -49,27 +60,39 @@ function Layout({ children }) {
 }
 
 export default function App() {
-  const [booted, setBooted] = useState(false)
+  const isAdmin = window.location.pathname.startsWith('/admin')
+  const [booted, setBooted] = useState(() => isAdmin || sessionStorage.getItem('sc_intro_seen') === '1' || window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 
-  // We can just use the standard global `window` assignment here during render if we want, or useEffect
-  if (typeof window !== 'undefined') window.__SITE_BOOTED = booted
+  const completeBoot = () => {
+    sessionStorage.setItem('sc_intro_seen', '1')
+    setBooted(true)
+  }
+
+  useEffect(() => {
+    window.__SITE_BOOTED = booted
+  }, [booted])
 
   return (
     <>
       <ThemeProvider />
-      {!booted && <BootScreen onComplete={() => setBooted(true)} />}
+      {!isAdmin && !booted && <BootScreen onComplete={completeBoot} />}
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <CustomCursor />
+        {!isAdmin && <CustomCursor />}
         <ScrollToTop />
-        <Layout>
+        <Suspense fallback={<RouteFallback />}>
+        {isAdmin ? <Routes><Route path="/admin/*" element={<AdminApp />} /></Routes> : <CmsContentProvider><Layout>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/lab" element={<Lab />} />
+            <Route path="/lab" element={<LabOverview />} />
+            <Route path="/lab/apps" element={<Lab />} />
             <Route path="/lab/:id" element={<AppDetail />} />
             <Route path="/experiments" element={<Experiments />} />
             <Route path="/experiments/:id" element={<ExperimentDetail />} />
-            <Route path="/studio" element={<Studio />} />
+            <Route path="/studio" element={<StudioOverview />} />
+            <Route path="/studio/games" element={<Studio />} />
             <Route path="/studio/:id" element={<GameDetail />} />
+            <Route path="/localization" element={<Localization />} />
+            <Route path="/localization/:id" element={<LocalizationDetail />} />
             <Route path="/chronicles" element={<Chronicles />} />
             <Route path="/chronicles/:id" element={<ChronicleDetail />} />
             <Route path="/chronicles/:id/chapter/:num" element={<ChapterViewer />} />
@@ -81,7 +104,8 @@ export default function App() {
             <Route path="/press" element={<PressKit />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </Layout>
+        </Layout></CmsContentProvider>}
+        </Suspense>
       </BrowserRouter>
     </>
   )

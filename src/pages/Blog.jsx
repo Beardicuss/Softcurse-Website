@@ -2,21 +2,22 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSEO } from '../hooks/useSEO'
 import { POSTS } from '../data/blog'
+import { useCmsItems } from '../content/CmsContent'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import styles from './Blog.module.css'
-
-const CATEGORIES = ['ALL', ...new Set(POSTS.map(p => p.category))]
 
 export default function Blog() {
   useSEO({ title: 'Blog', description: 'Development dispatches, design decisions, and engineering insights from the Softcurse universe.', url: '/blog' })
   usePageTitle('Blog')
   const [active, setActive] = useState('ALL')
   const [gridRef, gridVis] = useScrollReveal()
+  const posts = useCmsItems('blog', POSTS)
+  const categories = ['ALL', ...new Set(posts.map(p => p.category).filter(Boolean))]
 
   const filtered = active === 'ALL'
-    ? POSTS
-    : POSTS.filter(p => p.category === active)
+    ? posts
+    : posts.filter(p => p.category === active)
 
   return (
     <div>
@@ -34,7 +35,7 @@ export default function Blog() {
 
         {/* Category filter */}
         <div className={styles.filters}>
-          {CATEGORIES.map(cat => (
+          {categories.map(cat => (
             <button
               key={cat}
               className={`${styles.filter} ${active === cat ? styles.filterActive : ''}`}

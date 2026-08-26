@@ -10,13 +10,13 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
-    minify: 'esbuild',
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Split vendor from app code — browser can cache React separately
-          vendor:  ['react', 'react-dom', 'react-router-dom'],
-        }
+        // Vite 8/Rolldown accepts a function here instead of Rollup's former
+        // object shorthand. Keep third-party code in a long-lived vendor chunk.
+        manualChunks(id) {
+          if (id.includes('node_modules')) return 'vendor'
+        },
       }
     }
   }

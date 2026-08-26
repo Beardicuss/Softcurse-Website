@@ -1,5 +1,6 @@
 import { useParams, Navigate } from 'react-router-dom'
-import { APPS, getApps } from '../../data/apps'
+import { APPS } from '../../data/apps'
+import { useCmsItems } from '../../content/CmsContent'
 import Button from '../../components/common/Button'
 import Badge from '../../components/common/Badge'
 import AppCard from '../../components/common/AppCard'
@@ -10,7 +11,8 @@ import styles from './AppDetail.module.css'
 
 export default function AppDetail() {
   const { id } = useParams()
-  const app = APPS[id]
+  const apps = useCmsItems('app', Object.values(APPS))
+  const app = apps.find(item => item.id === id)
 
   usePageTitle(app ? app.name : '')
   useSEO(app ? {
@@ -28,7 +30,7 @@ export default function AppDetail() {
   if (!app) return <Navigate to="/lab" replace />
 
   const statusLabel = { active: '● LIVE', dev: '◎ IN DEV', planned: '○ PLANNED' }
-  const relatedTools = getApps()
+  const relatedTools = apps
     .filter(a => a.id !== app.id && (a.tag === app.tag || a.status === app.status))
     .slice(0, 3)
 
@@ -38,7 +40,7 @@ export default function AppDetail() {
       {/* ── HERO BANNER ── */}
       <div className={styles.hero} ref={heroRef}>
         {(app.heroImage || app.image)
-          ? <img src={app.heroImage || app.image} alt={app.name} className={styles.heroImg} loading="lazy" decoding="async" />
+          ? <img src={app.heroImage || app.image} alt={app.name} className={styles.heroImg} loading="eager" fetchPriority="high" decoding="async" />
           : <div className={styles.heroPlaceholder}><span className={styles.heroIcon}>{app.icon}</span></div>
         }
         <div className={styles.heroOverlay} />
@@ -51,11 +53,12 @@ export default function AppDetail() {
           <h1 className={styles.heroTitle}>{app.name}</h1>
           <p className={styles.heroDesc}>{app.shortDesc}</p>
           <div className={styles.heroActions}>
-            {app.status === 'active'
-              ? <Button variant="cyan">LAUNCH APP</Button>
-              : <Button variant="outline" disabled>IN DEVELOPMENT</Button>
+            {app.playUrl
+              ? <Button variant="cyan" external={app.playUrl}>↗ {app.launchLabel || 'LAUNCH APP'}</Button>
+              : app.downloadReleases?.length === 0 && <Button variant="outline" disabled>{app.status === 'active' ? 'RELEASE PENDING' : 'IN DEVELOPMENT'}</Button>
             }
-            <Button variant="ghost" href="/lab">← BACK TO LAB</Button>
+            {app.downloadReleases?.map(release => <Button key={release.id} variant="cyan" external={release.url}>↓ {release.label}</Button>)}
+            <Button variant="ghost" href="/lab/apps">← BACK TO APPS</Button>
           </div>
         </div>
       </div>

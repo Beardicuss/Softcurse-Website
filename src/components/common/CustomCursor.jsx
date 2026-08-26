@@ -46,10 +46,14 @@ export default function CustomCursor() {
     let intervalId = null
     let totalLoaded = 0
     const totalNeeded = DEF_COUNT + TXT_COUNT
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    let idleId = null
+    let timeoutId = null
 
     const onAllLoaded = () => {
       // Apply initial cursor immediately so there's no flash
       updateStyle()
+      if (prefersReducedMotion) return
       intervalId = setInterval(() => {
         defFrame = (defFrame + 1) % DEF_COUNT
         txtFrame = (txtFrame + 1) % TXT_COUNT
@@ -79,24 +83,23 @@ export default function CustomCursor() {
       img.src = src
     }
 
-    // Load default frames
-    for (let i = 0; i < DEF_COUNT; i++) {
-      const idx = i
-      loadImage(`/cursor/${String(i + 1).padStart(2, '0')}.webp`, (img) => {
-        defUrls[idx] = bake(img)
-      })
+    const startLoading = () => {
+      for (let i = 0; i < DEF_COUNT; i++) {
+        const idx = i
+        loadImage(`/cursor/${String(i + 1).padStart(2, '0')}.webp`, (img) => { defUrls[idx] = bake(img) })
+      }
+      for (let i = 0; i < TXT_COUNT; i++) {
+        const idx = i
+        loadImage(`/cursor/txt/frame_${String(i + 1).padStart(4, '0')}.webp`, (img) => { txtUrls[idx] = bake(img) })
+      }
     }
-
-    // Load text frames
-    for (let i = 0; i < TXT_COUNT; i++) {
-      const idx = i
-      loadImage(`/cursor/txt/frame_${String(i + 1).padStart(4, '0')}.webp`, (img) => {
-        txtUrls[idx] = bake(img)
-      })
-    }
+    if ('requestIdleCallback' in window) idleId = window.requestIdleCallback(startLoading, { timeout: 2500 })
+    else timeoutId = window.setTimeout(startLoading, 1200)
 
     return () => {
       clearInterval(intervalId)
+      if (idleId !== null) window.cancelIdleCallback(idleId)
+      if (timeoutId !== null) window.clearTimeout(timeoutId)
       if (styleTag) styleTag.textContent = ''
     }
   }, [])

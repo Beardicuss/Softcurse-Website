@@ -1,5 +1,6 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { CHRONICLES } from '../../data/chronicles'
+import { useCmsItems } from '../../content/CmsContent'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { useSEO } from '../../hooks/useSEO'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
@@ -7,7 +8,8 @@ import styles from './ChronicleDetail.module.css'
 
 export default function ChronicleDetail() {
   const { id } = useParams()
-  const book = CHRONICLES[id]
+  const books = useCmsItems('chronicle', Object.values(CHRONICLES))
+  const book = books.find(item => item.id === id)
 
   usePageTitle(book ? book.name : '')
   useSEO(book ? {
@@ -28,7 +30,7 @@ export default function ChronicleDetail() {
       {/* ── Hero banner ── */}
       <div className={styles.hero} ref={heroRef}>
         {(book.heroImage || book.image)
-          ? <img src={book.heroImage || book.image} alt="" className={styles.heroImg} loading="lazy" decoding="async" />
+          ? <img src={book.heroImage || book.image} alt="" className={styles.heroImg} loading="eager" fetchPriority="high" decoding="async" />
           : <div className={styles.heroPlaceholder}><span>◈</span></div>
         }
         <div className={styles.heroOverlay} />

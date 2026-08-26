@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom'
-import { getApps } from '../../data/apps'
-import { getGames } from '../../data/games'
 import styles from './Footer.module.css'
 
 export default function Footer() {
-  const apps = getApps()
-  const games = getGames()
   const year = new Date().getFullYear()
 
   return (
@@ -55,15 +51,9 @@ export default function Footer() {
             <span className={styles.colAccent}>◈</span> LAB
           </div>
           <ul className={styles.colList}>
-            <li><Link to="/lab" className={styles.colLink}>All Tools</Link></li>
+            <li><Link to="/lab" className={styles.colLink}>Overview</Link></li>
+            <li><Link to="/lab/apps" className={styles.colLink}>Apps &amp; Tools</Link></li>
             <li><Link to="/experiments" className={styles.colLink}>Experiments</Link></li>
-            {apps.map(a => (
-              <li key={a.id}>
-                <Link to={`/lab/${a.id}`} className={styles.colLink}>
-                  {a.name}
-                </Link>
-              </li>
-            ))}
           </ul>
         </div>
 
@@ -73,15 +63,9 @@ export default function Footer() {
             <span className={styles.colAccentMagenta}>◈</span> STUDIO
           </div>
           <ul className={styles.colList}>
-            <li><Link to="/studio" className={styles.colLink}>All Games</Link></li>
+            <li><Link to="/studio" className={styles.colLink}>Overview</Link></li>
+            <li><Link to="/studio/games" className={styles.colLink}>Games</Link></li>
             <li><Link to="/chronicles" className={styles.colLink}>Chronicles</Link></li>
-            {games.map(g => (
-              <li key={g.id}>
-                <Link to={`/studio/${g.id}`} className={styles.colLink}>
-                  {g.name}
-                </Link>
-              </li>
-            ))}
           </ul>
         </div>
 
@@ -95,6 +79,7 @@ export default function Footer() {
               ['/about', 'About'],
               ['/contact', 'Contact'],
               ['/blog', 'Blog'],
+              ['/localization', 'Localization'],
               ['/roadmap', 'Roadmap'],
               ['/press', 'Press Kit'],
             ].map(([to, label]) => (

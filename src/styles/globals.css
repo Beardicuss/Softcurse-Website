@@ -714,6 +714,15 @@ button:focus-visible {
   top: 0;
 }
 
+.route-loading {
+  min-height: 55vh;
+  display: grid;
+  place-items: center;
+  color: var(--c-cyan);
+  font: 0.75rem var(--font-mono);
+  letter-spacing: 0.18em;
+}
+
 
 /* ================================================================
    SCROLL REVEAL

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { getExperiments } from '../../data/experiments'
+import { EXPERIMENTS } from '../../data/experiments'
+import { useCmsItems } from '../../content/CmsContent'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { useSEO } from '../../hooks/useSEO'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
@@ -16,7 +17,7 @@ export default function Experiments() {
 
   const [headerRef, headerVis] = useScrollReveal(0.05)
   const [gridRef,   gridVis]   = useScrollReveal()
-  const experiments = getExperiments()
+  const experiments = useCmsItems('experiment', Object.values(EXPERIMENTS))
 
   return (
     <div className={styles.page}>

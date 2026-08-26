@@ -302,9 +302,9 @@
 
 @media (max-width: 768px) {
   .hero {
-    height: 50vw;
-    min-height: 260px;
-    max-height: 380px;
+    height: clamp(500px, 70svh, 560px);
+    min-height: 500px;
+    max-height: 560px;
   }
 
   .heroContent {

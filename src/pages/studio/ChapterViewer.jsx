@@ -1,15 +1,22 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { CHRONICLES } from '../../data/chronicles'
-import { usePageTitle } from '../../hooks/usePageTitle'
+import { useCmsItems } from '../../content/CmsContent'
+import { useSEO } from '../../hooks/useSEO'
 import styles from './ChapterViewer.module.css'
 
 export default function ChapterViewer() {
   const { id, num } = useParams()
-  const book = CHRONICLES[id]
+  const books = useCmsItems('chronicle', Object.values(CHRONICLES))
+  const book = books.find(item => item.id === id)
   const chNum   = parseInt(num, 10)
   const chapter = book ? book.chapters.find(c => c.num === chNum) : null
 
-  usePageTitle(chapter && book ? `${chapter.title} — ${book.name}` : '')
+  useSEO(chapter && book ? {
+    title: `${chapter.title} — ${book.name}`,
+    description: `Read chapter ${chNum} of ${book.name}: ${chapter.title}.`,
+    url: `/chronicles/${id}/chapter/${chNum}`,
+    type: 'article',
+  } : { noindex: true })
 
   if (!book) return <Navigate to="/chronicles" replace />
   if (!chapter || chapter.status !== 'published') return <Navigate to={`/chronicles/${id}`} replace />

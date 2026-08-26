@@ -6,15 +6,31 @@ import styles from './SearchBar.module.css'
 
 export default function SearchBar({ onClose }) {
   const [query, setQuery] = useState('')
-  const { apps, games, posts, total } = useSearch(query)
+  const { apps, games, localizations, posts, total } = useSearch(query)
   const inputRef = useRef(null)
+  const panelRef = useRef(null)
   const navigate = useNavigate()
 
-  useEffect(() => { inputRef.current?.focus() }, [])
+  useEffect(() => {
+    inputRef.current?.focus()
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = previousOverflow }
+  }, [])
 
   // Close on Escape
   useEffect(() => {
-    const fn = (e) => { if (e.key === 'Escape') onClose?.() }
+    const fn = (e) => {
+      if (e.key === 'Escape') onClose?.()
+      if (e.key === 'Tab' && panelRef.current) {
+        const focusable = [...panelRef.current.querySelectorAll('button:not([disabled]), input:not([disabled]), a[href]')]
+        if (!focusable.length) return
+        const first = focusable[0]
+        const last = focusable.at(-1)
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus() }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
+      }
+    }
     document.addEventListener('keydown', fn)
     return () => document.removeEventListener('keydown', fn)
   }, [onClose])
@@ -26,13 +42,13 @@ export default function SearchBar({ onClose }) {
 
   return (
     <div className={styles.overlay} onClick={(e) => e.target === e.currentTarget && onClose?.()}>
-      <div className={styles.panel}>
+      <div ref={panelRef} className={styles.panel} role="dialog" aria-modal="true" aria-label="Search Softcurse content">
         <div className={styles.inputRow}>
           <EyeIcon size={22} className={styles.eyeIcon} />
           <input
             ref={inputRef}
             className={styles.input}
-            placeholder="Search tools, games, posts..."
+            placeholder="Search tools, games, localization, posts..."
             value={query}
             onChange={e => setQuery(e.target.value)}
             aria-label="Search"
@@ -85,6 +101,22 @@ export default function SearchBar({ onClose }) {
               </div>
             )}
 
+            {localizations.length > 0 && (
+              <div className={styles.group}>
+                <div className={styles.groupLabel}>LOCALIZATION</div>
+                {localizations.map(item => (
+                  <button key={item.id} className={styles.item} onClick={() => go(`/localization/${item.id}`)}>
+                    <span className={styles.itemIcon}>{item.icon}</span>
+                    <div className={styles.itemContent}>
+                      <div className={styles.itemTitle}>{item.name}</div>
+                      <div className={styles.itemSub}>{item.shortDesc}</div>
+                    </div>
+                    <span className={styles.itemTag}>{item.tag}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+
             {posts.length > 0 && (
               <div className={styles.group}>
                 <div className={styles.groupLabel}>BLOG POSTS</div>
@@ -105,7 +137,7 @@ export default function SearchBar({ onClose }) {
 
         {!query && (
           <div className={styles.hint}>
-            <span>Try: <em>blackwatch</em>, <em>chronicles</em>, <em>AI</em></span>
+            <span>Try: <em>GELA</em>, <em>Blasphemous</em>, <em>FakeChecker</em></span>
           </div>
         )}
       </div>

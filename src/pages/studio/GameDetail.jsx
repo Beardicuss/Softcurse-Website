@@ -1,7 +1,9 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { GAMES } from '../../data/games'
+import { useCmsItems } from '../../content/CmsContent'
 import Button from '../../components/common/Button'
 import Badge from '../../components/common/Badge'
+import GameLauncher from '../../components/common/GameLauncher'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { useSEO } from '../../hooks/useSEO'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
@@ -9,7 +11,8 @@ import styles from './GameDetail.module.css'
 
 export default function GameDetail() {
   const { id } = useParams()
-  const game = GAMES[id]
+  const games = useCmsItems('game', Object.values(GAMES))
+  const game = games.find(item => item.id === id)
 
   usePageTitle(game ? game.name : '')
   useSEO(game ? {
@@ -38,7 +41,8 @@ export default function GameDetail() {
             alt={game.name}
             className={styles.heroImg}
             style={{ objectPosition: game.heroPosition || 'top center' }}
-            loading="lazy"
+            loading="eager"
+            fetchPriority="high"
             decoding="async"
           />
           : <div className={styles.heroPlaceholder}><span className={styles.heroIcon}>{game.icon}</span></div>
@@ -54,9 +58,10 @@ export default function GameDetail() {
           <h1 className={styles.heroTitle}>{game.name}</h1>
           <p className={styles.heroDesc}>{game.shortDesc}</p>
           <div className={styles.heroActions}>
-            {game.playUrl && <Button variant="cyan" external={game.playUrl}>▶ PLAY NOW</Button>}
-            {!game.playUrl && <Button variant="magenta">WISHLIST</Button>}
-            <Button variant="ghost" href="/studio">← BACK TO STUDIO</Button>
+            {game.playUrl && <Button variant="cyan" external={game.playUrl}>▶ {game.launchLabel || 'PLAY NOW'}</Button>}
+            {game.downloadReleases?.map(release => <Button key={release.id} variant="cyan" external={release.url}>↓ {release.label}</Button>)}
+            {!game.playUrl && <Button variant="magenta" disabled={game.ctaDisabled}>{game.ctaLabel || 'WISHLIST'}</Button>}
+            <Button variant="ghost" href="/studio/games">← BACK TO GAMES</Button>
           </div>
         </div>
       </div>
@@ -68,6 +73,14 @@ export default function GameDetail() {
           <div className={styles.sectionLabel}>{"// ABOUT THE GAME"}</div>
           <p className={styles.desc}>{game.desc}</p>
         </section>
+
+        <GameLauncher game={game} />
+
+        {game.downloadReleases?.length > 0 && <section className={styles.section}>
+          <div className={styles.sectionLabel}>{"// DOWNLOADS"}</div>
+          <h2 className={styles.sectionTitle}>Available builds</h2>
+          {game.downloadReleases.map(release => <p key={release.id}><Button variant="cyan" external={release.url}>↓ {release.label}{release.version ? ` — v${release.version}` : ''}</Button></p>)}
+        </section>}
 
         {/* ── FEATURES ── */}
         <section className={`${styles.section}`} ref={featRef}>
@@ -138,8 +151,8 @@ export default function GameDetail() {
         {/* ── CTA ── */}
         <div className={styles.cta}>
           {game.playUrl
-            ? <Button variant="cyan" external={game.playUrl}>▶ PLAY NOW</Button>
-            : <Button variant="magenta">WISHLIST THIS GAME</Button>
+            ? <Button variant="cyan" external={game.playUrl}>▶ {game.launchLabel || 'PLAY NOW'}</Button>
+            : <Button variant="magenta" disabled={game.ctaDisabled}>{game.ctaLabel || 'WISHLIST THIS GAME'}</Button>
           }
           <Button variant="outlineMagenta" href="/blog">DEV BLOG</Button>
         </div>

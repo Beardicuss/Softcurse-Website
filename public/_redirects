@@ -1,2 +1,2 @@
-# SPA routing handled natively by Cloudflare Pages
-# No redirect rules needed — Cloudflare serves index.html for all 404s automatically
+# Cloudflare Pages applies SPA fallback automatically when no top-level
+# 404.html exists. Keep this file free of a catch-all rule to avoid a loop.

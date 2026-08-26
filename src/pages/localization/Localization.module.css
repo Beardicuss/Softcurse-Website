@@ -1,0 +1,21 @@
+.header { border-bottom-color: rgba(255, 216, 77, 0.15); }
+
+.sectionHead {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.4rem;
+}
+
+.marker {
+  width: 8px;
+  height: 8px;
+  margin-top: 0.34rem;
+  border-radius: 50%;
+  background: #ffd84d;
+  box-shadow: 0 0 12px rgba(255, 216, 77, 0.7);
+}
+
+.label { color: #ffd84d; font: 700 0.72rem var(--font-heading); letter-spacing: 0.13em; }
+.note { color: var(--muted); font: 0.78rem/1.5 var(--font-mono); margin-top: 0.35rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 1.5rem; }

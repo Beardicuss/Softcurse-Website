@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom'
+import { useSEO } from '../hooks/useSEO'
 import styles from './NotFound.module.css'
 
 export default function NotFound() {
+  useSEO({ title: 'Page Not Found', description: 'The requested Softcurse page could not be found.', url: window.location.pathname, noindex: true })
+
   return (
     <div className={styles.page}>
       <div className={styles.inner}>

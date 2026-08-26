@@ -3,8 +3,9 @@ import { useScrollReveal } from '../hooks/useScrollReveal'
 import { useSEO } from '../hooks/useSEO'
 import StatNumber from '../components/common/StatNumber'
 import { usePageTitle } from '../hooks/usePageTitle'
-import { getApps } from '../data/apps'
-import { getGames } from '../data/games'
+import { APPS } from '../data/apps'
+import { GAMES } from '../data/games'
+import { useCmsItems } from '../content/CmsContent'
 import AppCard from '../components/common/AppCard'
 import GameCard from '../components/common/GameCard'
 import Button from '../components/common/Button'
@@ -14,8 +15,9 @@ import styles from './Home.module.css'
 export default function Home() {
   usePageTitle(null) // just "SOFTCURSE" on homepage
   const { canvasRef, volume, setVolume } = useAsteroidsGlitch(true)
-  const apps = getApps().slice(0, 6)
-  const games = getGames()
+  const allApps = useCmsItems('app', Object.values(APPS))
+  const apps = allApps.slice(0, 6)
+  const games = useCmsItems('game', Object.values(GAMES))
 
   useSEO({ title: 'Home', description: 'A small, slightly sinister digital universe. Building tools that pierce the noise — and worlds that bend reality.', url: '/' })
   const [statsRef, statsVis] = useScrollReveal()
@@ -66,8 +68,8 @@ export default function Home() {
       {/* ── Stats ── */}
       <div ref={statsRef} className={`${styles.stats} reveal-group ${statsVis ? "visible" : ""}`}>
         {[
-          ['9', 'Lab Tools'],
-          ['3', 'Games in Dev'],
+          [String(allApps.length), 'Lab Tools'],
+          [String(games.length), 'Studio Games'],
           ['∞', 'Possibilities'],
           ['1', 'Universe'],
         ].map(([n, l]) => (
@@ -94,7 +96,7 @@ export default function Home() {
           {apps.map(a => <AppCard key={a.id} app={a} />)}
         </div>
         <div className={styles.sectionCta}>
-          <Button variant="outline" href="/lab">VIEW ALL TOOLS →</Button>
+          <Button variant="outline" href="/lab/apps">VIEW ALL TOOLS →</Button>
           <Button variant="ghost" href="/experiments">VISIT EXPERIMENTS →</Button>
         </div>
       </section>
@@ -121,7 +123,7 @@ export default function Home() {
           {games.map(g => <GameCard key={g.id} game={g} />)}
         </div>
         <div className={styles.sectionCta}>
-          <Button variant="outlineMagenta" href="/studio">VIEW ALL GAMES →</Button>
+          <Button variant="outlineMagenta" href="/studio/games">VIEW ALL GAMES →</Button>
           <Button variant="ghost" href="/chronicles">VISIT CHRONICLES →</Button>
         </div>
       </section>

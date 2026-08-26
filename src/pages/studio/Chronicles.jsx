@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { getChronicles } from '../../data/chronicles'
+import { CHRONICLES } from '../../data/chronicles'
+import { useCmsItems } from '../../content/CmsContent'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { useSEO } from '../../hooks/useSEO'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
@@ -16,7 +17,7 @@ export default function Chronicles() {
 
   const [headerRef, headerVis] = useScrollReveal(0.05)
   const [gridRef,   gridVis]   = useScrollReveal()
-  const books = getChronicles()
+  const books = useCmsItems('chronicle', Object.values(CHRONICLES))
 
   return (
     <div className={styles.page}>

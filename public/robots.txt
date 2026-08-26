@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://softcurse.com/sitemap.xml
+Sitemap: https://softcursesystems.pages.dev/sitemap.xml

@@ -1,32 +1,43 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Button from '../components/common/Button'
+import TurnstileWidget from '../components/common/TurnstileWidget'
 import { useSEO } from '../hooks/useSEO'
 import { usePageTitle } from '../hooks/usePageTitle'
 import styles from './Contact.module.css'
 
-function Field({ name, label, type = 'text', textarea, value, onChange, error }) {
+function Field({ name, label, type = 'text', textarea, value, onChange, error, maxLength, autoComplete }) {
+  const errorId = `${name}-error`
   return (
     <div className={styles.field}>
       <label className={styles.label} htmlFor={name}>{label}</label>
       {textarea
         ? <textarea
             id={name}
+            name={name}
             className={`${styles.input} ${styles.textarea} ${error ? styles.inputError : ''}`}
             value={value}
             onChange={onChange}
             placeholder={`Enter your ${label.toLowerCase()}...`}
             rows={5}
+            maxLength={maxLength}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? errorId : undefined}
           />
         : <input
             id={name}
+            name={name}
             type={type}
             className={`${styles.input} ${error ? styles.inputError : ''}`}
             value={value}
             onChange={onChange}
             placeholder={`Your ${label.toLowerCase()}...`}
+            maxLength={maxLength}
+            autoComplete={autoComplete}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? errorId : undefined}
           />
       }
-      {error && <span className={styles.error}>{error}</span>}
+      {error && <span id={errorId} className={styles.error}>{error}</span>}
     </div>
   )
 }
@@ -38,6 +49,10 @@ export default function Contact() {
   const [sent, setSent]     = useState(false)
   const [errors, setErrors] = useState({})
   const [status, setStatus]   = useState('idle') // idle | loading | error
+  const [turnstileToken, setTurnstileToken] = useState('')
+  const [turnstileError, setTurnstileError] = useState('')
+  const [securityActive, setSecurityActive] = useState(false)
+  const turnstileRef = useRef(null)
 
   const update = (field) => (e) => {
     setForm(f => ({ ...f, [field]: e.target.value }))
@@ -60,22 +75,28 @@ export default function Contact() {
     const errs = validate()
     if (errs === null) { setSent(true); return }  // Honeypot — fake success
     if (Object.keys(errs).length) { setErrors(errs); return }
+    if (!turnstileToken) {
+      setTurnstileError('Complete the security check before transmitting.')
+      return
+    }
 
     setStatus('loading')
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, turnstileToken }),
       })
-      const data = await res.json()
-      if (data.ok) {
+      const data = await res.json().catch(() => null)
+      if (res.ok && data?.ok) {
         setSent(true)
       } else {
         setStatus('error')
       }
     } catch {
       setStatus('error')
+    } finally {
+      turnstileRef.current?.reset()
     }
   }
 
@@ -101,13 +122,13 @@ export default function Contact() {
                 <p>We&apos;ll be in touch from the dark.</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} noValidate>
-                <Field name="name"    label="Name"    value={form.name}    onChange={update('name')}    error={errors.name} />
-                <Field name="email"   label="Email"   type="email" value={form.email}   onChange={update('email')}   error={errors.email} />
-                <Field name="subject" label="Subject" value={form.subject} onChange={update('subject')} error={errors.subject} />
-                <Field name="message" label="Message" textarea value={form.message} onChange={update('message')} error={errors.message} />
+              <form onSubmit={handleSubmit} onFocusCapture={() => setSecurityActive(true)} noValidate>
+                <Field name="name" label="Name" value={form.name} onChange={update('name')} error={errors.name} maxLength={100} autoComplete="name" />
+                <Field name="email" label="Email" type="email" value={form.email} onChange={update('email')} error={errors.email} maxLength={254} autoComplete="email" />
+                <Field name="subject" label="Subject" value={form.subject} onChange={update('subject')} error={errors.subject} maxLength={160} />
+                <Field name="message" label="Message" textarea value={form.message} onChange={update('message')} error={errors.message} maxLength={5000} />
                 {/* Honeypot — hidden from real users, bots fill it */}
-                <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }}>
+                <div aria-hidden="true" className={styles.trap}>
                   <label htmlFor="_trap">Leave this empty</label>
                   <input
                     id="_trap"
@@ -119,9 +140,11 @@ export default function Contact() {
                     onChange={update('_trap')}
                   />
                 </div>
-                <Button variant="cyan" type="submit" disabled={status === 'loading'}>{status === 'loading' ? 'SENDING...' : 'TRANSMIT →'}</Button>
+                {securityActive && <TurnstileWidget ref={turnstileRef} action="contact" onToken={setTurnstileToken} onError={setTurnstileError} />}
+                {turnstileError && <p className={styles.turnstileError} role="alert">{turnstileError}</p>}
+                <Button variant="cyan" type="submit" disabled={status === 'loading' || !turnstileToken}>{status === 'loading' ? 'SENDING...' : 'TRANSMIT →'}</Button>
                 {status === 'error' && (
-                  <p style={{ color: 'var(--red)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', marginTop: '0.75rem', letterSpacing: '0.08em' }}>
+                  <p className={styles.submitError} role="alert">
                     ✕ TRANSMISSION FAILED — try again or email us directly.
                   </p>
                 )}

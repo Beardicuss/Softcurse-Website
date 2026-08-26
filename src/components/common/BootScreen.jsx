@@ -69,28 +69,32 @@ export default function BootScreen({ onComplete }) {
     }
   }, [triggerText, triggerPortal, showText])
 
-  // Click anywhere → show text → 2s later → portal
+  // The visible hint promises a skip, so pointer and keyboard input exit immediately.
   const handleClick = () => {
-    if (!showText) {
-      triggerText()
-      setTimeout(() => triggerPortal(), 3000)
-    }
+    triggerPortal()
   }
 
   return (
     <div
       className={`${styles.screen} ${phase === 'portal' ? styles.portal : ''} ${phase === 'done' ? styles.done : ''}`}
       onClick={handleClick}
-      aria-hidden="true"
+      onKeyDown={(event) => {
+        if (['Enter', ' ', 'Escape'].includes(event.key)) { event.preventDefault(); triggerPortal() }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label="Tap anywhere to skip introduction"
     >
       {/* Full-screen video */}
       <video
         ref={videoRef}
         className={styles.video}
         src="/video/intro.webm"
+        poster="/og-image.png"
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
+        aria-hidden="true"
       />
 
       {/* Dark overlay — lightens slightly when text appears */}

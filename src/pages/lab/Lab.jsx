@@ -1,4 +1,5 @@
-import { getApps } from '../../data/apps'
+import { APPS } from '../../data/apps'
+import { useCmsItems } from '../../content/CmsContent'
 import AppCard from '../../components/common/AppCard'
 import { useSEO } from '../../hooks/useSEO'
 import { usePageTitle } from '../../hooks/usePageTitle'
@@ -6,23 +7,24 @@ import { useScrollReveal } from '../../hooks/useScrollReveal'
 import styles from './Lab.module.css'
 
 export default function Lab() {
-  useSEO({ title: 'The Lab', description: '9 tools built to solve specific problems without compromise. No bloat. No dark patterns. Just precise software.', url: '/lab' })
-  usePageTitle('The Lab')
+  useSEO({ title: 'Apps & Tools', description: 'Softcurse applications and tools built to solve specific problems without compromise.', url: '/lab/apps' })
+  usePageTitle('Apps & Tools')
   const [r1,v1] = useScrollReveal()
   const [r2,v2] = useScrollReveal()
   const [r3,v3] = useScrollReveal()
-  const active  = getApps('active')
-  const inDev   = getApps('dev')
-  const planned = getApps('planned')
+  const apps = useCmsItems('app', Object.values(APPS))
+  const active  = apps.filter(item => item.status === 'active')
+  const inDev   = apps.filter(item => item.status === 'dev')
+  const planned = apps.filter(item => item.status === 'planned')
 
   return (
     <div>
       <div className="page-header grid-bg">
         <div className="scanline" />
         <div className="page-header__eyebrow">{"// SOFTCURSE"}</div>
-        <h1 className="page-header__title">THE LAB</h1>
+        <h1 className="page-header__title">APPS &amp; TOOLS</h1>
         <p className="page-header__desc">
-          Nine tools. Built sharp. Built dark. Each one a precise solution to
+          Built sharp. Built dark. Each one a precise solution to
           a real problem in the digital world. No bloat. No compromise.
         </p>
       </div>

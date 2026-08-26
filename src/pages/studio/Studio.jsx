@@ -1,24 +1,25 @@
 import { Link } from 'react-router-dom'
-import { getGames } from '../../data/games'
+import { GAMES } from '../../data/games'
+import { useCmsItems } from '../../content/CmsContent'
 import { useSEO } from '../../hooks/useSEO'
 import GameCard from '../../components/common/GameCard'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import styles from './Studio.module.css'
 
 export default function Studio() {
-  useSEO({ title: 'Studio', description: 'Softcurse Studio — worlds that never forgive. Stories that linger. Built from the ground up with intent.', url: '/studio' })
-  usePageTitle('The Studio')
-  const games = getGames()
+  useSEO({ title: 'Studio Games', description: 'Original games from Softcurse Studio — playable releases and worlds in development.', url: '/studio/games' })
+  usePageTitle('Studio Games')
+  const games = useCmsItems('game', Object.values(GAMES))
 
   return (
     <div>
       <div className={`page-header grid-bg ${styles.header}`}>
         <div className="scanline" />
         <div className="page-header__eyebrow" style={{ color: 'var(--magenta)' }}>{"// SOFTCURSE"}</div>
-        <h1 className="page-header__title page-header__title--magenta">THE STUDIO</h1>
+        <h1 className="page-header__title page-header__title--magenta">GAMES</h1>
         <p className="page-header__desc">
-          Three worlds under construction. Each one built from a different kind of dark.
-          No release dates. No compromises. Shipped when they&apos;re right.
+          Original worlds, each built from a different kind of dark. Some are live now;
+          the rest ship when they&apos;re right. No compromises.
         </p>
       </div>
 
@@ -30,7 +31,7 @@ export default function Studio() {
         <div className={styles.note}>
           <span className={styles.noteLabel}>{"// STUDIO NOTE"}</span>
           <p className={styles.noteText}>
-            All Softcurse Studio games are in active or planned development.
+            Softcurse Studio games range from playable browser releases to worlds in development.
             Follow the <Link to="/blog">blog</Link> for dev updates, media drops, and lore reveals.
             No ETAs. Just progress.
           </p>

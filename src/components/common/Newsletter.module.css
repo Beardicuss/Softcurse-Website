@@ -58,14 +58,25 @@
   margin-bottom: 0.75rem;
 }
 
-.form {
-  display: flex;
-  gap: 0;
+.signup {
   max-width: 440px;
   margin: 0 auto;
 }
 
-.compact .form { margin: 0; }
+.form {
+  display: flex;
+  gap: 0;
+}
+
+.trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.compact .signup { margin: 0; }
 
 .input {
   flex: 1;

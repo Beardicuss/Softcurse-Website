@@ -1,6 +1,10 @@
 node_modules/
 dist/
+_worker.bundle
+.wrangler/
+.claude/
 .env
 .env.local
+.dev.vars
 .DS_Store
 *.log

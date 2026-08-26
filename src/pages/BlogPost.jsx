@@ -1,5 +1,6 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
-import { getPost, POSTS } from '../data/blog'
+import { POSTS } from '../data/blog'
+import { useCmsItems } from '../content/CmsContent'
 import Button from '../components/common/Button'
 import ShareButtons from '../components/common/ShareButtons'
 import Newsletter from '../components/common/Newsletter'
@@ -9,9 +10,10 @@ import styles from './BlogPost.module.css'
 
 export default function BlogPost() {
   const { id } = useParams()
-  const post = getPost(id)
+  const posts = useCmsItems('blog', POSTS)
+  const post = posts.find(item => item.id === id)
   usePageTitle(post ? post.title : '')
-  useSEO(post ? { title: post.title, description: post.excerpt, url: `/blog/${post.id}` } : {})
+  useSEO(post ? { title: post.title, description: post.excerpt, url: `/blog/${post.id}`, image: post.image, type: 'article' } : {})
   if (!post) return <Navigate to="/blog" replace />
 
   // Render minimal markdown: ## headings and paragraphs
@@ -30,7 +32,7 @@ export default function BlogPost() {
   }
 
   // Related posts (same category, exclude current)
-  const related = POSTS.filter(p => p.category === post.category && p.id !== post.id).slice(0, 2)
+  const related = posts.filter(p => p.category === post.category && p.id !== post.id).slice(0, 2)
 
   return (
     <div className={styles.page}>

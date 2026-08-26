@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
+import { lazy, Suspense, useState, useEffect, useRef } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
-import { getApps } from '../../data/apps'
-import { getGames } from '../../data/games'
 import SearchButton from './SearchButton'
-import SearchBar from './SearchBar'
 import styles from './Navbar.module.css'
+
+const SearchBar = lazy(() => import('./SearchBar'))
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -39,8 +38,6 @@ export default function Navbar() {
   }, [])
 
   const toggleDropdown = (name) => setOpenDropdown(prev => prev === name ? null : name)
-  const apps = getApps()
-  const games = getGames()
   const linkCls = ({ isActive }) => isActive ? `${styles.link} ${styles.active}` : styles.link
 
   return (
@@ -74,7 +71,7 @@ export default function Navbar() {
 
             <li className={styles.dropdown}>
               <button
-                className={`${styles.link} ${location.pathname.startsWith('/lab') ? styles.active : ''}`}
+                className={`${styles.link} ${(location.pathname.startsWith('/lab') || location.pathname.startsWith('/experiments')) ? styles.active : ''}`}
                 onClick={() => toggleDropdown('lab')}
                 aria-expanded={openDropdown === 'lab'}
                 aria-haspopup="true"
@@ -82,18 +79,16 @@ export default function Navbar() {
                 LAB <span className={styles.arrow} aria-hidden="true">▾</span>
               </button>
               <div className={`${styles.menu} ${openDropdown === 'lab' ? styles.menuOpen : ''}`} role="menu">
-                <div className={styles.menuHead}>Tools &amp; Apps</div>
-                <Link to="/lab" className={styles.menuItem} role="menuitem">Lab Home</Link>
+                <div className={styles.menuHead}>Lab Directory</div>
+                <Link to="/lab" className={styles.menuItem} role="menuitem">Overview</Link>
+                <Link to="/lab/apps" className={styles.menuItem} role="menuitem">Apps &amp; Tools</Link>
                 <Link to="/experiments" className={styles.menuItem} role="menuitem">Experiments</Link>
-                {apps.map(a => (
-                  <Link key={a.id} to={`/lab/${a.id}`} className={styles.menuItem} role="menuitem">{a.name}</Link>
-                ))}
               </div>
             </li>
 
             <li className={styles.dropdown}>
               <button
-                className={`${styles.link} ${location.pathname.startsWith('/studio') ? styles.active : ''}`}
+                className={`${styles.link} ${(location.pathname.startsWith('/studio') || location.pathname.startsWith('/chronicles')) ? styles.active : ''}`}
                 onClick={() => toggleDropdown('studio')}
                 aria-expanded={openDropdown === 'studio'}
                 aria-haspopup="true"
@@ -101,15 +96,14 @@ export default function Navbar() {
                 STUDIO <span className={styles.arrow} aria-hidden="true">▾</span>
               </button>
               <div className={`${styles.menu} ${openDropdown === 'studio' ? styles.menuOpen : ''}`} role="menu">
-                <div className={styles.menuHead}>Games</div>
-                <Link to="/studio" className={styles.menuItem} role="menuitem">Studio Home</Link>
+                <div className={styles.menuHead}>Studio Directory</div>
+                <Link to="/studio" className={styles.menuItem} role="menuitem">Overview</Link>
+                <Link to="/studio/games" className={styles.menuItem} role="menuitem">Games</Link>
                 <Link to="/chronicles" className={styles.menuItem} role="menuitem">Chronicles</Link>
-                {games.map(g => (
-                  <Link key={g.id} to={`/studio/${g.id}`} className={styles.menuItem} role="menuitem">{g.name}</Link>
-                ))}
               </div>
             </li>
 
+            <li><NavLink to="/localization" className={linkCls}>LOCALIZATION</NavLink></li>
             <li><NavLink to="/about" className={linkCls}>ABOUT</NavLink></li>
             <li><NavLink to="/contact" className={linkCls}>CONTACT</NavLink></li>
             <li><NavLink to="/blog" className={linkCls}>BLOG</NavLink></li>
@@ -136,7 +130,7 @@ export default function Navbar() {
 
         </div>
       </nav>
-      {searchOpen && <SearchBar onClose={() => setSearchOpen(false)} />}
+      {searchOpen && <Suspense fallback={null}><SearchBar onClose={() => setSearchOpen(false)} /></Suspense>}
     </>
   )
 }

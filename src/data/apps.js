@@ -273,6 +273,90 @@ export const APPS = {
     releaseDate: '2023-09-20',
     version: '2.3',
   },
+
+  gela: {
+    id: 'gela',
+    image: '/posters/apps/gela.png',
+    heroImage: '/posters/apps/gela.png',
+    name: 'GELA',
+    icon: '◉',
+    tag: 'VOICE CONTROL',
+    status: 'dev',
+    shortDesc: 'Offline Georgian voice control for Windows — private, precise, and built around safe commands.',
+    desc: `GELA is an offline-first Georgian voice controller for Windows. It listens for a fixed
+    wake phrase, recognizes short Georgian or English commands, and controls allowlisted applications,
+    games, media, windows, and selected system actions. Speech recognition and ordinary computer control
+    stay on the PC. GELA is deliberately a command tool, not a conversational assistant, and rejects
+    uncertain instructions instead of guessing.`,
+    features: [
+      'Offline Georgian Wake Phrase and Command Recognition',
+      'Safe Application and Steam Game Control',
+      'Window, Media, Volume, and Fixed System Actions',
+      'Aliases, Routines, Diagnostics, and Voice Calibration',
+      'System Tray Controls and Silent Windows Startup',
+      'Authenticated Bridge for the GELA Mobile Companion',
+      'Optional Private-Network Access through Tailscale',
+      'No Arbitrary Shell Execution or Passive Cloud Uploads',
+    ],
+    techStack: ['Python 3.11+', 'Vosk', 'Omnilingual ASR', 'sherpa-onnx', 'PyInstaller', 'Windows'],
+    releaseDate: '2026-08-01',
+    version: '1.5.2',
+  },
+
+  gelaMobile: {
+    id: 'gela-mobile',
+    image: '/posters/apps/gela-mobile.webp',
+    heroImage: '/posters/apps/gela-mobile.webp',
+    name: 'GELA Mobile',
+    icon: '⌁',
+    tag: 'MOBILE COMPANION',
+    status: 'dev',
+    shortDesc: 'Android command deck for securely controlling a paired GELA Windows PC.',
+    desc: `GELA Mobile is the Android companion to GELA for Windows. It sends short voice or typed
+    commands to a paired PC over local Wi-Fi or an encrypted private network. The app supports multiple
+    computers, secure token storage, local rediscovery, deliberate file and clipboard exchange, and
+    time-limited view-only screen access. It never acts as a general remote desktop and keeps the PC as
+    the final authorization boundary.`,
+    features: [
+      'Six-Digit Pairing with Secure Token Storage',
+      'Georgian Voice and Typed PC Commands',
+      'Multiple Saved PCs with Local Rediscovery',
+      'Local Wi-Fi and Private Tailscale Connectivity',
+      'Explicit File and Clipboard Exchange',
+      'Biometric Confirmation for Sensitive Actions',
+      'Time-Limited, View-Only PC Screen Access',
+      'Independent Georgian and English Interface Languages',
+    ],
+    techStack: ['React Native 0.86', 'Expo SDK 57', 'TypeScript', 'Android', 'SecureStore'],
+    releaseDate: '2026-08-01',
+    version: '1.0.0',
+  },
+
+  codexPixel: {
+    id: 'codex-pixel',
+    image: '/posters/apps/codex-pixel.jpg',
+    heroImage: '/posters/apps/codex-pixel.jpg',
+    name: 'Codex Pixel',
+    icon: '▦',
+    tag: 'DEVELOPER TOOL',
+    status: 'dev',
+    shortDesc: 'A living pixel workspace that turns Codex agent activity into an animated visual world.',
+    desc: `Codex Pixel is a Softcurse developer-tool project that makes coding-agent work visible.
+    Active Codex sessions appear as pixel characters inside a customizable workspace, with movement and
+    animation reflecting their current activity. The project explores Codex-aware session detection,
+    themed environments, character states, and a playful interface for understanding parallel development
+    work at a glance.`,
+    features: [
+      'Codex-Aware Agent Activity Visualization',
+      'Animated Pixel Characters and Live Status States',
+      'Custom Softcurse Visual Themes and Environments',
+      'Interactive Workspace Layout',
+      'Multiple Simultaneous Agent Sessions',
+      'VS Code and Standalone Workspace Exploration',
+    ],
+    techStack: ['TypeScript', 'React 19', 'Vite', 'Canvas 2D', 'VS Code Webview', 'Fastify'],
+    releaseDate: '2026-08-01',
+  },
 }
 
 /**
