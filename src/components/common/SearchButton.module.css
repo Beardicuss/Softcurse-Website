@@ -1,42 +1,170 @@
 .btn {
-  display: flex;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto 34px;
   align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  background: transparent;
-  border: none;
+  gap: 0.55rem;
+  width: 220px;
+  height: 46px;
+  padding: 0 6px 0 14px;
+  overflow: hidden;
+  border: 1px solid rgba(79, 255, 240, 0.34);
+  border-radius: 9px;
+  background: linear-gradient(105deg, rgba(5, 13, 20, 0.96), rgba(8, 16, 28, 0.92));
   color: var(--cyan);
   cursor: pointer;
-  opacity: 0.85;
-  transition: opacity 0.2s, filter 0.2s;
   flex-shrink: 0;
-  padding: 0;
+  box-shadow: inset 0 0 18px rgba(79, 255, 240, 0.035), 0 0 20px rgba(79, 255, 240, 0.06);
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
 }
 
-.btn:hover {
-  opacity: 1;
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.3;
+  background-image:
+    radial-gradient(circle at 12% 28%, var(--cyan) 0 1px, transparent 1.3px),
+    radial-gradient(circle at 44% 72%, rgba(255, 0, 255, 0.8) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 72% 24%, #fff 0 0.7px, transparent 1px),
+    radial-gradient(circle at 88% 70%, var(--cyan) 0 0.8px, transparent 1.1px);
+  background-size: 82px 48px, 113px 61px, 69px 44px, 97px 55px;
+  animation: starDrift 8s linear infinite;
 }
 
-.icon {
-  filter: drop-shadow(0 0 5px rgba(79, 255, 240,0.55));
-  transition: filter 0.25s;
+.nebula,
+.starfield,
+.stardust,
+.cosmicRing {
+  position: absolute;
+  inset: -80px;
+  z-index: -2;
+  pointer-events: none;
+  border-radius: 50%;
+  transition: transform 1.6s ease;
 }
 
-.btn:hover .icon {
-  filter: drop-shadow(0 0 10px var(--cyan)) drop-shadow(0 0 22px rgba(79, 255, 240,0.5));
+.nebula {
+  opacity: 0.16;
+  filter: blur(22px);
+  background: conic-gradient(from 20deg, transparent, var(--cyan), transparent 25%, transparent 58%, var(--magenta), transparent 82%);
 }
 
-.spinArc {
-  animation: arcSpin 3s linear infinite;
-  transform-origin: 30px 30px;
+.starfield {
+  opacity: 0.3;
+  background: conic-gradient(from 80deg, transparent, rgba(79, 255, 240, 0.42), transparent 12%, transparent 53%, rgba(82, 96, 255, 0.42), transparent 66%);
 }
 
-@keyframes arcSpin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+.stardust {
+  inset: -120px;
+  opacity: 0.5;
+  filter: blur(2px);
+  background: conic-gradient(from 110deg, transparent, var(--cyan), transparent 7%, transparent 50%, var(--magenta), transparent 57%);
+}
+
+.cosmicRing {
+  inset: -125px;
+  opacity: 0.38;
+  background: conic-gradient(from 65deg, transparent, var(--cyan) 4%, transparent 10%, transparent 51%, var(--magenta) 56%, transparent 63%);
+}
+
+.glow {
+  position: absolute;
+  left: 8px;
+  width: 34px;
+  height: 24px;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--cyan);
+  filter: blur(20px);
+  opacity: 0.28;
+  transition: opacity 0.25s;
+}
+
+.searchIcon,
+.portal {
+  display: grid;
+  place-items: center;
+}
+
+.searchIcon svg {
+  stroke: var(--cyan);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 5px rgba(79, 255, 240, 0.75));
+}
+
+.portal {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(79, 255, 240, 0.2);
+  border-radius: 7px;
+  background: linear-gradient(145deg, rgba(79, 255, 240, 0.09), rgba(255, 0, 255, 0.06));
+}
+
+.portal svg {
+  stroke: rgba(190, 255, 250, 0.74);
+  stroke-width: 1.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.label {
+  overflow: hidden;
+  color: rgba(220, 255, 252, 0.72);
+  font: 600 0.7rem var(--font-mono);
+  letter-spacing: 0.13em;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.shortcut {
+  color: rgba(143, 164, 176, 0.65);
+  font: 500 0.48rem var(--font-mono);
+  letter-spacing: 0.08em;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  border-color: rgba(79, 255, 240, 0.82);
+  box-shadow: inset 0 0 22px rgba(79, 255, 240, 0.07), 0 0 24px rgba(79, 255, 240, 0.16);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.btn:hover .nebula,
+.btn:focus-visible .nebula { transform: rotate(-150deg) scale(1.08); }
+.btn:hover .starfield,
+.btn:focus-visible .starfield { transform: rotate(175deg); }
+.btn:hover .stardust,
+.btn:focus-visible .stardust { transform: rotate(-190deg); }
+.btn:hover .cosmicRing,
+.btn:focus-visible .cosmicRing { transform: rotate(205deg); }
+.btn:hover .glow,
+.btn:focus-visible .glow { opacity: 0.52; }
+
+@keyframes starDrift {
+  to { background-position: 82px 48px, -113px 61px, 69px -44px, -97px -55px; }
+}
+
+@media (max-width: 1450px) {
+  .btn {
+    grid-template-columns: 22px 34px;
+    width: 82px;
+    padding-left: 12px;
+    justify-content: space-between;
+  }
+
+  .label,
+  .shortcut { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spinArc { animation: none; }
+  .btn::after { animation: none; }
+  .nebula,
+  .starfield,
+  .stardust,
+  .cosmicRing { transition: none; }
 }

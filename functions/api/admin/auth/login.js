@@ -11,6 +11,8 @@ import {
   writeAudit,
 } from '../../../_lib/cms.js'
 
+const DEFAULT_ADMIN_USERNAME = 'softcurse'
+
 export async function onRequestPost(context) {
   try {
     requireSameOrigin(context.request)
@@ -35,7 +37,7 @@ export async function onRequestPost(context) {
     }
 
     const [validUsername, validPassword] = await Promise.all([
-      secureEqual(username, context.env.ADMIN_USERNAME || 'admin'),
+      secureEqual(username, context.env.ADMIN_USERNAME || DEFAULT_ADMIN_USERNAME),
       secureEqual(password, context.env.ADMIN_PASSWORD),
     ])
     const valid = validUsername && validPassword
@@ -57,7 +59,7 @@ export async function onRequestPost(context) {
         VALUES (?1, ?2, ?3, ?4, ?5)
       `).bind(
         tokenHash,
-        context.env.ADMIN_USERNAME || 'admin',
+        context.env.ADMIN_USERNAME || DEFAULT_ADMIN_USERNAME,
         ipHash,
         (context.request.headers.get('user-agent') || '').slice(0, 500),
         expiresAt,
@@ -66,9 +68,9 @@ export async function onRequestPost(context) {
       context.env.CMS_DB.prepare("DELETE FROM login_attempts WHERE attempted_at <= datetime('now', '-1 day')"),
     ])
 
-    await writeAudit(context.env, context.env.ADMIN_USERNAME || 'admin', 'login', 'session', null, { ipHash })
+    await writeAudit(context.env, context.env.ADMIN_USERNAME || DEFAULT_ADMIN_USERNAME, 'login', 'session', null, { ipHash })
 
-    return json({ ok: true, user: { username: context.env.ADMIN_USERNAME || 'admin' }, expiresAt }, {
+    return json({ ok: true, user: { username: context.env.ADMIN_USERNAME || DEFAULT_ADMIN_USERNAME }, expiresAt }, {
       headers: { 'Set-Cookie': sessionCookie(token, hours * 3600, new URL(context.request.url).protocol === 'https:') },
     })
   } catch (error) {

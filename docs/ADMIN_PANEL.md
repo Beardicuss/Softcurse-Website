@@ -15,7 +15,7 @@ Set the password interactively so it is never stored in Git or shell history:
 npx wrangler pages secret put ADMIN_PASSWORD --project-name softcursesystems
 ```
 
-The username defaults to `admin`. Sessions last 12 hours, use an HTTP-only same-site cookie, and mutations require a same-origin browser request.
+The username defaults to `softcurse`. Sessions last 12 hours, use an HTTP-only same-site cookie, and mutations require a same-origin browser request.
 
 ## Content workflow
 

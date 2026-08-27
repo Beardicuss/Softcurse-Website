@@ -8,7 +8,7 @@ const LABELS = { game: 'Games', app: 'Apps', experiment: 'Experiments', localiza
 const EMPTY_DATA = { shortDesc: '', desc: '', icon: '◈', tag: '', status: 'dev', features: [], platforms: [], techStack: [] }
 
 function Login({ onLogin }) {
-  const [username, setUsername] = useState('admin')
+  const [username, setUsername] = useState('softcurse')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
