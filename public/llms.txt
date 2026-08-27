@@ -1,0 +1,25 @@
+# Softcurse Systems
+
+> Official website for Softcurse Systems: software tools, games, experiments, chronicles, and localization work.
+
+## Main directories
+
+- [Home](https://softcursesystems.pages.dev/): Company overview and featured projects.
+- [Lab](https://softcursesystems.pages.dev/lab): Software, applications, developer tools, and experiments.
+- [Studio](https://softcursesystems.pages.dev/studio): Games and interactive projects.
+- [Localization](https://softcursesystems.pages.dev/localization): Translation and localization projects.
+- [Chronicles](https://softcursesystems.pages.dev/chronicles): Softcurse narrative works.
+- [Blog](https://softcursesystems.pages.dev/blog): Engineering and development articles.
+- [Roadmap](https://softcursesystems.pages.dev/roadmap): Public project milestones.
+
+## Featured projects
+
+- [Fake Checker](https://softcursesystems.pages.dev/studio/fakechecker): Browser-based dystopian information-review simulation.
+- [HexBrewers from Ashenveil](https://softcursesystems.pages.dev/studio/hexbrewers): Dark-fantasy bag-building strategy game in development.
+- [GELA](https://softcursesystems.pages.dev/lab/gela): Offline-first Georgian voice control for Windows.
+- [Codex Pixel](https://softcursesystems.pages.dev/lab/codex-pixel): Softcurse visual workspace for Codex agent activity.
+
+## Structured discovery
+
+- [Sitemap](https://softcursesystems.pages.dev/sitemap.xml)
+- [Public content API](https://softcursesystems.pages.dev/api/content)

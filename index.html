@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -35,10 +35,9 @@
     <!-- Critical locally hosted fonts -->
     <link rel="preload" href="/fonts/orbitron.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/chakra-petch-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/logo.webp" as="image" type="image/webp" fetchpriority="high" />
 
     <title>Softcurse</title>
-    <!-- Anti-FOUC: read stored theme before first paint -->
-    <script src="/theme-init.js"></script>
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"Organization","name":"Softcurse Systems","url":"https://softcursesystems.pages.dev/","logo":"https://softcursesystems.pages.dev/logo.webp","sameAs":["https://github.com/Beardicuss"]}
     </script>

@@ -64,7 +64,7 @@ export default function Navbar() {
 
           {/* ── Logo — center on mobile, left on desktop ── */}
           <Link to="/" className={styles.logo} aria-label="Softcurse home">
-            <img src="/logo.webp" alt="" className={styles.logoImg} aria-hidden="true" />
+            <img src="/logo.webp" alt="" className={styles.logoImg} aria-hidden="true" fetchPriority="high" />
             SOFTCURSE
           </Link>
 

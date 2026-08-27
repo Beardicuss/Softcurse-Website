@@ -62,9 +62,16 @@ const sitemap = await (await fetchWithRetry('/sitemap.xml')).text()
 assert.match(sitemap, /<urlset/)
 assert.match(sitemap, /https:\/\/softcursesystems\.pages\.dev\/studio\/fakechecker/)
 
+const llms = await (await fetchWithRetry('/llms.txt')).text()
+assert.match(llms, /^# Softcurse Systems/m)
+assert.match(llms, /\/studio\/fakechecker/)
+
 await verifyAsset('/posters/games/fakechecker.webp', /image\/webp/i)
 await verifyAsset('/posters/games/fakechecker-char.webp', /image\/webp/i)
 await verifyAsset('/posters/games/page/fakechecker-page.webp', /image\/webp/i)
 await verifyAsset('/posters/games/hexbrewers.webp', /image\/webp/i)
+
+const logoResponse = await fetchWithRetry('/logo.webp')
+assert.match(logoResponse.headers.get('cache-control') || '', /max-age=604800/)
 
 console.log('Production smoke checks passed.')
