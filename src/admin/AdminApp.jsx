@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import AssetManager from './AssetManager'
 import ReleaseManager from './ReleaseManager'
 import CommerceManager from './CommerceManager'
+import ChapterManager from './ChapterManager'
 import { adminApi, formatBytes, makeSlug } from './api'
 import './admin.css'
 
@@ -88,6 +89,14 @@ function CoreFields({ value, setValue, isNew }) {
       <label>Quarter / period<input value={data.quarter || ''} onChange={event => updateData('quarter', event.target.value)} /></label>
       <label className="wide">Roadmap entries <small>JSON array: id, title, type, status, desc</small><textarea rows="12" value={JSON.stringify(data.items || [], null, 2)} onChange={event => { try { updateData('items', JSON.parse(event.target.value)) } catch { /* preserve the last valid value */ } }} /></label>
     </>}
+    {value.type === 'chronicle' && <>
+      <label>Series<input value={data.series || ''} onChange={event => updateData('series', event.target.value)} /></label>
+      <label>Book / volume<input value={data.book || ''} onChange={event => updateData('book', event.target.value)} /></label>
+      <label>Genre<input list="chronicle-genres" value={data.genre || ''} onChange={event => updateData('genre', event.target.value)} /><datalist id="chronicle-genres"><option value="Dark Fantasy" /><option value="Science Fantasy" /><option value="Horror" /><option value="Mystery" /><option value="Speculative Fiction" /></datalist></label>
+      <label>Character name<input value={data.characterName || ''} onChange={event => updateData('characterName', event.target.value)} /></label>
+      <label>Narrative format<input value={data.engine || ''} onChange={event => updateData('engine', event.target.value)} /></label>
+      <label>Release date<input placeholder="TBA or 2027" value={data.releaseDate || ''} onChange={event => updateData('releaseDate', event.target.value)} /></label>
+    </>}
     <label>Platforms <small>one per line</small><textarea rows="6" value={(data.platforms || []).join('\n')} onChange={event => listField('platforms', event.target.value)} /></label>
     <label>Technology <small>one per line</small><textarea rows="6" value={(data.techStack || []).join('\n')} onChange={event => listField('techStack', event.target.value)} /></label>
     <label className="wide">Features <small>one per line</small><textarea rows="8" value={(data.features || []).join('\n')} onChange={event => listField('features', event.target.value)} /></label>
@@ -133,8 +142,8 @@ function ContentEditor({ type, id, schema, onBack }) {
   }
   if (!item) return <div className="admin-loading">LOADING RECORD…</div>
   return <div><header className="admin-page-header editor-header"><div><button className="back-button" onClick={onBack}>← {LABELS[type]}</button><h1>{isNew ? `New ${type}` : item.title}</h1><span className={`status-chip ${item.status}`}>{item.status}</span></div><div>{!isNew && <button className="admin-button danger" onClick={archive}>ARCHIVE</button>}<button className="admin-button primary" disabled={busy} onClick={save}>{busy ? 'SAVING…' : 'SAVE CHANGES'}</button></div></header>
-    {!isNew && <div className="admin-tabs editor-tabs" role="tablist" aria-label="Content editor sections"><button role="tab" aria-selected={tab === 'content'} className={tab === 'content' ? 'active' : ''} onClick={() => setTab('content')}>CONTENT</button><button role="tab" aria-selected={tab === 'assets'} className={tab === 'assets' ? 'active' : ''} onClick={() => setTab('assets')}>VISUAL ASSETS <span>{assets.length}</span></button><button role="tab" aria-selected={tab === 'releases'} className={tab === 'releases' ? 'active' : ''} onClick={() => setTab('releases')}>RELEASES <span>{releases.length}</span></button><button role="tab" aria-selected={tab === 'commerce'} className={tab === 'commerce' ? 'active' : ''} onClick={() => setTab('commerce')}>COMMERCE</button></div>}
-    <section className="admin-panel editor-panel">{tab === 'content' && <form onSubmit={save}><CoreFields value={item} setValue={setItem} isNew={isNew} /></form>}{tab === 'assets' && <AssetManager item={item} specs={schema.assetSpecs[type] || {}} assets={assets} onChanged={load} />}{tab === 'releases' && <ReleaseManager item={item} releases={releases} schema={schema} onChanged={load} />}{tab === 'commerce' && <CommerceManager item={item} schema={schema} releases={releases} />}</section>
+    {!isNew && <div className="admin-tabs editor-tabs" role="tablist" aria-label="Content editor sections"><button role="tab" aria-selected={tab === 'content'} className={tab === 'content' ? 'active' : ''} onClick={() => setTab('content')}>CONTENT</button><button role="tab" aria-selected={tab === 'assets'} className={tab === 'assets' ? 'active' : ''} onClick={() => setTab('assets')}>VISUAL ASSETS <span>{assets.length}</span></button>{type === 'chronicle' && <button role="tab" aria-selected={tab === 'chapters'} className={tab === 'chapters' ? 'active' : ''} onClick={() => setTab('chapters')}>CHAPTERS</button>}<button role="tab" aria-selected={tab === 'releases'} className={tab === 'releases' ? 'active' : ''} onClick={() => setTab('releases')}>RELEASES <span>{releases.length}</span></button><button role="tab" aria-selected={tab === 'commerce'} className={tab === 'commerce' ? 'active' : ''} onClick={() => setTab('commerce')}>COMMERCE</button></div>}
+    <section className="admin-panel editor-panel">{tab === 'content' && <form onSubmit={save}><CoreFields value={item} setValue={setItem} isNew={isNew} /></form>}{tab === 'assets' && <AssetManager item={item} specs={schema.assetSpecs[type] || {}} assets={assets} onChanged={load} />}{tab === 'chapters' && <ChapterManager item={item} maxBytes={schema.maxChapterBytes} />}{tab === 'releases' && <ReleaseManager item={item} releases={releases} schema={schema} onChanged={load} />}{tab === 'commerce' && <CommerceManager item={item} schema={schema} releases={releases} />}</section>
     {message && <div className="admin-toast" role="status" aria-live="polite">{message}</div>}
   </div>
 }

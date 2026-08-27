@@ -13,6 +13,7 @@ import {
 } from '../functions/_lib/cms.js'
 import { formatBytes, makeSlug } from '../src/admin/api.js'
 import { normalizeEmail } from '../functions/_lib/commerce.js'
+import { chapterFileName, chapterResponse, readChapterHtml, validateChapterNumber, validateChapterTitle } from '../functions/_lib/chapters.js'
 
 test('slug helpers create safe, stable content slugs', () => {
   assert.equal(slugify('  Fake Checker!  '), 'fake-checker')
@@ -85,4 +86,34 @@ test('commerce identities normalize email without retaining display variants', (
     () => normalizeEmail('not-an-email'),
     error => error instanceof CmsError && error.code === 'INVALID_CUSTOMER_EMAIL',
   )
+})
+
+test('chapter metadata and HTML uploads are bounded and validated', async () => {
+  assert.equal(validateChapterNumber('10'), 10)
+  assert.equal(validateChapterTitle('  Omega-Class Asset  '), 'Omega-Class Asset')
+  assert.equal(chapterFileName('chapter-10.html', 10), 'chapter-10.html')
+  assert.throws(() => validateChapterNumber(0), error => error instanceof CmsError && error.code === 'INVALID_CHAPTER_NUMBER')
+  assert.throws(() => chapterFileName('chapter.txt', 1), error => error instanceof CmsError && error.code === 'INVALID_CHAPTER_FILE_NAME')
+
+  const html = '<!doctype html><html><body>Chapter</body></html>'
+  const request = new Request('https://example.com/api/admin/chapters', {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/html', 'Content-Length': String(Buffer.byteLength(html)) },
+    body: html,
+  })
+  const upload = await readChapterHtml(request, { CMS_MAX_CHAPTER_BYTES: '2048' })
+  assert.equal(upload.sizeBytes, Buffer.byteLength(html))
+})
+
+test('managed chapter responses run inside an isolated content sandbox', async () => {
+  const response = chapterResponse({
+    body: '<!doctype html><title>Chapter</title>',
+    httpEtag: '"chapter-etag"',
+    writeHttpMetadata() {},
+  })
+  const policy = response.headers.get('content-security-policy')
+  assert.match(policy, /^sandbox allow-scripts;/)
+  assert.doesNotMatch(policy, /allow-same-origin/)
+  assert.match(policy, /connect-src 'none'/)
+  assert.equal(response.headers.get('x-content-type-options'), 'nosniff')
 })

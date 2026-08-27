@@ -36,7 +36,7 @@ export async function onRequestGet(context) {
 
   try {
     const { results = [] } = await context.env.CMS_DB.prepare(`
-      SELECT type, slug, data_json, updated_at
+      SELECT type, slug, updated_at
       FROM content_items
       WHERE status = 'published'
       ORDER BY type, sort_order, updated_at DESC
@@ -48,15 +48,18 @@ export async function onRequestGet(context) {
       const path = buildRoute(row.slug)
       const lastmod = row.updated_at ? String(row.updated_at).slice(0, 10) : undefined
       routes.set(path, { priority: row.type === 'game' ? '0.8' : '0.7', lastmod })
-
-      if (row.type === 'chronicle') {
-        let data = {}
-        try { data = JSON.parse(row.data_json) } catch { /* malformed optional chapter metadata */ }
-        for (const chapter of data.chapters || []) {
-          if (chapter.status !== 'published' || !chapter.num) continue
-          routes.set(`${path}/chapter/${chapter.num}`, { priority: '0.6', lastmod })
-        }
-      }
+    }
+    const chapters = await context.env.CMS_DB.prepare(`
+      SELECT c.slug, ch.chapter_number, ch.updated_at
+      FROM chronicle_chapters ch JOIN content_items c ON c.id = ch.content_id
+      WHERE c.status = 'published' AND ch.status = 'published'
+      ORDER BY c.slug, ch.sort_order, ch.chapter_number
+    `).all()
+    for (const chapter of chapters.results) {
+      routes.set(`/chronicles/${chapter.slug}/chapter/${chapter.chapter_number}`, {
+        priority: '0.6',
+        lastmod: chapter.updated_at ? String(chapter.updated_at).slice(0, 10) : undefined,
+      })
     }
   } catch (error) {
     console.error('Sitemap CMS query failed; serving core routes.', error)

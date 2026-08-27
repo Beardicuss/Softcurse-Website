@@ -1,3 +1,4 @@
+import { publicChapter } from '../../_lib/chapters.js'
 import { ASSET_SPECS, CONTENT_TYPES, json, parseContentRow } from '../../_lib/cms.js'
 
 function publicRelease(row) {
@@ -37,10 +38,11 @@ export async function onRequestGet(context) {
   if (!result.results.length) return json({ ok: true, items: [], managed, assetSpecs: ASSET_SPECS }, { headers: { 'Cache-Control': 'public, max-age=30, stale-while-revalidate=120' } })
   const ids = result.results.map(row => row.id)
   const placeholders = ids.map(() => '?').join(',')
-  const [assetRows, releaseRows, commerceRows] = await context.env.CMS_DB.batch([
+  const [assetRows, releaseRows, commerceRows, chapterRows] = await context.env.CMS_DB.batch([
     context.env.CMS_DB.prepare(`SELECT * FROM assets WHERE content_id IN (${placeholders})`).bind(...ids),
     context.env.CMS_DB.prepare(`SELECT * FROM releases WHERE status = 'published' AND content_id IN (${placeholders}) ORDER BY is_primary DESC, sort_order`).bind(...ids),
     context.env.CMS_DB.prepare(`SELECT * FROM commerce_products WHERE content_id IN (${placeholders})`).bind(...ids),
+    context.env.CMS_DB.prepare(`SELECT * FROM chronicle_chapters WHERE status = 'published' AND content_id IN (${placeholders}) ORDER BY sort_order, chapter_number`).bind(...ids),
   ])
   const assets = new Map()
   for (const row of assetRows.results) {
@@ -61,10 +63,17 @@ export async function onRequestGet(context) {
     externalStoreUrl: row.external_store_url,
     requiresEntitlement: Boolean(row.requires_entitlement),
   }]))
+  const chapters = new Map()
+  for (const row of chapterRows.results) {
+    if (!chapters.has(row.content_id)) chapters.set(row.content_id, [])
+    chapters.get(row.content_id).push(publicChapter(row))
+  }
   const items = result.results.map(row => {
+    const item = parseContentRow(row)
     const productCommerce = commerce.get(row.id) || { saleMode: 'free', storefrontStatus: 'disabled', currency: 'USD' }
     const productReleases = (releases.get(row.id) || []).filter(release => productCommerce.saleMode === 'free' || release.actionRole !== 'download')
-    return { ...parseContentRow(row), assets: assets.get(row.id) || {}, releases: productReleases, commerce: productCommerce }
+    const data = row.type === 'chronicle' ? { ...item.data, chapters: chapters.get(row.id) || [] } : item.data
+    return { ...item, data, assets: assets.get(row.id) || {}, releases: productReleases, commerce: productCommerce }
   })
   return json({ ok: true, items, managed, assetSpecs: ASSET_SPECS }, { headers: { 'Cache-Control': 'public, max-age=30, stale-while-revalidate=120' } })
 }

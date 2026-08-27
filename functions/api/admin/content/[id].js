@@ -99,6 +99,8 @@ export async function onRequestDelete(context) {
       SELECT r2_key FROM assets WHERE content_id = ?1
       UNION ALL
       SELECT r2_key FROM releases WHERE content_id = ?1 AND r2_key IS NOT NULL
+      UNION ALL
+      SELECT r2_key FROM chronicle_chapters WHERE content_id = ?1 AND r2_key IS NOT NULL
     `).bind(existing.id).all()
 
     if (objects.results.length) {

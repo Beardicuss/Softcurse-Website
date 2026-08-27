@@ -10,6 +10,7 @@
     "ADMIN_SESSION_HOURS": "12",
     "COMMERCE_LIVE_ENABLED": "false",
     "CMS_MAX_IMAGE_BYTES": "8388608",
+    "CMS_MAX_CHAPTER_BYTES": "2097152",
     "CMS_UPLOAD_PART_BYTES": "8388608"
   },
   "d1_databases": [

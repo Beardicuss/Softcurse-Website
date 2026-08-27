@@ -21,8 +21,10 @@ export default function ChapterViewer() {
   if (!book) return <Navigate to="/chronicles" replace />
   if (!chapter || chapter.status !== 'published') return <Navigate to={`/chronicles/${id}`} replace />
 
-  const prev = book.chapters.find(c => c.num === chNum - 1 && c.status === 'published')
-  const next = book.chapters.find(c => c.num === chNum + 1 && c.status === 'published')
+  const publishedChapters = book.chapters.filter(c => c.status === 'published')
+  const chapterIndex = publishedChapters.findIndex(c => c.num === chNum)
+  const prev = chapterIndex > 0 ? publishedChapters[chapterIndex - 1] : null
+  const next = chapterIndex >= 0 ? publishedChapters[chapterIndex + 1] : null
 
   return (
     <div className={styles.page}>
@@ -33,7 +35,7 @@ export default function ChapterViewer() {
           ← {book.book}: {book.name}
         </Link>
         <div className={styles.chapterInfo}>
-          <span className={styles.pov}>POV: {chapter.pov}</span>
+          {chapter.pov && <span className={styles.pov}>POV: {chapter.pov}</span>}
           <span className={styles.chapterNum}>CH. {String(chNum).padStart(2, '0')}</span>
           <span className={styles.chapterTitle}>{chapter.title}</span>
         </div>
@@ -54,7 +56,7 @@ export default function ChapterViewer() {
         src={chapter.file}
         className={styles.frame}
         title={chapter.title}
-        sandbox="allow-scripts allow-same-origin"
+        sandbox="allow-scripts"
       />
 
       {/* ── Bottom nav ── */}

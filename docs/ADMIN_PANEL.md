@@ -35,6 +35,17 @@ When paid delivery is activated later, create a long, unique `COMMERCE_DATA_KEY`
    - After activation, it can grant manual access, issue hashed license keys, and create expiring download links for published R2-managed files.
 6. Preview the public page, then change the record and release states to **Published**.
 
+## Chronicle workflow
+
+Chronicles include a dedicated **Chapters** tab. It imports the existing bundled chapter references and supports:
+
+- Complete UTF-8 `.html`/`.htm` uploads up to 2 MB per chapter.
+- Draft, published, and archived states; chapter numbering; titles; optional POV labels; and ordering controls.
+- Sandboxed previews, replacement uploads, source downloads, and deletion.
+- R2-managed chapter files for new uploads. Existing bundled HTML remains supported until it is replaced.
+
+Uploaded interactive HTML runs in an isolated sandbox with network requests, forms, parent-page access, and same-origin access blocked. Inline chapter scripts and styles remain available, together with the existing Google Fonts dependency.
+
 ## Release and commerce safety
 
 - External downloads must use HTTPS and provider-specific links are hostname validated.

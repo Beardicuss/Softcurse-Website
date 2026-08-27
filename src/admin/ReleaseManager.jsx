@@ -101,7 +101,7 @@ export default function ReleaseManager({ item, releases, schema, onChanged }) {
     </div>
 
     {mode === 'web' && <form className="admin-form-grid" onSubmit={event => addExternal(event, 'web')}>
-      <label>Button label<input required {...field(web, setWeb, 'label')} /></label>
+      <label>Button label <small>choose a suggestion or type your own</small><input required list="web-label-suggestions" {...field(web, setWeb, 'label')} /><datalist id="web-label-suggestions"><option value="Play online" /><option value="Launch" /><option value="Open web app" /><option value="Try demo" /><option value="Visit project" /></datalist></label>
       <label>Hosted URL<input required type="url" placeholder="https://game.pages.dev/" {...field(web, setWeb, 'externalUrl')} /></label>
       {commonFields(web, setWeb)}
       <button className="admin-button primary" disabled={busy}>ADD WEB LAUNCHER</button>
@@ -110,7 +110,7 @@ export default function ReleaseManager({ item, releases, schema, onChanged }) {
     {mode === 'external' && <form className="admin-form-grid" onSubmit={event => addExternal(event, 'external')}>
       <label>Provider<select {...field(external, setExternal, 'provider')}>{schema.releaseProviders.filter(value => value !== 'softcurse').map(value => <option key={value} value={value}>{providerNames[value]}</option>)}</select></label>
       <label>Action<select {...field(external, setExternal, 'actionRole')}>{schema.releaseRoles.filter(value => value !== 'play').map(value => <option key={value} value={value}>{roleNames[value]}</option>)}</select></label>
-      <label>Button label<input required {...field(external, setExternal, 'label')} /></label>
+      <label>Button label <small>choose a suggestion or type your own</small><input required list="external-label-suggestions" {...field(external, setExternal, 'label')} /><datalist id="external-label-suggestions"><option value="Download" /><option value="Get on GitHub" /><option value="Get on itch.io" /><option value="Visit store" /><option value="View source" /><option value="Download mirror" /></datalist></label>
       <label>HTTPS link<input required type="url" placeholder="https://github.com/owner/project/releases/latest/download/setup.exe" {...field(external, setExternal, 'externalUrl')} /></label>
       <label>Platform<select {...field(external, setExternal, 'platform')}>{schema.platforms.map(value => <option key={value}>{value}</option>)}</select></label>
       <label>Architecture<select {...field(external, setExternal, 'architecture')}>{schema.architectures.map(value => <option key={value}>{value}</option>)}</select></label>
@@ -123,7 +123,7 @@ export default function ReleaseManager({ item, releases, schema, onChanged }) {
 
     {mode === 'file' && <form className="admin-form-grid" onSubmit={uploadFile}>
       <label className="wide admin-file">Installer or downloadable file<input ref={fileRef} required type="file" accept=".exe,.msi,.zip,.7z,.rar,.apk,.dmg,.pkg,.AppImage,.deb,.rpm,.pdf,.epub" onChange={event => setFile(event.target.files?.[0] || null)} />{file && <span>{file.name} · {formatBytes(file.size)}</span>}</label>
-      <label>Button label<input required {...field(fileMeta, setFileMeta, 'label')} /></label>
+      <label>Button label <small>choose a suggestion or type your own</small><input required list="file-label-suggestions" {...field(fileMeta, setFileMeta, 'label')} /><datalist id="file-label-suggestions"><option value="Download" /><option value="Download for Windows" /><option value="Get installer" /><option value="Download latest" /><option value="Download portable version" /></datalist></label>
       <label>Platform<select {...field(fileMeta, setFileMeta, 'platform')}>{schema.platforms.filter(value => value !== 'web').map(value => <option key={value}>{value}</option>)}</select></label>
       <label>Architecture<select {...field(fileMeta, setFileMeta, 'architecture')}>{schema.architectures.map(value => <option key={value}>{value}</option>)}</select></label>
       <label className="wide">SHA-256 checksum <small>optional but recommended</small><input maxLength="64" pattern="[A-Fa-f0-9]{64}" {...field(fileMeta, setFileMeta, 'sha256')} /></label>

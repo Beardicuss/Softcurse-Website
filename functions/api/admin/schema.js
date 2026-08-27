@@ -15,6 +15,7 @@ export function onRequestGet(context) {
     platforms: ['web', 'windows', 'macos', 'linux', 'android', 'ios', 'other'],
     architectures: ['universal', 'x64', 'arm64', 'x86', 'other'],
     commerceIdentityConfigured: Boolean(context.env.COMMERCE_DATA_KEY),
+    maxChapterBytes: Number(context.env.CMS_MAX_CHAPTER_BYTES || 2097152),
     uploadPartBytes: Number(context.env.CMS_UPLOAD_PART_BYTES || 8388608),
   })
 }
