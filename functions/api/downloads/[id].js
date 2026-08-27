@@ -21,7 +21,9 @@ function parseRange(header, size) {
 async function serve(context, includeBody) {
   const release = await context.env.CMS_DB.prepare(`
     SELECT r.* FROM releases r JOIN content_items c ON c.id = r.content_id
+    LEFT JOIN commerce_products cp ON cp.content_id = r.content_id
     WHERE r.id = ?1 AND r.kind = 'file' AND r.status = 'published' AND c.status = 'published'
+      AND COALESCE(cp.sale_mode, 'free') = 'free'
   `).bind(context.params.id).first()
   if (!release) return new Response('Not found', { status: 404 })
   const range = parseRange(context.request.headers.get('range'), release.size_bytes)

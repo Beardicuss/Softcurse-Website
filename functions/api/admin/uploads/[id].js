@@ -35,14 +35,17 @@ export async function onRequestPost(context) {
     const id = crypto.randomUUID()
     const now = new Date().toISOString()
     const statements = []
-    if (release.isPrimary) statements.push(context.env.CMS_DB.prepare('UPDATE releases SET is_primary = 0 WHERE content_id = ?1').bind(upload.content_id))
+    if (release.isPrimary) statements.push(context.env.CMS_DB.prepare("UPDATE releases SET is_primary = 0 WHERE content_id = ?1 AND action_role = 'download'").bind(upload.content_id))
     statements.push(context.env.CMS_DB.prepare(`
-      INSERT INTO releases (id, content_id, kind, label, version, platform, architecture, r2_key, file_name,
-        mime_type, size_bytes, sha256, release_notes, status, is_primary, sort_order, created_by, created_at, updated_at, published_at)
-      VALUES (?1, ?2, 'file', ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?17, ?18)
-    `).bind(id, upload.content_id, release.label, release.version, release.platform, release.architecture, upload.r2_key,
-      upload.file_name, upload.mime_type, upload.size_bytes, release.sha256, release.releaseNotes, release.status,
-      release.isPrimary ? 1 : 0, release.sortOrder, context.data.admin.username, now, release.status === 'published' ? now : null))
+      INSERT INTO releases (id, content_id, kind, action_role, provider, label, version, channel,
+        platform, architecture, r2_key, file_name, mime_type, size_bytes, sha256, release_notes,
+        status, is_primary, sort_order, created_by, created_at, updated_at, published_at)
+      VALUES (?1, ?2, 'file', 'download', 'softcurse', ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10,
+        ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?18, ?19)
+    `).bind(id, upload.content_id, release.label, release.version, release.channel || 'stable', release.platform,
+      release.architecture, upload.r2_key, upload.file_name, upload.mime_type, upload.size_bytes,
+      release.sha256, release.releaseNotes, release.status, release.isPrimary ? 1 : 0, release.sortOrder,
+      context.data.admin.username, now, release.status === 'published' ? now : null))
     statements.push(context.env.CMS_DB.prepare(`UPDATE upload_sessions SET status = 'completed' WHERE id = ?1`).bind(upload.id))
     await context.env.CMS_DB.batch(statements)
     await writeAudit(context.env, context.data.admin.username, 'complete_file_upload', 'release', id, { contentId: upload.content_id, fileName: upload.file_name })

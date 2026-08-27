@@ -9,3 +9,4 @@ _worker.bundle
 .dev.vars
 .DS_Store
 *.log
+backups/

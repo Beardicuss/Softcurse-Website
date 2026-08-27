@@ -8,6 +8,7 @@ import {
   sanitizeFileName,
   sessionCookie,
   slugify,
+  validateProviderUrl,
   validateContentPayload,
 } from '../functions/_lib/cms.js'
 import { formatBytes, makeSlug } from '../src/admin/api.js'
@@ -62,4 +63,17 @@ test('storage metrics format predictable byte values', () => {
   assert.equal(formatBytes(0), '0 B')
   assert.equal(formatBytes(1024), '1.0 KB')
   assert.equal(formatBytes(5 * 1024 * 1024), '5.0 MB')
+})
+
+test('release provider URLs require HTTPS and match the selected host', () => {
+  assert.equal(validateProviderUrl('github', 'https://github.com/Softcurse/project/releases/latest').startsWith('https://github.com/'), true)
+  assert.equal(validateProviderUrl('mega', 'https://mega.nz/file/example#key').startsWith('https://mega.nz/'), true)
+  assert.throws(
+    () => validateProviderUrl('github', 'https://mega.nz/file/example'),
+    error => error instanceof CmsError && error.code === 'PROVIDER_URL_MISMATCH',
+  )
+  assert.throws(
+    () => validateProviderUrl('custom', 'http://downloads.example.com/setup.exe'),
+    error => error instanceof CmsError && error.code === 'INVALID_EXTERNAL_URL',
+  )
 })

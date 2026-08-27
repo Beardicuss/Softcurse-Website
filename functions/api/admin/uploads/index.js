@@ -1,4 +1,4 @@
-import { CmsError, handleCmsError, json, readJson, sanitizeFileName, writeAudit } from '../../../_lib/cms.js'
+import { CmsError, handleCmsError, json, readJson, RELEASE_CHANNELS, sanitizeFileName, writeAudit } from '../../../_lib/cms.js'
 
 const ALLOWED_EXTENSIONS = new Set(['exe', 'msi', 'zip', '7z', 'rar', 'apk', 'dmg', 'pkg', 'appimage', 'deb', 'rpm', 'pdf', 'epub'])
 
@@ -21,9 +21,12 @@ export async function onRequestPost(context) {
     })
     const partSize = Math.max(5 * 1024 * 1024, Number(context.env.CMS_UPLOAD_PART_BYTES || 8388608))
     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+    const channel = payload.channel || 'stable'
+    if (!RELEASE_CHANNELS.has(channel)) throw new CmsError(400, 'Invalid release channel.', 'INVALID_RELEASE_CHANNEL')
     const releaseData = {
       label: payload.label.trim(), version: payload.version || null, platform: payload.platform || 'other',
       architecture: payload.architecture || null, releaseNotes: payload.releaseNotes || null,
+      channel,
       status: payload.status === 'published' ? 'published' : 'draft', isPrimary: Boolean(payload.isPrimary),
       sortOrder: Number(payload.sortOrder || 0), sha256: /^[a-f0-9]{64}$/i.test(payload.sha256 || '') ? payload.sha256.toLowerCase() : null,
     }

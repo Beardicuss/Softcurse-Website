@@ -10,6 +10,39 @@ export const CONTENT_TYPES = new Set([
 
 export const CONTENT_STATUSES = new Set(['draft', 'published', 'archived'])
 export const RELEASE_STATUSES = new Set(['draft', 'published', 'archived'])
+export const RELEASE_KINDS = new Set(['web', 'file', 'external'])
+export const RELEASE_ROLES = new Set(['play', 'download', 'store', 'source'])
+export const RELEASE_PROVIDERS = new Set(['softcurse', 'github', 'mega', 'itchio', 'google_drive', 'onedrive', 'dropbox', 'custom'])
+export const RELEASE_CHANNELS = new Set(['stable', 'beta', 'alpha', 'dev'])
+export const SALE_MODES = new Set(['free', 'paid', 'external_store', 'coming_soon'])
+export const STOREFRONT_STATUSES = new Set(['disabled', 'preview', 'live'])
+export const CHECKOUT_PROVIDERS = new Set(['stripe', 'lemon_squeezy', 'itchio', 'gumroad', 'custom'])
+
+const PROVIDER_HOSTS = {
+  github: host => host === 'github.com' || host.endsWith('.github.com'),
+  mega: host => host === 'mega.nz' || host.endsWith('.mega.nz'),
+  itchio: host => host === 'itch.io' || host.endsWith('.itch.io'),
+  google_drive: host => host === 'drive.google.com' || host === 'docs.google.com',
+  onedrive: host => host === '1drv.ms' || host.endsWith('.sharepoint.com') || host === 'onedrive.live.com',
+  dropbox: host => host === 'dropbox.com' || host.endsWith('.dropbox.com'),
+}
+
+export function validateHttpsUrl(value, message = 'Enter a valid HTTPS URL.') {
+  let url
+  try { url = new URL(value) } catch { throw new CmsError(400, message, 'INVALID_EXTERNAL_URL') }
+  if (url.protocol !== 'https:' || url.username || url.password) throw new CmsError(400, message, 'INVALID_EXTERNAL_URL')
+  return url
+}
+
+export function validateProviderUrl(provider, value) {
+  if (!RELEASE_PROVIDERS.has(provider)) throw new CmsError(400, 'Unsupported release provider.', 'INVALID_RELEASE_PROVIDER')
+  const url = validateHttpsUrl(value)
+  const hostRule = PROVIDER_HOSTS[provider]
+  if (hostRule && !hostRule(url.hostname.toLowerCase())) {
+    throw new CmsError(400, `The URL does not match the selected ${provider.replace('_', ' ')} provider.`, 'PROVIDER_URL_MISMATCH')
+  }
+  return url.toString()
+}
 
 export const ASSET_SPECS = {
   game: {

@@ -17,16 +17,17 @@ export async function onRequestGet(context) {
   const row = await findItem(context.env, context.params.id)
   if (!row) return apiError(404, 'Content item not found.', 'CONTENT_NOT_FOUND')
 
-  const [assets, releases, revisions] = await context.env.CMS_DB.batch([
+  const [assets, releases, revisions, commerce] = await context.env.CMS_DB.batch([
     context.env.CMS_DB.prepare('SELECT * FROM assets WHERE content_id = ?1 ORDER BY slot').bind(row.id),
     context.env.CMS_DB.prepare('SELECT * FROM releases WHERE content_id = ?1 ORDER BY is_primary DESC, sort_order, created_at DESC').bind(row.id),
     context.env.CMS_DB.prepare(`
       SELECT id, revision, action, created_by, created_at
       FROM content_revisions WHERE content_id = ?1 ORDER BY revision DESC LIMIT 30
     `).bind(row.id),
+    context.env.CMS_DB.prepare('SELECT * FROM commerce_products WHERE content_id = ?1').bind(row.id),
   ])
 
-  return json({ ok: true, item: parseContentRow(row), assets: assets.results, releases: releases.results, revisions: revisions.results })
+  return json({ ok: true, item: parseContentRow(row), assets: assets.results, releases: releases.results, revisions: revisions.results, commerce: commerce.results[0] || null })
 }
 
 export async function onRequestPatch(context) {

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import AssetManager from './AssetManager'
 import ReleaseManager from './ReleaseManager'
+import CommerceManager from './CommerceManager'
 import { adminApi, formatBytes, makeSlug } from './api'
 import './admin.css'
 
@@ -132,8 +133,8 @@ function ContentEditor({ type, id, schema, onBack }) {
   }
   if (!item) return <div className="admin-loading">LOADING RECORD…</div>
   return <div><header className="admin-page-header editor-header"><div><button className="back-button" onClick={onBack}>← {LABELS[type]}</button><h1>{isNew ? `New ${type}` : item.title}</h1><span className={`status-chip ${item.status}`}>{item.status}</span></div><div>{!isNew && <button className="admin-button danger" onClick={archive}>ARCHIVE</button>}<button className="admin-button primary" disabled={busy} onClick={save}>{busy ? 'SAVING…' : 'SAVE CHANGES'}</button></div></header>
-    {!isNew && <div className="admin-tabs editor-tabs" role="tablist" aria-label="Content editor sections"><button role="tab" aria-selected={tab === 'content'} className={tab === 'content' ? 'active' : ''} onClick={() => setTab('content')}>CONTENT</button><button role="tab" aria-selected={tab === 'assets'} className={tab === 'assets' ? 'active' : ''} onClick={() => setTab('assets')}>VISUAL ASSETS <span>{assets.length}</span></button><button role="tab" aria-selected={tab === 'releases'} className={tab === 'releases' ? 'active' : ''} onClick={() => setTab('releases')}>LAUNCHERS & FILES <span>{releases.length}</span></button></div>}
-    <section className="admin-panel editor-panel">{tab === 'content' && <form onSubmit={save}><CoreFields value={item} setValue={setItem} isNew={isNew} /></form>}{tab === 'assets' && <AssetManager item={item} specs={schema.assetSpecs[type] || {}} assets={assets} onChanged={load} />}{tab === 'releases' && <ReleaseManager item={item} releases={releases} schema={schema} onChanged={load} />}</section>
+    {!isNew && <div className="admin-tabs editor-tabs" role="tablist" aria-label="Content editor sections"><button role="tab" aria-selected={tab === 'content'} className={tab === 'content' ? 'active' : ''} onClick={() => setTab('content')}>CONTENT</button><button role="tab" aria-selected={tab === 'assets'} className={tab === 'assets' ? 'active' : ''} onClick={() => setTab('assets')}>VISUAL ASSETS <span>{assets.length}</span></button><button role="tab" aria-selected={tab === 'releases'} className={tab === 'releases' ? 'active' : ''} onClick={() => setTab('releases')}>RELEASES <span>{releases.length}</span></button><button role="tab" aria-selected={tab === 'commerce'} className={tab === 'commerce' ? 'active' : ''} onClick={() => setTab('commerce')}>COMMERCE</button></div>}
+    <section className="admin-panel editor-panel">{tab === 'content' && <form onSubmit={save}><CoreFields value={item} setValue={setItem} isNew={isNew} /></form>}{tab === 'assets' && <AssetManager item={item} specs={schema.assetSpecs[type] || {}} assets={assets} onChanged={load} />}{tab === 'releases' && <ReleaseManager item={item} releases={releases} schema={schema} onChanged={load} />}{tab === 'commerce' && <CommerceManager item={item} schema={schema} />}</section>
     {message && <div className="admin-toast" role="status" aria-live="polite">{message}</div>}
   </div>
 }

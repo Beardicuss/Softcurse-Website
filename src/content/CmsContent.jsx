@@ -4,7 +4,8 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 const CmsContext = createContext({ items: [], managed: new Set(), ready: false })
 
 function toLegacy(item) {
-  const primary = item.releases.find(release => release.isPrimary) || item.releases[0]
+  const playReleases = item.releases.filter(release => release.actionRole === 'play' || release.kind === 'web')
+  const primary = playReleases.find(release => release.isPrimary) || playReleases[0]
   return {
     ...item.data,
     type: item.type,
@@ -18,7 +19,9 @@ function toLegacy(item) {
     releases: item.releases,
     playUrl: primary?.kind === 'web' ? primary.url : item.data.playUrl,
     launchLabel: primary?.kind === 'web' ? primary.label : item.data.launchLabel,
-    downloadReleases: item.releases.filter(release => release.kind === 'file'),
+    downloadReleases: item.releases.filter(release => release.actionRole === 'download' && release.kind !== 'web'),
+    storeReleases: item.releases.filter(release => release.actionRole === 'store'),
+    commerce: item.commerce || { saleMode: 'free', storefrontStatus: 'disabled', currency: 'USD' },
   }
 }
 

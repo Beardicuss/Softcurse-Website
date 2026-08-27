@@ -4,6 +4,7 @@ import { useCmsItems } from '../../content/CmsContent'
 import Button from '../../components/common/Button'
 import Badge from '../../components/common/Badge'
 import GameLauncher from '../../components/common/GameLauncher'
+import { ProductPrimaryActions, ProductReleasePanel } from '../../components/common/ProductAccess'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { useSEO } from '../../hooks/useSEO'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
@@ -58,9 +59,7 @@ export default function GameDetail() {
           <h1 className={styles.heroTitle}>{game.name}</h1>
           <p className={styles.heroDesc}>{game.shortDesc}</p>
           <div className={styles.heroActions}>
-            {game.playUrl && <Button variant="cyan" external={game.playUrl}>▶ {game.launchLabel || 'PLAY NOW'}</Button>}
-            {game.downloadReleases?.map(release => <Button key={release.id} variant="cyan" external={release.url}>↓ {release.label}</Button>)}
-            {!game.playUrl && <Button variant="magenta" disabled={game.ctaDisabled}>{game.ctaLabel || 'WISHLIST'}</Button>}
+            <ProductPrimaryActions product={game} emptyLabel={game.ctaLabel || 'WISHLIST'} />
             <Button variant="ghost" href="/studio/games">← BACK TO GAMES</Button>
           </div>
         </div>
@@ -76,11 +75,7 @@ export default function GameDetail() {
 
         <GameLauncher game={game} />
 
-        {game.downloadReleases?.length > 0 && <section className={styles.section}>
-          <div className={styles.sectionLabel}>{"// DOWNLOADS"}</div>
-          <h2 className={styles.sectionTitle}>Available builds</h2>
-          {game.downloadReleases.map(release => <p key={release.id}><Button variant="cyan" external={release.url}>↓ {release.label}{release.version ? ` — v${release.version}` : ''}</Button></p>)}
-        </section>}
+        <ProductReleasePanel product={game} />
 
         {/* ── FEATURES ── */}
         <section className={`${styles.section}`} ref={featRef}>

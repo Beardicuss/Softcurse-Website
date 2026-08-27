@@ -24,8 +24,18 @@ The username defaults to `softcurse`. Sessions last 12 hours, use an HTTP-only s
 3. Open **Visual Assets**. Every slot shows its exact required size before selection. The browser crops, resizes, and converts the source to WebP before upload.
 4. Open **Launchers & Files**.
    - Add a web launcher for a hosted game or app.
-   - Upload an installer or other release file for downloadable content. Large files use multipart uploads.
-5. Preview the public page, then change the record and release states to **Published**.
+   - Add GitHub Releases, MEGA, itch.io, Google Drive, OneDrive, Dropbox, or custom HTTPS links without consuming R2 storage.
+   - Mark one primary download and keep additional providers as mirrors.
+   - Upload an installer to R2 only when Softcurse-managed storage is preferred. Large files use multipart uploads.
+5. Open **Commerce** to mark the product free, paid, external-store, or coming-soon. Commerce is dormant by default and live sales are server-locked.
+6. Preview the public page, then change the record and release states to **Published**.
+
+## Release and commerce safety
+
+- External downloads must use HTTPS and provider-specific links are hostname validated.
+- Release records support stable, beta, alpha, and development channels plus version, platform, architecture, file size, release notes, and SHA-256.
+- Paid-download tables for orders, entitlements, licenses, idempotent payment events, and expiring download tokens are provisioned but inactive.
+- `COMMERCE_LIVE_ENABLED` remains `false`. Card data is never collected or stored by Softcurse.
 
 Archiving removes a managed record from the public catalog without destroying it. Permanent deletion is supported by the API but intentionally not exposed as a one-click editor action.
 

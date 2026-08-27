@@ -3,6 +3,7 @@ import { LOCALIZATIONS } from '../../data/localizations'
 import { useCmsItems } from '../../content/CmsContent'
 import Button from '../../components/common/Button'
 import Badge from '../../components/common/Badge'
+import { ProductPrimaryActions, ProductReleasePanel } from '../../components/common/ProductAccess'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { useSEO } from '../../hooks/useSEO'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
@@ -42,8 +43,7 @@ export default function LocalizationDetail() {
           <h1 className={styles.heroTitle}>{project.name}</h1>
           <p className={styles.heroDesc}>{project.shortDesc}</p>
           <div className={styles.heroActions}>
-            {project.playUrl ? <Button variant="cyan" external={project.playUrl}>↗ {project.launchLabel || 'OPEN PROJECT'}</Button> : project.downloadReleases?.length === 0 && <Button variant="outline" disabled>IN DEVELOPMENT</Button>}
-            {project.downloadReleases?.map(release => <Button key={release.id} variant="cyan" external={release.url}>↓ {release.label}</Button>)}
+            <ProductPrimaryActions product={project} />
             <Button variant="ghost" href="/localization">← BACK TO LOCALIZATION</Button>
           </div>
         </div>
@@ -59,6 +59,7 @@ export default function LocalizationDetail() {
           <div className={styles.sectionLabel}>{'// OVERVIEW'}</div>
           <p className={styles.desc}>{project.desc}</p>
         </section>
+        <ProductReleasePanel product={project} />
 
         <section className={styles.section} ref={featuresRef}>
           <div className={styles.sectionLabel}>{'// PROJECT SCOPE'}</div>
