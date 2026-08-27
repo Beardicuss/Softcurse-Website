@@ -1,4 +1,3 @@
-/* global URL, console */
 import { writeFile } from 'node:fs/promises'
 import { APPS } from '../src/data/apps.js'
 import { POSTS } from '../src/data/blog.js'

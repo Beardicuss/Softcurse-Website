@@ -12,7 +12,9 @@
     "cms:migrate:local": "wrangler d1 migrations apply softcurse-cms --local",
     "cms:migrate": "wrangler d1 migrations apply softcurse-cms --remote",
     "deploy": "npm run build && wrangler pages deploy --branch main",
-    "lint": "eslint . --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+    "test": "node --test tests/*.test.mjs",
+    "smoke:production": "node scripts/smoke-production.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",
