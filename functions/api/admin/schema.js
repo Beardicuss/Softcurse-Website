@@ -14,6 +14,7 @@ export function onRequestGet(context) {
     checkoutProviders: ['stripe', 'lemon_squeezy', 'itchio', 'gumroad', 'custom'],
     platforms: ['web', 'windows', 'macos', 'linux', 'android', 'ios', 'other'],
     architectures: ['universal', 'x64', 'arm64', 'x86', 'other'],
+    commerceIdentityConfigured: Boolean(context.env.COMMERCE_DATA_KEY),
     uploadPartBytes: Number(context.env.CMS_UPLOAD_PART_BYTES || 8388608),
   })
 }

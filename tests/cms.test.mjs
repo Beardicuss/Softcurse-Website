@@ -12,6 +12,7 @@ import {
   validateContentPayload,
 } from '../functions/_lib/cms.js'
 import { formatBytes, makeSlug } from '../src/admin/api.js'
+import { normalizeEmail } from '../functions/_lib/commerce.js'
 
 test('slug helpers create safe, stable content slugs', () => {
   assert.equal(slugify('  Fake Checker!  '), 'fake-checker')
@@ -75,5 +76,13 @@ test('release provider URLs require HTTPS and match the selected host', () => {
   assert.throws(
     () => validateProviderUrl('custom', 'http://downloads.example.com/setup.exe'),
     error => error instanceof CmsError && error.code === 'INVALID_EXTERNAL_URL',
+  )
+})
+
+test('commerce identities normalize email without retaining display variants', () => {
+  assert.equal(normalizeEmail('  Customer@Example.COM '), 'customer@example.com')
+  assert.throws(
+    () => normalizeEmail('not-an-email'),
+    error => error instanceof CmsError && error.code === 'INVALID_CUSTOMER_EMAIL',
   )
 })

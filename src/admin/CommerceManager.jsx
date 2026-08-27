@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { adminApi } from './api'
+import EntitlementManager from './EntitlementManager'
 
 const providerNames = { stripe: 'Stripe', lemon_squeezy: 'Lemon Squeezy', itchio: 'itch.io', gumroad: 'Gumroad', custom: 'Custom provider' }
 
-export default function CommerceManager({ item, schema }) {
+export default function CommerceManager({ item, schema, releases }) {
   const [value, setValue] = useState(null)
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
@@ -34,7 +35,7 @@ export default function CommerceManager({ item, schema }) {
 
   const paid = value.saleMode === 'paid'
   const externalStore = value.saleMode === 'external_store'
-  return <form className="admin-form-grid commerce-manager" onSubmit={save}>
+  return <><form className="admin-form-grid commerce-manager" onSubmit={save}>
     <div className="commerce-lock wide"><strong>COMMERCE FOUNDATION // DORMANT</strong><span>Pricing and provider references can be prepared now. Live sales cannot activate until payment webhooks, legal policy, and secrets are configured.</span></div>
     <label>Sale mode<select value={value.saleMode} onChange={event => update('saleMode', event.target.value)}>{schema.saleModes.map(mode => <option value={mode} key={mode}>{mode.replace('_', ' ')}</option>)}</select></label>
     <label>Storefront visibility<select value={value.storefrontStatus} onChange={event => update('storefrontStatus', event.target.value)}>{schema.storefrontStatuses.map(status => <option value={status} key={status}>{status}{status === 'live' ? ' (locked)' : ''}</option>)}</select></label>
@@ -52,5 +53,5 @@ export default function CommerceManager({ item, schema }) {
     <div className="wide commerce-summary"><span>PUBLIC STATE</span><strong>{value.storefrontStatus === 'disabled' ? 'No pricing or buy controls are visible.' : value.storefrontStatus === 'preview' ? 'Coming-soon commerce UI may be previewed without accepting payment.' : 'Activation requires server-side commerce enablement.'}</strong></div>
     <button className="admin-button primary" disabled={busy}>{busy ? 'SAVING…' : 'SAVE COMMERCE POLICY'}</button>
     {message && <p className="admin-message wide" role="status">{message}</p>}
-  </form>
+  </form><EntitlementManager item={item} releases={releases} /></>
 }
