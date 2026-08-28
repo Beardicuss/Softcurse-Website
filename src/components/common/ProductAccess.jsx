@@ -45,24 +45,24 @@ export function ProductReleasePanel({ product }) {
   const primary = releases.find(release => release.isPrimary) || releases[0]
   const mirrors = releases.filter(release => release.id !== primary.id)
   return <section className={styles.panel} aria-labelledby="product-downloads-title">
-    <div className={styles.label}>{'// RELEASES & DOWNLOADS'}</div>
-    <h2 id="product-downloads-title">Available builds</h2>
+    <div className={styles.label}>{'// RELEASE INFORMATION'}</div>
+    <h2 id="product-downloads-title">Current build</h2>
     <ReleaseRow release={primary} primary />
-    {mirrors.length > 0 && <div className={styles.mirrors}><h3>Download mirrors</h3>{mirrors.map(release => <ReleaseRow key={release.id} release={release} />)}</div>}
-    <p className={styles.safety}>Verify the SHA-256 checksum when one is provided. External mirrors open on their provider’s website.</p>
+    {mirrors.length > 0 && <div className={styles.mirrors}><h3>Alternative downloads</h3>{mirrors.map(release => <ReleaseRow key={release.id} release={release} showAction />)}</div>}
+    {primary.sha256 && <p className={styles.safety}>Verify the installer against the SHA-256 checksum before running it.</p>}
   </section>
 }
 
-function ReleaseRow({ release, primary = false }) {
+function ReleaseRow({ release, primary = false, showAction = false }) {
   const size = formatBytes(release.sizeBytes)
   return <article className={`${styles.release} ${primary ? styles.primary : ''}`}>
     <div className={styles.releaseMain}>
       <span className={styles.provider}>{providerNames[release.provider] || release.provider || 'Download'}{primary ? ' · PRIMARY' : ' · MIRROR'}</span>
-      <strong>{release.label}</strong>
+      <strong>{release.fileName || release.label}</strong>
       <span>{[release.version && `v${release.version}`, release.channel, release.platform, release.architecture, size].filter(Boolean).join(' · ')}</span>
-      {release.releaseNotes && <p>{release.releaseNotes}</p>}
-      {release.sha256 && <code title="SHA-256 checksum">SHA-256 {release.sha256}</code>}
+      {release.releaseNotes && <div className={styles.notes}><b>Release notes</b><p>{release.releaseNotes}</p></div>}
+      {release.sha256 && <div className={styles.checksum}><b>SHA-256</b><code title="SHA-256 checksum">{release.sha256}</code></div>}
     </div>
-    <Button variant={primary ? 'cyan' : 'outline'} external={release.url}>↓ DOWNLOAD</Button>
+    {showAction && <Button variant="outline" external={release.url}>↓ {release.label || 'Download'}</Button>}
   </article>
 }
