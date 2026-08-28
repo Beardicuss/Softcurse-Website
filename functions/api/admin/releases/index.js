@@ -11,6 +11,7 @@ import {
   validateProviderUrl,
   writeAudit,
 } from '../../../_lib/cms.js'
+import { syncRoadmapSafely } from '../../../_lib/roadmap.js'
 
 const PLATFORMS = new Set(['web', 'windows', 'macos', 'linux', 'android', 'ios', 'other'])
 const ARCHITECTURES = new Set(['universal', 'x64', 'arm64', 'x86', 'other'])
@@ -95,7 +96,8 @@ export async function onRequestPost(context) {
     await writeAudit(context.env, context.data.admin.username, 'add_external_release', 'release', id, {
       contentId: payload.contentId, kind: release.kind, provider: release.provider, actionRole: release.actionRole,
     })
-    return json({ ok: true, id }, { status: 201 })
+    const roadmapSync = await syncRoadmapSafely(context.env, context.data.admin.username, payload.contentId)
+    return json({ ok: true, id, roadmapSync }, { status: 201 })
   } catch (error) {
     return handleCmsError(error, context.request)
   }

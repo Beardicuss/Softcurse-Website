@@ -12,7 +12,9 @@ import {
   slugify,
   validateProviderUrl,
   validateContentPayload,
+  validateRoadmapData,
 } from '../functions/_lib/cms.js'
+import { deriveRoadmapStatus } from '../functions/_lib/roadmap.js'
 import { formatBytes, makeSlug } from '../src/admin/api.js'
 import { normalizeEmail } from '../functions/_lib/commerce.js'
 import { chapterFileName, chapterResponse, readChapterHtml, validateChapterNumber, validateChapterTitle } from '../functions/_lib/chapters.js'
@@ -76,6 +78,40 @@ test('content validation accepts complete records and rejects invalid mutations'
     () => validateContentPayload({ status: 'deleted' }, true),
     error => error instanceof CmsError && error.code === 'INVALID_STATUS',
   )
+})
+
+test('roadmap milestones validate manual and automatic records', () => {
+  assert.doesNotThrow(() => validateRoadmapData({
+    quarter: 'Now',
+    items: [
+      { id: 'manual-item', title: 'Manual item', type: 'LAB', status: 'planned', desc: '', syncMode: 'manual' },
+      { id: 'release-item', title: 'Release item', type: 'STUDIO', status: 'in-progress', syncMode: 'release', linkedContentId: 'game-1', linkedReleaseId: 'release-1' },
+    ],
+  }))
+  assert.throws(
+    () => validateRoadmapData({ quarter: 'Later', items: [{ id: 'bad', title: 'Bad link', type: 'LAB', status: 'next', syncMode: 'release', linkedContentId: 'app-1' }] }),
+    error => error instanceof CmsError && error.code === 'ROADMAP_RELEASE_LINK_REQUIRED',
+  )
+  assert.throws(
+    () => validateRoadmapData({ quarter: 'Later', items: [{ id: 'same', title: 'One', type: 'LAB', status: 'planned' }, { id: 'same', title: 'Two', type: 'LAB', status: 'planned' }] }),
+    error => error instanceof CmsError && error.code === 'INVALID_ROADMAP_ITEM_ID',
+  )
+})
+
+test('roadmap automation derives statuses without changing manual milestones', () => {
+  const content = new Map([
+    ['active-project', { id: 'active-project', status: 'published', data_json: JSON.stringify({ status: 'active' }) }],
+    ['beta-project', { id: 'beta-project', status: 'published', data_json: JSON.stringify({ status: 'beta' }) }],
+  ])
+  const releases = new Map([
+    ['published-release', { id: 'published-release', content_id: 'active-project', status: 'published', label: 'Download' }],
+    ['draft-release', { id: 'draft-release', content_id: 'beta-project', status: 'draft', label: 'Preview' }],
+  ])
+  assert.equal(deriveRoadmapStatus({ status: 'planned', syncMode: 'manual' }, content, releases).status, 'planned')
+  assert.equal(deriveRoadmapStatus({ status: 'planned', syncMode: 'content', linkedContentId: 'active-project' }, content, releases).status, 'done')
+  assert.equal(deriveRoadmapStatus({ status: 'planned', syncMode: 'content', linkedContentId: 'beta-project' }, content, releases).status, 'in-progress')
+  assert.equal(deriveRoadmapStatus({ status: 'planned', syncMode: 'release', linkedContentId: 'active-project', linkedReleaseId: 'published-release' }, content, releases).status, 'done')
+  assert.equal(deriveRoadmapStatus({ status: 'planned', syncMode: 'release', linkedContentId: 'beta-project', linkedReleaseId: 'draft-release' }, content, releases).status, 'in-progress')
 })
 
 test('storage metrics format predictable byte values', () => {

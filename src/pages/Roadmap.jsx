@@ -72,9 +72,10 @@ export default function Roadmap() {
               </div>
               <div className={styles.items}>
                 {quarter.items.map(item => {
-                  const meta = STATUS_META[item.status]
+                  const status = STATUS_META[item.status] ? item.status : 'planned'
+                  const meta = STATUS_META[status]
                   return (
-                    <div key={item.id} className={`${styles.item} ${styles[item.status.replace('-','')]}`}>
+                    <div key={item.id} className={`${styles.item} ${styles[status.replace('-','')]}`}>
                       <div className={styles.itemTop}>
                         <span className={styles.itemDot} style={{ color: meta.color }}>{meta.dot}</span>
                         <h3 className={styles.itemTitle}>{item.title}</h3>

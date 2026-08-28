@@ -6,8 +6,10 @@ import {
   parseContentRow,
   readJson,
   validateContentPayload,
+  validateRoadmapData,
   writeAudit,
 } from '../../../_lib/cms.js'
+import { syncRoadmapSafely } from '../../../_lib/roadmap.js'
 
 async function findItem(env, id) {
   return env.CMS_DB.prepare('SELECT * FROM content_items WHERE id = ?1').bind(id).first()
@@ -48,6 +50,7 @@ export async function onRequestPatch(context) {
       sortOrder: payload.sortOrder ?? existing.sort_order,
       data: payload.data ?? JSON.parse(existing.data_json),
     }
+    if (existing.type === 'roadmap') validateRoadmapData(next.data)
     const now = new Date().toISOString()
     const publishedAt = next.status === 'published' ? (existing.published_at || now) : null
     const revision = Number(await context.env.CMS_DB.prepare(`
@@ -71,8 +74,9 @@ export async function onRequestPatch(context) {
       toStatus: next.status,
       revision,
     })
+    const roadmapSync = await syncRoadmapSafely(context.env, context.data.admin.username, existing.type === 'roadmap' ? null : existing.id)
 
-    return json({ ok: true, item: parseContentRow(await findItem(context.env, existing.id)) })
+    return json({ ok: true, item: parseContentRow(await findItem(context.env, existing.id)), roadmapSync })
   } catch (error) {
     if (error instanceof Error && error.message.includes('UNIQUE constraint failed')) {
       return apiError(409, 'That slug is already in use for this content type.', 'SLUG_CONFLICT')
@@ -92,7 +96,8 @@ export async function onRequestDelete(context) {
         UPDATE content_items SET status = 'archived', updated_at = CURRENT_TIMESTAMP, published_at = NULL WHERE id = ?1
       `).bind(existing.id).run()
       await writeAudit(context.env, context.data.admin.username, 'archive', existing.type, existing.id)
-      return json({ ok: true, archived: true })
+      const roadmapSync = await syncRoadmapSafely(context.env, context.data.admin.username, existing.type === 'roadmap' ? null : existing.id)
+      return json({ ok: true, archived: true, roadmapSync })
     }
 
     const objects = await context.env.CMS_DB.prepare(`
@@ -108,7 +113,8 @@ export async function onRequestDelete(context) {
     }
     await context.env.CMS_DB.prepare('DELETE FROM content_items WHERE id = ?1').bind(existing.id).run()
     await writeAudit(context.env, context.data.admin.username, 'delete_permanently', existing.type, existing.id, { slug: existing.slug })
-    return json({ ok: true, deleted: true })
+    const roadmapSync = await syncRoadmapSafely(context.env, context.data.admin.username, existing.type === 'roadmap' ? null : existing.id)
+    return json({ ok: true, deleted: true, roadmapSync })
   } catch (error) {
     return handleCmsError(error, context.request)
   }

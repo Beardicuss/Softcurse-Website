@@ -2,6 +2,7 @@ import {
   apiError, CmsError, handleCmsError, json, readJson, RELEASE_CHANNELS, RELEASE_PROVIDERS,
   RELEASE_ROLES, RELEASE_STATUSES, validateProviderUrl, writeAudit,
 } from '../../../_lib/cms.js'
+import { syncRoadmapSafely } from '../../../_lib/roadmap.js'
 
 export async function onRequestPatch(context) {
   try {
@@ -34,7 +35,8 @@ export async function onRequestPatch(context) {
       now, status === 'published' ? (release.published_at || now) : null, release.id))
     await context.env.CMS_DB.batch(statements)
     await writeAudit(context.env, context.data.admin.username, 'update_release', 'release', release.id, { status, isPrimary: Boolean(isPrimary) })
-    return json({ ok: true })
+    const roadmapSync = await syncRoadmapSafely(context.env, context.data.admin.username, release.content_id)
+    return json({ ok: true, roadmapSync })
   } catch (error) {
     return handleCmsError(error, context.request)
   }
@@ -47,7 +49,8 @@ export async function onRequestDelete(context) {
     await context.env.CMS_DB.prepare('DELETE FROM releases WHERE id = ?1').bind(release.id).run()
     if (release.r2_key) await context.env.CMS_ASSETS.delete(release.r2_key)
     await writeAudit(context.env, context.data.admin.username, 'delete_release', 'release', release.id, { contentId: release.content_id })
-    return json({ ok: true, deleted: true })
+    const roadmapSync = await syncRoadmapSafely(context.env, context.data.admin.username, release.content_id)
+    return json({ ok: true, deleted: true, roadmapSync })
   } catch (error) {
     return handleCmsError(error, context.request)
   }

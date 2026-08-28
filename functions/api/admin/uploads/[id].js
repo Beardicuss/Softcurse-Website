@@ -1,4 +1,5 @@
 import { apiError, CmsError, handleCmsError, json, readJson, writeAudit } from '../../../_lib/cms.js'
+import { syncRoadmapSafely } from '../../../_lib/roadmap.js'
 
 async function loadUpload(context) {
   return context.env.CMS_DB.prepare(`SELECT * FROM upload_sessions WHERE id = ?1 AND created_by = ?2`).bind(context.params.id, context.data.admin.username).first()
@@ -49,7 +50,8 @@ export async function onRequestPost(context) {
     statements.push(context.env.CMS_DB.prepare(`UPDATE upload_sessions SET status = 'completed' WHERE id = ?1`).bind(upload.id))
     await context.env.CMS_DB.batch(statements)
     await writeAudit(context.env, context.data.admin.username, 'complete_file_upload', 'release', id, { contentId: upload.content_id, fileName: upload.file_name })
-    return json({ ok: true, releaseId: id }, { status: 201 })
+    const roadmapSync = await syncRoadmapSafely(context.env, context.data.admin.username, upload.content_id)
+    return json({ ok: true, releaseId: id, roadmapSync }, { status: 201 })
   } catch (error) {
     return handleCmsError(error, context.request)
   }

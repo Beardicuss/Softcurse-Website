@@ -7,8 +7,10 @@ import {
   parseContentRow,
   readJson,
   validateContentPayload,
+  validateRoadmapData,
   writeAudit,
 } from '../../../_lib/cms.js'
+import { syncRoadmapSafely } from '../../../_lib/roadmap.js'
 
 export async function onRequestGet(context) {
   try {
@@ -59,6 +61,7 @@ export async function onRequestPost(context) {
   try {
     const payload = await readJson(context.request)
     validateContentPayload(payload)
+    if (payload.type === 'roadmap') validateRoadmapData(payload.data)
 
     const id = crypto.randomUUID()
     const now = new Date().toISOString()
@@ -80,9 +83,10 @@ export async function onRequestPost(context) {
     ])
 
     await writeAudit(context.env, context.data.admin.username, 'create', payload.type, id, { slug: payload.slug, status })
+    const roadmapSync = await syncRoadmapSafely(context.env, context.data.admin.username, payload.type === 'roadmap' ? null : id)
 
     const created = await context.env.CMS_DB.prepare('SELECT * FROM content_items WHERE id = ?1').bind(id).first()
-    return json({ ok: true, item: parseContentRow(created) }, { status: 201 })
+    return json({ ok: true, item: parseContentRow(created), roadmapSync }, { status: 201 })
   } catch (error) {
     if (error instanceof Error && error.message.includes('UNIQUE constraint failed')) {
       return apiError(409, 'That slug is already in use for this content type.', 'SLUG_CONFLICT')

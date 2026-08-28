@@ -3,11 +3,13 @@ import AssetManager from './AssetManager'
 import ReleaseManager from './ReleaseManager'
 import CommerceManager from './CommerceManager'
 import ChapterManager from './ChapterManager'
+import RoadmapEditor from './RoadmapEditor'
 import { adminApi, formatBytes, makeSlug } from './api'
 import './admin.css'
 
 const LABELS = { game: 'Games', app: 'Apps', experiment: 'Experiments', localization: 'Localization', chronicle: 'Chronicles', blog: 'Blog', roadmap: 'Roadmap' }
 const EMPTY_DATA = { shortDesc: '', desc: '', icon: '◈', tag: '', status: 'dev', features: [], platforms: [], techStack: [] }
+const initialData = type => type === 'roadmap' ? { quarter: '', items: [] } : { ...EMPTY_DATA, features: [], platforms: [], techStack: [] }
 
 function Login({ onLogin }) {
   const [username, setUsername] = useState('softcurse')
@@ -60,7 +62,7 @@ function ContentList({ type, onEdit, onCreate }) {
   </div>
 }
 
-function CoreFields({ value, setValue, isNew }) {
+function CoreFields({ value, setValue, isNew, onSynced }) {
   const data = value.data
   const [advanced, setAdvanced] = useState(false)
   const [advancedText, setAdvancedText] = useState(() => JSON.stringify(data, null, 2))
@@ -72,12 +74,14 @@ function CoreFields({ value, setValue, isNew }) {
     <label>URL slug<input required pattern="[a-z0-9]+(?:-[a-z0-9]+)*" value={value.slug} onChange={event => setValue({ ...value, slug: makeSlug(event.target.value), slugTouched: true })} /></label>
     <label>Publish state<select value={value.status} onChange={event => update('status', event.target.value)}><option value="draft">Draft</option><option value="published">Published</option><option value="archived">Archived</option></select></label>
     <label>Display order<input type="number" value={value.sortOrder} onChange={event => update('sortOrder', Number(event.target.value))} /></label>
-    <label>Icon / glyph<input value={data.icon || ''} onChange={event => updateData('icon', event.target.value)} /></label>
-    <label>Category tag<input value={data.tag || ''} onChange={event => updateData('tag', event.target.value)} /></label>
-    <label>Project status<input placeholder="active, beta, dev, planned" value={data.status || ''} onChange={event => updateData('status', event.target.value)} /></label>
-    <label>Version<input value={data.version || ''} onChange={event => updateData('version', event.target.value)} /></label>
-    <label className="wide">Short description<textarea rows="3" value={data.shortDesc || ''} onChange={event => updateData('shortDesc', event.target.value)} /></label>
-    <label className="wide">Full description<textarea rows="7" value={data.desc || ''} onChange={event => updateData('desc', event.target.value)} /></label>
+    {value.type !== 'roadmap' && <>
+      <label>Icon / glyph<input value={data.icon || ''} onChange={event => updateData('icon', event.target.value)} /></label>
+      <label>Category tag<input value={data.tag || ''} onChange={event => updateData('tag', event.target.value)} /></label>
+      <label>Project status<input placeholder="active, beta, dev, planned" value={data.status || ''} onChange={event => updateData('status', event.target.value)} /></label>
+      <label>Version<input value={data.version || ''} onChange={event => updateData('version', event.target.value)} /></label>
+      <label className="wide">Short description<textarea rows="3" value={data.shortDesc || ''} onChange={event => updateData('shortDesc', event.target.value)} /></label>
+      <label className="wide">Full description<textarea rows="7" value={data.desc || ''} onChange={event => updateData('desc', event.target.value)} /></label>
+    </>}
     {value.type === 'blog' && <>
       <label>Category<input value={data.category || ''} onChange={event => updateData('category', event.target.value)} /></label>
       <label>Publication date<input type="date" value={data.date || ''} onChange={event => updateData('date', event.target.value)} /></label>
@@ -87,7 +91,7 @@ function CoreFields({ value, setValue, isNew }) {
     </>}
     {value.type === 'roadmap' && <>
       <label>Quarter / period<input value={data.quarter || ''} onChange={event => updateData('quarter', event.target.value)} /></label>
-      <label className="wide">Roadmap entries <small>JSON array: id, title, type, status, desc</small><textarea rows="12" value={JSON.stringify(data.items || [], null, 2)} onChange={event => { try { updateData('items', JSON.parse(event.target.value)) } catch { /* preserve the last valid value */ } }} /></label>
+      <RoadmapEditor items={data.items || []} onChange={items => updateData('items', items)} isNew={isNew} onSynced={onSynced} />
     </>}
     {value.type === 'chronicle' && <>
       <label>Series<input value={data.series || ''} onChange={event => updateData('series', event.target.value)} /></label>
@@ -97,16 +101,18 @@ function CoreFields({ value, setValue, isNew }) {
       <label>Narrative format<input value={data.engine || ''} onChange={event => updateData('engine', event.target.value)} /></label>
       <label>Release date<input placeholder="TBA or 2027" value={data.releaseDate || ''} onChange={event => updateData('releaseDate', event.target.value)} /></label>
     </>}
-    <label>Platforms <small>one per line</small><textarea rows="6" value={(data.platforms || []).join('\n')} onChange={event => listField('platforms', event.target.value)} /></label>
-    <label>Technology <small>one per line</small><textarea rows="6" value={(data.techStack || []).join('\n')} onChange={event => listField('techStack', event.target.value)} /></label>
-    <label className="wide">Features <small>one per line</small><textarea rows="8" value={(data.features || []).join('\n')} onChange={event => listField('features', event.target.value)} /></label>
+    {value.type !== 'roadmap' && <>
+      <label>Platforms <small>one per line</small><textarea rows="6" value={(data.platforms || []).join('\n')} onChange={event => listField('platforms', event.target.value)} /></label>
+      <label>Technology <small>one per line</small><textarea rows="6" value={(data.techStack || []).join('\n')} onChange={event => listField('techStack', event.target.value)} /></label>
+      <label className="wide">Features <small>one per line</small><textarea rows="8" value={(data.features || []).join('\n')} onChange={event => listField('features', event.target.value)} /></label>
+    </>}
     <div className="wide advanced-editor"><button type="button" className="admin-button" onClick={() => { setAdvanced(!advanced); setAdvancedText(JSON.stringify(data, null, 2)) }}>{advanced ? 'HIDE' : 'SHOW'} ADVANCED DATA</button>{advanced && <><p className="admin-muted">Full structured record for specialized fields, chapters, metadata, and future modules.</p><textarea rows="20" value={advancedText} onChange={event => setAdvancedText(event.target.value)} /><button type="button" className="admin-button" onClick={() => { try { setValue({ ...value, data: JSON.parse(advancedText) }) } catch { window.alert('Advanced data is not valid JSON.') } }}>APPLY VALID JSON</button></>}</div>
   </div>
 }
 
 function ContentEditor({ type, id, schema, onBack }) {
   const isNew = !id
-  const [item, setItem] = useState(isNew ? { type, title: '', slug: '', status: 'draft', sortOrder: 0, data: EMPTY_DATA } : null)
+  const [item, setItem] = useState(isNew ? { type, title: '', slug: '', status: 'draft', sortOrder: 0, data: initialData(type) } : null)
   const [assets, setAssets] = useState([])
   const [releases, setReleases] = useState([])
   const [tab, setTab] = useState('content')
@@ -131,7 +137,8 @@ function ContentEditor({ type, id, schema, onBack }) {
     try {
       const payload = { type: item.type, title: item.title, slug: item.slug, status: item.status, sortOrder: item.sortOrder, data: item.data }
       const result = await adminApi(isNew ? '/content' : `/content/${id}`, { method: isNew ? 'POST' : 'PATCH', body: JSON.stringify(payload) })
-      setMessage(isNew ? 'Created. Opening full editor…' : 'Changes saved.')
+      const syncCount = result.roadmapSync?.changes?.length || 0
+      setMessage(isNew ? 'Created. Opening full editor…' : `Changes saved.${syncCount ? ` ${syncCount} roadmap milestone${syncCount === 1 ? '' : 's'} synchronized.` : ''}`)
       if (isNew) window.location.hash = `edit:${type}:${result.item.id}`
       else setItem(result.item)
     } catch (error) { setMessage(error.message) } finally { setBusy(false) }
@@ -143,7 +150,7 @@ function ContentEditor({ type, id, schema, onBack }) {
   if (!item) return <div className="admin-loading">LOADING RECORD…</div>
   return <div><header className="admin-page-header editor-header"><div><button className="back-button" onClick={onBack}>← {LABELS[type]}</button><h1>{isNew ? `New ${type}` : item.title}</h1><span className={`status-chip ${item.status}`}>{item.status}</span></div><div>{!isNew && <button className="admin-button danger" onClick={archive}>ARCHIVE</button>}<button className="admin-button primary" disabled={busy} onClick={save}>{busy ? 'SAVING…' : 'SAVE CHANGES'}</button></div></header>
     {!isNew && <div className="admin-tabs editor-tabs" role="tablist" aria-label="Content editor sections"><button role="tab" aria-selected={tab === 'content'} className={tab === 'content' ? 'active' : ''} onClick={() => setTab('content')}>CONTENT</button><button role="tab" aria-selected={tab === 'assets'} className={tab === 'assets' ? 'active' : ''} onClick={() => setTab('assets')}>VISUAL ASSETS <span>{assets.length}</span></button>{type === 'chronicle' && <button role="tab" aria-selected={tab === 'chapters'} className={tab === 'chapters' ? 'active' : ''} onClick={() => setTab('chapters')}>CHAPTERS</button>}<button role="tab" aria-selected={tab === 'releases'} className={tab === 'releases' ? 'active' : ''} onClick={() => setTab('releases')}>RELEASES <span>{releases.length}</span></button><button role="tab" aria-selected={tab === 'commerce'} className={tab === 'commerce' ? 'active' : ''} onClick={() => setTab('commerce')}>COMMERCE</button></div>}
-    <section className="admin-panel editor-panel">{tab === 'content' && <form onSubmit={save}><CoreFields value={item} setValue={setItem} isNew={isNew} /></form>}{tab === 'assets' && <AssetManager item={item} specs={schema.assetSpecs[type] || {}} assets={assets} onChanged={load} />}{tab === 'chapters' && <ChapterManager item={item} maxBytes={schema.maxChapterBytes} />}{tab === 'releases' && <ReleaseManager item={item} releases={releases} schema={schema} onChanged={load} />}{tab === 'commerce' && <CommerceManager item={item} schema={schema} releases={releases} />}</section>
+    <section className="admin-panel editor-panel">{tab === 'content' && <form onSubmit={save}><CoreFields value={item} setValue={setItem} isNew={isNew} onSynced={load} /></form>}{tab === 'assets' && <AssetManager item={item} specs={schema.assetSpecs[type] || {}} assets={assets} onChanged={load} />}{tab === 'chapters' && <ChapterManager item={item} maxBytes={schema.maxChapterBytes} />}{tab === 'releases' && <ReleaseManager item={item} releases={releases} schema={schema} onChanged={load} />}{tab === 'commerce' && <CommerceManager item={item} schema={schema} releases={releases} />}</section>
     {message && <div className="admin-toast" role="status" aria-live="polite">{message}</div>}
   </div>
 }

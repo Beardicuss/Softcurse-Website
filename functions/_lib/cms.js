@@ -296,3 +296,35 @@ export function validateContentPayload(payload, partial = false) {
     }
   }
 }
+
+export function validateRoadmapData(data) {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) {
+    throw new CmsError(400, 'Roadmap data must be an object.', 'INVALID_ROADMAP_DATA')
+  }
+  if (typeof data.quarter !== 'string' || !data.quarter.trim() || data.quarter.length > 60) {
+    throw new CmsError(400, 'Roadmap quarter or period is required and must be 60 characters or fewer.', 'INVALID_ROADMAP_PERIOD')
+  }
+  if (!Array.isArray(data.items) || data.items.length > 100) {
+    throw new CmsError(400, 'Roadmap entries must be an array with no more than 100 milestones.', 'INVALID_ROADMAP_ITEMS')
+  }
+  const ids = new Set()
+  for (const item of data.items) {
+    if (!item || typeof item !== 'object' || Array.isArray(item)) throw new CmsError(400, 'Every roadmap milestone must be an object.', 'INVALID_ROADMAP_ITEM')
+    if (typeof item.id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(item.id) || item.id.length > 100 || ids.has(item.id)) {
+      throw new CmsError(400, 'Roadmap milestone IDs must be unique lowercase slugs.', 'INVALID_ROADMAP_ITEM_ID')
+    }
+    ids.add(item.id)
+    if (typeof item.title !== 'string' || !item.title.trim() || item.title.length > 160) throw new CmsError(400, 'Every roadmap milestone requires a title of 160 characters or fewer.', 'INVALID_ROADMAP_ITEM_TITLE')
+    if (!['LAB', 'STUDIO'].includes(item.type)) throw new CmsError(400, 'Roadmap milestone type must be LAB or STUDIO.', 'INVALID_ROADMAP_ITEM_TYPE')
+    if (!['done', 'in-progress', 'next', 'planned'].includes(item.status)) throw new CmsError(400, 'Invalid roadmap milestone status.', 'INVALID_ROADMAP_ITEM_STATUS')
+    if (item.desc !== undefined && (typeof item.desc !== 'string' || item.desc.length > 1000)) throw new CmsError(400, 'Roadmap milestone descriptions must be 1,000 characters or fewer.', 'INVALID_ROADMAP_ITEM_DESCRIPTION')
+    const syncMode = item.syncMode || 'manual'
+    if (!['manual', 'content', 'release'].includes(syncMode)) throw new CmsError(400, 'Invalid roadmap synchronization mode.', 'INVALID_ROADMAP_SYNC_MODE')
+    if (syncMode !== 'manual' && (typeof item.linkedContentId !== 'string' || !item.linkedContentId || item.linkedContentId.length > 100)) {
+      throw new CmsError(400, 'Automatic roadmap milestones must link to a project.', 'ROADMAP_CONTENT_LINK_REQUIRED')
+    }
+    if (syncMode === 'release' && (typeof item.linkedReleaseId !== 'string' || !item.linkedReleaseId || item.linkedReleaseId.length > 100)) {
+      throw new CmsError(400, 'Release-synchronized milestones must link to a release.', 'ROADMAP_RELEASE_LINK_REQUIRED')
+    }
+  }
+}
