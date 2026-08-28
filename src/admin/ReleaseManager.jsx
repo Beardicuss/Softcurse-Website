@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { adminApi, formatBytes } from './api'
 
 const emptyWeb = { label: 'Play online', externalUrl: '', version: '', platform: 'web', channel: 'stable', status: 'draft', isPrimary: true, releaseNotes: '' }
@@ -8,16 +8,29 @@ const emptyFile = { label: 'Download', version: '', channel: 'stable', platform:
 const providerNames = { softcurse: 'Softcurse storage', github: 'GitHub Releases', mega: 'MEGA', itchio: 'itch.io', google_drive: 'Google Drive', onedrive: 'OneDrive', dropbox: 'Dropbox', custom: 'Custom HTTPS URL' }
 const roleNames = { play: 'Play / launch', download: 'Download', store: 'Store page', source: 'Source code' }
 
+function loadDraft(contentId) {
+  try {
+    return JSON.parse(localStorage.getItem(`softcurse:release-draft:${contentId}`) || '{}')
+  } catch {
+    return {}
+  }
+}
+
 export default function ReleaseManager({ item, releases, schema, onChanged }) {
+  const restored = loadDraft(item.id)
   const [mode, setMode] = useState('web')
-  const [web, setWeb] = useState(emptyWeb)
-  const [external, setExternal] = useState(emptyExternal)
-  const [fileMeta, setFileMeta] = useState(emptyFile)
+  const [web, setWeb] = useState(() => ({ ...emptyWeb, ...restored.web }))
+  const [external, setExternal] = useState(() => ({ ...emptyExternal, ...restored.external }))
+  const [fileMeta, setFileMeta] = useState(() => ({ ...emptyFile, ...restored.fileMeta }))
   const [file, setFile] = useState(null)
   const [progress, setProgress] = useState(0)
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
   const fileRef = useRef(null)
+
+  useEffect(() => {
+    localStorage.setItem(`softcurse:release-draft:${item.id}`, JSON.stringify({ web, external, fileMeta }))
+  }, [external, fileMeta, item.id, web])
 
   function field(state, setter, key) {
     const onChange = event => setter({ ...state, [key]: event.target.type === 'checkbox' ? event.target.checked : event.target.value })
@@ -32,7 +45,8 @@ export default function ReleaseManager({ item, releases, schema, onChanged }) {
       if (kind === 'external') payload.sizeBytes = state.sizeMb ? Math.round(Number(state.sizeMb) * 1024 * 1024) : null
       await adminApi('/releases', { method: 'POST', body: JSON.stringify(payload) })
       if (kind === 'web') setWeb(emptyWeb); else setExternal(emptyExternal)
-      setMessage(kind === 'web' ? 'Web launcher saved.' : 'External release link saved.'); await onChanged()
+      const visibility = state.status === 'draft' ? ' as a draft' : ' and published'
+      setMessage(kind === 'web' ? `Web launcher saved${visibility}.` : `External release saved${visibility}.`); await onChanged()
     } catch (error) { setMessage(error.message) } finally { setBusy(false) }
   }
 
@@ -104,7 +118,7 @@ export default function ReleaseManager({ item, releases, schema, onChanged }) {
       <label>Button label <small>choose a suggestion or type your own</small><input required list="web-label-suggestions" {...field(web, setWeb, 'label')} /><datalist id="web-label-suggestions"><option value="Play online" /><option value="Launch" /><option value="Open web app" /><option value="Try demo" /><option value="Visit project" /></datalist></label>
       <label>Hosted URL<input required type="url" placeholder="https://game.pages.dev/" {...field(web, setWeb, 'externalUrl')} /></label>
       {commonFields(web, setWeb)}
-      <button className="admin-button primary" disabled={busy}>ADD WEB LAUNCHER</button>
+      <button className="admin-button primary" disabled={busy}>{web.status === 'draft' ? 'SAVE LAUNCHER DRAFT' : 'PUBLISH WEB LAUNCHER'}</button>
     </form>}
 
     {mode === 'external' && <form className="admin-form-grid" onSubmit={event => addExternal(event, 'external')}>
@@ -118,7 +132,7 @@ export default function ReleaseManager({ item, releases, schema, onChanged }) {
       <label>Approximate size (MB)<input type="number" min="0" step="0.01" {...field(external, setExternal, 'sizeMb')} /></label>
       <label className="wide">SHA-256 checksum<input inputMode="text" maxLength="64" pattern="[A-Fa-f0-9]{64}" placeholder="64 hexadecimal characters" {...field(external, setExternal, 'sha256')} /></label>
       {commonFields(external, setExternal)}
-      <button className="admin-button primary" disabled={busy}>ADD EXTERNAL RELEASE</button>
+      <button className="admin-button primary" disabled={busy}>{external.status === 'draft' ? 'SAVE RELEASE DRAFT' : 'PUBLISH EXTERNAL RELEASE'}</button>
     </form>}
 
     {mode === 'file' && <form className="admin-form-grid" onSubmit={uploadFile}>

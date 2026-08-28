@@ -1,5 +1,5 @@
 import { publicChapter } from '../../_lib/chapters.js'
-import { ASSET_SPECS, CONTENT_TYPES, json, parseContentRow } from '../../_lib/cms.js'
+import { ASSET_SPECS, CONTENT_TYPES, json, legacyContentSlugs, managedContentKeys, parseContentRow } from '../../_lib/cms.js'
 
 function publicRelease(row) {
   return {
@@ -27,10 +27,10 @@ export async function onRequestGet(context) {
   const type = Array.isArray(rawType) ? rawType[0] : rawType
   if (type && !CONTENT_TYPES.has(type)) return json({ ok: false, error: { code: 'INVALID_CONTENT_TYPE', message: 'Unknown content type.' } }, { status: 404 })
   const managedQuery = type
-    ? context.env.CMS_DB.prepare(`SELECT type, slug FROM content_items WHERE type = ?1`).bind(type)
-    : context.env.CMS_DB.prepare(`SELECT type, slug FROM content_items`)
+    ? context.env.CMS_DB.prepare(`SELECT id, type, slug FROM content_items WHERE type = ?1`).bind(type)
+    : context.env.CMS_DB.prepare(`SELECT id, type, slug FROM content_items`)
   const managedResult = await managedQuery.all()
-  const managed = managedResult.results.map(row => `${row.type}:${row.slug}`)
+  const managed = [...new Set(managedResult.results.flatMap(managedContentKeys))]
   const query = type
     ? context.env.CMS_DB.prepare(`SELECT * FROM content_items WHERE status = 'published' AND type = ?1 ORDER BY sort_order, published_at DESC`).bind(type)
     : context.env.CMS_DB.prepare(`SELECT * FROM content_items WHERE status = 'published' ORDER BY type, sort_order, published_at DESC`)
@@ -73,7 +73,7 @@ export async function onRequestGet(context) {
     const productCommerce = commerce.get(row.id) || { saleMode: 'free', storefrontStatus: 'disabled', currency: 'USD' }
     const productReleases = (releases.get(row.id) || []).filter(release => productCommerce.saleMode === 'free' || release.actionRole !== 'download')
     const data = row.type === 'chronicle' ? { ...item.data, chapters: chapters.get(row.id) || [] } : item.data
-    return { ...item, data, assets: assets.get(row.id) || {}, releases: productReleases, commerce: productCommerce }
+    return { ...item, legacySlugs: legacyContentSlugs(row), data, assets: assets.get(row.id) || {}, releases: productReleases, commerce: productCommerce }
   })
   return json({ ok: true, items, managed, assetSpecs: ASSET_SPECS }, { headers: { 'Cache-Control': 'public, max-age=30, stale-while-revalidate=120' } })
 }

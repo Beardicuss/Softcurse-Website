@@ -13,7 +13,7 @@ export default function Lab() {
   const [r2,v2] = useScrollReveal()
   const [r3,v3] = useScrollReveal()
   const apps = useCmsItems('app', Object.values(APPS))
-  const active  = apps.filter(item => item.status === 'active')
+  const active  = apps.filter(item => item.status === 'active' || item.status === 'beta')
   const inDev   = apps.filter(item => item.status === 'dev')
   const planned = apps.filter(item => item.status === 'planned')
 
@@ -35,7 +35,7 @@ export default function Lab() {
           <div ref={r1} className={`${styles.group} reveal ${v1 ? 'visible' : ''}`}>
             <div className={styles.groupHeader}>
               <span className={styles.groupDot} style={{ background: 'var(--green)' }} />
-              <span className={styles.groupLabel}>LIVE — Ready to use</span>
+              <span className={styles.groupLabel}>AVAILABLE — Ready to use or test</span>
             </div>
             <div className="card-grid">
               {active.map(a => <AppCard key={a.id} app={a} />)}

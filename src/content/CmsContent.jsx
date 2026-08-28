@@ -11,6 +11,7 @@ function toLegacy(item) {
     type: item.type,
     id: item.slug,
     cmsId: item.id,
+    legacySlugs: item.legacySlugs || [],
     name: item.title,
     title: item.title,
     image: item.assets.card?.url || item.assets.cover?.url || item.data.image,
@@ -50,5 +51,5 @@ export function useCmsItems(type, fallback = []) {
 
 export function useCmsRecord(type, slug, fallback) {
   const items = useCmsItems(type, fallback ? [fallback] : [])
-  return items.find(item => item.id === slug)
+  return items.find(item => item.id === slug || item.legacySlugs?.includes(slug))
 }

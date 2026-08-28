@@ -4,6 +4,8 @@ import test from 'node:test'
 import {
   CmsError,
   isSafeSlug,
+  legacyContentSlugs,
+  managedContentKeys,
   parseCookies,
   sanitizeFileName,
   sessionCookie,
@@ -21,6 +23,21 @@ test('slug helpers create safe, stable content slugs', () => {
   assert.equal(isSafeSlug('hexbrewers-from-ashenveil'), true)
   assert.equal(isSafeSlug('Unsafe Slug'), false)
   assert.equal(isSafeSlug('-leading-hyphen'), false)
+})
+
+test('renamed seeded content still suppresses its original static fallback', () => {
+  assert.deepEqual(
+    legacyContentSlugs({ id: 'seed-app-ytdl', type: 'app', slug: 'smd' }),
+    ['ytdl'],
+  )
+  assert.deepEqual(
+    managedContentKeys({ id: 'seed-app-ytdl', type: 'app', slug: 'smd' }),
+    ['app:smd', 'app:ytdl'],
+  )
+  assert.deepEqual(
+    managedContentKeys({ id: 'custom-app-id', type: 'app', slug: 'new-tool' }),
+    ['app:new-tool'],
+  )
 })
 
 test('file names are safe for release metadata', () => {

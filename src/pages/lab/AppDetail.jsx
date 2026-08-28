@@ -1,6 +1,6 @@
 import { useParams, Navigate } from 'react-router-dom'
 import { APPS } from '../../data/apps'
-import { useCmsItems } from '../../content/CmsContent'
+import { useCmsItems, useCmsRecord } from '../../content/CmsContent'
 import Button from '../../components/common/Button'
 import Badge from '../../components/common/Badge'
 import AppCard from '../../components/common/AppCard'
@@ -13,7 +13,7 @@ import styles from './AppDetail.module.css'
 export default function AppDetail() {
   const { id } = useParams()
   const apps = useCmsItems('app', Object.values(APPS))
-  const app = apps.find(item => item.id === id)
+  const app = useCmsRecord('app', id, APPS[id])
 
   usePageTitle(app ? app.name : '')
   useSEO(app ? {
@@ -29,8 +29,9 @@ export default function AppDetail() {
   const [relatedRef, relatedVis] = useScrollReveal()
 
   if (!app) return <Navigate to="/lab" replace />
+  if (app.id !== id) return <Navigate to={`/lab/${app.id}`} replace />
 
-  const statusLabel = { active: '● LIVE', dev: '◎ IN DEV', planned: '○ PLANNED' }
+  const statusLabel = { active: '● LIVE', beta: '⬡ BETA', dev: '◎ IN DEV', planned: '○ PLANNED' }
   const relatedTools = apps
     .filter(a => a.id !== app.id && (a.tag === app.tag || a.status === app.status))
     .slice(0, 3)

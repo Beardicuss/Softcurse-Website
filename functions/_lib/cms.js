@@ -251,6 +251,20 @@ export function parseContentRow(row) {
   }
 }
 
+export function legacyContentSlugs(row) {
+  const seedPrefix = `seed-${row.type}-`
+  if (typeof row.id === 'string' && row.id.startsWith(seedPrefix)) {
+    const originalSlug = row.id.slice(seedPrefix.length)
+    return originalSlug && originalSlug !== row.slug ? [originalSlug] : []
+  }
+  return []
+}
+
+export function managedContentKeys(row) {
+  const keys = new Set([row.slug, ...legacyContentSlugs(row)].map(slug => `${row.type}:${slug}`))
+  return [...keys]
+}
+
 export function validateContentPayload(payload, partial = false) {
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
     throw new CmsError(400, 'Content must be an object.', 'INVALID_CONTENT')
