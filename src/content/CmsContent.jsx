@@ -49,6 +49,10 @@ export function useCmsItems(type, fallback = []) {
   }, [cms, fallback, type])
 }
 
+export function useCmsReady() {
+  return useContext(CmsContext).ready
+}
+
 export function useCmsRecord(type, slug, fallback) {
   const items = useCmsItems(type, fallback ? [fallback] : [])
   return items.find(item => item.id === slug || item.legacySlugs?.includes(slug))

@@ -1,6 +1,6 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { POSTS } from '../data/blog'
-import { useCmsItems } from '../content/CmsContent'
+import { useCmsItems, useCmsReady, useCmsRecord } from '../content/CmsContent'
 import Button from '../components/common/Button'
 import ShareButtons from '../components/common/ShareButtons'
 import Newsletter from '../components/common/Newsletter'
@@ -11,10 +11,13 @@ import styles from './BlogPost.module.css'
 export default function BlogPost() {
   const { id } = useParams()
   const posts = useCmsItems('blog', POSTS)
-  const post = posts.find(item => item.id === id)
+  const cmsReady = useCmsReady()
+  const post = useCmsRecord('blog', id, POSTS.find(item => item.id === id))
   usePageTitle(post ? post.title : '')
   useSEO(post ? { title: post.title, description: post.excerpt, url: `/blog/${post.id}`, image: post.image, type: 'article' } : {})
+  if (!post && !cmsReady) return null
   if (!post) return <Navigate to="/blog" replace />
+  if (post.id !== id) return <Navigate to={`/blog/${post.id}`} replace />
 
   // Render minimal markdown: ## headings and paragraphs
   const renderContent = (raw) => {

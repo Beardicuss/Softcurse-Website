@@ -1,6 +1,6 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { CHRONICLES } from '../../data/chronicles'
-import { useCmsItems } from '../../content/CmsContent'
+import { useCmsReady, useCmsRecord } from '../../content/CmsContent'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { useSEO } from '../../hooks/useSEO'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
@@ -8,8 +8,8 @@ import styles from './ChronicleDetail.module.css'
 
 export default function ChronicleDetail() {
   const { id } = useParams()
-  const books = useCmsItems('chronicle', Object.values(CHRONICLES))
-  const book = books.find(item => item.id === id)
+  const cmsReady = useCmsReady()
+  const book = useCmsRecord('chronicle', id, CHRONICLES[id])
 
   usePageTitle(book ? book.name : '')
   useSEO(book ? {
@@ -22,7 +22,9 @@ export default function ChronicleDetail() {
   const [heroRef, heroVis] = useScrollReveal(0.05)
   const [chRef, chVis] = useScrollReveal()
 
+  if (!book && !cmsReady) return null
   if (!book) return <Navigate to="/chronicles" replace />
+  if (book.id !== id) return <Navigate to={`/chronicles/${book.id}`} replace />
 
   return (
     <div className={styles.page}>

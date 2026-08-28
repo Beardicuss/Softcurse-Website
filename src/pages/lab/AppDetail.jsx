@@ -1,6 +1,6 @@
 import { useParams, Navigate } from 'react-router-dom'
 import { APPS } from '../../data/apps'
-import { useCmsItems, useCmsRecord } from '../../content/CmsContent'
+import { useCmsItems, useCmsReady, useCmsRecord } from '../../content/CmsContent'
 import Button from '../../components/common/Button'
 import Badge from '../../components/common/Badge'
 import AppCard from '../../components/common/AppCard'
@@ -13,6 +13,7 @@ import styles from './AppDetail.module.css'
 export default function AppDetail() {
   const { id } = useParams()
   const apps = useCmsItems('app', Object.values(APPS))
+  const cmsReady = useCmsReady()
   const app = useCmsRecord('app', id, APPS[id])
 
   usePageTitle(app ? app.name : '')
@@ -28,6 +29,7 @@ export default function AppDetail() {
   const [stackRef, stackVis] = useScrollReveal()
   const [relatedRef, relatedVis] = useScrollReveal()
 
+  if (!app && !cmsReady) return null
   if (!app) return <Navigate to="/lab" replace />
   if (app.id !== id) return <Navigate to={`/lab/${app.id}`} replace />
 

@@ -1,6 +1,6 @@
 import { useParams, Navigate } from 'react-router-dom'
 import { EXPERIMENTS } from '../../data/experiments'
-import { useCmsItems } from '../../content/CmsContent'
+import { useCmsItems, useCmsReady, useCmsRecord } from '../../content/CmsContent'
 import Button from '../../components/common/Button'
 import Badge from '../../components/common/Badge'
 import AppCard from '../../components/common/AppCard'
@@ -13,7 +13,8 @@ import styles from './ExperimentDetail.module.css'
 export default function ExperimentDetail() {
   const { id } = useParams()
   const experiments = useCmsItems('experiment', Object.values(EXPERIMENTS))
-  const app = experiments.find(item => item.id === id)
+  const cmsReady = useCmsReady()
+  const app = useCmsRecord('experiment', id, EXPERIMENTS[id])
 
   usePageTitle(app ? app.name : '')
   useSEO(app ? {
@@ -28,7 +29,9 @@ export default function ExperimentDetail() {
   const [stackRef, stackVis] = useScrollReveal()
   const [relatedRef, relatedVis] = useScrollReveal()
 
+  if (!app && !cmsReady) return null
   if (!app) return <Navigate to="/experiments" replace />
+  if (app.id !== id) return <Navigate to={`/experiments/${app.id}`} replace />
 
   const statusLabel = { active: '● LIVE', dev: '◎ IN DEV', planned: '○ PLANNED' }
   const relatedTools = experiments

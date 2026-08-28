@@ -1,13 +1,13 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { CHRONICLES } from '../../data/chronicles'
-import { useCmsItems } from '../../content/CmsContent'
+import { useCmsReady, useCmsRecord } from '../../content/CmsContent'
 import { useSEO } from '../../hooks/useSEO'
 import styles from './ChapterViewer.module.css'
 
 export default function ChapterViewer() {
   const { id, num } = useParams()
-  const books = useCmsItems('chronicle', Object.values(CHRONICLES))
-  const book = books.find(item => item.id === id)
+  const cmsReady = useCmsReady()
+  const book = useCmsRecord('chronicle', id, CHRONICLES[id])
   const chNum   = parseInt(num, 10)
   const chapter = book ? book.chapters.find(c => c.num === chNum) : null
 
@@ -18,7 +18,9 @@ export default function ChapterViewer() {
     type: 'article',
   } : { noindex: true })
 
+  if (!book && !cmsReady) return null
   if (!book) return <Navigate to="/chronicles" replace />
+  if (book.id !== id) return <Navigate to={`/chronicles/${book.id}/chapter/${chNum}`} replace />
   if (!chapter || chapter.status !== 'published') return <Navigate to={`/chronicles/${id}`} replace />
 
   const publishedChapters = book.chapters.filter(c => c.status === 'published')

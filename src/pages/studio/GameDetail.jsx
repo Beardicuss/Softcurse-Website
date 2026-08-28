@@ -1,6 +1,6 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { GAMES } from '../../data/games'
-import { useCmsItems } from '../../content/CmsContent'
+import { useCmsReady, useCmsRecord } from '../../content/CmsContent'
 import Button from '../../components/common/Button'
 import Badge from '../../components/common/Badge'
 import GameLauncher from '../../components/common/GameLauncher'
@@ -12,8 +12,8 @@ import styles from './GameDetail.module.css'
 
 export default function GameDetail() {
   const { id } = useParams()
-  const games = useCmsItems('game', Object.values(GAMES))
-  const game = games.find(item => item.id === id)
+  const cmsReady = useCmsReady()
+  const game = useCmsRecord('game', id, GAMES[id])
 
   usePageTitle(game ? game.name : '')
   useSEO(game ? {
@@ -27,7 +27,9 @@ export default function GameDetail() {
   const [featRef, featVis] = useScrollReveal()
   const [blogRef, blogVis] = useScrollReveal()
 
+  if (!game && !cmsReady) return null
   if (!game) return <Navigate to="/studio" replace />
+  if (game.id !== id) return <Navigate to={`/studio/${game.id}`} replace />
 
   const statusLabel = { active: '● LIVE', beta: '⬡ BETA', dev: '◎ IN DEV', planned: '○ PLANNED' }
 

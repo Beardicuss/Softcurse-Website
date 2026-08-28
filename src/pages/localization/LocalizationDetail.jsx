@@ -1,6 +1,6 @@
 import { Navigate, useParams } from 'react-router-dom'
 import { LOCALIZATIONS } from '../../data/localizations'
-import { useCmsItems } from '../../content/CmsContent'
+import { useCmsReady, useCmsRecord } from '../../content/CmsContent'
 import Button from '../../components/common/Button'
 import Badge from '../../components/common/Badge'
 import { ProductPrimaryActions, ProductReleasePanel } from '../../components/common/ProductAccess'
@@ -12,8 +12,8 @@ import localStyles from './LocalizationDetail.module.css'
 
 export default function LocalizationDetail() {
   const { id } = useParams()
-  const projects = useCmsItems('localization', Object.values(LOCALIZATIONS))
-  const project = projects.find(item => item.id === id)
+  const cmsReady = useCmsReady()
+  const project = useCmsRecord('localization', id, LOCALIZATIONS[id])
 
   usePageTitle(project ? project.name : '')
   useSEO(project ? {
@@ -27,7 +27,9 @@ export default function LocalizationDetail() {
   const [featuresRef, featuresVisible] = useScrollReveal()
   const [stackRef, stackVisible] = useScrollReveal()
 
+  if (!project && !cmsReady) return null
   if (!project) return <Navigate to="/localization" replace />
+  if (project.id !== id) return <Navigate to={`/localization/${project.id}`} replace />
 
   return (
     <div className={styles.page}>
