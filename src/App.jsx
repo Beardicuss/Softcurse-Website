@@ -59,9 +59,16 @@ function Layout({ children }) {
   )
 }
 
+function shouldSkipIntro(isAdmin) {
+  return isAdmin
+    || window.matchMedia('(max-width: 700px)').matches
+    || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    || sessionStorage.getItem('sc_intro_seen') === '1'
+}
+
 export default function App() {
   const isAdmin = window.location.pathname.startsWith('/admin')
-  const [booted, setBooted] = useState(() => isAdmin || sessionStorage.getItem('sc_intro_seen') === '1' || window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+  const [booted, setBooted] = useState(() => shouldSkipIntro(isAdmin))
 
   const completeBoot = () => {
     sessionStorage.setItem('sc_intro_seen', '1')
