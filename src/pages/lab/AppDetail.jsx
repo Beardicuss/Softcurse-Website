@@ -10,6 +10,16 @@ import { useSEO } from '../../hooks/useSEO'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import styles from './AppDetail.module.css'
 
+function formatReleaseDate(value) {
+  const date = new Date(`${value}T00:00:00`)
+  if (Number.isNaN(date.getTime())) return value
+  return date.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).replaceAll('/', '.')
+}
+
 export default function AppDetail() {
   const { id } = useParams()
   const apps = useCmsItems('app', Object.values(APPS))
@@ -107,9 +117,7 @@ export default function AppDetail() {
           {app.releaseDate && (
             <div className={styles.metaItem}>
               <span className={styles.metaKey}>FIRST RELEASE</span>
-              <span className={styles.metaVal}>
-                {new Date(app.releaseDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
-              </span>
+              <span className={styles.metaVal}>{formatReleaseDate(app.releaseDate)}</span>
             </div>
           )}
           {app.version && (
