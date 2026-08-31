@@ -39,15 +39,13 @@ export const APPS = {
     heroImage: '/posters/apps/page/medialab-page.webp',
     name: 'Softcurse Media Lab AI',
     icon: '🤖',
-    tag: 'AI TOOL',
-    status: 'dev',
-    shortDesc: 'Hardware-accelerated AI image editor — watermark removal, inpainting, upscaling, and generative fill.',
-    desc: `Media Lab AI is a hardware-accelerated Windows application for advanced image manipulation
-    and AI-powered media processing. Remove watermarks and objects with LaMa inpainting, strip
-    backgrounds, upscale with ESRGAN, and generate content with Stable Diffusion — all in one
-    cyberpunk-themed workspace. DirectML GPU acceleration works on any GPU, with automatic CPU
-    fallback. Supports batch video watermark removal, audio/video conversion via FFmpeg, and
-    a full toolkit of quick image utilities.`,
+    tag: 'MEDIA EDITOR',
+    status: 'active',
+    shortDesc: 'Hardware-accelerated media editor for image retouching, video cleanup, and audio/video conversion.',
+    desc: `Softcurse Media Lab AI is a Windows media workspace for image editing, object and watermark
+    removal, video retouching, and audio/video conversion. Its core editor, Toolkit Lab, local
+    processing tools, and bundled FFmpeg workflow work without an external AI service. Optional
+    generative features can connect to a trusted Stable Diffusion-compatible API when wanted.`,
     features: [
       'LaMa Inpainting — Object & Watermark Removal',
       'Magic Wand (Segment Anything Model)',
@@ -59,8 +57,8 @@ export const APPS = {
       'DirectML / CUDA / CPU Acceleration',
     ],
     techStack: ['WPF', '.NET 8', 'OpenCvSharp4', 'ONNX Runtime', 'FFmpeg'],
-    releaseDate: '2024-01-01',
-    version: '3.0',
+    releaseDate: '2025-07-12',
+    version: '1.0.0',
   },
 
   archvis: {
