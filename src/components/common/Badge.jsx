@@ -2,12 +2,13 @@ import styles from './Badge.module.css'
 
 /**
  * Status badge for apps and games.
- * @param {'active'|'dev'|'planned'} status
+ * @param {'active'|'beta'|'alpha'|'dev'|'planned'} status
  */
 export default function Badge({ status }) {
   const map = {
     active: { label: '● LIVE', cls: styles.active },
     beta: { label: '⬡ BETA', cls: styles.beta },
+    alpha: { label: '△ EARLY ALPHA', cls: styles.alpha },
     dev: { label: '◎ IN DEV', cls: styles.dev },
     planned: { label: '○ PLANNED', cls: styles.planned },
   }

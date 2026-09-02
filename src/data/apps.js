@@ -127,28 +127,27 @@ export const APPS = {
     heroImage: '/posters/apps/page/blackwatch-page.webp',
     name: 'Softcurse Blackwatch',
     icon: '🔒',
-    tag: 'SECURITY',
-    status: 'dev',
-    shortDesc: 'Anti-cheat and system monitoring suite — real-time threat scoring, process purge, and network visibility.',
-    desc: `Blackwatch is a high-performance Windows security and anti-cheat monitoring solution
-    with a cyberpunk-industrial UI. It scans every 5 seconds across Enumeration, Analysis, and
-    Network Correlation stages, scoring new processes instantly via WMI watcher. A holographic
-    threat sphere turns red when danger is detected. One-click purge terminates all high-severity
-    threats, with a dry-run safety mode to preview before acting. Full network TCP tracking,
-    process explorer with kill controls, and a color-coded live log viewer.`,
+    tag: 'SECURITY MONITOR',
+    status: 'alpha',
+    shortDesc: 'Local Windows process and network monitor with explainable heuristic evidence and guarded response controls.',
+    desc: `Softcurse Blackwatch is an early-alpha monitoring application for Windows home users.
+    It shows live system, process, and TCP connection activity, enriches process identities, and
+    presents explainable heuristic evidence for review. Guarded response actions require native
+    confirmation, with dry-run mode enabled by default. Blackwatch is not an antivirus and must
+    be used alongside Microsoft Defender or another reputable security product.`,
     features: [
-      'Automated Scanning Every 5 Seconds',
-      'Instant WMI Threat Scoring (no gap)',
+      'Live CPU, Memory, Process & TCP Monitoring',
+      'Process Path, SHA-256, Publisher & Signature Details',
+      'Explainable Heuristic Process Scoring',
+      'Process and Network Evidence Correlation',
       '3D Holographic Threat Sphere',
-      'One-Click Purge with Dry-Run Mode',
-      'Real-Time Network TCP Tracking',
-      'Full Process Explorer with Kill Controls',
-      'Process Whitelist Manager',
-      'Color-Coded Live Log Viewer',
+      'Guarded Response with Dry-Run Mode by Default',
+      'Identity-Bound Trusted Applications',
+      'Privacy-Redacted Logs & Diagnostic ZIP Export',
     ],
-    techStack: ['React 18', 'TypeScript', 'WPF (.NET 9)', 'WebView2', 'Framer Motion'],
-    releaseDate: '2024-08-10',
-    version: '1.0.5',
+    techStack: ['React 19', 'TypeScript 5.9', 'WPF', '.NET 10 LTS', 'WebView2', 'WMI'],
+    releaseDate: '2026-09-02',
+    version: '0.1.0-alpha',
   },
 
   spectral: {

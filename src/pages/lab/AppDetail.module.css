@@ -255,6 +255,10 @@
   color: var(--green);
 }
 
+.alpha {
+  color: var(--magenta);
+}
+
 .dev {
   color: var(--cyan);
 }

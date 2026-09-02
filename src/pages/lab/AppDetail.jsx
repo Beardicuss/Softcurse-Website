@@ -43,7 +43,7 @@ export default function AppDetail() {
   if (!app) return <Navigate to="/lab" replace />
   if (app.id !== id) return <Navigate to={`/lab/${app.id}`} replace />
 
-  const statusLabel = { active: '● LIVE', beta: '⬡ BETA', dev: '◎ IN DEV', planned: '○ PLANNED' }
+  const statusLabel = { active: '● LIVE', beta: '⬡ BETA', alpha: '△ EARLY ALPHA', dev: '◎ IN DEV', planned: '○ PLANNED' }
   const relatedTools = apps
     .filter(a => a.id !== app.id && (a.tag === app.tag || a.status === app.status))
     .slice(0, 3)
