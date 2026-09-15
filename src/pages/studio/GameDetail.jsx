@@ -9,6 +9,7 @@ import { usePageTitle } from '../../hooks/usePageTitle'
 import { useSEO } from '../../hooks/useSEO'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import styles from './GameDetail.module.css'
+import { withBreadcrumbs } from '../../utils/seoSchemas'
 
 export default function GameDetail() {
   const { id } = useParams()
@@ -21,8 +22,7 @@ export default function GameDetail() {
     description: game.shortDesc + ' — A Softcurse Studio game. ' + game.genre + ' for ' + (game.platforms || []).join(', '),
     url: `/studio/${game.id}`,
     image: game.image || undefined,
-    structuredData: {
-      '@context': 'https://schema.org',
+    structuredData: withBreadcrumbs({
       '@type': 'VideoGame',
       name: game.name,
       description: game.shortDesc,
@@ -32,7 +32,7 @@ export default function GameDetail() {
       gamePlatform: game.platforms,
       author: { '@type': 'Organization', name: 'Softcurse Systems' },
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-    },
+    }, [{ name: 'Home', path: '/' }, { name: 'Studio Games', path: '/studio/games' }, { name: game.name, path: `/studio/${game.id}` }]),
   } : {})
 
   const [heroRef, heroVis] = useScrollReveal(0.05)

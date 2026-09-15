@@ -7,6 +7,7 @@ import Newsletter from '../components/common/Newsletter'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { useSEO } from '../hooks/useSEO'
 import styles from './BlogPost.module.css'
+import { withBreadcrumbs } from '../utils/seoSchemas'
 
 export default function BlogPost() {
   const { id } = useParams()
@@ -20,8 +21,7 @@ export default function BlogPost() {
     url: `/blog/${post.id}`,
     image: post.image,
     type: 'article',
-    structuredData: {
-      '@context': 'https://schema.org',
+    structuredData: withBreadcrumbs({
       '@type': 'BlogPosting',
       headline: post.title,
       description: post.excerpt,
@@ -31,7 +31,7 @@ export default function BlogPost() {
       image: post.image ? new URL(post.image, 'https://softcursesystems.pages.dev').toString() : 'https://softcursesystems.pages.dev/og-image.png',
       author: { '@type': 'Organization', name: 'Softcurse Systems' },
       publisher: { '@type': 'Organization', name: 'Softcurse Systems', logo: { '@type': 'ImageObject', url: 'https://softcursesystems.pages.dev/logo.webp' } },
-    },
+    }, [{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }, { name: post.title, path: `/blog/${post.id}` }]),
   } : {})
   if (!post && !cmsReady) return null
   if (!post) return <Navigate to="/blog" replace />

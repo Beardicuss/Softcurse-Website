@@ -12,7 +12,7 @@ const VALUES = [
 ]
 
 export default function About() {
-  useSEO({ title: 'About', description: 'The story behind Softcurse — a small, slightly sinister digital universe built by one developer with a problem-solving obsession.', url: '/about' })
+  useSEO({ title: 'About', description: 'Softcurse Systems is an independent developer creating focused Windows software, experimental technology, browser games, and dark speculative fiction.', url: '/about' })
   usePageTitle('About')
   return (
     <div>
@@ -21,8 +21,8 @@ export default function About() {
         <div className="page-header__eyebrow">{"// WHO WE ARE"}</div>
         <h1 className="page-header__title">ABOUT SOFTCURSE</h1>
         <p className="page-header__desc">
-          A small, slightly sinister digital universe. Building tools and worlds
-          with precision, purpose, and a little darkness.
+          One independent digital universe for focused software, experimental technology,
+          browser games, and dark speculative fiction.
         </p>
       </div>
 

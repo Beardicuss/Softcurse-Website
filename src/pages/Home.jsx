@@ -19,7 +19,7 @@ export default function Home() {
   const apps = allApps.slice(0, 6)
   const games = useCmsItems('game', Object.values(GAMES))
 
-  useSEO({ title: 'Home', description: 'A small, slightly sinister digital universe. Building tools that pierce the noise — and worlds that bend reality.', url: '/' })
+  useSEO({ title: 'Home', description: 'Softcurse Systems creates focused Windows software, experimental technology, browser games, and dark speculative fiction.', url: '/' })
   const [statsRef, statsVis] = useScrollReveal()
   const [labRef, labVis] = useScrollReveal()
   const [studioRef, studioVis] = useScrollReveal()
@@ -49,8 +49,8 @@ export default function Home() {
           <h1 className={`${styles.heroTitle} anim-glow`}>SOFTCURSE</h1>
           <div className={styles.heroSub}>LABS · STUDIO · SYSTEMS</div>
           <p className={styles.heroDesc}>
-            A small, slightly sinister digital universe. Building tools that pierce the noise —
-            and worlds that bend reality.
+            Focused Windows software, experimental technology, browser games, and dark fiction —
+            built with precision, purpose, and a distinctive terminal-inspired identity.
           </p>
           <div className={styles.heroCta}>
             <Button variant="cyan" href="/lab">ENTER THE LAB</Button>

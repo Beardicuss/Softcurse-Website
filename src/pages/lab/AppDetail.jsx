@@ -9,6 +9,7 @@ import { usePageTitle } from '../../hooks/usePageTitle'
 import { useSEO } from '../../hooks/useSEO'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import styles from './AppDetail.module.css'
+import { withBreadcrumbs } from '../../utils/seoSchemas'
 
 function formatReleaseDate(value) {
   const date = new Date(`${value}T00:00:00`)
@@ -18,6 +19,14 @@ function formatReleaseDate(value) {
     month: '2-digit',
     year: 'numeric',
   }).replaceAll('/', '.')
+}
+
+function schemaCategory(tag = '') {
+  const value = tag.toUpperCase()
+  if (value.includes('SECURITY')) return 'SecurityApplication'
+  if (value.includes('MEDIA')) return 'MultimediaApplication'
+  if (value.includes('DEVELOPER') || value.includes('CODE')) return 'DeveloperApplication'
+  return 'UtilitiesApplication'
 }
 
 export default function AppDetail() {
@@ -32,21 +41,20 @@ export default function AppDetail() {
     description: app.shortDesc + ' — ' + (app.techStack || []).join(', ') + '. Part of the Softcurse Lab.',
     url: `/lab/${app.id}`,
     image: app.image || undefined,
-    structuredData: {
-      '@context': 'https://schema.org',
+    structuredData: withBreadcrumbs({
       '@type': 'SoftwareApplication',
       name: app.name,
       description: app.shortDesc,
       url: `https://softcursesystems.pages.dev/lab/${app.id}`,
       image: app.image ? new URL(app.image, 'https://softcursesystems.pages.dev').toString() : undefined,
-      applicationCategory: app.tag || 'UtilitiesApplication',
+      applicationCategory: schemaCategory(app.tag),
       operatingSystem: app.releases?.map(release => release.platform).filter(Boolean).join(', ') || 'Windows',
       softwareVersion: app.version,
       author: { '@type': 'Organization', name: 'Softcurse Systems' },
       offers: app.commerce?.saleMode === 'paid' && app.commerce?.priceMinor
         ? { '@type': 'Offer', price: (app.commerce.priceMinor / 100).toFixed(2), priceCurrency: app.commerce.currency || 'USD' }
         : { '@type': 'Offer', price: '0', priceCurrency: app.commerce?.currency || 'USD' },
-    },
+    }, [{ name: 'Home', path: '/' }, { name: 'Lab', path: '/lab/apps' }, { name: app.name, path: `/lab/${app.id}` }]),
   } : {})
 
   const [heroRef, heroVis] = useScrollReveal(0.05)

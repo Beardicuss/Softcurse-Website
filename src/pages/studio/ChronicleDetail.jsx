@@ -5,6 +5,7 @@ import { usePageTitle } from '../../hooks/usePageTitle'
 import { useSEO } from '../../hooks/useSEO'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import styles from './ChronicleDetail.module.css'
+import { withBreadcrumbs } from '../../utils/seoSchemas'
 
 export default function ChronicleDetail() {
   const { id } = useParams()
@@ -17,6 +18,17 @@ export default function ChronicleDetail() {
     description: book.shortDesc,
     url: `/chronicles/${book.id}`,
     image: book.image || undefined,
+    structuredData: withBreadcrumbs({
+      '@type': 'Book',
+      name: book.name,
+      description: book.shortDesc,
+      genre: book.genre,
+      isPartOf: { '@type': 'BookSeries', name: book.series },
+      bookEdition: book.book,
+      url: `https://softcursesystems.pages.dev/chronicles/${book.id}`,
+      image: book.image ? new URL(book.image, 'https://softcursesystems.pages.dev').toString() : undefined,
+      author: { '@type': 'Organization', name: 'Softcurse Systems' },
+    }, [{ name: 'Home', path: '/' }, { name: 'Chronicles', path: '/chronicles' }, { name: book.name, path: `/chronicles/${book.id}` }]),
   } : {})
 
   const [heroRef, heroVis] = useScrollReveal(0.05)
