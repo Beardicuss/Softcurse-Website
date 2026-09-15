@@ -14,6 +14,8 @@ function toLegacy(item) {
     legacySlugs: item.legacySlugs || [],
     name: item.title,
     title: item.title,
+    publishedAt: item.publishedAt,
+    updatedAt: item.updatedAt,
     image: item.assets.card?.url || item.assets.cover?.url || item.data.image,
     heroImage: item.assets.hero?.url || item.data.heroImage,
     character: item.assets.hologram?.url || item.assets.icon?.url || item.data.character,

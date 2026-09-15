@@ -32,6 +32,21 @@ export default function AppDetail() {
     description: app.shortDesc + ' — ' + (app.techStack || []).join(', ') + '. Part of the Softcurse Lab.',
     url: `/lab/${app.id}`,
     image: app.image || undefined,
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: app.name,
+      description: app.shortDesc,
+      url: `https://softcursesystems.pages.dev/lab/${app.id}`,
+      image: app.image ? new URL(app.image, 'https://softcursesystems.pages.dev').toString() : undefined,
+      applicationCategory: app.tag || 'UtilitiesApplication',
+      operatingSystem: app.releases?.map(release => release.platform).filter(Boolean).join(', ') || 'Windows',
+      softwareVersion: app.version,
+      author: { '@type': 'Organization', name: 'Softcurse Systems' },
+      offers: app.commerce?.saleMode === 'paid' && app.commerce?.priceMinor
+        ? { '@type': 'Offer', price: (app.commerce.priceMinor / 100).toFixed(2), priceCurrency: app.commerce.currency || 'USD' }
+        : { '@type': 'Offer', price: '0', priceCurrency: app.commerce?.currency || 'USD' },
+    },
   } : {})
 
   const [heroRef, heroVis] = useScrollReveal(0.05)

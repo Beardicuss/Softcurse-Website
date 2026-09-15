@@ -8,7 +8,7 @@ const DEFAULT_OG = `${SITE_URL}/og-image.png`
  * Sets per-page SEO — title, description, OG tags, Twitter card.
  * Call at the top of every page component.
  */
-export function useSEO({ title, description, image, url, type = 'website', noindex = false }) {
+export function useSEO({ title, description, image, url, type = 'website', noindex = false, structuredData }) {
   useEffect(() => {
     const fullTitle = title ? `${title} — ${SITE_NAME}` : SITE_NAME
     const fullUrl   = url ? `${SITE_URL}${url}` : SITE_URL
@@ -53,5 +53,20 @@ export function useSEO({ title, description, image, url, type = 'website', noind
     }
     canonical.href = fullUrl
 
-  }, [title, description, image, noindex, type, url])
+    const schemaId = 'softcurse-page-schema'
+    let schema = document.getElementById(schemaId)
+    if (structuredData) {
+      if (!schema) {
+        schema = document.createElement('script')
+        schema.id = schemaId
+        schema.type = 'application/ld+json'
+        document.head.appendChild(schema)
+      }
+      schema.textContent = JSON.stringify(structuredData)
+    } else {
+      schema?.remove()
+    }
+
+    return () => document.getElementById(schemaId)?.remove()
+  }, [title, description, image, noindex, structuredData, type, url])
 }

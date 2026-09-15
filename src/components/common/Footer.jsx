@@ -34,8 +34,7 @@ export default function Footer() {
           <div className={styles.socials}>
             {[
               { label: 'GitHub', href: 'https://github.com/Beardicuss' },
-              { label: 'Twitter', href: '#' },
-              { label: 'Discord', href: '#' },
+              { label: 'Blog RSS', href: '/rss.xml' },
             ].map(({ label, href }) => (
               <a key={label} href={href} className={styles.social}
                 target="_blank" rel="noopener noreferrer">

@@ -14,7 +14,25 @@ export default function BlogPost() {
   const cmsReady = useCmsReady()
   const post = useCmsRecord('blog', id, POSTS.find(item => item.id === id))
   usePageTitle(post ? post.title : '')
-  useSEO(post ? { title: post.title, description: post.excerpt, url: `/blog/${post.id}`, image: post.image, type: 'article' } : {})
+  useSEO(post ? {
+    title: post.title,
+    description: post.excerpt,
+    url: `/blog/${post.id}`,
+    image: post.image,
+    type: 'article',
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.excerpt,
+      datePublished: post.date,
+      dateModified: post.updatedAt || post.date,
+      mainEntityOfPage: `https://softcursesystems.pages.dev/blog/${post.id}`,
+      image: post.image ? new URL(post.image, 'https://softcursesystems.pages.dev').toString() : 'https://softcursesystems.pages.dev/og-image.png',
+      author: { '@type': 'Organization', name: 'Softcurse Systems' },
+      publisher: { '@type': 'Organization', name: 'Softcurse Systems', logo: { '@type': 'ImageObject', url: 'https://softcursesystems.pages.dev/logo.webp' } },
+    },
+  } : {})
   if (!post && !cmsReady) return null
   if (!post) return <Navigate to="/blog" replace />
   if (post.id !== id) return <Navigate to={`/blog/${post.id}`} replace />

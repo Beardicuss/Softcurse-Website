@@ -21,6 +21,18 @@ export default function GameDetail() {
     description: game.shortDesc + ' — A Softcurse Studio game. ' + game.genre + ' for ' + (game.platforms || []).join(', '),
     url: `/studio/${game.id}`,
     image: game.image || undefined,
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'VideoGame',
+      name: game.name,
+      description: game.shortDesc,
+      url: `https://softcursesystems.pages.dev/studio/${game.id}`,
+      image: game.image ? new URL(game.image, 'https://softcursesystems.pages.dev').toString() : undefined,
+      genre: game.genre,
+      gamePlatform: game.platforms,
+      author: { '@type': 'Organization', name: 'Softcurse Systems' },
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    },
   } : {})
 
   const [heroRef, heroVis] = useScrollReveal(0.05)
