@@ -28,7 +28,6 @@ export default function GameCard({ game }) {
         ref={wrapRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        aria-label={game.name}
       >
         {/* ── Card face ── */}
         <div className={styles.card}>

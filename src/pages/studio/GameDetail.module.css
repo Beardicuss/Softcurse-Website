@@ -82,7 +82,7 @@
   font-family: var(--font-mono);
   font-size: 0.62rem;
   color: var(--magenta);
-  opacity: 0.6;
+  opacity: 1;
   letter-spacing: 0.1em;
 }
 
@@ -122,7 +122,7 @@
   font-size: 0.62rem;
   color: var(--magenta);
   letter-spacing: 0.24em;
-  opacity: 0.5;
+  opacity: 1;
   margin-bottom: 0.6rem;
 }
 
@@ -201,7 +201,7 @@
   font-size: 0.55rem;
   letter-spacing: 0.2em;
   color: var(--magenta);
-  opacity: 0.45;
+  opacity: 1;
 }
 
 .metaVal {
@@ -254,7 +254,7 @@
   font-family: var(--font-mono);
   font-size: 0.65rem;
   color: var(--magenta);
-  opacity: 0.5;
+  opacity: 1;
   white-space: nowrap;
   letter-spacing: 0.08em;
 }

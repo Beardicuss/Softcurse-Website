@@ -50,12 +50,15 @@ export default function Experiments() {
       {/* ── Experiments grid ── */}
       <div className="container" style={{ paddingBottom: '6rem' }}>
         {experiments.length > 0 ? (
-          <div
-            ref={gridRef}
-            className={`card-grid reveal ${gridVis ? 'visible' : ''}`}
-          >
-            {experiments.map(e => <ExperimentCard key={e.id} app={e} />)}
-          </div>
+          <section aria-labelledby="current-experiments">
+            <h2 id="current-experiments" className={styles.gridTitle}>CURRENT EXPERIMENTS</h2>
+            <div
+              ref={gridRef}
+              className={`card-grid reveal ${gridVis ? 'visible' : ''}`}
+            >
+              {experiments.map(e => <ExperimentCard key={e.id} app={e} />)}
+            </div>
+          </section>
         ) : (
           <div className={styles.empty}>
             <div className={styles.emptyIcon}>⚗</div>

@@ -205,6 +205,10 @@
     drop-shadow(0 40px 30px rgba(0,0,0,0.85));
 }
 
+@media (hover: none) {
+  .character, .charGlow, .textHover { display: none; }
+}
+
 /* ── Hover name text ── */
 .textHover {
   position: absolute;

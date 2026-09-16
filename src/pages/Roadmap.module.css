@@ -35,6 +35,7 @@
 }
 
 .quarterLabel {
+  margin: 0;
   font-family: var(--font-heading);
   font-size: 0.72rem;
   color: var(--cyan);

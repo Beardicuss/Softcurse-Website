@@ -66,10 +66,10 @@ export default function Roadmap() {
         <div className={styles.timeline}>
           {filtered.map((quarter) => (
             <div key={quarter.quarter} className={styles.quarter}>
-              <div className={styles.quarterLabel}>
+              <h2 className={styles.quarterLabel}>
                 <span className={styles.quarterDot} />
                 {quarter.quarter}
-              </div>
+              </h2>
               <div className={styles.items}>
                 {quarter.items.map(item => {
                   const status = STATUS_META[item.status] ? item.status : 'planned'

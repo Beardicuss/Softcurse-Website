@@ -21,7 +21,7 @@
   font-size: 0.65rem;
   letter-spacing: 0.2em;
   color: var(--muted);
-  opacity: 0.5;
+  opacity: 1;
   margin-bottom: 1.2rem;
   display: flex;
   align-items: center;
@@ -31,7 +31,7 @@
 .breadcrumbLink {
   color: var(--cyan);
   text-decoration: none;
-  opacity: 0.7;
+  opacity: 1;
   transition: opacity 0.2s;
 }
 .breadcrumbLink:hover { opacity: 1; }
@@ -68,10 +68,18 @@
   font-size: 0.62rem;
   letter-spacing: 0.16em;
   color: var(--cyan);
-  opacity: 0.45;
+  opacity: 1;
   background: rgba(79, 255, 240,0.04);
   border: 1px solid rgba(79, 255, 240,0.12);
   padding: 0.35rem 0.75rem;
+}
+
+.gridTitle {
+  margin: 3rem 0 1.5rem;
+  color: var(--cyan);
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
 }
 
 /* Empty state */

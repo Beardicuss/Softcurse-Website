@@ -187,18 +187,18 @@
 
 .buildTag {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.58rem;
+  font-size: 0.68rem;
   letter-spacing: 0.16em;
-  color: rgba(79, 255, 240,0.25);
+  color: var(--muted);
 }
 
 .sep { color: rgba(79, 255, 240,0.15); font-size: 0.7rem; }
 
 .copy {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.68rem;
   letter-spacing: 0.14em;
-  color: rgba(79, 255, 240,0.2);
+  color: var(--muted);
 }
 
 /* Mobile */

@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 const SITE_URL  = 'https://softcursesystems.pages.dev'
 const SITE_NAME = 'Softcurse Systems'
 const DEFAULT_OG = `${SITE_URL}/og-image.png`
+const DEFAULT_DESCRIPTION = 'Focused Windows software, experimental tools, browser games, and dark speculative fiction—built with purpose in a terminal-inspired digital universe.'
 
 /**
  * Sets per-page SEO — title, description, OG tags, Twitter card.
@@ -29,11 +30,11 @@ export function useSEO({ title, description, image, url, type = 'website', noind
     }
 
     // Description
-    set('meta[name="description"]',        'content', description || 'A small, slightly sinister digital universe. Tools. Games. Systems.')
+    set('meta[name="description"]',        'content', description || DEFAULT_DESCRIPTION)
 
     // OG
     set('meta[property="og:title"]',       'content', fullTitle)
-    set('meta[property="og:description"]', 'content', description || 'A small, slightly sinister digital universe.')
+    set('meta[property="og:description"]', 'content', description || DEFAULT_DESCRIPTION)
     set('meta[property="og:url"]',         'content', fullUrl)
     set('meta[property="og:image"]',       'content', ogImage)
     set('meta[property="og:image:alt"]',   'content', `${title || SITE_NAME} — ${SITE_NAME}`)
@@ -41,7 +42,7 @@ export function useSEO({ title, description, image, url, type = 'website', noind
 
     // Twitter
     set('meta[name="twitter:title"]',       'content', fullTitle)
-    set('meta[name="twitter:description"]', 'content', description || 'A small, slightly sinister digital universe.')
+    set('meta[name="twitter:description"]', 'content', description || DEFAULT_DESCRIPTION)
     set('meta[name="twitter:image"]',       'content', ogImage)
     set('meta[name="robots"]', 'content', noindex ? 'noindex, nofollow' : 'index, follow')
 

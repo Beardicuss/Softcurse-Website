@@ -79,7 +79,7 @@
   font-size: 0.7rem;
   letter-spacing: 0.22em;
   color: var(--magenta);
-  opacity: 0.6;
+  opacity: 1;
   margin-bottom: 0.4rem;
 }
 
@@ -110,7 +110,7 @@
   letter-spacing: 0.14em;
   color: var(--muted);
   text-decoration: none;
-  opacity: 0.5;
+  opacity: 1;
   transition: opacity 0.2s;
 }
 
@@ -130,7 +130,7 @@
   font-size: 0.62rem;
   color: var(--magenta);
   letter-spacing: 0.24em;
-  opacity: 0.5;
+  opacity: 1;
   margin-bottom: 0.6rem;
 }
 
@@ -185,7 +185,7 @@
   font-family: var(--font-mono);
   font-size: 1.1rem;
   color: var(--magenta);
-  opacity: 0.35;
+  opacity: 1;
   flex-shrink: 0;
   letter-spacing: 0.1em;
   min-width: 2.5rem;
@@ -208,7 +208,7 @@
   font-size: 0.6rem;
   letter-spacing: 0.14em;
   color: var(--magenta);
-  opacity: 0.45;
+  opacity: 1;
 }
 
 .published {

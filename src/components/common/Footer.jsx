@@ -19,9 +19,9 @@ export default function Footer() {
             <span>SOFTCURSE SYSTEMS</span>
           </Link>
           <p className={styles.tagline}>
-            A small, slightly sinister digital universe.<br />
-            Tools that pierce the noise.<br />
-            Worlds that bend reality.
+            Focused software and experimental tools.<br />
+            Browser games and dark fiction.<br />
+            Built with purpose, from Lab to Studio.
           </p>
 
           {/* Status indicator */}

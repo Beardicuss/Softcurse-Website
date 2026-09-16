@@ -67,6 +67,20 @@ export async function onRequest(context) {
       genre: route.type === 'chronicle' ? data.genre : undefined,
       isPartOf: route.type === 'chronicle' && data.series ? { '@type': 'BookSeries', name: data.series } : undefined,
       bookEdition: route.type === 'chronicle' ? data.book : undefined,
+      inLanguage: route.type === 'chronicle' ? 'en' : undefined,
+      encodingFormat: route.type === 'chronicle' ? 'text/html' : undefined,
+      isAccessibleForFree: route.type === 'chronicle' ? (data.chapters || []).some(chapter => chapter.status === 'published') : undefined,
+      hasPart: route.type === 'chronicle' ? (data.chapters || [])
+        .filter(chapter => chapter.status === 'published')
+        .map(chapter => ({
+          '@type': 'Chapter',
+          name: chapter.title,
+          position: chapter.num,
+          url: `${canonical}/chapter/${chapter.num}`,
+          inLanguage: 'en',
+          isAccessibleForFree: true,
+        })) : undefined,
+      publisher: route.type === 'chronicle' ? { '@type': 'Organization', name: 'Softcurse Systems' } : undefined,
       applicationCategory: route.type === 'app'
         ? (String(data.tag || '').includes('SECURITY') ? 'SecurityApplication'
           : String(data.tag || '').includes('MEDIA') ? 'MultimediaApplication'

@@ -35,7 +35,7 @@ export default function Lab() {
           <div ref={r1} className={`${styles.group} reveal ${v1 ? 'visible' : ''}`}>
             <div className={styles.groupHeader}>
               <span className={styles.groupDot} style={{ background: 'var(--green)' }} />
-              <span className={styles.groupLabel}>AVAILABLE — Ready to use or test</span>
+              <h2 className={styles.groupLabel}>AVAILABLE — Ready to use or test</h2>
             </div>
             <div className="card-grid">
               {active.map(a => <AppCard key={a.id} app={a} />)}
@@ -47,7 +47,7 @@ export default function Lab() {
           <div ref={r2} className={`${styles.group} reveal ${v2 ? 'visible' : ''}`}>
             <div className={styles.groupHeader}>
               <span className={styles.groupDot} style={{ background: 'var(--magenta)' }} />
-              <span className={styles.groupLabel}>IN DEVELOPMENT — Coming soon</span>
+              <h2 className={styles.groupLabel}>IN DEVELOPMENT — Coming soon</h2>
             </div>
             <div className="card-grid">
               {inDev.map(a => <AppCard key={a.id} app={a} />)}
@@ -59,7 +59,7 @@ export default function Lab() {
           <div ref={r3} className={`${styles.group} reveal ${v3 ? 'visible' : ''}`}>
             <div className={styles.groupHeader}>
               <span className={styles.groupDot} style={{ background: 'var(--muted)' }} />
-              <span className={styles.groupLabel}>PLANNED — In the pipeline</span>
+              <h2 className={styles.groupLabel}>PLANNED — In the pipeline</h2>
             </div>
             <div className="card-grid">
               {planned.map(a => <AppCard key={a.id} app={a} />)}
