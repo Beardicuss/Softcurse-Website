@@ -74,44 +74,58 @@ export default function Navbar() {
 
             <li className={styles.dropdown}>
               <button
-                className={`${styles.link} ${(location.pathname.startsWith('/lab') || location.pathname.startsWith('/experiments')) ? styles.active : ''}`}
+                className={`${styles.link} ${(location.pathname.startsWith('/lab') || location.pathname.startsWith('/experiments') || location.pathname.startsWith('/localization')) ? styles.active : ''}`}
                 onClick={() => toggleDropdown('lab')}
                 aria-expanded={openDropdown === 'lab'}
-                aria-haspopup="true"
+                aria-controls="lab-nav-menu"
               >
                 LAB <span className={styles.arrow} aria-hidden="true">▾</span>
               </button>
-              <div className={`${styles.menu} ${openDropdown === 'lab' ? styles.menuOpen : ''}`} role="menu">
+              <div id="lab-nav-menu" className={`${styles.menu} ${openDropdown === 'lab' ? styles.menuOpen : ''}`}>
                 <div className={styles.menuHead}>Lab Directory</div>
-                <Link to="/lab" className={styles.menuItem} role="menuitem">Overview</Link>
-                <Link to="/lab/apps" className={styles.menuItem} role="menuitem">Apps &amp; Tools</Link>
-                <Link to="/experiments" className={styles.menuItem} role="menuitem">Experiments</Link>
+                <Link to="/lab" className={styles.menuItem}>Overview</Link>
+                <Link to="/lab/apps" className={styles.menuItem}>Apps &amp; Tools</Link>
+                <Link to="/experiments" className={styles.menuItem}>Experiments</Link>
+                <Link to="/localization" className={styles.menuItem}>Localization</Link>
               </div>
             </li>
 
             <li className={styles.dropdown}>
               <button
-                className={`${styles.link} ${(location.pathname.startsWith('/studio') || location.pathname.startsWith('/chronicles')) ? styles.active : ''}`}
+                className={`${styles.link} ${location.pathname.startsWith('/studio') ? styles.active : ''}`}
                 onClick={() => toggleDropdown('studio')}
                 aria-expanded={openDropdown === 'studio'}
-                aria-haspopup="true"
+                aria-controls="studio-nav-menu"
               >
                 STUDIO <span className={styles.arrow} aria-hidden="true">▾</span>
               </button>
-              <div className={`${styles.menu} ${openDropdown === 'studio' ? styles.menuOpen : ''}`} role="menu">
+              <div id="studio-nav-menu" className={`${styles.menu} ${openDropdown === 'studio' ? styles.menuOpen : ''}`}>
                 <div className={styles.menuHead}>Studio Directory</div>
-                <Link to="/studio" className={styles.menuItem} role="menuitem">Overview</Link>
-                <Link to="/studio/games" className={styles.menuItem} role="menuitem">Games</Link>
-                <Link to="/chronicles" className={styles.menuItem} role="menuitem">Chronicles</Link>
+                <Link to="/studio" className={styles.menuItem}>Overview</Link>
+                <Link to="/studio/games" className={styles.menuItem}>Games</Link>
               </div>
             </li>
 
-            <li><NavLink to="/localization" className={linkCls}>LOCALIZATION</NavLink></li>
-            <li><NavLink to="/about" className={linkCls}>ABOUT</NavLink></li>
-            <li><NavLink to="/contact" className={linkCls}>CONTACT</NavLink></li>
+            <li><NavLink to="/chronicles" className={linkCls}>CHRONICLES</NavLink></li>
             <li><NavLink to="/blog" className={linkCls}>BLOG</NavLink></li>
-            <li><NavLink to="/roadmap" className={linkCls}>ROADMAP</NavLink></li>
-            <li><NavLink to="/press" className={linkCls}>PRESS</NavLink></li>
+            <li><NavLink to="/about" className={linkCls}>ABOUT</NavLink></li>
+
+            <li className={styles.dropdown}>
+              <button
+                className={`${styles.link} ${(['/contact', '/roadmap', '/press'].some(path => location.pathname.startsWith(path))) ? styles.active : ''}`}
+                onClick={() => toggleDropdown('info')}
+                aria-expanded={openDropdown === 'info'}
+                aria-controls="info-nav-menu"
+              >
+                INFO <span className={styles.arrow} aria-hidden="true">▾</span>
+              </button>
+              <div id="info-nav-menu" className={`${styles.menu} ${openDropdown === 'info' ? styles.menuOpen : ''}`}>
+                <div className={styles.menuHead}>Information</div>
+                <Link to="/contact" className={styles.menuItem}>Contact</Link>
+                <Link to="/roadmap" className={styles.menuItem}>Roadmap</Link>
+                <Link to="/press" className={styles.menuItem}>Press Kit</Link>
+              </div>
+            </li>
 
             {/* Search inside mobile menu */}
             <li className={styles.mobileSearchItem}>

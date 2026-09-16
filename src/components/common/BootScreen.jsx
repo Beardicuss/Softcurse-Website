@@ -90,10 +90,9 @@ export default function BootScreen({ onComplete }) {
         ref={videoRef}
         className={styles.video}
         src="/video/intro.webm"
-        poster="/og-image.png"
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
         aria-hidden="true"
       />
 
