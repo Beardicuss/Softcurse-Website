@@ -10,6 +10,73 @@ const ROUTES = [
   { pattern: /^\/blog\/([^/]+)\/?$/, type: 'blog', schema: 'BlogPosting', parentName: 'Blog', parentPath: '/blog' },
 ]
 
+const STATIC_ROUTES = {
+  '/lab': {
+    title: 'Lab — Apps, Tools & Experiments | Softcurse Systems',
+    description: 'Explore Softcurse applications, Windows utilities, creative tools, and experimental technology projects.',
+    name: 'Lab',
+  },
+  '/lab/apps': {
+    title: 'Apps & Tools | Softcurse Systems Lab',
+    description: 'Browse Softcurse Windows applications, media tools, system utilities, and productivity software.',
+    name: 'Apps & Tools',
+    parentName: 'Lab',
+    parentPath: '/lab',
+  },
+  '/experiments': {
+    title: 'Experiments | Softcurse Systems',
+    description: 'Discover experimental Softcurse software, prototypes, and technology explorations.',
+    name: 'Experiments',
+  },
+  '/studio': {
+    title: 'Studio — Games & Interactive Worlds | Softcurse Systems',
+    description: 'Explore Softcurse games, interactive fiction, browser experiences, and works in development.',
+    name: 'Studio',
+  },
+  '/studio/games': {
+    title: 'Games | Softcurse Systems Studio',
+    description: 'Browse released and in-development games from Softcurse Systems Studio.',
+    name: 'Games',
+    parentName: 'Studio',
+    parentPath: '/studio',
+  },
+  '/chronicles': {
+    title: 'Chronicles — Stories & Fiction | Softcurse Systems',
+    description: 'Read original Softcurse Chronicles, serialized stories, chapters, and fictional worlds.',
+    name: 'Chronicles',
+  },
+  '/localization': {
+    title: 'Localization Projects | Softcurse Systems',
+    description: 'Explore Softcurse localization and Georgian translation projects for games and software.',
+    name: 'Localization',
+  },
+  '/about': {
+    title: 'About Softcurse Systems',
+    description: 'Learn about Softcurse Systems and its work across focused software, experimental technology, games, and storytelling.',
+    name: 'About',
+  },
+  '/contact': {
+    title: 'Contact | Softcurse Systems',
+    description: 'Contact Softcurse Systems about its applications, games, projects, or collaborations.',
+    name: 'Contact',
+  },
+  '/blog': {
+    title: 'Blog — Development Notes & Releases | Softcurse Systems',
+    description: 'Read Softcurse development notes, release announcements, project updates, and behind-the-scenes articles.',
+    name: 'Blog',
+  },
+  '/roadmap': {
+    title: 'Roadmap | Softcurse Systems',
+    description: 'Follow the current development status and upcoming milestones for Softcurse applications, games, and projects.',
+    name: 'Roadmap',
+  },
+  '/press': {
+    title: 'Press Kit | Softcurse Systems',
+    description: 'Access official Softcurse Systems descriptions, brand information, and press resources.',
+    name: 'Press Kit',
+  },
+}
+
 class TitleHandler {
   constructor(value) { this.value = value }
   element(element) { element.setInnerContent(this.value) }
@@ -30,10 +97,59 @@ class HeadHandler {
 export async function onRequest(context) {
   const requestUrl = new URL(context.request.url)
   const route = ROUTES.map(entry => ({ ...entry, match: requestUrl.pathname.match(entry.pattern) })).find(entry => entry.match)
-  if (!route || context.request.method !== 'GET') return context.next()
+  const normalizedPath = requestUrl.pathname === '/' ? '/' : requestUrl.pathname.replace(/\/$/, '')
+  const staticRoute = STATIC_ROUTES[normalizedPath]
+  if ((!route && !staticRoute) || context.request.method !== 'GET') return context.next()
 
   const response = await context.next()
   if (!response.headers.get('content-type')?.includes('text/html')) return response
+
+  if (staticRoute) {
+    const canonical = `${SITE_URL}${normalizedPath}`
+    const breadcrumbs = [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+    ]
+    if (staticRoute.parentPath) {
+      breadcrumbs.push({
+        '@type': 'ListItem',
+        position: 2,
+        name: staticRoute.parentName,
+        item: `${SITE_URL}${staticRoute.parentPath}`,
+      })
+    }
+    breadcrumbs.push({
+      '@type': 'ListItem',
+      position: breadcrumbs.length + 1,
+      name: staticRoute.name,
+      item: canonical,
+    })
+    const schema = {
+      '@context': 'https://schema.org',
+      '@graph': [{
+        '@type': 'CollectionPage',
+        name: staticRoute.name,
+        description: staticRoute.description,
+        url: canonical,
+        isPartOf: { '@type': 'WebSite', name: 'Softcurse Systems', url: `${SITE_URL}/` },
+      }, {
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumbs,
+      }],
+    }
+
+    return new HTMLRewriter()
+      .on('title', new TitleHandler(staticRoute.title))
+      .on('meta[name="description"]', new AttributeHandler('content', staticRoute.description))
+      .on('meta[property="og:title"]', new AttributeHandler('content', staticRoute.title))
+      .on('meta[property="og:description"]', new AttributeHandler('content', staticRoute.description))
+      .on('meta[property="og:url"]', new AttributeHandler('content', canonical))
+      .on('meta[property="og:type"]', new AttributeHandler('content', 'website'))
+      .on('meta[name="twitter:title"]', new AttributeHandler('content', staticRoute.title))
+      .on('meta[name="twitter:description"]', new AttributeHandler('content', staticRoute.description))
+      .on('link[rel="canonical"]', new AttributeHandler('href', canonical))
+      .on('head', new HeadHandler(schema))
+      .transform(response)
+  }
 
   try {
     const row = await context.env.CMS_DB.prepare(`
