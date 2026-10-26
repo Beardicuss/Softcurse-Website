@@ -8,13 +8,15 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "pages:dev": "wrangler pages dev",
+    "pages:dev": "wrangler pages dev dist",
+    "pages:dev:ai": "wrangler pages dev dist --port 8788 --ai AI",
     "cms:migrate:local": "wrangler d1 migrations apply softcurse-cms --local",
     "cms:migrate": "wrangler d1 migrations apply softcurse-cms --remote",
     "deploy": "npm run build && wrangler pages deploy --branch main",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "test": "node --test tests/*.test.mjs",
-    "smoke:production": "node scripts/smoke-production.mjs"
+    "smoke:production": "node scripts/smoke-production.mjs",
+    "check": "npm run lint && npm test && npm run build"
   },
   "dependencies": {
     "react": "^19.2.8",

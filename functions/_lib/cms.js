@@ -46,9 +46,10 @@ export function validateProviderUrl(provider, value) {
 
 export const ASSET_SPECS = {
   game: {
-    card: { label: 'Card artwork', width: 1600, height: 1000, transparent: false },
+    card: { label: 'Card artwork', width: 1200, height: 1600, transparent: false },
     hologram: { label: 'Hologram artwork', width: 800, height: 800, transparent: true },
-    hero: { label: 'Hero background', width: 1920, height: 1080, transparent: false },
+    hero: { label: 'Hero background · Desktop', width: 2400, height: 1000, transparent: false },
+    heroMobile: { label: 'Hero background · Mobile', width: 1080, height: 1440, transparent: false },
   },
   app: {
     card: { label: 'Card artwork', width: 1200, height: 675, transparent: false },
@@ -205,7 +206,12 @@ export async function sha256Hex(value) {
 
 export async function secureEqual(left, right) {
   const [leftHash, rightHash] = await Promise.all([sha256Bytes(String(left)), sha256Bytes(String(right))])
-  return crypto.subtle.timingSafeEqual(leftHash, rightHash)
+  const leftBytes = new Uint8Array(leftHash)
+  const rightBytes = new Uint8Array(rightHash)
+  let difference = leftBytes.length ^ rightBytes.length
+  const length = Math.max(leftBytes.length, rightBytes.length)
+  for (let index = 0; index < length; index += 1) difference |= (leftBytes[index % leftBytes.length] ^ rightBytes[index % rightBytes.length])
+  return difference === 0
 }
 
 export function randomToken(byteLength = 32) {

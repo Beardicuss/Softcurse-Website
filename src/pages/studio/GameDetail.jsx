@@ -51,15 +51,18 @@ export default function GameDetail() {
       {/* ── HERO BANNER ── */}
       <div className={styles.hero} ref={heroRef}>
         {(game.heroImage || game.image)
-          ? <img
-            src={game.heroImage || game.image}
-            alt={game.name}
-            className={styles.heroImg}
-            style={{ objectPosition: game.heroPosition || 'top center' }}
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-          />
+          ? <picture>
+            <source media="(max-width: 768px)" srcSet={game.heroMobileImage || game.heroImage || game.image} />
+            <img
+              src={game.heroImage || game.image}
+              alt={game.name}
+              className={styles.heroImg}
+              style={{ objectPosition: game.heroPosition || 'top center' }}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </picture>
           : <div className={styles.heroPlaceholder}><span className={styles.heroIcon}>{game.icon}</span></div>
         }
         <div className={styles.heroOverlay} />
@@ -74,6 +77,7 @@ export default function GameDetail() {
           <p className={styles.heroDesc}>{game.shortDesc}</p>
           <div className={styles.heroActions}>
             <ProductPrimaryActions product={game} emptyLabel={game.ctaLabel || 'WISHLIST'} />
+            {game.id === 'hexbrewers' && <Button variant="outlineMagenta" href="/studio/hexbrewers/rulebook">▤ RULEBOOK</Button>}
             <Button variant="ghost" href="/studio/games">← BACK TO GAMES</Button>
           </div>
         </div>
@@ -163,6 +167,7 @@ export default function GameDetail() {
             ? <Button variant="cyan" external={game.playUrl}>▶ {game.launchLabel || 'PLAY NOW'}</Button>
             : <Button variant="magenta" disabled={game.ctaDisabled}>{game.ctaLabel || 'WISHLIST THIS GAME'}</Button>
           }
+          {game.id === 'hexbrewers' && <Button variant="outline" href="/studio/hexbrewers/rulebook">▤ RULEBOOK</Button>}
           <Button variant="outlineMagenta" href="/blog">DEV BLOG</Button>
         </div>
 

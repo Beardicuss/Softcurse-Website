@@ -11,6 +11,7 @@ import GameCard from '../components/common/GameCard'
 import Button from '../components/common/Button'
 import Newsletter from '../components/common/Newsletter'
 import styles from './Home.module.css'
+import { useSiteLayout } from '../content/SiteLayout'
 
 export default function Home() {
   usePageTitle(null) // just "SOFTCURSE" on homepage
@@ -18,6 +19,13 @@ export default function Home() {
   const allApps = useCmsItems('app', Object.values(APPS))
   const apps = allApps.slice(0, 6)
   const games = useCmsItems('game', Object.values(GAMES))
+  const siteLayout = useSiteLayout()
+  const sections = siteLayout?.homeSections || []
+  const sectionStyle = id => {
+    const index = sections.findIndex(item => item.id === id)
+    const item = sections[index]
+    return { order: index < 0 ? 0 : index, ...(item?.enabled === false ? { display: 'none' } : {}) }
+  }
 
   useSEO({ title: 'Home', description: 'Softcurse Systems creates focused Windows software, experimental technology, browser games, and dark speculative fiction.', url: '/' })
   const [statsRef, statsVis] = useScrollReveal()
@@ -26,10 +34,10 @@ export default function Home() {
   const [ctaRef, ctaVis] = useScrollReveal()
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} style={{ display: 'flex', flexDirection: 'column' }}>
 
       {/* ── Hero ── */}
-      <section className={`${styles.hero} grid-bg grain`}>
+      <section className={`${styles.hero} grid-bg grain`} style={sectionStyle('hero')}>
         <div className="scanline" />
         <canvas ref={canvasRef} className={styles.canvas} />
 
@@ -66,7 +74,7 @@ export default function Home() {
       </section>
 
       {/* ── Stats ── */}
-      <div ref={statsRef} className={`${styles.stats} reveal-group ${statsVis ? "visible" : ""}`}>
+      <div ref={statsRef} style={sectionStyle('stats')} className={`${styles.stats} reveal-group ${statsVis ? "visible" : ""}`}>
         {[
           [String(allApps.length), 'Lab Tools'],
           [String(games.length), 'Studio Games'],
@@ -81,7 +89,7 @@ export default function Home() {
       </div>
 
       {/* ── Lab Preview ── */}
-      <section ref={labRef} className={`${styles.section} container reveal ${labVis ? "visible" : ""}`}>
+      <section ref={labRef} style={sectionStyle('lab')} className={`${styles.section} container reveal ${labVis ? "visible" : ""}`}>
         <div className="sec-header">
           <div className="sec-header__label">{'// MODULE 01'}</div>
           <h2 className="sec-header__title">
@@ -101,12 +109,12 @@ export default function Home() {
         </div>
       </section>
 
-      <div className={styles.dividerWrap}>
+      <div className={styles.dividerWrap} style={sectionStyle('lab')}>
         <div className="divider" />
       </div>
 
       {/* ── Studio Preview ── */}
-      <section ref={studioRef} className={`${styles.section} ${styles.studioSection} reveal section--studio ${studioVis ? "visible" : ""}`}>
+      <section ref={studioRef} style={sectionStyle('studio')} className={`${styles.section} ${styles.studioSection} reveal section--studio ${studioVis ? "visible" : ""}`}>
         <div className="container">
           <div className="sec-header">
             <div className="sec-header__label sec-header__label--magenta">{'// MODULE 02'}</div>
@@ -129,14 +137,14 @@ export default function Home() {
       </section>
 
       {/* ── Newsletter ── */}
-      <div className={styles.newsletterWrapper}>
+      <div className={styles.newsletterWrapper} style={sectionStyle('newsletter')}>
         <div className="container">
           <Newsletter />
         </div>
       </div>
 
       {/* ── CTA Banner ── */}
-      <div ref={ctaRef} className={`${styles.ctaBanner} reveal ${ctaVis ? "visible" : ""}`}>
+      <div ref={ctaRef} style={sectionStyle('cta')} className={`${styles.ctaBanner} reveal ${ctaVis ? "visible" : ""}`}>
         <div className={styles.ctaBannerInner}>
           <h2 className={styles.ctaTitle}>BUILT IN THE DARK. SHIPPED WITH PURPOSE.</h2>
           <p className={styles.ctaDesc}>

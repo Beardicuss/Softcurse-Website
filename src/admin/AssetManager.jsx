@@ -35,10 +35,12 @@ export default function AssetManager({ item, specs, assets, onChanged }) {
   const [zoom, setZoom] = useState(1)
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
+  const [hologramName, setHologramName] = useState(item.data?.characterName || '')
   const inputRef = useRef(null)
   const spec = specs[selectedSlot]
 
   useEffect(() => () => { if (preview) URL.revokeObjectURL(preview) }, [preview])
+  useEffect(() => { setHologramName(item.data?.characterName || '') }, [item.id, item.data?.characterName])
   if (!Object.keys(specs).length) return <p className="admin-muted">This content type does not need image slots.</p>
 
   async function chooseFile(event) {
@@ -81,6 +83,28 @@ export default function AssetManager({ item, specs, assets, onChanged }) {
     try { await adminApi(`/assets/${asset.id}`, { method: 'DELETE' }); await onChanged() } catch (error) { setMessage(error.message) }
   }
 
+  async function updateHologramName() {
+    const name = hologramName.trim()
+    if (!name) return setMessage('Enter a hologram display name.')
+    setBusy(true)
+    setMessage('Updating hologram name…')
+    try {
+      await adminApi(`/content/${item.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          type: item.type,
+          title: item.title,
+          slug: item.slug,
+          status: item.status,
+          sortOrder: item.sortOrder,
+          data: { ...item.data, characterName: name },
+        }),
+      })
+      setMessage('Hologram name updated.')
+      await onChanged()
+    } catch (error) { setMessage(error.message) } finally { setBusy(false) }
+  }
+
   return <div className="asset-manager">
     <div className="asset-spec-grid">
       {Object.entries(specs).map(([slot, value]) => {
@@ -97,6 +121,10 @@ export default function AssetManager({ item, specs, assets, onChanged }) {
       </div>
       <div className="asset-controls">
         <p><strong>{spec.label}</strong><br />Output is automatically cropped, resized to {spec.width} × {spec.height}, and converted to WebP.</p>
+        {selectedSlot === 'hologram' && <div className="asset-name-editor">
+          <label>Hologram display name<input type="text" value={hologramName} maxLength="80" placeholder="e.g. Ancient Crucible" onChange={event => setHologramName(event.target.value)} /></label>
+          <button className="admin-button" type="button" disabled={busy || !hologramName.trim() || hologramName.trim() === (item.data?.characterName || '')} onClick={updateHologramName}>UPDATE NAME</button>
+        </div>}
         <label className="admin-file">Choose source image<input ref={inputRef} type="file" accept="image/png,image/jpeg,image/webp,image/avif" onChange={chooseFile} /></label>
         {source && <>
           <label>Horizontal focus<input type="range" min="0" max="1" step="0.01" value={position.x} onChange={event => setPosition({ ...position, x: Number(event.target.value) })} /></label>

@@ -18,6 +18,11 @@ import { deriveRoadmapStatus } from '../functions/_lib/roadmap.js'
 import { formatBytes, makeSlug } from '../src/admin/api.js'
 import { normalizeEmail } from '../functions/_lib/commerce.js'
 import { chapterFileName, chapterResponse, readChapterHtml, validateChapterNumber, validateChapterTitle } from '../functions/_lib/chapters.js'
+import { hashAdminPassword, verifyAdminPassword } from '../functions/_lib/admin-auth.js'
+import { decodeBase32, decryptTotpSecret, encodeBase32, encryptTotpSecret, verifyTotp } from '../functions/_lib/totp.js'
+import { cleanCommentBody, cleanCommentEmail, cleanCommentName, privateCommentHash } from '../functions/_lib/comments.js'
+import { restoreConfirmation, validateBackupDocument } from '../functions/_lib/backups.js'
+import { validExternalHttps, validSubresourceIntegrity } from '../functions/_lib/developer.js'
 
 test('slug helpers create safe, stable content slugs', () => {
   assert.equal(slugify('  Fake Checker!  '), 'fake-checker')
@@ -169,4 +174,53 @@ test('managed chapter responses run inside an isolated content sandbox', async (
   assert.doesNotMatch(policy, /allow-same-origin/)
   assert.match(policy, /connect-src 'none'/)
   assert.equal(response.headers.get('x-content-type-options'), 'nosniff')
+})
+
+test('administrator passwords use salted PBKDF2 hashes', async () => {
+  const encoded = await hashAdminPassword('correct-horse-battery-staple')
+  assert.match(encoded, /^pbkdf2_sha256\$100000\$/)
+  assert.equal(await verifyAdminPassword('correct-horse-battery-staple', encoded), true)
+  assert.equal(await verifyAdminPassword('incorrect-password', encoded), false)
+  await assert.rejects(() => hashAdminPassword('too-short'), error => error instanceof CmsError && error.code === 'WEAK_PASSWORD')
+})
+
+test('TOTP secrets encrypt at rest and verify standard codes', async () => {
+  const bytes = new TextEncoder().encode('12345678901234567890')
+  const secret = encodeBase32(bytes)
+  assert.deepEqual(decodeBase32(secret), bytes)
+  assert.equal(await verifyTotp(secret, '287082', 59000), true)
+  assert.equal(await verifyTotp(secret, '000000', 59000), false)
+  const env = { ADMIN_TOTP_KEY: 'test-only-encryption-key' }
+  const encrypted = await encryptTotpSecret(env, secret)
+  assert.notEqual(encrypted.includes(secret), true)
+  assert.equal(await decryptTotpSecret(env, encrypted), secret)
+})
+
+test('comment inputs are bounded and privacy identifiers are one-way', async () => {
+  assert.equal(cleanCommentName('  Reader <One>  '), 'Reader One')
+  assert.equal(cleanCommentBody('  Useful post.  '), 'Useful post.')
+  assert.equal(cleanCommentEmail(' Reader@Example.COM '), 'reader@example.com')
+  assert.throws(() => cleanCommentBody(''), error => error instanceof CmsError && error.code === 'INVALID_COMMENT_BODY')
+  assert.throws(() => cleanCommentEmail('invalid'), error => error instanceof CmsError && error.code === 'INVALID_COMMENT_EMAIL')
+  const hash = await privateCommentHash({ COMMENT_PRIVACY_SALT: 'test-salt' }, 'email', 'reader@example.com')
+  assert.equal(hash.length, 64)
+  assert.equal(hash.includes('reader'), false)
+})
+
+test('backup restore validation rejects malformed documents and columns', () => {
+  const valid = validateBackupDocument({ format: 'softcurse-d1-backup', version: 1, createdAt: '2026-10-09T00:00:00.000Z', tables: { content_items: [{ id: 'one', title: 'One' }] } })
+  assert.equal(valid.recordCount, 1)
+  assert.equal(valid.tables.content_items[0].id, 'one')
+  assert.equal(restoreConfirmation('backup-id'), 'RESTORE backup-id')
+  assert.throws(() => validateBackupDocument({ format: 'other', version: 1, tables: {} }), error => error instanceof CmsError && error.code === 'INVALID_BACKUP_FORMAT')
+  assert.throws(() => validateBackupDocument({ format: 'softcurse-d1-backup', version: 1, tables: { content_items: [{ 'bad-column!': 1 }] } }), error => error instanceof CmsError && error.code === 'INVALID_BACKUP_COLUMN')
+})
+
+test('developer integrations reject private destinations and unsigned scripts', () => {
+  assert.equal(validExternalHttps('https://hooks.example.com/events'), true)
+  assert.equal(validExternalHttps('https://127.0.0.1/hook'), false)
+  assert.equal(validExternalHttps('https://192.168.1.5/hook'), false)
+  assert.equal(validSubresourceIntegrity('sha384-YWJjZA=='), true)
+  assert.equal(validSubresourceIntegrity('not-a-hash'), false)
+  assert.equal(validSubresourceIntegrity(''), false)
 })

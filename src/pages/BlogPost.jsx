@@ -4,6 +4,7 @@ import { useCmsItems, useCmsReady, useCmsRecord } from '../content/CmsContent'
 import Button from '../components/common/Button'
 import ShareButtons from '../components/common/ShareButtons'
 import Newsletter from '../components/common/Newsletter'
+import CommentSection from '../components/common/CommentSection'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { useSEO } from '../hooks/useSEO'
 import styles from './BlogPost.module.css'
@@ -95,6 +96,8 @@ export default function BlogPost() {
         <div className={styles.newsletterWrap}>
           <Newsletter />
         </div>
+
+        <CommentSection slug={post.id} />
 
         {/* Related posts */}
         {related.length > 0 && (

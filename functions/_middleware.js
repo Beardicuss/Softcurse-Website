@@ -1,4 +1,5 @@
 /* global HTMLRewriter */
+import { getAdminSession } from './_lib/cms.js'
 const SITE_URL = 'https://softcursesystems.pages.dev'
 
 const ROUTES = [
@@ -94,11 +95,78 @@ class HeadHandler {
   }
 }
 
+function analyticsDimension(request, requestUrl) {
+  const userAgent = request.headers.get('User-Agent') || ''
+  const bot = /bot|crawler|spider|slurp|preview/i.test(userAgent)
+  const device = bot ? 'bot' : /ipad|tablet/i.test(userAgent) ? 'tablet' : /mobile|android|iphone/i.test(userAgent) ? 'mobile' : 'desktop'
+  let source = 'direct'
+  const referrer = request.headers.get('Referer')
+  if (referrer) {
+    try { const host = new URL(referrer).hostname.toLowerCase(); source = host === requestUrl.hostname.toLowerCase() ? 'internal' : host.slice(0, 120) } catch { source = 'other' }
+  }
+  return { device, source, country: String(request.cf?.country || 'XX').slice(0, 2).toUpperCase() }
+}
+
 export async function onRequest(context) {
   const requestUrl = new URL(context.request.url)
+  const normalizedRequestPath = requestUrl.pathname === '/' ? '/' : requestUrl.pathname.replace(/\/+$/, '')
+  const isProtectedSurface = normalizedRequestPath === '/admin' || normalizedRequestPath.startsWith('/admin/') || normalizedRequestPath.startsWith('/api/')
+  if (!isProtectedSurface && context.request.method === 'GET' && !normalizedRequestPath.includes('.')) {
+    const { device, source, country } = analyticsDimension(context.request, requestUrl)
+    if (device !== 'bot') context.waitUntil(context.env.CMS_DB.prepare(`
+      INSERT INTO page_analytics_daily (day, path, source, device, country, views)
+      VALUES (date('now'), ?1, ?2, ?3, ?4, 1)
+      ON CONFLICT(day, path, source, device, country) DO UPDATE SET views = views + 1
+    `).bind(normalizedRequestPath || '/', source, device, country).run().catch(error => console.error('Analytics write failed.', error)))
+  }
+  if (!isProtectedSurface && ['GET', 'HEAD'].includes(context.request.method)) {
+    try {
+      const [redirect, maintenanceRow] = await Promise.all([
+        context.env.CMS_DB.prepare('SELECT id, destination, status_code FROM seo_redirects WHERE source_path = ?1 AND is_active = 1').bind(normalizedRequestPath).first(),
+        context.env.CMS_DB.prepare("SELECT value_json FROM settings WHERE key = 'maintenance'").first(),
+      ])
+      if (redirect) {
+        const destination = new URL(redirect.destination, requestUrl.origin).toString()
+        context.waitUntil(context.env.CMS_DB.prepare('UPDATE seo_redirects SET hit_count = hit_count + 1, last_hit_at = CURRENT_TIMESTAMP WHERE id = ?1').bind(redirect.id).run())
+        return Response.redirect(destination, redirect.status_code)
+      }
+      const maintenance = maintenanceRow ? JSON.parse(maintenanceRow.value_json) : null
+      if (maintenance?.enabled) {
+        const adminAllowed = maintenance.allowAdmins && await getAdminSession(context.request, context.env)
+        if (!adminAllowed) return new Response(`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="robots" content="noindex"><title>${String(maintenance.title).replace(/[<>&]/g, '')}</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#05080d;color:#e8f9fb;font:16px system-ui}main{max-width:620px;padding:40px;text-align:center;border:1px solid #17434a;background:#071019}h1{color:#4ffff0}p{line-height:1.7;color:#9bb0b5}</style><main><h1>${String(maintenance.title).replace(/[<>&]/g, '')}</h1><p>${String(maintenance.message).replace(/[<>&]/g, '')}</p></main></html>`, { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Retry-After': '3600', 'Cache-Control': 'no-store' } })
+      }
+    } catch (error) { console.error('Settings middleware failed open.', error) }
+  }
   const route = ROUTES.map(entry => ({ ...entry, match: requestUrl.pathname.match(entry.pattern) })).find(entry => entry.match)
   const normalizedPath = requestUrl.pathname === '/' ? '/' : requestUrl.pathname.replace(/\/$/, '')
   const staticRoute = STATIC_ROUTES[normalizedPath]
+  if (normalizedPath === '/' && context.request.method === 'GET') {
+    const response = await context.next()
+    if (!response.headers.get('content-type')?.includes('text/html')) return response
+    try {
+      const [siteRow, seoRow] = await context.env.CMS_DB.batch([
+        context.env.CMS_DB.prepare("SELECT value_json FROM settings WHERE key = 'site'"),
+        context.env.CMS_DB.prepare("SELECT value_json FROM settings WHERE key = 'seo'"),
+      ])
+      const site = siteRow.results[0] ? JSON.parse(siteRow.results[0].value_json) : {}
+      const seo = seoRow.results[0] ? JSON.parse(seoRow.results[0].value_json) : {}
+      const title = seo.defaultTitle || site.name || 'Softcurse Systems'
+      const description = seo.defaultDescription || site.description || 'Focused software, experimental technology, games, and stories.'
+      const image = new URL(seo.defaultOgImage || '/og-image.png', SITE_URL).toString()
+      return new HTMLRewriter()
+        .on('title', new TitleHandler(title))
+        .on('meta[name="description"]', new AttributeHandler('content', description))
+        .on('meta[name="theme-color"]', new AttributeHandler('content', site.themeColor || '#4ffff0'))
+        .on('meta[property="og:title"]', new AttributeHandler('content', title))
+        .on('meta[property="og:description"]', new AttributeHandler('content', description))
+        .on('meta[property="og:image"]', new AttributeHandler('content', image))
+        .on('meta[property="og:site_name"]', new AttributeHandler('content', site.name || 'Softcurse Systems'))
+        .on('meta[name="twitter:title"]', new AttributeHandler('content', title))
+        .on('meta[name="twitter:description"]', new AttributeHandler('content', description))
+        .on('meta[name="twitter:image"]', new AttributeHandler('content', image))
+        .transform(response)
+    } catch (error) { console.error('Homepage settings injection failed; serving build defaults.', error); return response }
+  }
   if ((!route && !staticRoute) || context.request.method !== 'GET') return context.next()
 
   const response = await context.next()

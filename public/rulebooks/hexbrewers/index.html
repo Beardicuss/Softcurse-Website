@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The complete illustrated rules for Hexbrewers of Ashenveil.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%2362c5c7' d='M32 3l7 22 22 7-22 7-7 22-7-22-22-7 22-7z'/%3E%3C/svg%3E">
+  <title>The Hexbrewer's Codex | Hexbrewers of Ashenveil</title>
+  <link rel="stylesheet" href="./styles.css?v=final-cover">
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#cover" aria-label="Hexbrewers of Ashenveil rulebook home">
+      <strong>THE HEXBREWER'S CODEX</strong>
+    </a>
+    <div class="reading-progress" aria-hidden="true"><i id="progress-bar"></i></div>
+    <label class="lang-switcher" for="language-select">
+      <span>LANGUAGE</span>
+      <select id="language-select" aria-label="Choose rulebook language">
+        <option value="en">English</option>
+        <option value="ru">Русский</option>
+        <option value="ka">ქართული</option>
+      </select>
+    </label>
+    <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="chapter-navigation">CHAPTERS</button>
+  </header>
+
+  <aside class="sidebar" id="chapter-navigation">
+    <div class="sidebar-heading">THE INSCRIBED PATH</div>
+    <nav id="toc" aria-label="Rulebook chapters"></nav>
+    <div class="sidebar-tools">
+      <label class="search-label" for="rule-search">SEARCH THE CODEX</label>
+      <input id="rule-search" type="search" placeholder="Pressure, vial, rubies…" autocomplete="off">
+      <label class="ritual-toggle">
+        <input id="dlc-toggle" type="checkbox" aria-label="Show optional ritual rules" checked>
+        <span>Show optional rituals</span>
+      </label>
+    </div>
+  </aside>
+
+  <main>
+    <section class="cover chapter" id="cover" data-title="The Codex">
+      <div class="cover-copy">
+        <p class="eyebrow">THE OFFICIAL ILLUSTRATED RULES COMPENDIUM</p>
+        <h1>Hexbrewers<br><span>of Ashenveil</span></h1>
+        <div class="cover-rule" aria-hidden="true"><i></i><b></b><i></i></div>
+        <p class="cover-deck">Nine rounds. One whispering crucible. Every ingredient is a promise, and every promise has a pressure at which it breaks.</p>
+        <div class="cover-actions">
+          <a class="primary-action" href="#object">ENTER THE CODEX</a>
+          <a href="#quick-reference">QUICK REFERENCE</a>
+        </div>
+      </div>
+      <div class="cover-volume" aria-hidden="true"><span></span><img data-asset="/images/ui/menu/menu-icon-grimoire.webp" alt=""></div>
+      <dl class="facts" aria-label="Game facts">
+        <div><dt>2–4</dt><dd>BREWERS · 5 WITH MIRE</dd></div>
+        <div><dt>9</dt><dd>ROUNDS</dd></div>
+        <div><dt>7</dt><dd>SAFE PRESSURE</dd></div>
+        <div><dt>2</dt><dd>MAX PURCHASES</dd></div>
+      </dl>
+    </section>
+
+    <section class="chapter" id="object" data-title="Object of the Ritual">
+      <header class="chapter-title"><span>CHAPTER 01</span><h2>Object of the Ritual</h2></header>
+      <div class="lead-grid">
+        <div>
+          <p class="lead">Become Ashenveil's most renowned hexbrewer by finishing nine rounds with more Prestige than every rival.</p>
+          <p>Each round you draw ingredients from a concealed bag and place them along your crucible spiral. Better ingredients carry you farther, improve future draws, and create powerful combinations. Voidshards increase pressure. Stop in time and claim the full value of your brew—or push once too often and shatter the crucible.</p>
+        </div>
+        <blockquote>“A cautious brew feeds the living. A perfect brew convinces the dead to wait.”<cite>— Morcant's Seventh Margin</cite></blockquote>
+      </div>
+      <div class="principles">
+        <article><b>DRAW</b><span>Reveal one unknown ingredient from your bag.</span></article>
+        <article><b>PLACE</b><span>Advance along the spiral by its printed value.</span></article>
+        <article><b>DECIDE</b><span>Stop safely or risk another draw for greater rewards.</span></article>
+      </div>
+      <div class="quick-start" aria-labelledby="quick-start-title">
+        <div class="quick-start-heading">
+          <span class="section-kicker">YOUR FIRST ROUND IN SIX STEPS</span>
+          <h3 id="quick-start-title">A brew in sixty seconds</h3>
+          <p>This is the whole rhythm of play. The later chapters explain every exception and ingredient power.</p>
+        </div>
+        <ol class="quick-start-steps">
+          <li><b>1</b><div><strong>Read the Omen</strong><span>Apply its instruction for the current round.</span></div></li>
+          <li><b>2</b><div><strong>Take any rat-tail head start</strong><span>Trailing brewers begin farther along the spiral.</span></div></li>
+          <li><b>3</b><div><strong>Draw and place</strong><span>Move by the ingredient's value, then resolve its power.</span></div></li>
+          <li><b>4</b><div><strong>Stop—or keep drawing</strong><span>Pressure 7 is safe. A total of 8 or more shatters the crucible.</span></div></li>
+          <li><b>5</b><div><strong>Evaluate the brew</strong><span>Read the next empty spiral space for rewards.</span></div></li>
+          <li><b>6</b><div><strong>Improve your bag</strong><span>Buy up to two differently colored ingredients, then spend rubies.</span></div></li>
+        </ol>
+        <p class="quick-start-verdict"><b>After nine rounds,</b> the brewer with the most Prestige wins.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="instruments" data-title="Your Instruments">
+      <header class="chapter-title"><span>CHAPTER 02</span><h2>Your Instruments</h2></header>
+      <p class="lead">The digital crucible performs the bookkeeping, but every instrument still obeys a physical rule.</p>
+      <div class="instrument-grid">
+        <article><img data-asset="/images/core/economy/brew-bag.webp" alt="Brewing bag"><h3>Brewing Bag</h3><p>Contains every ingredient available to be drawn this round. Its contents remain hidden.</p></article>
+        <article><img data-asset="/images/core/economy/flask-full.webp" alt="Filled Cursed Vial"><h3>Cursed Vial</h3><p>Once per round, return the most recently drawn white Voidshard—unless that draw already shattered the crucible.</p></article>
+        <article><img data-asset="/images/core/economy/ruby.webp" alt="Ruby"><h3>Rubies</h3><p>Spend two after the market to refill the Vial or advance the starting droplet one space.</p></article>
+        <article><img data-asset="/images/core/economy/rat-stone.webp" alt="Rat stone"><h3>Rat Stone</h3><p>From round two onward, trailing brewers receive a temporary head start based on rat tails.</p></article>
+      </div>
+      <div class="starting-bag">
+        <div><span class="section-kicker">YOUR FIRST BAG</span><h3>Nine ingredients enter the dark.</h3><p>Every brewer begins with seven Voidshards, one Brimstone, and one Deathweave.</p></div>
+        <div class="bag-row" aria-label="Starting ingredient contents">
+          <span class="token white">1<small>×4</small></span><span class="token white">2<small>×2</small></span><span class="token white">3<small>×1</small></span><span class="token orange">1<small>×1</small></span><span class="token green">1<small>×1</small></span>
+        </div>
+      </div>
+      <div class="component-register">
+        <article><b>1</b><span>CRUCIBLE PER BREWER</span><p>Spiral, droplet, rat stone, bag, and Cursed Vial are tracked separately for every seat.</p></article>
+        <article><b>24+4</b><span>OMEN CARDS</span><p>Twenty-four core cards, plus four when Veilglass Distillation is active.</p></article>
+        <article><b>1</b><span>SHARED MARKET</span><p>All colored ingredient stock is finite and contested in rotating seat order.</p></article>
+        <article><b>6</b><span>BONUS-DIE FACES</span><p>Ruby, Prestige, droplet movement, or one of two Brimstone faces.</p></article>
+      </div>
+    </section>
+
+    <section class="chapter" id="setup" data-title="Preparing the Crucible">
+      <header class="chapter-title"><span>CHAPTER 03</span><h2>Preparing the Crucible</h2></header>
+      <ol class="ritual-steps">
+        <li><span>01</span><div><h3>Seat the brewers</h3><p>Choose two to four total brewers. The human takes one seat and AI rivals occupy the remaining seats.</p></div></li>
+        <li><span>02</span><div><h3>Choose a recipe set</h3><p>Select one shared recipe-book set. Every ingredient of the same color uses that set's effect for this match.</p></div></li>
+        <li><span>03</span><div><h3>Prepare equal bags</h3><p>Each brewer receives the same nine starting ingredients, one ruby, and a filled Cursed Vial.</p></div></li>
+        <li><span>04</span><div><h3>Place the droplets</h3><p>Every droplet begins at the starting space. The randomly chosen starting seat rotates clockwise after each round.</p></div></li>
+        <li><span>05</span><div><h3>Shuffle the Omens</h3><p>Twenty-four core Omen Cards form the deck. Veilglass Distillation adds four more. Reveal one at the beginning of each round without replacement.</p></div></li>
+      </ol>
+    </section>
+
+    <section class="chapter" id="round" data-title="An Entire Round">
+      <header class="chapter-title"><span>CHAPTER 04</span><h2>An Entire Round</h2></header>
+      <p class="lead">A round always follows this order. When an effect creates a choice, play pauses until the choice is resolved.</p>
+      <div class="phase-track" role="list">
+        <div role="listitem"><b>1</b><span>OMEN</span><small>Reveal the round's supernatural condition.</small></div>
+        <div role="listitem"><b>2</b><span>RAT TAILS</span><small>Move trailing rat stones ahead of their droplets.</small></div>
+        <div role="listitem"><b>3</b><span>BREWING</span><small>Draw, place, resolve, and decide when to stop.</small></div>
+        <div role="listitem"><b>4</b><span>EVALUATION</span><small>Resolve die, effects, rubies, Prestige, and coins.</small></div>
+        <div role="listitem"><b>5</b><span>MARKET</span><small>Buy up to two differently colored ingredients.</small></div>
+        <div role="listitem"><b>6</b><span>RUBIES</span><small>Advance the droplet or refill the Cursed Vial.</small></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="omens" data-title="Reading the Omens">
+      <header class="chapter-title"><span>CHAPTER 05</span><h2>Reading the Omens</h2></header>
+      <p class="lead">One Omen is revealed without replacement at the beginning of every round. It affects every brewer, but not every Omen resolves at the same moment.</p>
+      <div class="omen-timings">
+        <article><span>BEFORE BREWING</span><h3>Opening Portents</h3><p>Apply immediate gifts, payments, ingredient choices, droplet movement, and rat-tail changes before the first draw.</p></article>
+        <article><span>DURING BREWING</span><h3>Lingering Curses</h3><p>Keep the card visible. It may alter movement, return a Voidshard, protect rewards, or offer a second chance after five placements.</p></article>
+        <article><span>DURING EVALUATION</span><h3>Final Reckonings</h3><p>Resolve bonuses for colors, ruby spaces, survival, pressure, or the final shape of the brew at the printed scoring step.</p></article>
+      </div>
+      <div class="omen-reading">
+        <img data-asset="/images/base/omens/omen-the-crawling-moon.webp" alt="The Crawling Moon Omen Card">
+        <div><span class="section-kicker">HOW TO READ A CARD</span><h3>The lore warns. The effect commands.</h3><ol><li><b>Read the title and omen-lore</b> to identify the revealed card.</li><li><b>Read the mechanical effect in full</b> before any brewer acts.</li><li><b>Resolve required choices in rotating seat order.</b> The round waits until every choice is complete.</li><li><b>Leave the Omen visible</b> until evaluation finishes.</li></ol></div>
+      </div>
+      <div class="note"><b>WHEN AN OMEN CONFLICTS</b><p>The Omen's specific instruction overrides the ordinary rule only for the stated duration. It does not permanently alter bags, recipe books, or pressure unless it explicitly says so.</p></div>
+      <h3 class="archive-subtitle">The Complete Omen Archive</h3>
+      <p>Twenty-four core Omens form the base deck. When Veilglass Afflictions is active, shuffle in the four marked Veilglass Omens before round one.</p>
+      <div class="omen-reference-grid" id="omen-reference" aria-label="Complete Omen card reference"></div>
+    </section>
+
+    <section class="chapter" id="drawing" data-title="Drawing and Placement">
+      <header class="chapter-title"><span>CHAPTER 06</span><h2>Drawing and Placement</h2></header>
+      <div class="example-grid">
+        <div>
+          <p class="lead">A token advances your position by its printed value. It is placed on the destination space; crossed spaces remain empty.</p>
+          <ul class="rule-list">
+            <li>Resolve immediate effects as soon as the token lands.</li>
+            <li>A token placed by another effect resolves its own immediate effect before play continues.</li>
+            <li>Returned tokens leave empty distance. Later tokens never slide backward.</li>
+            <li>You may stop after every completed draw unless an effect states otherwise.</li>
+          </ul>
+        </div>
+        <div class="movement-example" aria-label="Interactive token placement example">
+          <span class="example-label">PLACEMENT EXAMPLE</span>
+          <div class="spiral-line">
+            <i class="space start">●<small>START</small></i><i class="space">1</i><i class="space">2</i><i class="space">3</i><i class="space">4</i><i class="space">5</i><i class="space">6</i>
+            <i class="moving-token">2</i>
+          </div>
+          <p>A value-2 ingredient travels two spaces beyond the previous token. Use the control to replay the movement.</p>
+          <button class="diagram-button" id="replay-placement" type="button">REPLAY PLACEMENT</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="ingredients" data-title="Ingredient Powers">
+      <header class="chapter-title"><span>CHAPTER 07</span><h2>The Ingredient Archive</h2></header>
+      <div class="ingredient-intro">
+        <div><p class="lead">Color identifies an ingredient family. Value determines movement. The selected recipe set determines its power and market cost.</p><p>Choose the recipe set used by your match. The Codex will reveal the exact inscription for every variable ingredient.</p></div>
+        <label class="recipe-picker" for="recipe-set"><span>RECIPE SET</span><select id="recipe-set" aria-label="Choose recipe set"><option value="1">Set I</option><option value="2">Set II</option><option value="3">Set III</option><option value="4">Set IV</option><option value="5">Set V · Mirewrought</option><option value="6">Set VI · Mirewrought</option></select></label>
+      </div>
+      <div class="recipe-strategies" id="recipe-strategies" aria-live="polite"></div>
+      <div class="ingredient-grid" id="ingredient-grid" aria-live="polite"></div>
+      <aside class="timing-key"><b>TIMING KEY</b><span><i class="timing immediate"></i> resolves when placed</span><span><i class="timing end"></i> resolves during evaluation</span><span><i class="timing passive"></i> changes an ongoing rule</span></aside>
+    </section>
+
+    <section class="chapter danger-chapter" id="pressure" data-title="Pressure and Shattering">
+      <header class="chapter-title"><span>CHAPTER 08</span><h2>Voidshard Pressure &amp; Shattering</h2></header>
+      <div class="pressure-demo">
+        <div class="pressure-dial"><strong>7</strong><span>SAFE</span></div>
+        <div class="pressure-copy"><p>Only white Voidshards add pressure. Their printed values are added together.</p><p><b>Seven is safe.</b> The instant the total exceeds seven, the crucible shatters and brewing ends. The final Voidshard remains placed.</p></div>
+        <div class="pressure-dial shattered"><strong>8+</strong><span>SHATTERED</span></div>
+      </div>
+      <div class="worked-example vial-example">
+        <div class="example-heading"><span>WORKED EXAMPLE</span><h3>The Cursed Vial</h3></div>
+        <div class="vial-sequence">
+          <div><b>5</b><small>PRESSURE BEFORE DRAW</small></div><i>+</i><span class="mini-token white">2</span><i>→</i><div><b>7</b><small>STILL SAFE</small></div><i>→</i><img data-asset="/images/core/economy/flask-full.webp" alt="Cursed Vial"><i>→</i><div class="restored"><b>5</b><small>VOIDSHARD RETURNED</small></div>
+        </div>
+        <p>The Vial returns only the most recently drawn Voidshard. If that draw had raised pressure above the safe limit, shattering would already have occurred and the Vial could not undo it.</p>
+      </div>
+      <div class="choice-card"><span>AFTER SHATTERING</span><h3>Choose Prestige or coins.</h3><p>A surviving brewer receives both. A shattered brewer must surrender one reward, but still resolves eligible effects and ruby spaces.</p></div>
+    </section>
+
+    <section class="chapter" id="evaluation" data-title="Evaluation">
+      <header class="chapter-title"><span>CHAPTER 09</span><h2>Evaluation</h2></header>
+      <p class="lead">Your scoring space is the first empty space directly after the last placed ingredient—not the space occupied by that ingredient.</p>
+      <div class="resolution-order">
+        <span>DISTILLATION <small>(IF ACTIVE)</small></span><i>→</i><span>BONUS DIE</span><i>→</i><span>END EFFECTS</span><i>→</i><span>OMEN</span><i>→</i><span>RUBY SPACE</span><i>→</i><span>PRESTIGE &amp; COINS</span>
+      </div>
+      <div class="bonus-die-guide">
+        <div><span class="section-kicker">THE BONUS DIE</span><h3>Farthest surviving brew</h3><p>Every brewer tied for the farthest scoring space among crucibles that did not shatter rolls once. Shattered brewers never qualify.</p></div>
+        <div class="die-faces" aria-label="Six bonus die faces"><span>◆<small>1 ruby</small></span><span>★<small>1 Prestige</small></span><span>★★<small>2 Prestige</small></span><span>●→<small>droplet +1</small></span><span>◈<small>Brimstone 1</small></span><span>◈<small>Brimstone 1</small></span></div>
+      </div>
+      <div class="example-duo">
+        <article class="worked-example scoring-example"><div class="example-heading"><span>SCORING SPACE</span><h3>Read the empty space</h3></div><div class="score-track"><i>7</i><i class="occupied"><span class="mini-token blue">2</span></i><i class="scoring">9<small>9¢ · 1★ · ◆</small></i><i>10</i><i>11</i></div><p>The last token occupies space 8. The next empty space—9—supplies 9 coins, 1 Prestige, and its ruby reward.</p></article>
+        <article class="worked-example rat-example"><div class="example-heading"><span>RAT TAILS</span><h3>A temporary head start</h3></div><div class="prestige-track"><span class="trailer">YOU · 4</span><i>☾</i><i>TAIL</i><i>TAIL</i><i>☾</i><span class="leader">LEADER · 8</span></div><p>Count visible rat tails between your marker and the leader. Rat-tail icons follow Prestige spaces 4, 9, 14, 19, 24, and 29. Move the rat stone that many spaces beyond the droplet. At round end, the rat stone disappears; the droplet never moved.</p></article>
+      </div>
+      <div class="reward-comparison">
+        <article class="stable-reward"><span>STABLE BREW</span><h3>Claim both rewards</h3><div><b>+2 Prestige</b><i>AND</i><b>9 coins</b></div><p>Eligible bonus-die and ruby-space rewards are also resolved.</p></article>
+        <article class="shattered-reward"><span>SHATTERED BREW</span><h3>Choose one reward</h3><div><b>+2 Prestige</b><i>OR</i><b>9 coins</b></div><p>Eligible effects and ruby-space rewards still resolve; only the normal Prestige-and-coins pair is restricted.</p></article>
+      </div>
+      <div class="scoring-ledger">
+        <div><span class="section-kicker">COMPLETE SCORING LEDGER</span><h3>Prestige printed on the spiral</h3><p>Coins equal the scoring-space number, except space 33 awards 35 coins. Ruby symbols appear on spaces 4, 9, 15, 21, and 28.</p></div>
+        <dl>
+          <div><dt>0–4</dt><dd>0 Prestige</dd></div><div><dt>5–9</dt><dd>1 Prestige</dd></div><div><dt>10–13</dt><dd>2 Prestige</dd></div><div><dt>14–16</dt><dd>3 Prestige</dd></div>
+          <div><dt>17–18</dt><dd>4 Prestige</dd></div><div><dt>19–20</dt><dd>5 Prestige</dd></div><div><dt>21–22</dt><dd>6 Prestige</dd></div><div><dt>23–24</dt><dd>7 Prestige</dd></div>
+          <div><dt>25</dt><dd>8 Prestige</dd></div><div><dt>26</dt><dd>9 Prestige</dd></div><div><dt>27</dt><dd>10 Prestige</dd></div><div><dt>28–29</dt><dd>11 Prestige</dd></div>
+          <div><dt>30</dt><dd>12 Prestige</dd></div><div><dt>31</dt><dd>13 Prestige</dd></div><div><dt>32</dt><dd>14 Prestige</dd></div><div><dt>33</dt><dd>15 Prestige</dd></div>
+        </dl>
+      </div>
+      <div class="note"><b>SEATING ORDER</b><p>Tied rewards, Omen choices, end effects, and limited shared stock resolve clockwise from the rotating starting seat.</p></div>
+    </section>
+
+    <section class="chapter" id="market" data-title="The Black Market">
+      <header class="chapter-title"><span>CHAPTER 10</span><h2>The Black Market</h2></header>
+      <div class="lead-grid">
+        <div><p class="lead">Spend the coins earned by your scoring space to permanently improve your bag.</p><ul class="rule-list"><li>Buy no more than two ingredients per round.</li><li>If buying two, they must be different colors.</li><li>Stock is shared and never replenished.</li><li>Unspent coins normally vanish at the end of the round.</li><li>Purchased ingredients enter your bag for future rounds.</li></ul></div>
+        <div class="market-law"><b>THE MARKET'S LAW</b><span>2 MAXIMUM</span><em>DIFFERENT COLORS</em></div>
+      </div>
+      <div class="purchase-examples" aria-label="Valid and invalid Black Market purchases">
+        <div class="valid-purchase"><b>VALID</b><span class="purchase-chip blue">Frostbile</span><i>+</i><span class="purchase-chip red">Bloodthorn</span><small>Two different colors</small></div>
+        <div class="invalid-purchase"><b>FORBIDDEN</b><span class="purchase-chip blue">Frostbile</span><i>+</i><span class="purchase-chip blue">Frostbile</span><small>The second purchase cannot share a color</small></div>
+      </div>
+      <div class="market-calendar">
+        <article><b>ROUND 1</b><p>Brimstone, Deathweave, Frostbile, Bloodthorn, and Shadowmoss are available.</p></article>
+        <article><b>ROUND 2</b><p>Plaguedust unlocks. Echo Reed also unlocks when either optional archive is active; Embercore unlocks only with Mirewrought Pacts.</p></article>
+        <article><b>ROUND 3</b><p>Wraithbloom unlocks. Every core market color is now available while stock remains.</p></article>
+      </div>
+      <div class="stock-ledger">
+        <div><span class="section-kicker">SHARED STOCK LEDGER</span><h3>Every ingredient is finite.</h3><p>These quantities are the market supply after each brewer's starting Brimstone and Deathweave have been removed. The digital market tracks every purchase, reward, trade, and upgrade automatically.</p></div>
+        <dl>
+          <div><dt>Brimstone 1</dt><dd>22 − brewer count</dd></div>
+          <div><dt>Deathweave 1 / 2 / 4</dt><dd>(15 − brewers) / 8 / 13</dd></div>
+          <div><dt>Frostbile 1 / 2 / 4</dt><dd>12 / 8 / 10</dd></div>
+          <div><dt>Bloodthorn 1 / 2 / 4</dt><dd>12 / 8 / 10</dd></div>
+          <div><dt>Plaguedust 1 / 2 / 4</dt><dd>13 / 8 / 10</dd></div>
+          <div><dt>Wraithbloom 1</dt><dd>17</dd></div>
+          <div><dt>Shadowmoss 1</dt><dd>17</dd></div>
+          <div><dt>Echo Reed (either archive)</dt><dd>1 per brewer</dd></div>
+          <div><dt>Embercore 6 (Mire only)</dt><dd>1 per brewer</dd></div>
+        </dl>
+      </div>
+      <div class="note"><b>FINITE SHARED STOCK</b><p>Starting ingredients are removed from the shared supply before play. Purchases, Omen rewards, trades, and upgrades all use that same stock. An unavailable ingredient cannot be taken by any effect unless that effect explicitly creates it.</p></div>
+    </section>
+
+    <section class="chapter" id="victory" data-title="The Ninth Round">
+      <header class="chapter-title"><span>CHAPTER 11</span><h2>The Ninth Round &amp; Victory</h2></header>
+      <p class="lead">After the ninth evaluation, the brewer with the highest Prestige wins.</p>
+      <div class="final-conversions"><div><b>5</b><span>UNSPENT COINS</span><i>→</i><strong>1 PRESTIGE</strong></div><div><b>2</b><span>RUBIES</span><i>→</i><strong>1 PRESTIGE</strong></div></div>
+      <p>Tied leaders compare their final-round scoring spaces. If those are also tied, they share the victory. At the beginning of round six, every brewer receives one additional value-1 Voidshard.</p>
+    </section>
+
+    <section class="chapter optional-ritual" id="optional-rituals" data-title="Optional Rituals" data-optional="true">
+      <header class="chapter-title"><span>OPTIONAL ARCHIVE</span><h2>Mire Covenants</h2></header>
+      <p class="lead">Bind one Bone, one Moon, and one Blood Covenant during setup. Each seal can be invoked once per match, then remains spent.</p>
+      <div class="covenant-timeline">
+        <article class="bone"><img data-asset="/images/dlc/mirewrought-pacts/covenants/covenant-seal-bone.webp" alt="Bone Covenant seal"><span>AFTER THE MARKET</span><h3>Bone</h3><p>Invoke during ruby spending: restore the Vial, gain rubies, advance the droplet, or claim Prestige.</p></article>
+        <article class="moon"><img data-asset="/images/dlc/mirewrought-pacts/covenants/covenant-seal-moon.webp" alt="Moon Covenant seal"><span>BEFORE FIRST DRAW</span><h3>Moon</h3><p>Invoke only while the crucible is empty: gain movement, protection, or rubies before risk begins.</p></article>
+        <article class="blood"><img data-asset="/images/dlc/mirewrought-pacts/covenants/covenant-seal-blood.webp" alt="Blood Covenant seal"><span>BLACK MARKET</span><h3>Blood</h3><p>Invoke while purchasing: gain temporary coins, rubies, movement, or accept a Prestige sacrifice.</p></article>
+      </div>
+      <div class="seal-law"><b>ONE SEAL · ONE INVOCATION · ONE MATCH</b><p>Unused seals do not carry into another match. A seal can only be spent during its family's timing window.</p></div>
+      <div class="runoff-guide">
+        <article><span class="section-kicker">THE FIFTH CHAIR</span><h3>One more brewer may enter.</h3><p>Mirewrought Pacts raises the table limit from four to five brewers and permits The Hollow to occupy the fourth rival seat.</p></article>
+        <article><span class="section-kicker">ABYSSAL RUNOFF</span><h3>The crucible's end is no longer the end.</h3><p>The ingredient that reaches the final crucible space is placed normally. Every later draw enters the Runoff: its colored action does not activate, but half the total printed value of all Runoff ingredients, rounded down, becomes Prestige during evaluation.</p></article>
+        <article><span class="section-kicker">MIRE INGREDIENTS</span><h3>Echo Reed and Embercore</h3><p>Echo Reed fixes its context-dependent movement when drawn and is shared by both optional archives. Embercore is a safe value-6 Brimstone exclusive to Mirewrought Pacts. Recipe sets 5 and 6 are also exclusive to Mirewrought Pacts.</p></article>
+      </div>
+      <h3 class="archive-subtitle">The Twelve Bound Pacts</h3>
+      <div class="reference-card-grid" id="covenant-reference"></div>
+    </section>
+
+    <section class="chapter optional-ritual" id="distillation" data-title="Veilglass Distillation" data-optional="true">
+      <header class="chapter-title"><span>OPTIONAL ARCHIVE</span><h2>Afflictions &amp; Distillation</h2></header>
+      <div class="affliction-intro"><img data-asset="/images/dlc/veilglass-afflictions/afflictions/affliction-portrait-embersleep.webp" alt="Embersleep Affliction"><div><p class="lead">Bind one of three offered Afflictions to your Veilglass Retort for the entire match. Multiple brewers may bind the same Contract.</p><p>After brewing, the Retort measures how varied, precise, and perilously close to disaster the round became. Your Contract converts that progress into its own pattern of Prestige, droplet movement, or next-round head start.</p></div></div>
+      <div class="distillation-formula" aria-label="How Distillation progress is calculated">
+        <div><strong>COLORS</strong><b>+1 each</b><small>Distinct placed non-white colors</small></div><i>+</i><div><strong>EXACT SEVEN</strong><b>+1</b><small>Finish at exactly 7 pressure</small></div><i>+</i><div><strong>SHATTERED NEIGHBORS</strong><b>+1 each</b><small>Adjacent rivals who shattered</small></div><i>=</i><div class="formula-result"><strong>DISTILLATE</strong><b>ROUND TOTAL</b><small>Modified by the current Omen</small></div>
+      </div>
+      <div class="worked-example distill-example"><div class="example-heading"><span>WORKED EXAMPLE</span><h3>A precise and varied brew</h3></div><div class="distill-count"><span><b>4</b> colors</span><i>+</i><span><b>1</b> exact seven</span><i>+</i><span><b>1</b> shattered neighbor</span><i>=</i><strong>6 Distillate</strong></div><p>The chosen Affliction Contract now reads a progress value of 6 and grants its printed reward. In the ninth round only, progress converts directly into the same amount of Prestige.</p></div>
+      <h3 class="archive-subtitle">The Eight Affliction Contracts</h3>
+      <div class="reference-card-grid affliction-reference" id="affliction-reference"></div>
+    </section>
+
+    <section class="chapter" id="glossary" data-title="Glossary">
+      <header class="chapter-title"><span>THE INDEX OF TERMS</span><h2>Glossary</h2></header>
+      <p class="lead">When the Codex uses a precise term, it always means the same thing.</p>
+      <dl class="glossary-grid">
+        <div><dt>Adjacent rival</dt><dd>The brewer seated immediately beside you. In a duel, the other brewer is your only adjacent rival.</dd></div>
+        <div><dt>Bag</dt><dd>Your hidden personal supply of ingredients available to draw during brewing.</dd></div>
+        <div><dt>Distillate</dt><dd>Progress generated during Distillation and read by an Affliction Contract. It is not a spendable currency.</dd></div>
+        <div><dt>Droplet</dt><dd>Your permanent starting marker on the spiral. Its position persists between rounds.</dd></div>
+        <div><dt>Head start</dt><dd>Temporary movement applied before the first draw of a later brew. It does not move the droplet unless stated.</dd></div>
+        <div><dt>Immediate effect</dt><dd>An ingredient instruction resolved as soon as that ingredient is placed.</dd></div>
+        <div><dt>Placed ingredient</dt><dd>An ingredient occupying a spiral space. Returned, sampled-but-rejected, and reserved ingredients are not placed.</dd></div>
+        <div><dt>Pressure</dt><dd>The sum of values on placed Voidshards. Seven is safe; eight or more shatters the crucible.</dd></div>
+        <div><dt>Rat stone</dt><dd>A temporary round-start marker placed ahead of the droplet according to rat tails.</dd></div>
+        <div><dt>Recipe set</dt><dd>The shared collection that defines powers and costs for variable colored ingredients.</dd></div>
+        <div><dt>Scoring space</dt><dd>The first empty spiral space directly after the last placed ingredient.</dd></div>
+        <div><dt>Shatter</dt><dd>The immediate end of brewing caused when Voidshard pressure exceeds the current safe limit.</dd></div>
+      </dl>
+    </section>
+
+    <section class="chapter" id="quick-reference" data-title="Quick Reference">
+      <header class="chapter-title"><span>THE BREWER'S MARGIN</span><h2>Quick Reference</h2></header>
+      <div class="reference-grid">
+        <article><b>SAFE PRESSURE</b><strong>7</strong><p>Shatter at 8 or more.</p></article>
+        <article><b>MARKET LIMIT</b><strong>2</strong><p>Different colors only.</p></article>
+        <article><b>RUBY ACTION</b><strong>2</strong><p>Advance droplet or refill Vial.</p></article>
+        <article><b>FINAL CONVERSION</b><strong>5 / 2</strong><p>Coins / rubies for 1 Prestige.</p></article>
+      </div>
+      <div class="common-mistakes"><h3>Common mistakes</h3><ul class="rule-list"><li>Ruby rewards are checked on the empty scoring space, not beneath the last ingredient.</li><li>A Voidshard that causes shattering cannot be returned with the Cursed Vial.</li><li>Two market purchases cannot share a color.</li><li>Ingredient effects do not normally change the pressure contributed by Voidshards.</li><li>Rat-tail movement is temporary; droplet movement is permanent.</li></ul></div>
+    </section>
+
+    <section class="no-results" id="no-results" hidden><h2>No inscription answers that name.</h2><p>Try another rule term or clear the search.</p></section>
+  </main>
+
+  <footer><strong>HEXBREWERS OF ASHENVEIL</strong><p>The Complete Hexbrewer's Codex · Softcurse Systems</p></footer>
+  <script src="./i18n-ru.js"></script>
+  <script src="./i18n-ka.js"></script>
+  <script src="./recipe-guidance.js?v=exact-rulings"></script>
+  <script src="./i18n-recipe-guidance.js?v=multilingual-exact-rulings"></script>
+  <script src="./script.js?v=multilingual-exact-rulings"></script>
+</body>
+</html>

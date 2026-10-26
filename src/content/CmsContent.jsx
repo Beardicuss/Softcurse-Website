@@ -18,6 +18,7 @@ function toLegacy(item) {
     updatedAt: item.updatedAt,
     image: item.assets.card?.url || item.assets.cover?.url || item.data.image,
     heroImage: item.assets.hero?.url || item.data.heroImage,
+    heroMobileImage: item.assets.heroMobile?.url || item.data.heroMobileImage,
     character: item.assets.hologram?.url || item.assets.icon?.url || item.data.character,
     releases: item.releases,
     playUrl: primary?.kind === 'web' ? primary.url : item.data.playUrl,

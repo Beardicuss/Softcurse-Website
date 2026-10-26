@@ -88,6 +88,11 @@ function escapeHtml(value) {
   })[character])
 }
 
+async function sha256Hex(value) {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))
+  return Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('')
+}
+
 async function verifyTurnstile(request, env, token, expectedAction) {
   const expectedHostnames = new Set(
     (env.TURNSTILE_HOSTNAMES || '')
@@ -178,9 +183,36 @@ export async function onRequestPost(context) {
     return jsonResponse({ ok: false, error: 'Please check the submitted fields.' }, 400)
   }
 
+  const clientIp = request.headers.get('CF-Connecting-IP') || 'unknown'
+  const ipHash = await sha256Hex(`${env.CONTACT_RATE_LIMIT_SALT || 'softcurse-contact'}:${clientIp}`)
+  const recent = await env.CMS_DB.prepare(`
+    SELECT COUNT(*) AS count FROM contact_messages
+    WHERE ip_hash = ?1 AND created_at >= datetime('now', '-15 minutes')
+  `).bind(ipHash).first()
+  if (Number(recent?.count || 0) >= 5) {
+    return jsonResponse({ ok: false, error: 'Too many messages were sent. Please try again later.' }, 429)
+  }
+
+  const messageId = crypto.randomUUID()
+  await env.CMS_DB.batch([
+    env.CMS_DB.prepare(`
+      INSERT INTO contact_messages (id, name, email, subject, message, ip_hash, user_agent)
+      VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)
+    `).bind(messageId, name, email, subject, message, ipHash, String(request.headers.get('User-Agent') || '').slice(0, 500)),
+    env.CMS_DB.prepare(`
+      INSERT INTO contact_message_events (id, message_id, action, actor)
+      VALUES (?1, ?2, 'submitted', 'website')
+    `).bind(crypto.randomUUID(), messageId),
+    env.CMS_DB.prepare(`
+      INSERT INTO admin_notifications (id, type, title, message, action_hash)
+      VALUES (?1, 'info', 'New contact message', ?2, 'messages')
+    `).bind(crypto.randomUUID(), `${name}: ${subject || 'No subject'}`),
+  ])
+
   const apiKey = env.RESEND_API_KEY
   if (!apiKey) {
     console.error('contact_configuration_missing', { binding: 'RESEND_API_KEY' })
+    await env.CMS_DB.prepare(`UPDATE contact_messages SET delivery_status = 'failed', updated_at = CURRENT_TIMESTAMP WHERE id = ?1`).bind(messageId).run()
     return jsonResponse({ ok: false, error: 'The contact service is unavailable.' }, 503)
   }
 
@@ -219,14 +251,18 @@ export async function onRequestPost(context) {
 
     if (!response.ok) {
       console.error('contact_resend_failed', { status: response.status })
+      await env.CMS_DB.prepare(`UPDATE contact_messages SET delivery_status = 'failed', updated_at = CURRENT_TIMESTAMP WHERE id = ?1`).bind(messageId).run()
       return jsonResponse({ ok: false, error: 'The message could not be sent.' }, 502)
     }
 
+    const delivery = await response.json().catch(() => ({}))
+    await env.CMS_DB.prepare(`UPDATE contact_messages SET delivery_status = 'sent', delivery_id = ?1, updated_at = CURRENT_TIMESTAMP WHERE id = ?2`).bind(delivery.id || null, messageId).run()
     return jsonResponse({ ok: true })
   } catch (error) {
     console.error('contact_resend_request_failed', {
       name: error instanceof Error ? error.name : 'UnknownError',
     })
+    await env.CMS_DB.prepare(`UPDATE contact_messages SET delivery_status = 'failed', updated_at = CURRENT_TIMESTAMP WHERE id = ?1`).bind(messageId).run()
     return jsonResponse({ ok: false, error: 'The contact service is unavailable.' }, 503)
   }
 }

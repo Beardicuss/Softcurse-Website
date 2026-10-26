@@ -11,6 +11,9 @@ import BootScreen from './components/common/BootScreen'
 import ThemeProvider from './components/common/ThemeProvider'
 
 import { CmsContentProvider } from './content/CmsContent'
+import { SiteLayoutProvider } from './content/SiteLayout'
+import Announcement from './components/common/Announcement'
+import IntegrationLoader from './components/common/IntegrationLoader'
 
 import './styles/globals.css'
 
@@ -21,6 +24,7 @@ const AppDetail = lazy(() => import('./pages/lab/AppDetail'))
 const Studio = lazy(() => import('./pages/studio/Studio'))
 const StudioOverview = lazy(() => import('./pages/studio/StudioOverview'))
 const GameDetail = lazy(() => import('./pages/studio/GameDetail'))
+const HexbrewersRulebook = lazy(() => import('./pages/studio/HexbrewersRulebook'))
 const Chronicles = lazy(() => import('./pages/studio/Chronicles'))
 const ChronicleDetail = lazy(() => import('./pages/studio/ChronicleDetail'))
 const ChapterViewer = lazy(() => import('./pages/studio/ChapterViewer'))
@@ -50,6 +54,7 @@ function Layout({ children }) {
       <div className="glow-orb-red" />
       <div className="noise-grid" />
       <Navbar />
+      <Announcement />
       <main id="main-content" style={{ position: 'relative', zIndex: 10 }}>
         <PageTransition>{children}</PageTransition>
       </main>
@@ -82,12 +87,13 @@ export default function App() {
   return (
     <>
       <ThemeProvider />
+      {!isAdmin && <IntegrationLoader />}
       {!isAdmin && !booted && <BootScreen onComplete={completeBoot} />}
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         {!isAdmin && <CustomCursor />}
         <ScrollToTop />
         <Suspense fallback={<RouteFallback />}>
-        {isAdmin ? <Routes><Route path="/admin/*" element={<AdminApp />} /></Routes> : <CmsContentProvider><Layout>
+        {isAdmin ? <Routes><Route path="/admin/*" element={<AdminApp />} /></Routes> : <SiteLayoutProvider><CmsContentProvider><Layout>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/lab" element={<LabOverview />} />
@@ -97,6 +103,7 @@ export default function App() {
             <Route path="/experiments/:id" element={<ExperimentDetail />} />
             <Route path="/studio" element={<StudioOverview />} />
             <Route path="/studio/games" element={<Studio />} />
+            <Route path="/studio/hexbrewers/rulebook" element={<HexbrewersRulebook />} />
             <Route path="/studio/:id" element={<GameDetail />} />
             <Route path="/localization" element={<Localization />} />
             <Route path="/localization/:id" element={<LocalizationDetail />} />
@@ -111,7 +118,7 @@ export default function App() {
             <Route path="/press" element={<PressKit />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </Layout></CmsContentProvider>}
+        </Layout></CmsContentProvider></SiteLayoutProvider>}
         </Suspense>
       </BrowserRouter>
     </>

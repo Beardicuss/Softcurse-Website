@@ -1,0 +1,11 @@
+import { apiError } from '../../../../_lib/cms.js'
+
+const escape = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character])
+export async function onRequestGet(context) {
+  const invoice = await context.env.CMS_DB.prepare(`SELECT i.*, o.provider_order_id, o.currency, o.total_minor, o.refunded_minor, o.created_at AS order_date FROM invoices i JOIN orders o ON o.id = i.order_id WHERE i.id = ?1`).bind(context.params.id).first()
+  if (!invoice) return apiError(404, 'Invoice not found.', 'INVOICE_NOT_FOUND')
+  const items = await context.env.CMS_DB.prepare('SELECT oi.*, c.title FROM order_items oi JOIN content_items c ON c.id = oi.content_id WHERE oi.order_id = ?1').bind(invoice.order_id).all()
+  const total = new Intl.NumberFormat('en-US', { style: 'currency', currency: invoice.currency }).format(invoice.total_minor / 100)
+  const rows = items.results.map(item => `<tr><td>${escape(item.title)}</td><td>${item.quantity}</td><td>${escape(new Intl.NumberFormat('en-US', { style: 'currency', currency: invoice.currency }).format(item.unit_price_minor / 100))}</td></tr>`).join('')
+  return new Response(`<!doctype html><html><head><meta charset="utf-8"><title>${escape(invoice.invoice_number)}</title><style>body{font:16px system-ui;max-width:800px;margin:60px auto;color:#152027}header{display:flex;justify-content:space-between;border-bottom:3px solid #19bfc1}table{width:100%;border-collapse:collapse;margin:30px 0}td,th{padding:12px;border-bottom:1px solid #ddd;text-align:left}.total{text-align:right;font-size:22px}</style></head><body><header><div><h1>SOFTCURSE SYSTEMS</h1><p>Invoice ${escape(invoice.invoice_number)}</p></div><div><strong>${escape(invoice.status.toUpperCase())}</strong><p>${escape(invoice.issued_at)}</p></div></header><p>Order: ${escape(invoice.provider_order_id)}<br>Order date: ${escape(invoice.order_date)}</p><table><thead><tr><th>Item</th><th>Qty</th><th>Price</th></tr></thead><tbody>${rows}</tbody></table><p class="total"><strong>Total: ${escape(total)}</strong></p></body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Content-Disposition': `attachment; filename="${invoice.invoice_number}.html"`, 'Cache-Control': 'no-store' } })
+}

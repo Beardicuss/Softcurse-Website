@@ -1,153 +1,24 @@
-import { lazy, Suspense, useState, useEffect, useRef } from 'react'
-import { NavLink, Link, useLocation } from 'react-router-dom'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { useSiteLayout } from '../../content/SiteLayout'
 import SearchButton from './SearchButton'
 import styles from './Navbar.module.css'
 
 const SearchBar = lazy(() => import('./SearchBar'))
+const FALLBACK = [
+  { id: 'home', label: 'HOME', path: '/', enabled: true },
+  { id: 'lab', label: 'LAB', enabled: true, children: [{ label: 'Overview', path: '/lab' }, { label: 'Apps & Tools', path: '/lab/apps' }, { label: 'Experiments', path: '/experiments' }, { label: 'Localization', path: '/localization' }] },
+  { id: 'studio', label: 'STUDIO', enabled: true, children: [{ label: 'Overview', path: '/studio' }, { label: 'Games', path: '/studio/games' }] },
+  { id: 'chronicles', label: 'CHRONICLES', path: '/chronicles', enabled: true }, { id: 'blog', label: 'BLOG', path: '/blog', enabled: true }, { id: 'about', label: 'ABOUT', path: '/about', enabled: true },
+  { id: 'info', label: 'INFO', enabled: true, children: [{ label: 'Contact', path: '/contact' }, { label: 'Roadmap', path: '/roadmap' }, { label: 'Press Kit', path: '/press' }] },
+]
 
 export default function Navbar() {
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const location = useLocation()
-  const [menuOpenAt, setMenuOpenAt] = useState(null)
-  const [dropdownState, setDropdownState] = useState({ name: null, locationKey: null })
-  const navRef = useRef(null)
-  const menuOpen = menuOpenAt === location.key
-  const openDropdown = dropdownState.locationKey === location.key ? dropdownState.name : null
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'Escape') { setMenuOpenAt(null); setDropdownState({ name: null, locationKey: null }); setSearchOpen(false) }
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); setSearchOpen(true) }
-    }
-    const onClickOut = (e) => {
-      if (navRef.current && !navRef.current.contains(e.target)) setDropdownState({ name: null, locationKey: null })
-    }
-    document.addEventListener('keydown', onKey)
-    document.addEventListener('mousedown', onClickOut)
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.removeEventListener('mousedown', onClickOut)
-    }
-  }, [])
-
-  const toggleDropdown = (name) => setDropdownState(previous => ({
-    name: previous.locationKey === location.key && previous.name === name ? null : name,
-    locationKey: location.key,
-  }))
-  const linkCls = ({ isActive }) => isActive ? `${styles.link} ${styles.active}` : styles.link
-
-  return (
-    <>
-      <nav
-        className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}
-        ref={navRef}
-        aria-label="Main navigation"
-      >
-        <div className={styles.inner}>
-
-          {/* ── MOBILE: hamburger LEFT ── */}
-          <button
-            className={`${styles.burger} ${menuOpen ? styles.burgerOpen : ''}`}
-            onClick={() => setMenuOpenAt(previous => previous === location.key ? null : location.key)}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={menuOpen}
-          >
-            <span aria-hidden="true" /><span aria-hidden="true" /><span aria-hidden="true" />
-          </button>
-
-          {/* ── Logo — center on mobile, left on desktop ── */}
-          <Link to="/" className={styles.logo} aria-label="Softcurse home">
-            <img src="/logo.webp" alt="" className={styles.logoImg} aria-hidden="true" fetchPriority="high" />
-            SOFTCURSE
-          </Link>
-
-          {/* ── Desktop nav links ── */}
-          <ul className={`${styles.links} ${menuOpen ? styles.open : ''}`} role="list">
-            <li><NavLink to="/" className={linkCls} end>HOME</NavLink></li>
-
-            <li className={styles.dropdown}>
-              <button
-                className={`${styles.link} ${(location.pathname.startsWith('/lab') || location.pathname.startsWith('/experiments') || location.pathname.startsWith('/localization')) ? styles.active : ''}`}
-                onClick={() => toggleDropdown('lab')}
-                aria-expanded={openDropdown === 'lab'}
-                aria-controls="lab-nav-menu"
-              >
-                LAB <span className={styles.arrow} aria-hidden="true">▾</span>
-              </button>
-              <div id="lab-nav-menu" className={`${styles.menu} ${openDropdown === 'lab' ? styles.menuOpen : ''}`}>
-                <div className={styles.menuHead}>Lab Directory</div>
-                <Link to="/lab" className={styles.menuItem}>Overview</Link>
-                <Link to="/lab/apps" className={styles.menuItem}>Apps &amp; Tools</Link>
-                <Link to="/experiments" className={styles.menuItem}>Experiments</Link>
-                <Link to="/localization" className={styles.menuItem}>Localization</Link>
-              </div>
-            </li>
-
-            <li className={styles.dropdown}>
-              <button
-                className={`${styles.link} ${location.pathname.startsWith('/studio') ? styles.active : ''}`}
-                onClick={() => toggleDropdown('studio')}
-                aria-expanded={openDropdown === 'studio'}
-                aria-controls="studio-nav-menu"
-              >
-                STUDIO <span className={styles.arrow} aria-hidden="true">▾</span>
-              </button>
-              <div id="studio-nav-menu" className={`${styles.menu} ${openDropdown === 'studio' ? styles.menuOpen : ''}`}>
-                <div className={styles.menuHead}>Studio Directory</div>
-                <Link to="/studio" className={styles.menuItem}>Overview</Link>
-                <Link to="/studio/games" className={styles.menuItem}>Games</Link>
-              </div>
-            </li>
-
-            <li><NavLink to="/chronicles" className={linkCls}>CHRONICLES</NavLink></li>
-            <li><NavLink to="/blog" className={linkCls}>BLOG</NavLink></li>
-            <li><NavLink to="/about" className={linkCls}>ABOUT</NavLink></li>
-
-            <li className={styles.dropdown}>
-              <button
-                className={`${styles.link} ${(['/contact', '/roadmap', '/press'].some(path => location.pathname.startsWith(path))) ? styles.active : ''}`}
-                onClick={() => toggleDropdown('info')}
-                aria-expanded={openDropdown === 'info'}
-                aria-controls="info-nav-menu"
-              >
-                INFO <span className={styles.arrow} aria-hidden="true">▾</span>
-              </button>
-              <div id="info-nav-menu" className={`${styles.menu} ${openDropdown === 'info' ? styles.menuOpen : ''}`}>
-                <div className={styles.menuHead}>Information</div>
-                <Link to="/contact" className={styles.menuItem}>Contact</Link>
-                <Link to="/roadmap" className={styles.menuItem}>Roadmap</Link>
-                <Link to="/press" className={styles.menuItem}>Press Kit</Link>
-              </div>
-            </li>
-
-            {/* Search inside mobile menu */}
-            <li className={styles.mobileSearchItem}>
-              <button
-                className={styles.mobileSearchBtn}
-                onClick={() => { setMenuOpenAt(null); setSearchOpen(true) }}
-              >
-                <span>⌕</span> SEARCH
-              </button>
-            </li>
-          </ul>
-
-          {/* ── Right: Search (desktop only) + Theme toggle ── */}
-          <div className={styles.iconGroup}>
-            <span className={styles.desktopOnly}>
-              <SearchButton onClick={() => setSearchOpen(true)} />
-            </span>
-          </div>
-
-        </div>
-      </nav>
-      {searchOpen && <Suspense fallback={null}><SearchBar onClose={() => setSearchOpen(false)} /></Suspense>}
-    </>
-  )
+  const config = useSiteLayout(), items = (config?.navigation || FALLBACK).filter(item => item.enabled !== false)
+  const [searchOpen, setSearchOpen] = useState(false), [scrolled, setScrolled] = useState(false), [menuOpenAt, setMenuOpenAt] = useState(null), [openDropdown, setOpenDropdown] = useState(null)
+  const location = useLocation(), navRef = useRef(null), menuOpen = menuOpenAt === location.key
+  useEffect(() => { const onScroll = () => setScrolled(window.scrollY > 20); window.addEventListener('scroll', onScroll, { passive: true }); return () => window.removeEventListener('scroll', onScroll) }, [])
+  useEffect(() => { const onKey = event => { if (event.key === 'Escape') { setMenuOpenAt(null); setOpenDropdown(null); setSearchOpen(false) } if ((event.ctrlKey || event.metaKey) && event.key === 'k') { event.preventDefault(); setSearchOpen(true) } }; const onOutside = event => { if (navRef.current && !navRef.current.contains(event.target)) setOpenDropdown(null) }; document.addEventListener('keydown', onKey); document.addEventListener('mousedown', onOutside); return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('mousedown', onOutside) } }, [])
+  const linkClass = ({ isActive }) => isActive ? `${styles.link} ${styles.active}` : styles.link
+  return <><nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`} ref={navRef} aria-label="Main navigation"><div className={styles.inner}><button className={`${styles.burger} ${menuOpen ? styles.burgerOpen : ''}`} onClick={() => setMenuOpenAt(previous => previous === location.key ? null : location.key)} aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen}><span /><span /><span /></button><Link to="/" className={styles.logo} aria-label="Softcurse home"><img src="/logo.webp" alt="" className={styles.logoImg} fetchPriority="high" />SOFTCURSE</Link><ul className={`${styles.links} ${menuOpen ? styles.open : ''}`} role="list">{items.map(item => { const dropdownKey = `${location.key}:${item.id}`; return item.children?.length ? <li className={styles.dropdown} key={item.id}><button className={`${styles.link} ${item.children.some(child => location.pathname === child.path || location.pathname.startsWith(`${child.path}/`)) ? styles.active : ''}`} onClick={() => setOpenDropdown(value => value === dropdownKey ? null : dropdownKey)} aria-expanded={openDropdown === dropdownKey}>{item.label} <span className={styles.arrow}>▾</span></button><div className={`${styles.menu} ${openDropdown === dropdownKey ? styles.menuOpen : ''}`}><div className={styles.menuHead}>{item.label}</div>{item.children.map(child => child.path.startsWith('http') ? <a key={child.path} href={child.path} className={styles.menuItem} target="_blank" rel="noopener noreferrer">{child.label}</a> : <Link key={child.path} to={child.path} className={styles.menuItem}>{child.label}</Link>)}</div></li> : <li key={item.id}>{item.path?.startsWith('http') ? <a className={styles.link} href={item.path} target="_blank" rel="noopener noreferrer">{item.label}</a> : <NavLink to={item.path} className={linkClass} end={item.path === '/'}>{item.label}</NavLink>}</li> })}<li className={styles.mobileSearchItem}><button className={styles.mobileSearchBtn} onClick={() => { setMenuOpenAt(null); setSearchOpen(true) }}><span>⌕</span> SEARCH</button></li></ul><div className={styles.iconGroup}><span className={styles.desktopOnly}><SearchButton onClick={() => setSearchOpen(true)} /></span></div></div></nav>{searchOpen && <Suspense fallback={null}><SearchBar onClose={() => setSearchOpen(false)} /></Suspense>}</>
 }

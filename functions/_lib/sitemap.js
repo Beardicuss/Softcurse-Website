@@ -7,6 +7,7 @@ const CORE_ROUTES = [
   ['/experiments', '0.7'],
   ['/studio', '0.9'],
   ['/studio/games', '0.8'],
+  ['/studio/hexbrewers/rulebook', '0.7'],
   ['/chronicles', '0.8'],
   ['/localization', '0.7'],
   ['/about', '0.6'],
@@ -29,6 +30,11 @@ export async function getSitemapRoutes(context) {
   const routes = new Map(CORE_ROUTES.map(([path, priority]) => [path, { priority }]))
 
   try {
+    const seoRow = await context.env.CMS_DB.prepare("SELECT value_json FROM settings WHERE key = 'seo'").first()
+    const seo = seoRow ? JSON.parse(seoRow.value_json) : { sitemapEnabled: true, excludedPaths: [] }
+    if (seo.sitemapEnabled === false) return new Map()
+    const excluded = seo.excludedPaths || []
+    for (const path of [...routes.keys()]) if (excluded.some(prefix => path === prefix || path.startsWith(`${prefix}/`))) routes.delete(path)
     const { results = [] } = await context.env.CMS_DB.prepare(`
       SELECT type, slug, updated_at
       FROM content_items
@@ -40,6 +46,7 @@ export async function getSitemapRoutes(context) {
       const buildRoute = TYPE_ROUTES[row.type]
       if (!buildRoute) continue
       const path = buildRoute(row.slug)
+      if (excluded.some(prefix => path === prefix || path.startsWith(`${prefix}/`))) continue
       const lastmod = row.updated_at ? String(row.updated_at).slice(0, 10) : undefined
       routes.set(path, { priority: row.type === 'game' ? '0.8' : '0.7', lastmod })
     }
@@ -52,7 +59,9 @@ export async function getSitemapRoutes(context) {
     `).all()
 
     for (const chapter of chapters.results) {
-      routes.set(`/chronicles/${chapter.slug}/chapter/${chapter.chapter_number}`, {
+      const chapterPath = `/chronicles/${chapter.slug}/chapter/${chapter.chapter_number}`
+      if (excluded.some(prefix => chapterPath === prefix || chapterPath.startsWith(`${prefix}/`))) continue
+      routes.set(chapterPath, {
         priority: '0.6',
         lastmod: chapter.updated_at ? String(chapter.updated_at).slice(0, 10) : undefined,
       })

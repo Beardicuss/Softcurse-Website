@@ -11,6 +11,7 @@ import {
   writeAudit,
 } from '../../../_lib/cms.js'
 import { syncRoadmapSafely } from '../../../_lib/roadmap.js'
+import { dispatchWebhooks } from '../../../_lib/webhooks.js'
 
 export async function onRequestGet(context) {
   try {
@@ -86,6 +87,7 @@ export async function onRequestPost(context) {
     const roadmapSync = await syncRoadmapSafely(context.env, context.data.admin.username, payload.type === 'roadmap' ? null : id)
 
     const created = await context.env.CMS_DB.prepare('SELECT * FROM content_items WHERE id = ?1').bind(id).first()
+    context.waitUntil(dispatchWebhooks(context.env, 'content.created', { id, type: payload.type, slug: payload.slug, title: payload.title.trim(), status }).catch(error => console.error('Webhook dispatch failed.', error)))
     return json({ ok: true, item: parseContentRow(created), roadmapSync }, { status: 201 })
   } catch (error) {
     if (error instanceof Error && error.message.includes('UNIQUE constraint failed')) {

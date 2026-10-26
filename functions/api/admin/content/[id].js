@@ -10,6 +10,7 @@ import {
   writeAudit,
 } from '../../../_lib/cms.js'
 import { syncRoadmapSafely } from '../../../_lib/roadmap.js'
+import { dispatchWebhooks } from '../../../_lib/webhooks.js'
 
 async function findItem(env, id) {
   return env.CMS_DB.prepare('SELECT * FROM content_items WHERE id = ?1').bind(id).first()
@@ -75,6 +76,8 @@ export async function onRequestPatch(context) {
       revision,
     })
     const roadmapSync = await syncRoadmapSafely(context.env, context.data.admin.username, existing.type === 'roadmap' ? null : existing.id)
+    const webhookEvent = existing.status !== 'published' && next.status === 'published' ? 'content.published' : 'content.updated'
+    context.waitUntil(dispatchWebhooks(context.env, webhookEvent, { id: existing.id, type: existing.type, slug: next.slug, title: next.title, status: next.status, revision }).catch(error => console.error('Webhook dispatch failed.', error)))
 
     return json({ ok: true, item: parseContentRow(await findItem(context.env, existing.id)), roadmapSync })
   } catch (error) {

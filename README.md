@@ -393,3 +393,9 @@ location / {
 ---
 
 *© Softcurse. Built in the dark. Shipped with purpose.*
+
+## Administration
+
+- [Control panel setup and operations](docs/ADMIN_PANEL.md)
+- [Launch-readiness checklist](docs/LAUNCH_READINESS.md)
+- [Security review](docs/SECURITY_REVIEW.md)

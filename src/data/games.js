@@ -87,7 +87,7 @@ export const GAMES = {
     heroPosition: 'center',
     character: '/posters/games/hexbrewers-char.webp',
     charSize: { w: 320, h: 320 },
-    characterName: "The Brewer's Bag",
+    characterName: "Ancient Crucible",
     name: 'HexBrewers from Ashenveil',
     icon: '⚗',
     tag: 'BAG-BUILDING / DARK FANTASY',
